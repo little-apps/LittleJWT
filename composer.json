@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "little-apps/littlejwt",
+    "description": "LittleJWT allows for JSON Web Tokens (JWTs) to be generated and verified in Laravel.",
     "keywords": [
-        ":vendor_name",
+        "little-apps",
         "laravel",
-        ":package_slug"
+        "littlejwt"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/little-apps/littlejwt",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Nick H",
+            "email": "nick@little-apps.com",
             "role": "Developer"
         }
     ],
@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "LittleApps\\LittleJWT\\": "src",
+            "LittleApps\\LittleJWT\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "LittleApps\\LittleJWT\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -54,10 +54,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "LittleApps\\LittleJWT\\LittleJWTServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "LittleJWT": "LittleApps\\LittleJWT\\Facades\\LittleJWT"
             }
         }
     },

@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace LittleApps\LittleJWT\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LittleJWTCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'littlejwt';
 
     public $description = 'My command';
 
