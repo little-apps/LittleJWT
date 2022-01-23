@@ -30,7 +30,11 @@
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^9.5",
-        "spatie/laravel-ray": "^1.26"
+        "spatie/laravel-ray": "^1.26",
+        "web-token/jwt-core": "^2.2",
+        "web-token/jwt-easy": "^2.2",
+        "web-token/jwt-key-mgmt": "^2.2",
+        "web-token/jwt-signature-algorithm-hmac": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -54,7 +58,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LittleApps\\LittleJWT\\LittleJWTServiceProvider"
+                "LittleApps\\LittleJWT\\ServiceProvider"
             ],
             "aliases": {
                 "LittleJWT": "LittleApps\\LittleJWT\\Facades\\LittleJWT"
