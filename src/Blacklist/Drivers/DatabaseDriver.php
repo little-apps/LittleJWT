@@ -24,7 +24,7 @@ class DatabaseDriver extends AbstractDriver {
         return
             DB::table($this->getTableName())
                 ->where($this->getIdentifierColumnName(), $this->getUniqueId($jwt))
-                ->whereDate($this->getIdentifierExpiryName(), '>=', Carbon::now())
+                ->whereDate($this->getIdentifierExpiryName(), '<=', Carbon::now())
                     ->exists();
     }
 
@@ -53,7 +53,7 @@ class DatabaseDriver extends AbstractDriver {
      */
     public function purge() {
         DB::table($this->getTableName())
-            ->whereDate($this->getIdentifierExpiryName(), '<', Carbon::now())
+            ->whereDate($this->getIdentifierExpiryName(), '>', Carbon::now())
                 ->delete();
 
         return $this;
