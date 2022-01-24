@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
 use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\Testing\LittleJWTFake;
 
@@ -28,10 +29,10 @@ class LittleJWT extends Facade {
      *
      * @param JWK $jwk
      * @param Closure|null $callback If not null, called with new LittleJWT instance as parameter.
-     * @return LittleJWT New LittleJWT instance
+     * @return LittleJWTInstance New LittleJWT instance
      */
     public static function withJwk(JWK $jwk) {
-        return static::getMockableClass() !== LittleJWTFake::class ? new LittleJWT(static::$app, $jwk) : new LittleJWTFake(static::$app, $jwk);
+        return static::getMockableClass() !== LittleJWTFake::class ? new LittleJWTInstance(static::$app, $jwk) : new LittleJWTFake(static::$app, $jwk);
     }
 
     /**
