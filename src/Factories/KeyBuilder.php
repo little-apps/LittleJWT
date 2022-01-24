@@ -72,10 +72,10 @@ class KeyBuilder implements Keyable
 
     private function buildFromSecret($config)
     {
-        if (!$config['allow_unsecure']) {
-            if (!isset($config['phrase'])) {
+        if (! $config['allow_unsecure']) {
+            if (! isset($config['phrase'])) {
                 throw new MissingKeyException();
-            } else if ($config['phrase'] === '') {
+            } elseif ($config['phrase'] === '') {
                 Log::warning('LittleJWT is using an empty secret phrase. This is NOT recommended.');
             }
         }
@@ -87,7 +87,7 @@ class KeyBuilder implements Keyable
 
     private function buildFromFile($config)
     {
-        if (!is_file($config['path'])) {
+        if (! is_file($config['path'])) {
             throw new MissingKeyException();
         }
 
