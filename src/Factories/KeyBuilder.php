@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Log;
 
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
@@ -46,11 +47,27 @@ class KeyBuilder implements Keyable
     {
         $config = array_merge($this->config, $config);
 
-        if ($config['default'] === static::KEY_NONE) {
-            return JWKFactory::createNoneKey();
-        }
+        $keyType = isset($config['default']) ? $config['default'] : null;
 
-        return $config['default'] === static::KEY_FILE ? $this->buildFromFile($config[static::KEY_FILE]) : $this->buildFromSecret($config[static::KEY_SECRET]);
+        switch ($keyType) {
+            case static::KEY_NONE: {
+                return JWKFactory::createNoneKey();
+            }
+
+            case static::KEY_FILE: {
+                return $this->buildFromFile($config[static::KEY_FILE]);
+            }
+
+            case static::KEY_SECRET: {
+                return $this->buildFromSecret($config[static::KEY_SECRET]);
+            }
+
+            default: {
+                Log::warning('LittleJWT is reverting to use no key. This is NOT recommended.');
+
+                return JWKFactory::createNoneKey();
+            }
+        }
     }
 
     private function buildFromSecret($config)
