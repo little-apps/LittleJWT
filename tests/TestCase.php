@@ -104,7 +104,7 @@ class TestCase extends Orchestra
         config()->set('littlejwt', $littlejwt);
 
         config()->set('database.default', 'testing');
-        config()->set('database.default', 'testing');
+        config()->set('auth.defaults.guard', 'jwt');
         config()->set('auth.guards.jwt', [
             'driver' => 'littlejwt',
             'adapter' => 'fingerprint',
