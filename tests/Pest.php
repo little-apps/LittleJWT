@@ -1,5 +1,0 @@
-<?php
-
-use LittleApps\LittleJWT\Tests\TestCase;
-
-uses(TestCase::class)->in(__DIR__);
