@@ -2,12 +2,13 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use Closure;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 
-use Closure;
+use LittleApps\LittleJWT\JWT\JWT;
 
-class Callback extends Rule {
+class Callback extends Rule
+{
     protected $callback;
 
     protected $lastMessage;
@@ -17,11 +18,13 @@ class Callback extends Rule {
      *
      * @param Closure $callback Callback that recieves the JWT and returns true/false or throws a RuleFailedException.
      */
-    public function __construct(Closure $callback) {
+    public function __construct(Closure $callback)
+    {
         $this->callback = $callback;
     }
 
-    public function passes(JWT $jwt) {
+    public function passes(JWT $jwt)
+    {
         try {
             return (bool) call_user_func($this->callback, $jwt);
         } catch (RuleFailedException $ex) {
@@ -31,7 +34,8 @@ class Callback extends Rule {
         return false;
     }
 
-    public function message() {
+    public function message()
+    {
         return $this->lastMessage ?? 'The callback validation did not pass.';
     }
 }

@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Guards\Adapters\Concerns;
 
 use Illuminate\Http\Request;
 
-trait HasRequest {
+trait HasRequest
+{
     /**
      * The request instance.
      *
@@ -17,7 +18,8 @@ trait HasRequest {
      *
      * @return \Illuminate\Http\Request
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -27,7 +29,8 @@ trait HasRequest {
      * @param  \Illuminate\Http\Request  $request
      * @return $this
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
 
         return $this;

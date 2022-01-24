@@ -2,12 +2,13 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use PHPUnit\Framework\Assert as PHPUnit;
-
-use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Contracts\Rule;
 
-class TestRule implements Rule {
+use LittleApps\LittleJWT\JWT\JWT;
+use PHPUnit\Framework\Assert as PHPUnit;
+
+class TestRule implements Rule
+{
     protected $baseRule;
 
     protected $message;
@@ -34,13 +35,15 @@ class TestRule implements Rule {
      * @param \LittleApps\LittleJWT\JWT\JWT $jwt
      * @return bool True if JWT passes rule check.
      */
-    public function passes(JWT $jwt) {
+    public function passes(JWT $jwt)
+    {
         $passes = $this->baseRule->passes($jwt);
 
-        if ($this->assertPasses)
+        if ($this->assertPasses) {
             PHPUnit::assertTrue($passes, $this->message);
-        else
+        } else {
             PHPUnit::assertFalse($passes, $this->message);
+        }
 
         return $passes;
     }
@@ -50,7 +53,8 @@ class TestRule implements Rule {
      *
      * @return string
      */
-    public function message() {
+    public function message()
+    {
         return $this->baseRule->message();
     }
 
@@ -59,7 +63,8 @@ class TestRule implements Rule {
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->baseRule->getKey();
     }
 }

@@ -4,25 +4,29 @@ namespace LittleApps\LittleJWT\JWT\Rules;
 
 use LittleApps\LittleJWT\JWT\JWT;
 
-class ContainsClaims extends Rule {
+class ContainsClaims extends Rule
+{
     protected $expected;
     protected $inHeader;
     protected $strict;
 
-    public function __construct(iterable $expected, $inHeader = false, $strict = false) {
+    public function __construct(iterable $expected, $inHeader = false, $strict = false)
+    {
         $this->expected = $expected;
         $this->inHeader = (bool) $inHeader;
         $this->strict = (bool) $strict;
     }
 
-    public function passes(JWT $jwt) {
+    public function passes(JWT $jwt)
+    {
         $claims = $this->inHeader ? $jwt->getHeaders() : $jwt->getPayload();
 
         $found = 0;
 
         foreach ($this->expected as $key) {
-            if ($claims->has($key))
+            if ($claims->has($key)) {
                 $found++;
+            }
         }
 
         if ($this->strict) {
@@ -33,7 +37,8 @@ class ContainsClaims extends Rule {
         }
     }
 
-    public function message() {
+    public function message()
+    {
         return 'The JWT did not have the expected claim keys.';
     }
 }

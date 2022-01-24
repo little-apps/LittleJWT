@@ -2,12 +2,12 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
-use LittleApps\LittleJWT\Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 
-use Illuminate\Foundation\Testing\WithFaker;
+use LittleApps\LittleJWT\Tests\TestCase;
 
 class CreateTest extends TestCase
 {
@@ -50,10 +50,11 @@ class CreateTest extends TestCase
      *
      * @return void
      */
-    public function test_has_custom_claims() {
+    public function test_has_custom_claims()
+    {
         $sub = $this->faker->uuid;
 
-        $token = LittleJWT::createToken(function(Builder $builder) use ($sub) {
+        $token = LittleJWT::createToken(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
         });
 

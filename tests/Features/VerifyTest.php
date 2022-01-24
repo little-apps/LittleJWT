@@ -2,25 +2,26 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
-use LittleApps\LittleJWT\Tests\TestCase;
-
 use Illuminate\Foundation\Testing\WithFaker;
+
 use Illuminate\Support\Carbon;
-
-use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
-
 use LittleApps\LittleJWT\Build\Builder;
+
 use LittleApps\LittleJWT\Contracts\KeyBuildable;
+
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\Testing\TestVerifier;
+use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
+use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class VerifyTest extends TestCase
 {
-    use WithFaker, InteractsWithLittleJWT;
+    use WithFaker;
+    use InteractsWithLittleJWT;
 
     /**
      * Tests that a default JWT is valid.
@@ -50,7 +51,7 @@ class VerifyTest extends TestCase
 
         $sub = $this->faker->uuid;
 
-        $jwt = LittleJWT::createJWT(function(Builder $builder) use ($sub) {
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
         });
 
@@ -66,10 +67,11 @@ class VerifyTest extends TestCase
      *
      * @return void
      */
-    public function test_jwt_expired() {
+    public function test_jwt_expired()
+    {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT(function(Builder $builder) {
+        $jwt = LittleJWT::createJWT(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
         });
 
@@ -87,13 +89,14 @@ class VerifyTest extends TestCase
      *
      * @return void
      */
-    public function test_jwt_invalid_signature() {
+    public function test_jwt_invalid_signature()
+    {
         LittleJWT::fake();
 
         $otherJWk = $this->app->make(KeyBuildable::class)->build([
             KeyBuilder::KEY_SECRET => [
-                'phrase' => Base64Encoder::encode($this->faker->sha256)
-            ]
+                'phrase' => Base64Encoder::encode($this->faker->sha256),
+            ],
         ]);
 
         $jwt = LittleJWT::withJwk($otherJWk)->createJWT();
@@ -112,7 +115,8 @@ class VerifyTest extends TestCase
      *
      * @return void
      */
-    public function test_jwt_blacklisted() {
+    public function test_jwt_blacklisted()
+    {
         LittleJWT::fake();
 
         $jwt = LittleJWT::createJWT();

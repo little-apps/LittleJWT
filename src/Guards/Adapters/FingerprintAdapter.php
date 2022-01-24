@@ -2,20 +2,23 @@
 
 namespace LittleApps\LittleJWT\Guards\Adapters;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Container\Container;
+
+use Illuminate\Support\Facades\Response as ResponseFactory;
+use Illuminate\Support\Str;
 use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Verify\Verifiers;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Facades\Response as ResponseFactory;
-use Illuminate\Support\Str;
-
-class FingerprintAdapter extends AbstractAdapter {
-    use Concerns\BuildsJwt, Concerns\HasRequest;
+class FingerprintAdapter extends AbstractAdapter
+{
+    use Concerns\BuildsJwt;
+    use Concerns\HasRequest;
 
     protected $baseAdapter;
 
-    public function __construct(Container $container, LittleJWT $jwt, GenericAdapter $adapter, array $config) {
+    public function __construct(Container $container, LittleJWT $jwt, GenericAdapter $adapter, array $config)
+    {
         parent::__construct($container, $jwt, $config);
 
         $this->baseAdapter = $adapter;
@@ -28,9 +31,10 @@ class FingerprintAdapter extends AbstractAdapter {
      * @param string $fingerprintHash
      * @return JWT
      */
-    public function createJwtWithFingerprint(Authenticatable $user, string $fingerprintHash) {
+    public function createJwtWithFingerprint(Authenticatable $user, string $fingerprintHash)
+    {
         return $this->buildJwtForUser($user, [
-            $this->getFingerprintClaimName() => $fingerprintHash
+            $this->getFingerprintClaimName() => $fingerprintHash,
         ]);
     }
 
@@ -40,7 +44,8 @@ class FingerprintAdapter extends AbstractAdapter {
      * @param Authenticatable|null $user The user to generate the JWT for.
      * @return \Illuminate\Http\JsonResponse Returns response with JWT
      */
-    public function createJwtResponse(Authenticatable $user) {
+    public function createJwtResponse(Authenticatable $user)
+    {
         $fingerprint = $this->createFingerprint();
 
         $jwt = $this->createJwtWithFingerprint($user, $this->hashFingerprint($fingerprint));
@@ -55,7 +60,8 @@ class FingerprintAdapter extends AbstractAdapter {
      *
      * @return string
      */
-    public function getFingerprintClaimName() {
+    public function getFingerprintClaimName()
+    {
         return 'fgpt';
     }
 
@@ -64,7 +70,8 @@ class FingerprintAdapter extends AbstractAdapter {
      *
      * @return string
      */
-    public function getFingerprintCookieName() {
+    public function getFingerprintCookieName()
+    {
         return $this->config['cookie'] ?? 'fingerprint';
     }
 
@@ -73,7 +80,8 @@ class FingerprintAdapter extends AbstractAdapter {
      *
      * @return string|null Fingerprint value or null if cookie doesn't exist.
      */
-    public function getFingerprintCookieValue() {
+    public function getFingerprintCookieValue()
+    {
         return $this->request->cookie($this->getFingerprintCookieName());
     }
 
@@ -82,7 +90,8 @@ class FingerprintAdapter extends AbstractAdapter {
      *
      * @return string
      */
-    public function createFingerprint() {
+    public function createFingerprint()
+    {
         return (string) Str::uuid();
     }
 
@@ -92,7 +101,8 @@ class FingerprintAdapter extends AbstractAdapter {
      * @param string $fingerprint
      * @return string
      */
-    public function hashFingerprint(string $fingerprint) {
+    public function hashFingerprint(string $fingerprint)
+    {
         return hash('sha256', $fingerprint);
     }
 
@@ -101,12 +111,13 @@ class FingerprintAdapter extends AbstractAdapter {
      *
      * @return \LittleApps\LittleJWT\Contracts\Verifiable
      */
-    protected function buildVerifier() {
+    protected function buildVerifier()
+    {
         $fingerprintHash = $this->hashFingerprint($this->getFingerprintCookieValue() ?? '');
 
         return new Verifiers\StackVerifier([
             $this->baseAdapter->buildVerifier(),
-            new Verifiers\FingerprintVerifier($fingerprintHash)
+            new Verifiers\FingerprintVerifier($fingerprintHash),
         ]);
     }
 }

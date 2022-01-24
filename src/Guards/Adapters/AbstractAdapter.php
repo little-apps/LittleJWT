@@ -2,16 +2,17 @@
 
 namespace LittleApps\LittleJWT\Guards\Adapters;
 
-use LittleApps\LittleJWT\LittleJWT;
-use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\Contracts\Verifiable;
-use LittleApps\LittleJWT\Contracts\GuardAdapter;
-
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
+use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
-abstract class AbstractAdapter implements GuardAdapter {
+use LittleApps\LittleJWT\Contracts\Verifiable;
+use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\LittleJWT;
+
+abstract class AbstractAdapter implements GuardAdapter
+{
     /**
      * Application container
      *
@@ -33,7 +34,8 @@ abstract class AbstractAdapter implements GuardAdapter {
      */
     protected $config;
 
-    public function __construct(Container $container, LittleJWT $jwt, array $config) {
+    public function __construct(Container $container, LittleJWT $jwt, array $config)
+    {
         $this->container = $container;
         $this->jwt = $jwt;
 
@@ -47,7 +49,8 @@ abstract class AbstractAdapter implements GuardAdapter {
      * @param string $token
      * @return JWT JWT instance or null if unable to be parsed.
      */
-    public function parseToken(string $token) {
+    public function parseToken(string $token)
+    {
         return $this->jwt->parseToken($token);
     }
 
@@ -58,7 +61,8 @@ abstract class AbstractAdapter implements GuardAdapter {
      * @param Verifiable $verifier
      * @return bool True if JWT is verified.
      */
-    public function verifyJwt(JWT $jwt) {
+    public function verifyJwt(JWT $jwt)
+    {
         $verifier = $this->buildVerifier();
 
         return $this->jwt->verifiedJWT($jwt, [$verifier, 'verify']);
@@ -71,7 +75,8 @@ abstract class AbstractAdapter implements GuardAdapter {
      * @param JWT $jwt
      * @return Authenticatable
      */
-    public function getUserFromJwt(UserProvider $provider, JWT $jwt) {
+    public function getUserFromJwt(UserProvider $provider, JWT $jwt)
+    {
         return $provider->retrieveById($jwt->getPayload()->sub);
     }
 
@@ -82,6 +87,4 @@ abstract class AbstractAdapter implements GuardAdapter {
      * @return \LittleApps\LittleJWT\Contracts\Verifiable
      */
     abstract protected function buildVerifier();
-
-
 }

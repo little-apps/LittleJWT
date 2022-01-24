@@ -4,21 +4,22 @@ namespace LittleApps\LittleJWT\Concerns;
 
 use DateTimeInterface;
 
+use Illuminate\Http\Response;
+
 use LittleApps\LittleJWT\JWT\JWT;
 
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 
-use Illuminate\Support\Carbon;
-use Illuminate\Http\Response;
-
-trait RespondsWithJWT {
+trait RespondsWithJWT
+{
     /**
      * Builds the JWT array using a JWT instance.
      *
      * @param JWT $jwt
      * @return array
      */
-    protected function buildJsonResponseWithJwt(JWT $jwt) {
+    protected function buildJsonResponseWithJwt(JWT $jwt)
+    {
         return ResponseBuilder::buildFromJwt($jwt);
     }
 
@@ -29,7 +30,8 @@ trait RespondsWithJWT {
      * @param DateTimeInterface $expires
      * @return array
      */
-    protected function buildJsonResponseWithToken(string $token, DateTimeInterface $expires) {
+    protected function buildJsonResponseWithToken(string $token, DateTimeInterface $expires)
+    {
         return Response::buildFromToken($token, $expires);
     }
 
@@ -40,7 +42,8 @@ trait RespondsWithJWT {
      * @param JWT|string $token
      * @return Response
      */
-    protected function attachJwtToResponseHeader(Response $response, $token) {
+    protected function attachJwtToResponseHeader(Response $response, $token)
+    {
         return $response->header('Authorization', sprintf('Bearer %s', (string) $token));
     }
 }

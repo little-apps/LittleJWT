@@ -2,12 +2,13 @@
 
 namespace LittleApps\LittleJWT\Contracts;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+
+use Illuminate\Contracts\Auth\UserProvider;
 use LittleApps\LittleJWT\JWT\JWT;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\UserProvider;
-
-interface GuardAdapter {
+interface GuardAdapter
+{
     /**
      * Parse a token from a string to a JWT.
      * This does NOT verify if the JWT is valid.

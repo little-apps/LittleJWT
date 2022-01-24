@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Contracts;
 
 use LittleApps\LittleJWT\JWT\JWT;
 
-interface Rule {
+interface Rule
+{
     /**
      * Checks if JWT passes rule.
      *

@@ -5,7 +5,8 @@ namespace LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\Contracts\Rule as RuleContract;
 use LittleApps\LittleJWT\JWT\JWT;
 
-abstract class Rule implements RuleContract {
+abstract class Rule implements RuleContract
+{
     /**
      * Checks if JWT passes rule.
      *
@@ -26,7 +27,8 @@ abstract class Rule implements RuleContract {
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return get_class($this);
     }
 }

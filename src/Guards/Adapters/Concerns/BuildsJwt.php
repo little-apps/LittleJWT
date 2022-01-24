@@ -2,12 +2,13 @@
 
 namespace LittleApps\LittleJWT\Guards\Adapters\Concerns;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+
+use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Build\Builders\GuardBuilder;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Response as ResponseFactory;
-
-trait BuildsJwt {
+trait BuildsJwt
+{
     /**
      * Builds a JWT for a user.
      *
@@ -16,7 +17,8 @@ trait BuildsJwt {
      * @param array $headerClaims Any extra claims to add to JWT.
      * @return JWT
      */
-    public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = []) {
+    public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
+    {
         $builder = new GuardBuilder($this->container, $user, $payloadClaims, $headerClaims);
 
         return $this->jwt->createJWT([$builder, 'build']);
@@ -28,7 +30,8 @@ trait BuildsJwt {
      * @param Authenticatable|null $user The user to generate the JWT for.
      * @return \Illuminate\Http\JsonResponse Returns response with JWT
      */
-    public function createJwtResponse(Authenticatable $user) {
+    public function createJwtResponse(Authenticatable $user)
+    {
         $jwt = $this->buildJwtForUser($user);
 
         return ResponseFactory::withJwt($jwt);

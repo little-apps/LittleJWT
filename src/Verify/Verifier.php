@@ -4,15 +4,16 @@ namespace LittleApps\LittleJWT\Verify;
 
 use Closure;
 
-use LittleApps\LittleJWT\Contracts\Rule;
-use LittleApps\LittleJWT\JWT\Rules;
+use Illuminate\Support\Traits\Macroable;
+use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 
-use Illuminate\Support\Traits\Macroable;
+use LittleApps\LittleJWT\Contracts\Rule;
 
-use Jose\Component\Core\JWK;
+use LittleApps\LittleJWT\JWT\Rules;
 
-class Verifier {
+class Verifier
+{
     use Macroable;
 
     /**
@@ -57,7 +58,8 @@ class Verifier {
      */
     protected $stopOnFailure;
 
-    public function __construct(BlacklistManager $blacklistManager, JWK $jwk) {
+    public function __construct(BlacklistManager $blacklistManager, JWK $jwk)
+    {
         $this->blacklistManager = $blacklistManager;
         $this->jwk = $jwk;
 
@@ -72,10 +74,11 @@ class Verifier {
      * Checks if the JWT has a valid signature.
      *
      * @param JWK|null $jwk JWK instance. If null, default JWK is used. (default: null)
-     * @param boolean $before If true, runs rule before others. (default: true)
+     * @param bool $before If true, runs rule before others. (default: true)
      * @return $this
      */
-    public function valid(JWK $jwk = null, $before = true) {
+    public function valid(JWK $jwk = null, $before = true)
+    {
         $jwk = $jwk ?? $this->jwk;
 
         $rule = new Rules\ValidSignature($jwk);
@@ -87,10 +90,11 @@ class Verifier {
      * Checks if claim uses one of the specified algorithms.
      *
      * @param array $algorithms Algorithm keys to check for (HS256, RS256, etc.)
-     * @param boolean $inHeader
+     * @param bool $inHeader
      * @return $this
      */
-    public function algorithms(array $algorithms, $inHeader = true) {
+    public function algorithms(array $algorithms, $inHeader = true)
+    {
         return $this->oneOf('alg', $algorithms, true, $inHeader);
     }
 
@@ -99,10 +103,11 @@ class Verifier {
      *
      * @param string $key Claim key
      * @param int $leeway Leeway (in seconds) to allow after claims set date/time. (default: 0)
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function before($key, $leeway = 0, $inHeader = false) {
+    public function before($key, $leeway = 0, $inHeader = false)
+    {
         return $this->addRule(new Rules\Claims\Before($key, $leeway, $inHeader));
     }
 
@@ -111,10 +116,11 @@ class Verifier {
      *
      * @param string $key Claim key
      * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function after($key, $leeway = 0, $inHeader = false) {
+    public function after($key, $leeway = 0, $inHeader = false)
+    {
         return $this->addRule(new Rules\Claims\After($key, $leeway, $inHeader));
     }
 
@@ -122,12 +128,13 @@ class Verifier {
      * Checks that claims with keys exist in header or payload.
      *
      * @param iterable $keys Claim keys to check for.
-     * @param boolean $strict If true, JWT can ONLY contain the keys. (default: false)
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
-     * @param boolean $before If true, runs rule before others. (default: true)
+     * @param bool $strict If true, JWT can ONLY contain the keys. (default: false)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param bool $before If true, runs rule before others. (default: true)
      * @return $this
      */
-    public function contains(iterable $keys, $strict = false, $inHeader = false, $before = true) {
+    public function contains(iterable $keys, $strict = false, $inHeader = false, $before = true)
+    {
         $rule = new Rules\ContainsClaims($keys, $inHeader, $strict);
 
         return $before ? $this->addRuleBefore($rule) : $this->addRule($rule);
@@ -138,11 +145,12 @@ class Verifier {
      *
      * @param string $key Claim key
      * @param mixed $expected Expected value.
-     * @param boolean $strict If true, performs type comparison. (default: true)
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
+     * @param bool $strict If true, performs type comparison. (default: true)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function equals($key, $expected, $strict = true, $inHeader = false) {
+    public function equals($key, $expected, $strict = true, $inHeader = false)
+    {
         return $this->addRule(new Rules\Claims\Equals($key, $expected, $strict, $inHeader));
     }
 
@@ -151,10 +159,11 @@ class Verifier {
      *
      * @param string $key Claim key
      * @param mixed $expected Expected value.
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function secureEquals($key, $expected, $inHeader = false) {
+    public function secureEquals($key, $expected, $inHeader = false)
+    {
         return $this->addRule(new Rules\Claims\SecureEquals($key, $expected, $inHeader));
     }
 
@@ -163,11 +172,12 @@ class Verifier {
      *
      * @param string $key Claim key
      * @param mixed $haystack Expected values
-     * @param boolean $strict If true, performs type comparison. (default: true)
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
+     * @param bool $strict If true, performs type comparison. (default: true)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function oneOf($key, array $haystack, $strict = true, $inHeader = false) {
+    public function oneOf($key, array $haystack, $strict = true, $inHeader = false)
+    {
         return $this->addRule(new Rules\Claims\OneOf($key, $haystack, $strict, $inHeader));
     }
 
@@ -178,7 +188,8 @@ class Verifier {
      * @param bool $before If true, runs rule before others. (default: true)
      * @return $this
      */
-    public function allowed($driver = null, $before = true) {
+    public function allowed($driver = null, $before = true)
+    {
         $rule = new Rules\Allowed($this->blacklistManager->driver($driver));
 
         return $before ? $this->addRuleBefore($rule) : $this->addRule($rule);
@@ -190,7 +201,8 @@ class Verifier {
      * @param Closure $callback
      * @return $this
      */
-    public function callback(Closure $callback) {
+    public function callback(Closure $callback)
+    {
         return $this->addRule(new Rules\Callback($callback));
     }
 
@@ -199,20 +211,22 @@ class Verifier {
      *
      * @param string $key Claim key
      * @param Closure $callback Callback that accepts claim value and returns true/false.
-     * @param boolean $inHeader If true, checks claim in header. (default: false)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function claimCallback($key, Closure $callback, $inHeader = false) {
+    public function claimCallback($key, Closure $callback, $inHeader = false)
+    {
         return $this->addRule(new Rules\Claims\Callback($key, $callback, $inHeader));
     }
 
     /**
      * Indicates whether validation should stop when a rule fails.
      *
-     * @param boolean $enabled If true, validation stops when first rule fails. (default: true)
+     * @param bool $enabled If true, validation stops when first rule fails. (default: true)
      * @return $this
      */
-    public function stopOnFailure($enabled = true) {
+    public function stopOnFailure($enabled = true)
+    {
         $this->stopOnFailure = (bool) $enabled;
 
         return $this;
@@ -224,7 +238,8 @@ class Verifier {
      * @param Closure $callback
      * @return $this
      */
-    public function afterVerify(Closure $callback) {
+    public function afterVerify(Closure $callback)
+    {
         $this->after->push($callback);
 
         return $this;
@@ -236,7 +251,8 @@ class Verifier {
      * @param Rule $rule
      * @return $this
      */
-    public function addRuleBefore(Rule $rule) {
+    public function addRuleBefore(Rule $rule)
+    {
         $this->rulesBefore->push($rule);
 
         return $this;
@@ -248,7 +264,8 @@ class Verifier {
      * @param Rule $rule
      * @return $this
      */
-    public function addRule(Rule $rule) {
+    public function addRule(Rule $rule)
+    {
         $this->rules->push($rule);
 
         return $this;
@@ -260,7 +277,8 @@ class Verifier {
      * @param iterable $rules
      * @return $this
      */
-    public function addRules(iterable $rules) {
+    public function addRules(iterable $rules)
+    {
         foreach ($rules as $rule) {
             $this->addRule($rule);
         }
@@ -273,7 +291,8 @@ class Verifier {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getRulesBefore() {
+    public function getRulesBefore()
+    {
         return collect($this->rulesBefore);
     }
 
@@ -282,7 +301,8 @@ class Verifier {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getRules() {
+    public function getRules()
+    {
         return collect($this->rules);
     }
 
@@ -291,7 +311,8 @@ class Verifier {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAfterVerify() {
+    public function getAfterVerify()
+    {
         return collect($this->after);
     }
 
@@ -300,7 +321,8 @@ class Verifier {
      *
      * @return bool
      */
-    public function getStopOnFailure() {
+    public function getStopOnFailure()
+    {
         return $this->stopOnFailure;
     }
 
@@ -309,7 +331,8 @@ class Verifier {
      *
      * @return \Jose\Component\Core\JWK
      */
-    public function getJwk() {
+    public function getJwk()
+    {
         return $this->jwk;
     }
 }

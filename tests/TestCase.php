@@ -2,14 +2,14 @@
 
 namespace LittleApps\LittleJWT\Tests;
 
-use Orchestra\Testbench\TestCase as Orchestra;
-
 use Illuminate\Database\Eloquent\Factories\Factory;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-
 use LittleApps\LittleJWT\ServiceProvider;
+
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
@@ -29,17 +29,20 @@ class TestCase extends Orchestra
      *
      * @return array
      */
-	protected function setUpTraits() {
-		$uses = parent::setUpTraits();
+    protected function setUpTraits()
+    {
+        $uses = parent::setUpTraits();
 
-		if (isset($uses[Concerns\CreatesUser::class]))
-			$this->setUpUser();
+        if (isset($uses[Concerns\CreatesUser::class])) {
+            $this->setUpUser();
+        }
 
-		if (isset($uses[Concerns\InteractsWithLittleJWT::class]))
-			$this->setUpLittleJwt();
+        if (isset($uses[Concerns\InteractsWithLittleJWT::class])) {
+            $this->setUpLittleJwt();
+        }
 
-		return $uses;
-	}
+        return $uses;
+    }
 
     /**
      * Define database migrations.
@@ -62,7 +65,7 @@ class TestCase extends Orchestra
     {
         $router
             ->prefix('api')
-            ->group(function($router) {
+            ->group(function ($router) {
                 $router->post('/login', function (Request $request) {
                     $credentials = $request->validate([
                         'email' => ['required', 'email'],
@@ -75,7 +78,7 @@ class TestCase extends Orchestra
 
                     return Response::json([
                         'status' => 'error',
-                        'message' => 'The provided credentials do not match our records.'
+                        'message' => 'The provided credentials do not match our records.',
                     ], 401);
                 });
 
@@ -84,7 +87,6 @@ class TestCase extends Orchestra
                 });
             });
     }
-
 
     protected function getPackageProviders($app)
     {
@@ -125,8 +127,8 @@ class TestCase extends Orchestra
                     */
                     'cookie' => 'fingerprint',
                     'ttl' => 0,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 }

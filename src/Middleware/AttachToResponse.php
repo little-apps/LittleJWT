@@ -2,11 +2,11 @@
 
 namespace LittleApps\LittleJWT\Middleware;
 
-use LittleApps\LittleJWT\Concerns\RespondsWithJWT;
-use LittleApps\LittleJWT\Facades\LittleJWT;
-
 use Closure;
 use Illuminate\Http\Request;
+
+use LittleApps\LittleJWT\Concerns\RespondsWithJWT;
+use LittleApps\LittleJWT\Facades\LittleJWT;
 
 class AttachToResponse
 {
@@ -25,6 +25,6 @@ class AttachToResponse
 
         $jwt = LittleJWT::getJwt();
 
-        return !is_null($jwt) ? $this->attachJwtToResponseHeader($response, $jwt) : $response;
+        return ! is_null($jwt) ? $this->attachJwtToResponseHeader($response, $jwt) : $response;
     }
 }

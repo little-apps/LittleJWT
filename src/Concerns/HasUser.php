@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Concerns;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 
-trait HasUser {
+trait HasUser
+{
     protected $user;
 
     /**
@@ -13,7 +14,8 @@ trait HasUser {
      * @param Authenticatable $user
      * @return $this
      */
-    public function setUser(Authenticatable $user) {
+    public function setUser(Authenticatable $user)
+    {
         $this->user = $user;
 
         return $this;
@@ -24,7 +26,8 @@ trait HasUser {
      *
      * @return void
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 }

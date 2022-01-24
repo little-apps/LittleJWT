@@ -4,8 +4,8 @@ namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Contracts\Foundation\Application;
 
-use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Core\JWK;
+use Jose\Component\KeyManagement\JWKFactory;
 
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
@@ -13,13 +13,13 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyBuilder implements Keyable
 {
-    const KEY_SECRET = 'secret';
-    const KEY_FILE = 'file';
-    const KEY_NONE = 'none';
+    public const KEY_SECRET = 'secret';
+    public const KEY_FILE = 'file';
+    public const KEY_NONE = 'none';
 
-    const KEY_FILES_PEM = 'pem';
-    const KEY_FILES_P12 = 'p12';
-    const KEY_FILES_CRT = 'crt';
+    public const KEY_FILES_PEM = 'pem';
+    public const KEY_FILES_P12 = 'p12';
+    public const KEY_FILES_CRT = 'crt';
 
     protected $app;
 
@@ -32,7 +32,7 @@ class KeyBuilder implements Keyable
         $this->app = $app;
         $this->config = $config;
         $this->extra = [
-            'use' => 'sig'
+            'use' => 'sig',
         ];
     }
 
@@ -46,16 +46,18 @@ class KeyBuilder implements Keyable
     {
         $config = array_merge($this->config, $config);
 
-        if ($config['default'] === static::KEY_NONE)
+        if ($config['default'] === static::KEY_NONE) {
             return JWKFactory::createNoneKey();
+        }
 
         return $config['default'] === static::KEY_FILE ? $this->buildFromFile($config[static::KEY_FILE]) : $this->buildFromSecret($config[static::KEY_SECRET]);
     }
 
     private function buildFromSecret($config)
     {
-        if (empty($config['phrase']))
+        if (empty($config['phrase'])) {
             throw new MissingKeyException();
+        }
 
         $phrase = Base64Encoder::decode($config['phrase']);
 
@@ -64,8 +66,9 @@ class KeyBuilder implements Keyable
 
     private function buildFromFile($config)
     {
-        if (!is_file($config['path']))
+        if (! is_file($config['path'])) {
             throw new MissingKeyException();
+        }
 
         switch ($config['type']) {
             case static::KEY_FILES_CRT: {

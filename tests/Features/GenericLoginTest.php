@@ -2,20 +2,23 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
-use LittleApps\LittleJWT\Tests\TestCase;
-use LittleApps\LittleJWT\Guards\Adapters\GenericAdapter;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Arr;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use LittleApps\LittleJWT\Guards\Adapters\GenericAdapter;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
+
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
+use LittleApps\LittleJWT\Tests\TestCase;
 
 class GenericLoginTest extends TestCase
 {
-    use WithFaker, RefreshDatabase, CreatesUser, InteractsWithLittleJWT;
+    use WithFaker;
+    use RefreshDatabase;
+    use CreatesUser;
+    use InteractsWithLittleJWT;
 
     protected function setUp(): void
     {
@@ -30,10 +33,11 @@ class GenericLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_valid_login() {
+    public function test_valid_login()
+    {
         $response = $this->postJson('/api/login', [
             'email' => $this->user->email,
-            'password' => $this->getCurrentPassword()
+            'password' => $this->getCurrentPassword(),
         ]);
 
         $response
@@ -46,7 +50,8 @@ class GenericLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_get_user() {
+    public function test_get_user()
+    {
         $response = $this
             ->withAuthenticatable($this->user)
             ->getJson('/api/user');
@@ -56,7 +61,8 @@ class GenericLoginTest extends TestCase
             ->assertJson($this->user->toArray());
     }
 
-    public function test_jwt_other_user() {
+    public function test_jwt_other_user()
+    {
         $otherUser = $this->createUser();
 
         $response = $this

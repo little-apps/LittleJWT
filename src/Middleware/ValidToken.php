@@ -5,8 +5,8 @@ namespace LittleApps\LittleJWT\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-use LittleApps\LittleJWT\Exceptions\InvalidTokenException;
 use LittleApps\LittleJWT\Concerns\RequestHasToken;
+use LittleApps\LittleJWT\Exceptions\InvalidTokenException;
 
 class ValidToken
 {
@@ -23,8 +23,9 @@ class ValidToken
     {
         $token = $this->getTokenForRequest($request);
 
-        if (is_null($token))
-            throw new InvalidTokenException;
+        if (is_null($token)) {
+            throw new InvalidTokenException();
+        }
 
         return $next($request);
     }

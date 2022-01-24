@@ -2,19 +2,20 @@
 
 namespace LittleApps\LittleJWT\Guards;
 
-use LittleApps\LittleJWT\Concerns\RequestHasToken;
-use LittleApps\LittleJWT\Contracts\GuardAdapter;
-
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
+
 use Illuminate\Contracts\Auth\Guard as GuardContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
+use LittleApps\LittleJWT\Concerns\RequestHasToken;
+use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
-class Guard implements GuardContract {
+class Guard implements GuardContract
+{
     use GuardHelpers, RequestHasToken, ForwardsCalls, Macroable {
         __call as macroCall;
     }
@@ -47,7 +48,8 @@ class Guard implements GuardContract {
      */
     protected $config;
 
-    public function __construct(Container $container, GuardAdapter $adapter, UserProvider $provider, Request $request, array $config) {
+    public function __construct(Container $container, GuardAdapter $adapter, UserProvider $provider, Request $request, array $config)
+    {
         $this->container = $container;
 
         $this->setAdapter($adapter);
@@ -62,7 +64,8 @@ class Guard implements GuardContract {
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function user() {
+    public function user()
+    {
         if ($this->hasUser()) {
             return $this->user;
         }
@@ -70,11 +73,12 @@ class Guard implements GuardContract {
         // If user is not set, try to retrieve it from JWT.
         $token = $this->getTokenForRequest($this->request);
 
-        if (!empty($token)) {
+        if (! empty($token)) {
             $user = $this->getUserFromToken($token);
 
-            if (!is_null($user))
+            if (! is_null($user)) {
                 $this->setUser($user);
+            }
         }
 
         return $this->user;
@@ -86,11 +90,13 @@ class Guard implements GuardContract {
      * @param  array  $credentials
      * @return bool
      */
-    public function validate(array $credentials = []) {
+    public function validate(array $credentials = [])
+    {
         $user = $this->provider->retrieveByCredentials($credentials);
 
-        if (is_null($user) || !$this->provider->validateCredentials($user, $credentials))
+        if (is_null($user) || ! $this->provider->validateCredentials($user, $credentials)) {
             return false;
+        }
 
         $this->user = $user;
 
@@ -102,7 +108,8 @@ class Guard implements GuardContract {
      *
      * @return GuardAdapter
      */
-    public function getAdapter() {
+    public function getAdapter()
+    {
         return $this->adapter;
     }
 
@@ -111,7 +118,8 @@ class Guard implements GuardContract {
      *
      * @return array
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
@@ -120,7 +128,8 @@ class Guard implements GuardContract {
      *
      * @return \Illuminate\Http\Request
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -130,7 +139,8 @@ class Guard implements GuardContract {
      * @param GuardAdapter $adapter
      * @return $this
      */
-    public function setAdapter(GuardAdapter $adapter) {
+    public function setAdapter(GuardAdapter $adapter)
+    {
         $this->adapter = $adapter;
 
         return $this;
@@ -142,11 +152,13 @@ class Guard implements GuardContract {
      * @param  \Illuminate\Http\Request  $request
      * @return $this
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
 
-        if (method_exists($this->getAdapter(), 'setRequest'))
+        if (method_exists($this->getAdapter(), 'setRequest')) {
             $this->getAdapter()->setRequest($request);
+        }
 
         return $this;
     }
@@ -157,20 +169,23 @@ class Guard implements GuardContract {
      * @param string $token Token that is a JWT.
      * @return Authenticatable|null User (if found) or null (if not found)
      */
-    public function getUserFromToken(string $token) {
+    public function getUserFromToken(string $token)
+    {
         // First check if token is actually a JWT
         $jwt = $this->getAdapter()->parseToken($token);
 
-        if (!is_null($jwt) && $this->getAdapter()->verifyJwt($jwt)) {
+        if (! is_null($jwt) && $this->getAdapter()->verifyJwt($jwt)) {
             return $this->getAdapter()->getUserFromJwt($this->provider, $jwt);
         }
 
         return null;
     }
 
-    public function __call($method, $parameters) {
-        if (static::hasMacro($method))
+    public function __call($method, $parameters)
+    {
+        if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
+        }
 
         return $this->forwardCallTo($this->getAdapter(), $method, $parameters);
     }

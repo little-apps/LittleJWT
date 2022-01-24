@@ -2,16 +2,18 @@
 
 namespace LittleApps\LittleJWT\Blacklist\Drivers;
 
-use LittleApps\LittleJWT\JWT\JWT;
-
 use Illuminate\Cache\CacheManager;
 
-class CacheDriver extends AbstractDriver {
+use LittleApps\LittleJWT\JWT\JWT;
+
+class CacheDriver extends AbstractDriver
+{
     protected $manager;
 
     protected $options;
 
-    public function __construct(CacheManager $manager, array $options) {
+    public function __construct(CacheManager $manager, array $options)
+    {
         $this->manager = $manager;
         $this->options = $options;
     }
@@ -20,9 +22,10 @@ class CacheDriver extends AbstractDriver {
      * Checks if JWT is blacklisted.
      *
      * @param JWT $jwt
-     * @return boolean True if blacklisted.
+     * @return bool True if blacklisted.
      */
-    public function isBlacklisted(JWT $jwt) {
+    public function isBlacklisted(JWT $jwt)
+    {
         return $this->manager->has($this->getUniqueId($jwt));
     }
 
@@ -33,7 +36,8 @@ class CacheDriver extends AbstractDriver {
      * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */
-    public function blacklist(JWT $jwt, $ttl = -1) {
+    public function blacklist(JWT $jwt, $ttl = -1)
+    {
         $ttl = $ttl >= 0 ? $ttl : $this->options['ttl'];
 
         // The cache uses null to indicate it should be stored forever.
@@ -47,7 +51,8 @@ class CacheDriver extends AbstractDriver {
      *
      * @return $this
      */
-    public function purge() {
+    public function purge()
+    {
         return $this;
     }
 }

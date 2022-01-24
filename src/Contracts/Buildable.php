@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Contracts;
 
 use LittleApps\LittleJWT\Build\Builder;
 
-interface Buildable {
+interface Buildable
+{
     /**
      * Builds a JWT.
      *
