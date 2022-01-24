@@ -72,8 +72,12 @@ class KeyBuilder implements Keyable
 
     private function buildFromSecret($config)
     {
-        if (!isset($config['phrase'])) {
-            throw new MissingKeyException();
+        if (!$config['allow_unsecure']) {
+            if (!isset($config['phrase'])) {
+                throw new MissingKeyException();
+            } else if ($config['phrase'] === '') {
+                Log::warning('LittleJWT is using an empty secret phrase. This is NOT recommended.');
+            }
         }
 
         $phrase = Base64Encoder::decode($config['phrase']);
@@ -83,22 +87,22 @@ class KeyBuilder implements Keyable
 
     private function buildFromFile($config)
     {
-        if (! is_file($config['path'])) {
+        if (!is_file($config['path'])) {
             throw new MissingKeyException();
         }
 
         switch ($config['type']) {
             case static::KEY_FILES_CRT: {
-                return JWKFactory::createFromCertificateFile($config['path'], $this->extra);
-            }
+                    return JWKFactory::createFromCertificateFile($config['path'], $this->extra);
+                }
 
             case static::KEY_FILES_P12: {
-                return JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $this->extra);
-            }
+                    return JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $this->extra);
+                }
 
             default: {
-                return JWKFactory::createFromKeyFile($config['path'], $config['secret'], $this->extra);
-            }
+                    return JWKFactory::createFromKeyFile($config['path'], $config['secret'], $this->extra);
+                }
         }
     }
 }

@@ -8,7 +8,12 @@ return [
          */
         'default' => 'secret',
         'secret' => [
-            'phrase' => env('LITTLEJWT_KEY_PHRASE', '')
+            'phrase' => env('LITTLEJWT_KEY_PHRASE', ''),
+            /**
+             * Whether to perform checks if phrase is not set or is empty.
+             * It's NOT recommended to set this to true.
+             */
+            'allow_unsecure' => false
         ],
         'file' => [
             /**
