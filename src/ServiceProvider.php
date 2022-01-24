@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Signature\JWSBuilder;
-
 use Jose\Easy\Build;
+
+use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\LaravelPackageTools\Package;
 
 use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
@@ -29,13 +31,21 @@ use LittleApps\LittleJWT\Utils\ResponseBuilder;
 use LittleApps\LittleJWT\Verify\Verifier;
 use LittleApps\LittleJWT\Verify\Verifiers;
 
-class ServiceProvider extends BaseServiceProvider {
+class ServiceProvider extends PackageServiceProvider {
+    public function configurePackage(Package $package): void {
+        $package
+            ->name('littlejwt')
+            ->hasConfigFile()
+            ->hasMigration('create_jwt_blacklist_table')
+            ->hasCommand(GenerateSecretCommand::class);
+    }
+
     /**
      * Register services.
      *
      * @return void
      */
-    public function register() {
+    public function packageRegistered() {
         $this->registerCore();
         $this->registerJoseLibrary();
         $this->registerFactories();
@@ -50,13 +60,9 @@ class ServiceProvider extends BaseServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function packageBooted() {
         $this->bootGuard();
         $this->bootMacros();
-
-        if ($this->app->runningInConsole()) {
-            $this->bootConsole();
-        }
     }
 
     /**
@@ -280,16 +286,5 @@ class ServiceProvider extends BaseServiceProvider {
 
             return $this;
         });
-    }
-
-    /**
-     * Boots any commands
-     *
-     * @return void
-     */
-    protected function bootConsole() {
-        $this->commands([
-            GenerateSecretCommand::class
-        ]);
     }
 }
