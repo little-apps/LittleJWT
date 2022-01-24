@@ -2,11 +2,12 @@
 
 namespace LittleApps\LittleJWT\Build;
 
-use Illuminate\Support\Traits\Macroable;
-
 use BadMethodCallException;
 
-class Builder {
+use Illuminate\Support\Traits\Macroable;
+
+class Builder
+{
     use Macroable {
         __call as macroCall;
     }
@@ -32,7 +33,8 @@ class Builder {
      */
     protected $headerClaims = ['alg', 'cty', 'typ', 'crit'];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->headers = collect();
         $this->payload = collect();
     }
@@ -44,7 +46,8 @@ class Builder {
      * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
      * @return $this
      */
-    public function addHeaderClaim($key, $value) {
+    public function addHeaderClaim($key, $value)
+    {
         $this->headers[$key] = $value;
 
         return $this;
@@ -57,7 +60,8 @@ class Builder {
      * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
      * @return $this
      */
-    public function addPayloadClaim($key, $value, $inHeader = false) {
+    public function addPayloadClaim($key, $value, $inHeader = false)
+    {
         $this->payload[$key] = $value;
 
         return $this;
@@ -67,9 +71,10 @@ class Builder {
      * Checks if claim with key exists in the header.
      *
      * @param string $key Claim key
-     * @return boolean True if claim with key exists in header.
+     * @return bool True if claim with key exists in header.
      */
-    public function hasHeaderClaim($key) {
+    public function hasHeaderClaim($key)
+    {
         return isset($this->headers[$key]);
     }
 
@@ -77,9 +82,10 @@ class Builder {
      * Checks if claim with key exists in the payload.
      *
      * @param string $key Claim key
-     * @return boolean True if claim with key exists in payload.
+     * @return bool True if claim with key exists in payload.
      */
-    public function hasPayloadClaim($key) {
+    public function hasPayloadClaim($key)
+    {
         return isset($this->payload[$key]);
     }
 
@@ -87,14 +93,16 @@ class Builder {
      * Removes a claim with key from header or payload.
      *
      * @param string $key Claim key
-     * @param boolean $inHeader If true, removes claim from header. Otherwise, removes claim from payload. (default: false)
+     * @param bool $inHeader If true, removes claim from header. Otherwise, removes claim from payload. (default: false)
      * @return $this
      */
-    public function remove($key, $inHeader = false) {
-        if ($inHeader)
+    public function remove($key, $inHeader = false)
+    {
+        if ($inHeader) {
             unset($this->headers[$key]);
-        else
+        } else {
             unset($this->payload[$key]);
+        }
 
         return $this;
     }
@@ -104,7 +112,8 @@ class Builder {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getHeaders() {
+    public function getHeaders()
+    {
         return collect($this->headers);
     }
 
@@ -113,7 +122,8 @@ class Builder {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getPayload() {
+    public function getPayload()
+    {
         return collect($this->payload);
     }
 
@@ -123,7 +133,8 @@ class Builder {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function all() {
+    public function all()
+    {
         return $this->getHeaders()->merge($this->getPayload());
     }
 
@@ -134,9 +145,10 @@ class Builder {
      *   $exists = isset($builder->iat); // Checks if 'iat' claim exists in payload.
      *
      * @param string $key Claim key
-     * @return boolean
+     * @return bool
      */
-    public function __isset($key) {
+    public function __isset($key)
+    {
         return $this->has($key);
     }
 
@@ -148,7 +160,8 @@ class Builder {
      *
      * @param string $key Claim key
      */
-    public function __unset($key) {
+    public function __unset($key)
+    {
         $this->remove($key);
     }
 
@@ -161,7 +174,8 @@ class Builder {
      * @param string $key
      * @param mixed $value
      */
-    public function __set($key, $value) {
+    public function __set($key, $value)
+    {
         $this->addPayloadClaim($key, $value);
     }
 
@@ -171,7 +185,8 @@ class Builder {
      * @param string $key Claim key
      * @return mixed
      */
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->payload[$key];
     }
 
@@ -187,13 +202,15 @@ class Builder {
      */
     public function __call($name, $parameters)
     {
-        if (static::hasMacro($name))
+        if (static::hasMacro($name)) {
             return $this->macroCall($name, $parameters);
+        }
 
         $paramCount = count($parameters);
 
-        if (!($paramCount >= 1 && $paramCount <= 2))
+        if (! ($paramCount >= 1 && $paramCount <= 2)) {
             throw new BadMethodCallException(sprintf('Method %s::%s expects 1 or 2 parameters, %d parameters given.', static::class, $name, $paramCount));
+        }
 
         [$value] = $parameters;
 
@@ -202,7 +219,8 @@ class Builder {
         return $inHeader ? $this->addHeaderClaim($name, $value) : $this->addPayloadClaim($name, $value);
     }
 
-    protected function isHeaderClaim($key) {
+    protected function isHeaderClaim($key)
+    {
         return in_array($key, $this->headerClaims);
     }
 }

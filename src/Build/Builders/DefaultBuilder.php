@@ -2,14 +2,15 @@
 
 namespace LittleApps\LittleJWT\Build\Builders;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Carbon;
+
+use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
-
-class DefaultBuilder implements Buildable {
+class DefaultBuilder implements Buildable
+{
     protected $app;
 
     protected $config;
@@ -21,11 +22,12 @@ class DefaultBuilder implements Buildable {
             'alg' => $config['claims']['alg'],
             'ttl' => $config['claims']['ttl'],
             'aud' => $config['claims']['aud'],
-            'iss' => $config['claims']['iss']
+            'iss' => $config['claims']['iss'],
         ];
     }
 
-    public function build(Builder $builder) {
+    public function build(Builder $builder)
+    {
         $builder
             ->alg($this->config['alg'])
             ->iat(Carbon::now())

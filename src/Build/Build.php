@@ -2,22 +2,24 @@
 
 namespace LittleApps\LittleJWT\Build;
 
+use Illuminate\Contracts\Foundation\Application;
+use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
+
 use LittleApps\LittleJWT\Factories\JWTHasher;
+
 use LittleApps\LittleJWT\JWT\ClaimManager;
 
-use Illuminate\Contracts\Foundation\Application;
-
-use Jose\Component\Core\JWK;
-
-class Build {
+class Build
+{
     protected $app;
 
     protected $jwk;
 
     protected $callbacks;
 
-    public function __construct(Application $app, JWK $jwk) {
+    public function __construct(Application $app, JWK $jwk)
+    {
         $this->app = $app;
         $this->jwk = $jwk;
         $this->callbacks = [];
@@ -28,7 +30,8 @@ class Build {
      *
      * @return JWT
      */
-    public function build() {
+    public function build()
+    {
         $builder = $this->createBuilder();
 
         $headers = new ClaimManager($builder->getHeaders()->sortKeys()->all());
@@ -45,7 +48,8 @@ class Build {
      * @param callable $callback
      * @return $this
      */
-    public function addCallback(callable $callback) {
+    public function addCallback(callable $callback)
+    {
         $this->callbacks[] = $callback;
 
         return $this;
@@ -56,7 +60,8 @@ class Build {
      *
      * @return Builder
      */
-    protected function createBuilder() {
+    protected function createBuilder()
+    {
         $builder = new Builder();
 
         foreach ($this->callbacks as $callback) {
@@ -71,7 +76,8 @@ class Build {
      *
      * @return JWTBuilder
      */
-    protected function createJWTBuilder() {
+    protected function createJWTBuilder()
+    {
         return $this->app->make(JWTBuilder::class);
     }
 
@@ -80,7 +86,8 @@ class Build {
      *
      * @return JWTHasher
      */
-    protected function createJWTHasher() {
+    protected function createJWTHasher()
+    {
         return $this->app->make(JWTHasher::class);
     }
 }

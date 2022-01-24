@@ -12,8 +12,10 @@ use LittleApps\LittleJWT\Concerns\HasUser;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class GuardBuilder implements Buildable {
-    use HashableSubjectModel, HasUser;
+class GuardBuilder implements Buildable
+{
+    use HashableSubjectModel;
+    use HasUser;
 
     protected $app;
 
@@ -29,14 +31,16 @@ class GuardBuilder implements Buildable {
      * @param array $payloadClaims Any extra claims to include in the payload. (default: empty array)
      * @param array $headerClaims Any extra claims to include in the header. (default: empty array)
      */
-    public function __construct(Application $app, Authenticatable $user, array $payloadClaims = [], array $headerClaims = []) {
+    public function __construct(Application $app, Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
+    {
         $this->app = $app;
         $this->user = $user;
         $this->payloadClaims = $payloadClaims;
         $this->headerClaims = $headerClaims;
     }
 
-    public function build(Builder $builder) {
+    public function build(Builder $builder)
+    {
         $builder
             ->sub($this->user->getAuthIdentifier())
             ->prv($this->hashSubjectModel($this->user));
