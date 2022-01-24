@@ -72,7 +72,7 @@ class KeyBuilder implements Keyable
 
     private function buildFromSecret($config)
     {
-        if (! $config['allow_unsecure']) {
+        if (! isset($config['allow_unsecure']) || ! $config['allow_unsecure']) {
             if (! isset($config['phrase'])) {
                 throw new MissingKeyException();
             } elseif ($config['phrase'] === '') {
