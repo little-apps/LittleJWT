@@ -31,7 +31,7 @@ class LittleJWT extends Facade {
      * @return LittleJWT New LittleJWT instance
      */
     public static function withJwk(JWK $jwk) {
-        return new LittleJWTFake(static::$app, $jwk);
+        return static::getMockableClass() !== LittleJWTFake::class ? new LittleJWT(static::$app, $jwk) : new LittleJWTFake(static::$app, $jwk);
     }
 
     /**
