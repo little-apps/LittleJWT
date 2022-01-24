@@ -2,12 +2,13 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
+use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Contracts\Rule as RuleContract;
+
 use LittleApps\LittleJWT\JWT\JWT;
 
-use Illuminate\Support\Str;
-
-abstract class Rule implements RuleContract {
+abstract class Rule implements RuleContract
+{
     protected $key;
 
     protected $inHeader;
@@ -24,19 +25,22 @@ abstract class Rule implements RuleContract {
         $this->inHeader = $inHeader;
     }
 
-    public function passes(JWT $jwt) {
+    public function passes(JWT $jwt)
+    {
         // Checks that claim exists before continuing.
         // Returns true if claim doesn't exist so verification continues.
         // If claim key is required, use the ContainsClaims rule.
-        if (!$this->hasClaim($jwt))
+        if (! $this->hasClaim($jwt)) {
             return true;
+        }
 
         return $this->checkClaim($jwt, $this->getValue($jwt));
     }
 
-    public function message() {
+    public function message()
+    {
         $replace = [
-            ':key' => $this->getKey()
+            ':key' => $this->getKey(),
         ];
 
         return Str::replace(array_keys($replace), array_values($replace), $this->formatMessage());
@@ -47,7 +51,8 @@ abstract class Rule implements RuleContract {
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
@@ -56,7 +61,8 @@ abstract class Rule implements RuleContract {
      *
      * @return bool
      */
-    public function getInHeader() {
+    public function getInHeader()
+    {
         return $this->inHeader;
     }
 
@@ -65,7 +71,7 @@ abstract class Rule implements RuleContract {
      *
      * @param JWT $jwt
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
     abstract protected function checkClaim(JWT $jwt, $value);
 
@@ -74,7 +80,8 @@ abstract class Rule implements RuleContract {
      *
      * @return string
      */
-    protected function formatMessage() {
+    protected function formatMessage()
+    {
         return "Claim with key ':key' is invalid.";
     }
 
@@ -84,7 +91,8 @@ abstract class Rule implements RuleContract {
      * @param JWT $jwt
      * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
-    protected function getClaims(JWT $jwt) {
+    protected function getClaims(JWT $jwt)
+    {
         return $this->inHeader ? $jwt->getHeaders() : $jwt->getPayload();
     }
 
@@ -92,9 +100,10 @@ abstract class Rule implements RuleContract {
      * Checks if JWT has claim.
      *
      * @param JWT $jwt
-     * @return boolean
+     * @return bool
      */
-    protected function hasClaim(JWT $jwt) {
+    protected function hasClaim(JWT $jwt)
+    {
         return $this->getClaims($jwt)->has($this->getKey());
     }
 
@@ -104,7 +113,8 @@ abstract class Rule implements RuleContract {
      * @param JWT $jwt
      * @return mixed
      */
-    protected function getValue(JWT $jwt) {
+    protected function getValue(JWT $jwt)
+    {
         return $this->getClaims($jwt)->get($this->getKey());
     }
 }

@@ -4,17 +4,19 @@ namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Contracts\Foundation\Application;
 
-use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\JWT\ClaimManager;
-
 use Jose\Component\Core\JWK;
-
 use Jose\Component\Signature\Algorithm\MacAlgorithm;
 
-class JWTHasher {
+use LittleApps\LittleJWT\JWT\ClaimManager;
+
+use LittleApps\LittleJWT\JWT\JWT;
+
+class JWTHasher
+{
     protected $app;
 
-    public function __construct(Application $app) {
+    public function __construct(Application $app)
+    {
         $this->app = $app;
     }
 
@@ -25,11 +27,13 @@ class JWTHasher {
      * @param JWT $jwt JWT to test.
      * @return bool True if JWT signature is valid.
      */
-    public function verify(JWK $jwk, JWT $jwt) {
+    public function verify(JWK $jwk, JWT $jwt)
+    {
         $algorithm = $this->app->make('littlejwt.algorithm');
 
-        if (!($algorithm instanceof MacAlgorithm))
+        if (! ($algorithm instanceof MacAlgorithm)) {
             return false;
+        }
 
         $expected = $jwt->getSignature();
         $input = $this->createInput($jwt->getHeaders(), $jwt->getPayload());
@@ -44,11 +48,13 @@ class JWTHasher {
      * @param JWT $jwt JWT to create signature for.
      * @return string
      */
-    public function hash(JWK $jwk, ClaimManager $headers, ClaimManager $payload) {
+    public function hash(JWK $jwk, ClaimManager $headers, ClaimManager $payload)
+    {
         $algorithm = $this->app->make('littlejwt.algorithm');
 
-        if (!($algorithm instanceof MacAlgorithm))
+        if (! ($algorithm instanceof MacAlgorithm)) {
             return false;
+        }
 
         return $algorithm->hash($jwk, $this->createInput($headers, $payload));
     }
@@ -60,7 +66,8 @@ class JWTHasher {
      * @param ClaimManager $payload
      * @return string
      */
-    protected function createInput(ClaimManager $headers, ClaimManager $payload) {
+    protected function createInput(ClaimManager $headers, ClaimManager $payload)
+    {
         return sprintf('%s.%s', (string) $headers, (string) $payload);
     }
 }

@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Concerns;
 
 use Illuminate\Http\Request;
 
-trait RequestHasToken {
+trait RequestHasToken
+{
     /**
      * Get the token for the request.
      *

@@ -3,13 +3,12 @@
 namespace LittleApps\LittleJWT\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 
 use Jose\Component\KeyManagement\JWKFactory;
 
 class GenerateSecretCommand extends Command
 {
-    const ENV_KEY = 'LITTLEJWT_KEY_PHRASE';
+    public const ENV_KEY = 'LITTLEJWT_KEY_PHRASE';
 
     /**
      * The name and signature of the console command.
@@ -50,7 +49,7 @@ class GenerateSecretCommand extends Command
             $size, // Size in bits of the key. We recommend at least 128 bits.
             [
                 'alg' => 'HS256', // This key must only be used with the HS256 algorithm
-                'use' => 'sig'    // This key is used for signature/verification operations only
+                'use' => 'sig',    // This key is used for signature/verification operations only
             ]
         );
 
@@ -61,8 +60,9 @@ class GenerateSecretCommand extends Command
             $this->info('Generated secret key:');
             $this->info($secret);
         } else {
-            if (!file_exists($this->envPath())) {
+            if (! file_exists($this->envPath())) {
                 $this->error(sprintf('Could not find environment file at "%s".', $this->envPath()));
+
                 return 1;
             }
 
@@ -77,8 +77,9 @@ class GenerateSecretCommand extends Command
                 // Key already exists.
                 $this->info('Secret already exists. Overwriting the secret will cause previous JWTs to be invalidated.');
 
-                if (!$this->confirm('Overwrite existing JWT secret in .env file?'))
+                if (! $this->confirm('Overwrite existing JWT secret in .env file?')) {
                     return 1;
+                }
 
                 $contents = file_get_contents($this->envPath());
 
@@ -96,14 +97,17 @@ class GenerateSecretCommand extends Command
         return 0;
     }
 
-    protected function createLineForEnvFile($value) {
+    protected function createLineForEnvFile($value)
+    {
         return sprintf('%s="%s"', static::ENV_KEY, $value);
     }
 
-    protected function envPath() {
-        if (method_exists($this->laravel, 'environmentFilePath'))
+    protected function envPath()
+    {
+        if (method_exists($this->laravel, 'environmentFilePath')) {
             return $this->laravel->environmentFilePath();
-        else
+        } else {
             return sprintf('%s%s%s', $this->laravel->basePath(), DIRECTORY_SEPARATOR, '.env');
+        }
     }
 }

@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 
@@ -12,27 +11,28 @@ use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Easy\Build;
 
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\LaravelPackageTools\Package;
-
-use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Build\Builder;
+
 use LittleApps\LittleJWT\Build\Builders;
-use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
+use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
-use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\Guards\Adapters;
+use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 use LittleApps\LittleJWT\Verify\Verifier;
 use LittleApps\LittleJWT\Verify\Verifiers;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class ServiceProvider extends PackageServiceProvider {
-    public function configurePackage(Package $package): void {
+class ServiceProvider extends PackageServiceProvider
+{
+    public function configurePackage(Package $package): void
+    {
         $package
             ->name('littlejwt')
             ->hasConfigFile()
@@ -45,7 +45,8 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    public function packageRegistered() {
+    public function packageRegistered()
+    {
         $this->registerCore();
         $this->registerJoseLibrary();
         $this->registerFactories();
@@ -60,7 +61,8 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    public function packageBooted() {
+    public function packageBooted()
+    {
         $this->bootGuard();
         $this->bootMacros();
     }
@@ -70,14 +72,15 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerCore() {
-        $this->app->singleton(LittleJWT::class, function($app) {
+    protected function registerCore()
+    {
+        $this->app->singleton(LittleJWT::class, function ($app) {
             $jwk = $app->make(KeyBuildable::class)->build();
 
             return new LittleJWT($app, $jwk);
         });
 
-        $this->app->bind(Builder::class, function() {
+        $this->app->bind(Builder::class, function () {
             return new Builder(Build::jws());
         });
 
@@ -91,20 +94,22 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerJoseLibrary() {
+    protected function registerJoseLibrary()
+    {
         $this->app->singleton(AlgorithmManager::class, function ($app) {
             $algorithm = $app->make('littlejwt.algorithm');
-            $algorithms = !is_null($algorithm) ? [$algorithm] : [];
+            $algorithms = ! is_null($algorithm) ? [$algorithm] : [];
 
             return new AlgorithmManager($algorithms);
         });
 
         $this->app->singleton('littlejwt.algorithm', function ($app) {
             $algorithm = config('littlejwt.algorithm');
-            return !is_null($algorithm) ? $app->make($algorithm) : null;
+
+            return ! is_null($algorithm) ? $app->make($algorithm) : null;
         });
 
-        $this->app->singleton(JWSBuilder::class, function($app) {
+        $this->app->singleton(JWSBuilder::class, function ($app) {
             $algorithmManager = $app->make(AlgorithmManager::class);
 
             return new JWSBuilder($algorithmManager);
@@ -116,7 +121,8 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerBlacklistManager() {
+    protected function registerBlacklistManager()
+    {
         $this->app->singleton(BlacklistManager::class, function ($app) {
             return new BlacklistManager($app);
         });
@@ -127,18 +133,19 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerFactories() {
-        $this->app->singleton(JWTBuilder::class, function() {
+    protected function registerFactories()
+    {
+        $this->app->singleton(JWTBuilder::class, function () {
             return new JWTBuilder();
         });
 
-        $this->app->singleton(KeyBuildable::class, function($app) {
+        $this->app->singleton(KeyBuildable::class, function ($app) {
             $config = $app->config->get('littlejwt.key', []);
 
             return new KeyBuilder($app, $config);
         });
 
-        $this->app->singleton(JWTHasher::class, function($app) {
+        $this->app->singleton(JWTHasher::class, function ($app) {
             return new JWTHasher($app);
         });
     }
@@ -148,14 +155,15 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerBuilders() {
-        $this->app->singleton(Builders\DefaultBuilder::class, function($app) {
+    protected function registerBuilders()
+    {
+        $this->app->singleton(Builders\DefaultBuilder::class, function ($app) {
             $config = config('littlejwt', []);
 
             return new Builders\DefaultBuilder($app, $config);
         });
 
-        $this->app->singleton(Builders\GuardBuilder::class, function($app) {
+        $this->app->singleton(Builders\GuardBuilder::class, function ($app) {
             $config = config('littlejwt', []);
 
             return new Builders\GuardBuilder($app, $config);
@@ -170,14 +178,15 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerVerifiers() {
-        $this->app->singleton(Verifiers\DefaultVerifier::class, function($app) {
+    protected function registerVerifiers()
+    {
+        $this->app->singleton(Verifiers\DefaultVerifier::class, function ($app) {
             $config = config('littlejwt', []);
 
             return new Verifiers\DefaultVerifier($app, $config);
         });
 
-        $this->app->singleton(Verifiers\GuardVerifier::class, function($app) {
+        $this->app->singleton(Verifiers\GuardVerifier::class, function ($app) {
             $config = config('littlejwt', []);
 
             return new Verifiers\GuardVerifier($app, $config);
@@ -191,15 +200,16 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function registerGuardAdapters() {
-        $this->app->bind(Adapters\GenericAdapter::class, function($app) {
+    protected function registerGuardAdapters()
+    {
+        $this->app->bind(Adapters\GenericAdapter::class, function ($app) {
             $config = $this->getAdapterConfig('generic');
             $jwt = $app[LittleJWT::class];
 
             return new Adapters\GenericAdapter($app, $jwt, $config);
         });
 
-        $this->app->bind(Adapters\FingerprintAdapter::class, function($app) {
+        $this->app->bind(Adapters\FingerprintAdapter::class, function ($app) {
             $config = $this->getAdapterConfig('fingerprint');
             $jwt = $app[LittleJWT::class];
             $generic = $app[Adapters\GenericAdapter::class];
@@ -214,7 +224,8 @@ class ServiceProvider extends PackageServiceProvider {
      * @param string $adapter Name of adapter
      * @return array
      */
-    protected function getAdapterConfig(string $adapter) {
+    protected function getAdapterConfig(string $adapter)
+    {
         return $this->app['config']["auth.guards.jwt.adapters.{$adapter}"];
     }
 
@@ -223,13 +234,14 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function bootGuard() {
+    protected function bootGuard()
+    {
         Auth::extend('littlejwt', function ($app, $name, array $config) {
             // Return an instance of Illuminate\Contracts\Auth\Guard...
             $config = array_merge([
                 'input_key' => 'token',
                 'model' => false,
-                'adapter' => 'generic'
+                'adapter' => 'generic',
             ], $config);
 
             $provider = Auth::createUserProvider($config['provider'] ?? null);
@@ -250,10 +262,11 @@ class ServiceProvider extends PackageServiceProvider {
      *
      * @return void
      */
-    protected function bootMacros() {
+    protected function bootMacros()
+    {
         $littleJwt = $this->app->make(LittleJWT::class);
 
-        Request::macro('getToken', function($inputKey = 'token') {
+        Request::macro('getToken', function ($inputKey = 'token') {
             $token = $this->query($inputKey);
 
             if (empty($token)) {
@@ -271,17 +284,17 @@ class ServiceProvider extends PackageServiceProvider {
             return $token;
         });
 
-        Request::macro('getJwt', function($inputKey = 'token') use ($littleJwt) {
+        Request::macro('getJwt', function ($inputKey = 'token') use ($littleJwt) {
             $token = $this->getToken($inputKey);
 
-            return !is_null($token) ? $littleJwt->parseToken($token) : null;
+            return ! is_null($token) ? $littleJwt->parseToken($token) : null;
         });
 
-        ResponseFactory::macro('withJwt', function(JWT $jwt) {
+        ResponseFactory::macro('withJwt', function (JWT $jwt) {
             return ResponseFactory::json(ResponseBuilder::buildFromJwt($jwt));
         });
 
-        Response::macro('attachJwt', function($jwt) {
+        Response::macro('attachJwt', function ($jwt) {
             $this->header('Authorization', sprintf('Bearer %s', (string) $jwt));
 
             return $this;

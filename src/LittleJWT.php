@@ -4,21 +4,22 @@ namespace LittleApps\LittleJWT;
 
 use Closure;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use Illuminate\Contracts\Foundation\Application;
+use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builders\DefaultBuilder;
 use LittleApps\LittleJWT\Contracts\Verifiable;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
-use LittleApps\LittleJWT\Verify\Verify;
+use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Verify\Verifiers\DefaultVerifier;
+
 use LittleApps\LittleJWT\Verify\Verifiers\StackVerifier;
 
-use Illuminate\Contracts\Foundation\Application;
+use LittleApps\LittleJWT\Verify\Verify;
 
-use Jose\Component\Core\JWK;
-
-class LittleJWT {
+class LittleJWT
+{
     /**
      * Application container
      *
@@ -33,7 +34,8 @@ class LittleJWT {
      */
     protected $jwk;
 
-    public function __construct(Application $app, JWK $jwk) {
+    public function __construct(Application $app, JWK $jwk)
+    {
         $this->app = $app;
         $this->jwk = $jwk;
     }
@@ -45,7 +47,8 @@ class LittleJWT {
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return string
      */
-    public function createToken(Closure $callback = null, $applyDefault = true) {
+    public function createToken(Closure $callback = null, $applyDefault = true)
+    {
         return (string) $this->createJWT($callback, $applyDefault);
     }
 
@@ -54,7 +57,8 @@ class LittleJWT {
      *
      * @return Build Build instance without any callbacks.
      */
-    public function buildJWT() {
+    public function buildJWT()
+    {
         $build = new Build($this->app, $this->jwk);
 
         return $build;
@@ -67,14 +71,17 @@ class LittleJWT {
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return JWT
      */
-    public function createJWT(callable $callback = null, $applyDefault = true) {
+    public function createJWT(callable $callback = null, $applyDefault = true)
+    {
         $build = $this->buildJWT();
 
-        if ($applyDefault)
+        if ($applyDefault) {
             $build->addCallback($this->getDefaultBuildableCallback());
+        }
 
-        if (!is_null($callback))
+        if (! is_null($callback)) {
             $build->addCallback($callback);
+        }
 
         return $build->build();
     }
@@ -86,7 +93,8 @@ class LittleJWT {
      * @param string $token
      * @return \LittleApps\LittleJWT\JWT\JWT|null Returns JWT or null if token cannot be parsed.
      */
-    public function parseToken(string $token) {
+    public function parseToken(string $token)
+    {
         $builder = $this->app->make(JWTBuilder::class);
 
         try {
@@ -103,17 +111,20 @@ class LittleJWT {
      * @param callable|Verifiable $callback Callback or Verifiable that recieves Verifier to set checks for JWT.
      * @return Verify Verify instance (before verification is done)
      */
-    public function verifyJWT(JWT $jwt, $callback = null, $applyDefault = true) {
+    public function verifyJWT(JWT $jwt, $callback = null, $applyDefault = true)
+    {
         if (is_object($callback) && $callback instanceof Verifiable) {
             $verifiable = $callback;
         } else {
             $callbacks = [];
 
-            if ($applyDefault)
+            if ($applyDefault) {
                 array_push($callbacks, $this->getDefaultVerifiableCallback());
+            }
 
-            if (is_callable($callback))
+            if (is_callable($callback)) {
                 array_push($callbacks, $callback);
+            }
 
             $verifiable = new StackVerifier($callbacks);
         }
@@ -130,7 +141,8 @@ class LittleJWT {
      * @param callable $callback Callback that recieves Verifier to set checks for JWT.
      * @return bool True if token is valid.
      */
-    public function verifiedJWT(JWT $jwt, callable $callback = null, $applyDefault = true) {
+    public function verifiedJWT(JWT $jwt, callable $callback = null, $applyDefault = true)
+    {
         return $this->verifyJWT($jwt, $callback, $applyDefault)->passes();
     }
 
@@ -141,10 +153,11 @@ class LittleJWT {
      * @param callable $callback Callback that recieves Verifier to set checks for JWT.
      * @return bool True if token is valid.
      */
-    public function verifiedToken(string $token, callable $callback = null, $applyDefault = true) {
+    public function verifiedToken(string $token, callable $callback = null, $applyDefault = true)
+    {
         $jwt = $this->parseToken($token);
 
-        return !is_null($jwt) ? $this->verifiedJWT($jwt, $callback, $applyDefault) : false;
+        return ! is_null($jwt) ? $this->verifiedJWT($jwt, $callback, $applyDefault) : false;
     }
 
     /**
@@ -152,7 +165,8 @@ class LittleJWT {
      *
      * @return callable
      */
-    protected function getDefaultBuildableCallback() {
+    protected function getDefaultBuildableCallback()
+    {
         $buildable = $this->app->make(DefaultBuilder::class);
 
         return [$buildable, 'build'];
@@ -163,7 +177,8 @@ class LittleJWT {
      *
      * @return callable
      */
-    protected function getDefaultVerifiableCallback() {
+    protected function getDefaultVerifiableCallback()
+    {
         $verifiable = $this->app->make(DefaultVerifier::class);
 
         return [$verifiable, 'verify'];

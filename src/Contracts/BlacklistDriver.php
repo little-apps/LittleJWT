@@ -4,12 +4,13 @@ namespace LittleApps\LittleJWT\Contracts;
 
 use LittleApps\LittleJWT\JWT\JWT;
 
-interface BlacklistDriver {
+interface BlacklistDriver
+{
     /**
      * Checks if JWT is blacklisted.
      *
      * @param JWT $jwt
-     * @return boolean True if blacklisted.
+     * @return bool True if blacklisted.
      */
     public function isBlacklisted(JWT $jwt);
 

@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Guards\Adapters;
 
 use LittleApps\LittleJWT\Verify\Verifiers;
 
-class GenericAdapter extends AbstractAdapter {
+class GenericAdapter extends AbstractAdapter
+{
     use Concerns\BuildsJwt;
 
     /**
@@ -12,7 +13,8 @@ class GenericAdapter extends AbstractAdapter {
      *
      * @return \LittleApps\LittleJWT\Contracts\Verifiable
      */
-    protected function buildVerifier() {
+    protected function buildVerifier()
+    {
         return new Verifiers\GuardVerifier($this->container, $this->config['model']);
     }
 }

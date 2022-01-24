@@ -2,24 +2,23 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use Closure;
-
-use LittleApps\LittleJWT\LittleJWT;
+use Illuminate\Contracts\Foundation\Application;
+use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\Verify\Verify;
+use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Verify\Verifier;
-use LittleApps\LittleJWT\Testing\TestVerifier;
+
 use LittleApps\LittleJWT\Verify\Verifiers\StackVerifier;
 
-use Jose\Component\Core\JWK;
+use LittleApps\LittleJWT\Verify\Verify;
 
-use Illuminate\Contracts\Foundation\Application;
-
-class LittleJWTFake extends LittleJWT {
+class LittleJWTFake extends LittleJWT
+{
     protected $app;
     protected $jwk;
 
-    public function __construct(Application $app, JWK $jwk) {
+    public function __construct(Application $app, JWK $jwk)
+    {
         parent::__construct($app, $jwk);
     }
 
@@ -31,12 +30,14 @@ class LittleJWTFake extends LittleJWT {
      * @param callable|Verifiable $callback Callback or Verifiable that recieves Verifier to set checks for JWT.
      * @return Verify Verify instance (before verification is done)
      */
-    public function verifyJWT(JWT $jwt, $callback = null, $applyDefault = false) {
+    public function verifyJWT(JWT $jwt, $callback = null, $applyDefault = false)
+    {
         $callbacks = [];
 
         // Default callback is not added because it expects Verifier and not TestVerifier
-        if (!is_null($callback))
+        if (! is_null($callback)) {
             array_push($callbacks, $callback);
+        }
 
         $transformCallbacks = $this->createTransformCallback($callbacks);
 
@@ -53,8 +54,9 @@ class LittleJWTFake extends LittleJWT {
      * @param iterable $callbacks
      * @return \Closure
      */
-    protected function createTransformCallback(iterable $callbacks) {
-        return function (Verifier $verifier) use($callbacks) {
+    protected function createTransformCallback(iterable $callbacks)
+    {
+        return function (Verifier $verifier) use ($callbacks) {
             $testVerifier = new TestVerifier($this->app, $verifier);
 
             foreach ($callbacks as $callback) {

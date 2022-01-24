@@ -2,20 +2,18 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
-use InvalidArgumentException;
-
 use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
-use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\JWT\ClaimManager;
+use LittleApps\LittleJWT\JWT\JWT;
 
-use LittleApps\LittleJWT\Utils\JsonEncoder;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
+use LittleApps\LittleJWT\Utils\JsonEncoder;
 
-class JWTBuilder {
-
+class JWTBuilder
+{
     /**
      * Builds a JWT instance from an existing JWT string.
      *
@@ -23,11 +21,13 @@ class JWTBuilder {
      * @return JWT
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
-    public function buildFromExisting(string $token) {
+    public function buildFromExisting(string $token)
+    {
         $parts = Str::of($token)->explode('.');
 
-        if ($parts->count() !== 3)
+        if ($parts->count() !== 3) {
             throw new CantParseJWTException();
+        }
 
         $headers = $this->buildClaimManagerFromPart($parts[0]);
         $payload = $this->buildClaimManagerFromPart($parts[1]);
@@ -44,13 +44,15 @@ class JWTBuilder {
      * @param string $signature
      * @return JWT
      */
-    public function buildFromParts(ClaimManager $headers, ClaimManager $payload, $signature) {
+    public function buildFromParts(ClaimManager $headers, ClaimManager $payload, $signature)
+    {
         // Returns if signature isn't already base64 encoded.
         $decoded = Base64Encoder::decode($signature);
 
         // If decoded, set signature to decoded.
-        if ($decoded !== false)
+        if ($decoded !== false) {
             $signature = $decoded;
+        }
 
         return new JWT($headers, $payload, $signature);
     }
@@ -62,16 +64,19 @@ class JWTBuilder {
      * @return ClaimManager|null New ClaimManager instance or null if it cannot be created.
      * @throws CantParseJWTException Thrown if part cannot be decoded.
      */
-    protected function buildClaimManagerFromPart($part) {
+    protected function buildClaimManagerFromPart($part)
+    {
         $decoded = Base64Encoder::decode($part);
 
-        if ($decoded === false)
+        if ($decoded === false) {
             throw new CantParseJWTException();
+        }
 
         $array = JsonEncoder::decode($decoded);
 
-        if (is_null($array))
+        if (is_null($array)) {
             throw new CantParseJWTException();
+        }
 
         return new ClaimManager($array);
     }

@@ -2,7 +2,8 @@
 
 namespace LittleApps\LittleJWT\Contracts;
 
-interface Keyable {
+interface Keyable
+{
     /**
      * Creates a key to sign and verify JWTs.
      *

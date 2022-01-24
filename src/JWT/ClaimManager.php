@@ -4,17 +4,19 @@ namespace LittleApps\LittleJWT\JWT;
 
 use Countable;
 
+use Illuminate\Contracts\Support\Jsonable;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\ClaimsSerializer;
+
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 
-use Illuminate\Contracts\Support\Jsonable;
-
-class ClaimManager implements Countable, Jsonable {
+class ClaimManager implements Countable, Jsonable
+{
     protected $claims;
 
-    public function __construct(array $claims) {
-        $this->claims = collect($claims)->map(function($value, $key) {
+    public function __construct(array $claims)
+    {
+        $this->claims = collect($claims)->map(function ($value, $key) {
             return is_object($value) ? $value : ClaimsSerializer::unserialize($key, $value);
         });
     }
@@ -23,9 +25,10 @@ class ClaimManager implements Countable, Jsonable {
      * Checks if claim with key exists.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
-    public function has($key) {
+    public function has($key)
+    {
         return isset($this->claims[$key]);
     }
 
@@ -35,8 +38,9 @@ class ClaimManager implements Countable, Jsonable {
      * @param string|null $key The claim key or if null, all the claim values. (default: null)
      * @return mixed
      */
-    public function get($key = null) {
-        return !is_null($key) ? $this->claims->get($key) : collect($this->claims);
+    public function get($key = null)
+    {
+        return ! is_null($key) ? $this->claims->get($key) : collect($this->claims);
     }
 
     /**
@@ -45,7 +49,8 @@ class ClaimManager implements Countable, Jsonable {
      * @return int
      */
     #[\ReturnTypeWillChange]
-    public function count() {
+    public function count()
+    {
         return $this->claims->count();
     }
 
@@ -53,9 +58,10 @@ class ClaimManager implements Countable, Jsonable {
      * Allows for claims to be checked using isset() function.
      *
      * @param string $name Claim key
-     * @return boolean
+     * @return bool
      */
-    public function __isset($name) {
+    public function __isset($name)
+    {
         return $this->has($name);
     }
 
@@ -65,7 +71,8 @@ class ClaimManager implements Countable, Jsonable {
      * @param string $name Claim key
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         return $this->get($name);
     }
 
@@ -74,8 +81,9 @@ class ClaimManager implements Countable, Jsonable {
      *
      * @return array
      */
-    public function toSerialized() {
-        return $this->claims->map(function($value, $key) {
+    public function toSerialized()
+    {
+        return $this->claims->map(function ($value, $key) {
             return ClaimsSerializer::serialize($key, $value);
         })->all();
     }
@@ -85,7 +93,8 @@ class ClaimManager implements Countable, Jsonable {
      *
      * @return string
      */
-    public function toJson($options = 0) {
+    public function toJson($options = 0)
+    {
         $serialized = $this->toSerialized();
 
         return JsonEncoder::encode($serialized);
@@ -96,7 +105,8 @@ class ClaimManager implements Countable, Jsonable {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $json = $this->toJson();
 
         return Base64Encoder::encode($json);

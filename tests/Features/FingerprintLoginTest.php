@@ -2,19 +2,22 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
-use LittleApps\LittleJWT\Tests\TestCase;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
+use LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter;
 
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
-use LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter;
+use LittleApps\LittleJWT\Tests\TestCase;
 
 class FingerprintLoginTest extends TestCase
 {
-    use WithFaker, RefreshDatabase, CreatesUser, InteractsWithLittleJWT;
+    use WithFaker;
+    use RefreshDatabase;
+    use CreatesUser;
+    use InteractsWithLittleJWT;
 
     protected function setUp(): void
     {
@@ -29,10 +32,11 @@ class FingerprintLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_valid_login() {
+    public function test_valid_login()
+    {
         $response = $this->postJson('/api/login', [
             'email' => $this->user->email,
-            'password' => $this->getCurrentPassword()
+            'password' => $this->getCurrentPassword(),
         ]);
 
         $response
@@ -46,10 +50,11 @@ class FingerprintLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_invalid_login() {
+    public function test_invalid_login()
+    {
         $response = $this->postJson('/api/login', [
             'email' => $this->user->email,
-            'password' => $this->faker->password
+            'password' => $this->faker->password,
         ]);
 
         $response
@@ -62,7 +67,8 @@ class FingerprintLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_invalid_fingerprint_cookie() {
+    public function test_invalid_fingerprint_cookie()
+    {
         $fingerprint = (string) $this->faker->uuid;
 
         $invalidJwt = Auth::buildJwtForUser($this->user);
@@ -81,7 +87,8 @@ class FingerprintLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_missing_fingerprint_cookie() {
+    public function test_missing_fingerprint_cookie()
+    {
         $fingerprint = $this->createFingerprint();
 
         $response = $this
@@ -97,7 +104,8 @@ class FingerprintLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_get_user() {
+    public function test_get_user()
+    {
         $fingerprint = $this->createFingerprint();
 
         $response = $this
@@ -115,7 +123,8 @@ class FingerprintLoginTest extends TestCase
      *
      * @return void
      */
-    public function test_get_user_no_fingerprint() {
+    public function test_get_user_no_fingerprint()
+    {
         $response = $this
             ->withAuthenticatable($this->user)
             ->getJson('/api/user');
@@ -124,21 +133,25 @@ class FingerprintLoginTest extends TestCase
             ->assertUnauthorized();
     }
 
-    protected function createFingerprint() {
+    protected function createFingerprint()
+    {
         return Auth::createFingerprint();
     }
 
-    protected function createFingerprintHash(string $fingerprint) {
+    protected function createFingerprintHash(string $fingerprint)
+    {
         return Auth::hashFingerprint($fingerprint);
     }
 
-    protected function withFingerprintJwt(Authenticatable $authenticatable, string $fingerprintHash) {
+    protected function withFingerprintJwt(Authenticatable $authenticatable, string $fingerprintHash)
+    {
         $jwt = Auth::createJwtWithFingerprint($authenticatable, $fingerprintHash);
 
         return $this->withJwt($jwt);
     }
 
-    protected function withFingerprintCookie(string $fingerprint) {
+    protected function withFingerprintCookie(string $fingerprint)
+    {
         return $this
             ->withCredentials() // Needs to called in order for cookies to work.
             ->withUnencryptedCookie(Auth::getFingerprintCookieName(), $fingerprint);

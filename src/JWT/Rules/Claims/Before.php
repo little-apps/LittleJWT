@@ -2,20 +2,23 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
-use LittleApps\LittleJWT\JWT\JWT;
-
 use Illuminate\Support\Carbon;
 
-class Before extends Rule {
+use LittleApps\LittleJWT\JWT\JWT;
+
+class Before extends Rule
+{
     protected $leeway;
 
-    public function __construct($key, $leeway, $inHeader) {
+    public function __construct($key, $leeway, $inHeader)
+    {
         parent::__construct($key, $inHeader);
 
         $this->leeway = $leeway;
     }
 
-    protected function checkClaim(JWT $jwt, $value) {
+    protected function checkClaim(JWT $jwt, $value)
+    {
         $now = Carbon::now();
         $expiry = Carbon::parse($value)->addSeconds($this->leeway);
 

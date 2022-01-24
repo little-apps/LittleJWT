@@ -6,7 +6,8 @@ use DateTime;
 
 use Illuminate\Support\Carbon;
 
-class ClaimsSerializer {
+class ClaimsSerializer
+{
     /**
      * Serializes claim value for JWT.
      *
@@ -14,7 +15,8 @@ class ClaimsSerializer {
      * @param string $value
      * @return string
      */
-    public static function serialize($key, $value) {
+    public static function serialize($key, $value)
+    {
         if (in_array($key, static::getClaimKeysForTimestamps())) {
             $dateTime = ($value instanceof DateTime) ? $value : Carbon::parse($value);
 
@@ -31,9 +33,11 @@ class ClaimsSerializer {
      * @param string $value
      * @return mixed
      */
-    public static function unserialize($key, $value) {
-        if (in_array($key, static::getClaimKeysForTimestamps()))
+    public static function unserialize($key, $value)
+    {
+        if (in_array($key, static::getClaimKeysForTimestamps())) {
             return Carbon::createFromTimestamp($value);
+        }
 
         return $value;
     }
@@ -43,7 +47,8 @@ class ClaimsSerializer {
      *
      * @return array
      */
-    protected static function getClaimKeysForTimestamps() {
+    protected static function getClaimKeysForTimestamps()
+    {
         return config('littlejwt.claims.timestamps', []);
     }
 }

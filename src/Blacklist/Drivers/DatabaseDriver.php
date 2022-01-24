@@ -2,15 +2,17 @@
 
 namespace LittleApps\LittleJWT\Blacklist\Drivers;
 
-use LittleApps\LittleJWT\JWT\JWT;
-
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
-class DatabaseDriver extends AbstractDriver {
+use Illuminate\Support\Facades\DB;
+use LittleApps\LittleJWT\JWT\JWT;
+
+class DatabaseDriver extends AbstractDriver
+{
     protected $options;
 
-    public function __construct(array $options) {
+    public function __construct(array $options)
+    {
         $this->options = $options;
     }
 
@@ -18,9 +20,10 @@ class DatabaseDriver extends AbstractDriver {
      * Checks if JWT is blacklisted.
      *
      * @param JWT $jwt
-     * @return boolean True if blacklisted.
+     * @return bool True if blacklisted.
      */
-    public function isBlacklisted(JWT $jwt) {
+    public function isBlacklisted(JWT $jwt)
+    {
         return
             DB::table($this->getTableName())
                 ->where($this->getIdentifierColumnName(), $this->getUniqueId($jwt))
@@ -35,12 +38,13 @@ class DatabaseDriver extends AbstractDriver {
      * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */
-    public function blacklist(JWT $jwt, $ttl = -1) {
+    public function blacklist(JWT $jwt, $ttl = -1)
+    {
         $ttl = $ttl >= 0 ? $ttl : $this->options['ttl'];
 
         DB::table($this->getTableName())->insert([
             $this->getIdentifierColumnName() => $this->getUniqueId($jwt),
-            $this->getIdentifierExpiryName() => $ttl > 0 ? Carbon::now()->addSeconds($ttl) : null
+            $this->getIdentifierExpiryName() => $ttl > 0 ? Carbon::now()->addSeconds($ttl) : null,
         ]);
 
         return $this;
@@ -51,7 +55,8 @@ class DatabaseDriver extends AbstractDriver {
      *
      * @return $this
      */
-    public function purge() {
+    public function purge()
+    {
         DB::table($this->getTableName())
             ->whereDate($this->getIdentifierExpiryName(), '>', Carbon::now())
                 ->delete();
@@ -64,7 +69,8 @@ class DatabaseDriver extends AbstractDriver {
      *
      * @return string
      */
-    protected function getTableName() {
+    protected function getTableName()
+    {
         return $this->options['table'];
     }
 
@@ -73,7 +79,8 @@ class DatabaseDriver extends AbstractDriver {
      *
      * @return string
      */
-    protected function getIdentifierColumnName() {
+    protected function getIdentifierColumnName()
+    {
         return $this->options['columns']['identifier'];
     }
 
@@ -82,7 +89,8 @@ class DatabaseDriver extends AbstractDriver {
      *
      * @return string
      */
-    protected function getIdentifierExpiryName() {
+    protected function getIdentifierExpiryName()
+    {
         return $this->options['columns']['expiry'];
     }
 }

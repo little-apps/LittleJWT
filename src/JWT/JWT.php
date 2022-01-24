@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\JWT;
 
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
-class JWT {
+class JWT
+{
     protected $headers;
     protected $payload;
     protected $signature;
@@ -28,7 +29,8 @@ class JWT {
      *
      * @return ClaimManager
      */
-    public function getHeaders() {
+    public function getHeaders()
+    {
         return $this->headers;
     }
 
@@ -37,7 +39,8 @@ class JWT {
      *
      * @return ClaimManager
      */
-    public function getPayload() {
+    public function getPayload()
+    {
         return $this->payload;
     }
 
@@ -46,15 +49,17 @@ class JWT {
      *
      * @return string
      */
-    public function getSignature() {
+    public function getSignature()
+    {
         return $this->signature;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $parts = [
             (string) $this->getHeaders(),
             (string) $this->getPayload(),
-            Base64Encoder::encode($this->getSignature())
+            Base64Encoder::encode($this->getSignature()),
         ];
 
         return implode('.', $parts);

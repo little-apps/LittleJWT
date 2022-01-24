@@ -2,25 +2,26 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use PHPUnit\Framework\Assert as PHPUnit;
-
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Traits\ForwardsCalls;
 
-use LittleApps\LittleJWT\Verify\Verifier;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
+use Jose\Component\Core\JWK;
+
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
 use LittleApps\LittleJWT\Contracts\BlacklistDriver;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWT\Rules;
+use LittleApps\LittleJWT\Verify\Verifier;
 
-use Jose\Component\Core\JWK;
+use PHPUnit\Framework\Assert as PHPUnit;
 
 /**
  * @mixin LittleApps\LittleJWT\Verifier
  */
-class TestVerifier {
+class TestVerifier
+{
     use HashableSubjectModel, Macroable, ForwardsCalls {
         __call as macroCall;
     }
@@ -80,7 +81,8 @@ class TestVerifier {
      * @param Application $app
      * @param Verifier $verify
      */
-    public function __construct(Application $app, Verifier $verifier) {
+    public function __construct(Application $app, Verifier $verifier)
+    {
         $this->app = $app;
         $this->verifier = $verifier;
 
@@ -96,10 +98,11 @@ class TestVerifier {
     /**
      * Sets whether to assert that the JWT rules pass.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      * @return $this
      */
-    public function assertPasses($enabled = true) {
+    public function assertPasses($enabled = true)
+    {
         $this->assertPasses = (bool) $enabled;
 
         return $this;
@@ -108,10 +111,11 @@ class TestVerifier {
     /**
      * Sets whether to assert that the JWT rules fail.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      * @return $this
      */
-    public function assertFails($enabled = true) {
+    public function assertFails($enabled = true)
+    {
         $this->assertFails = (bool) $enabled;
 
         return $this;
@@ -123,7 +127,8 @@ class TestVerifier {
      * @param int|false $count Expected count or false to disable assert (default: false)
      * @return $this
      */
-    public function assertErrorCount($count = false) {
+    public function assertErrorCount($count = false)
+    {
         $this->expectedErrorCount = $count;
 
         return $this;
@@ -135,7 +140,8 @@ class TestVerifier {
      * @param string $key
      * @return $this
      */
-    public function assertErrorKeyExists($key) {
+    public function assertErrorKeyExists($key)
+    {
         $this->expectedErrorKeys->push($key);
 
         return $this;
@@ -147,7 +153,8 @@ class TestVerifier {
      * @param string $key
      * @return $this
      */
-    public function assertErrorKeyDoesntExist($key) {
+    public function assertErrorKeyDoesntExist($key)
+    {
         $this->expectedErrorKeys->push($key);
 
         return $this;
@@ -160,7 +167,8 @@ class TestVerifier {
      * @param string $message
      * @return $this
      */
-    public function assertRulePasses(Rule $rule, $message = '') {
+    public function assertRulePasses(Rule $rule, $message = '')
+    {
         $this->verifier->addRule(new TestRule($rule, true, $message));
 
         return $this;
@@ -173,7 +181,8 @@ class TestVerifier {
      * @param string $message
      * @return $this
      */
-    public function assertRuleFails(Rule $rule, $message = '') {
+    public function assertRuleFails(Rule $rule, $message = '')
+    {
         $this->verifier->addRule(new TestRule($rule, false, $message));
 
         return $this;
@@ -185,7 +194,8 @@ class TestVerifier {
      * @param mixed $model Class name or object
      * @return $this
      */
-    public function assertSubjectModel($model) {
+    public function assertSubjectModel($model)
+    {
         return $this->assertRulePasses(
             new Rules\Claims\SecureEquals('prv', $this->hashSubjectModel($model)),
             sprintf('Failed asserting that subject model is instance of "%s"', is_string($model) ? $model : get_class($model))
@@ -198,7 +208,8 @@ class TestVerifier {
      * @param mixed $model Class name or object
      * @return $this
      */
-    public function assertNotSubjectModel($model) {
+    public function assertNotSubjectModel($model)
+    {
         return $this->assertRuleFails(
             new Rules\Claims\SecureEquals('prv', $this->hashSubjectModel($model)),
             sprintf('Failed asserting that subject model is not an instance of "%s"', is_string($model) ? $model : get_class($model))
@@ -210,7 +221,8 @@ class TestVerifier {
      *
      * @return $this
      */
-    public function assertExpired() {
+    public function assertExpired()
+    {
         return $this->assertRuleFails(
             new Rules\Claims\Before('exp', 0, false),
             'Failed asserting that the JWT is expired.'
@@ -222,7 +234,8 @@ class TestVerifier {
      *
      * @return $this
      */
-    public function assertNotExpired() {
+    public function assertNotExpired()
+    {
         return $this->assertRulePasses(
             new Rules\Claims\Before('exp', 0, false),
             'Failed asserting that the JWT is not expired.'
@@ -237,7 +250,8 @@ class TestVerifier {
      * @param bool $strict
      * @return $this
      */
-    public function assertClaimMatches($claimKey, $value, $strict = false) {
+    public function assertClaimMatches($claimKey, $value, $strict = false)
+    {
         return $this->assertRulePasses(new Rules\Claims\Equals($claimKey, $value, $strict));
     }
 
@@ -249,7 +263,8 @@ class TestVerifier {
      * @param bool $strict
      * @return $this
      */
-    public function assertClaimDoesntMatch($claimKey, $value, $strict = false) {
+    public function assertClaimDoesntMatch($claimKey, $value, $strict = false)
+    {
         return $this->assertRuleFails(new Rules\Claims\Equals($claimKey, $value, $strict));
     }
 
@@ -260,7 +275,8 @@ class TestVerifier {
      * @param bool $strict If true, only expected claims can exist.
      * @return $this
      */
-    public function assertClaimsExists($expected, $strict = false) {
+    public function assertClaimsExists($expected, $strict = false)
+    {
         $expected = is_array($expected) ? $expected : func_get_args();
 
         return $this->assertRulePasses(new Rules\ContainsClaims($expected, false, $strict));
@@ -273,7 +289,8 @@ class TestVerifier {
      * @param bool $strict If true, only expected claims can exist.
      * @return $this
      */
-    public function assertClaimsDoesntExist($expected, $strict = false) {
+    public function assertClaimsDoesntExist($expected, $strict = false)
+    {
         $expected = is_array($expected) ? $expected : func_get_args();
 
         return $this->assertRuleFails(new Rules\ContainsClaims($expected, false, $strict));
@@ -285,7 +302,8 @@ class TestVerifier {
      * @param JWK|null $jwk
      * @return $this
      */
-    public function assertValidSignature(JWK $jwk = null) {
+    public function assertValidSignature(JWK $jwk = null)
+    {
         return $this->assertRulePasses(
             new Rules\ValidSignature($jwk ?? $this->verifier->getJwk()),
             'Failed asserting that the JWT has a valid signature.'
@@ -298,7 +316,8 @@ class TestVerifier {
      * @param JWK|null $jwk
      * @return $this
      */
-    public function assertInvalidSignature(JWK $jwk = null) {
+    public function assertInvalidSignature(JWK $jwk = null)
+    {
         return $this->assertRuleFails(
             new Rules\ValidSignature($jwk ?? $this->verifier->getJwk()),
             'Failed asserting that the JWT has a invalid signature.'
@@ -311,7 +330,8 @@ class TestVerifier {
      * @param BlacklistDriver $driver Blacklist driver to use. If null, default is used. (default: null)
      * @return $this
      */
-    public function assertAllowed(BlacklistDriver $driver = null) {
+    public function assertAllowed(BlacklistDriver $driver = null)
+    {
         return $this->assertRulePasses(
             new Rules\Allowed($driver ?? $this->app->make(BlacklistManager::class)->driver()),
             'Failed asserting that the JWT is not blacklisted.'
@@ -324,7 +344,8 @@ class TestVerifier {
      * @param BlacklistDriver $driver Blacklist driver to use. If null, default is used. (default: null)
      * @return $this
      */
-    public function assertNotAllowed(BlacklistDriver $driver = null) {
+    public function assertNotAllowed(BlacklistDriver $driver = null)
+    {
         return $this->assertRuleFails(
             new Rules\Allowed($driver ?? $this->app->make(BlacklistManager::class)->driver()),
             'Failed asserting that the JWT is blacklisted.'
@@ -336,16 +357,20 @@ class TestVerifier {
      *
      * @return \Closure
      */
-    protected function getAfterVerifyCallback() {
-        return function($passes, $errors) {
-            if ($this->assertPasses)
+    protected function getAfterVerifyCallback()
+    {
+        return function ($passes, $errors) {
+            if ($this->assertPasses) {
                 PHPUnit::assertTrue($passes, 'JWT verification did not pass.');
+            }
 
-            if ($this->assertFails)
+            if ($this->assertFails) {
                 PHPUnit::assertFalse($passes, 'JWT verification passed.');
+            }
 
-            if ($this->expectedErrorCount !== false)
+            if ($this->expectedErrorCount !== false) {
                 PHPUnit::assertEquals($this->expectedErrorCount, $errors->count(), 'The error count does not match.');
+            }
 
             if ($this->expectedErrorKeys->count() > 0) {
                 foreach ($this->expectedErrorKeys as $key) {

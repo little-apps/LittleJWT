@@ -2,10 +2,10 @@
 
 namespace LittleApps\LittleJWT\Verify\Verifiers;
 
-use LittleApps\LittleJWT\Contracts\Verifiable;
-use LittleApps\LittleJWT\Verify\Verifier;
-
 use Illuminate\Contracts\Foundation\Application;
+use LittleApps\LittleJWT\Contracts\Verifiable;
+
+use LittleApps\LittleJWT\Verify\Verifier;
 
 class DefaultVerifier implements Verifiable
 {
@@ -22,7 +22,7 @@ class DefaultVerifier implements Verifiable
             'required' => $config['claims']['required'],
             'leeway' => $config['claims']['leeway'],
             'aud' => $config['claims']['aud'],
-            'iss' => $config['claims']['iss']
+            'iss' => $config['claims']['iss'],
         ];
     }
 

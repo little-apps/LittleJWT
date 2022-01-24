@@ -2,18 +2,19 @@
 
 namespace LittleApps\LittleJWT\Verify;
 
-use LittleApps\LittleJWT\Blacklist\BlacklistManager;
-use LittleApps\LittleJWT\Contracts\Rule;
-use LittleApps\LittleJWT\Contracts\Verifiable;
-use LittleApps\LittleJWT\Exceptions\RuleFailedException;
-use LittleApps\LittleJWT\JWT\JWT;
-
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\MessageBag;
-
 use Jose\Component\Core\JWK;
+use LittleApps\LittleJWT\Blacklist\BlacklistManager;
+use LittleApps\LittleJWT\Contracts\Rule;
 
-class Verify {
+use LittleApps\LittleJWT\Contracts\Verifiable;
+use LittleApps\LittleJWT\Exceptions\RuleFailedException;
+
+use LittleApps\LittleJWT\JWT\JWT;
+
+class Verify
+{
     protected $app;
 
     protected $jwt;
@@ -35,7 +36,8 @@ class Verify {
      * @param Verifier $verifier JWK to use for verification.
      * @param Verifiable $verifiable Verifiable to use to build Verifier
      */
-    public function __construct(Application $app, JWT $jwt, JWK $jwk, Verifiable $verifiable) {
+    public function __construct(Application $app, JWT $jwt, JWK $jwk, Verifiable $verifiable)
+    {
         $this->app = $app;
         $this->jwt = $jwt;
         $this->jwk = $jwk;
@@ -50,7 +52,8 @@ class Verify {
      *
      * @return $this
      */
-    public function verify() {
+    public function verify()
+    {
         $this->passes();
 
         return $this;
@@ -61,7 +64,8 @@ class Verify {
      *
      * @return bool True if JWT passes rules.
      */
-    public function passes() {
+    public function passes()
+    {
         $verifier = $this->buildVerifier();
 
         $rules = $verifier->getRulesBefore()->concat($verifier->getRules());
@@ -78,12 +82,13 @@ class Verify {
 
                 if ($verifier->getStopOnFailure()) {
                     $stopped = true;
+
                     break;
                 }
             }
         }
 
-        $this->lastRunResult = !$stopped && $this->errors->isEmpty();
+        $this->lastRunResult = ! $stopped && $this->errors->isEmpty();
 
         foreach ($verifier->getAfterVerify() as $after) {
             // Don't pass $this instance because of the risk of this method being called again (resulting in a stack overflow).
@@ -98,8 +103,9 @@ class Verify {
      *
      * @return bool True if JWT doesn't pass rules.
      */
-    public function fails() {
-        return !$this->passes();
+    public function fails()
+    {
+        return ! $this->passes();
     }
 
     /**
@@ -107,7 +113,8 @@ class Verify {
      *
      * @return \Illuminate\Support\MessageBag
      */
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 
@@ -116,7 +123,8 @@ class Verify {
      *
      * @return bool|null Last run result or null if hasn't been run.
      */
-    public function getLastRunResult() {
+    public function getLastRunResult()
+    {
         return $this->lastRunResult;
     }
 
@@ -125,10 +133,11 @@ class Verify {
      *
      * @return Verifier
      */
-    protected function buildVerifier() {
+    protected function buildVerifier()
+    {
         $blacklistManager = $this->app->make(BlacklistManager::class);
 
-        return tap(new Verifier($blacklistManager, $this->jwk), function(Verifier $verifier) {
+        return tap(new Verifier($blacklistManager, $this->jwk), function (Verifier $verifier) {
             $this->verifiable->verify($verifier);
         });
     }
@@ -139,7 +148,8 @@ class Verify {
      * @param Rule $rule
      * @return string
      */
-    protected function getRuleIdentifier(Rule $rule) {
+    protected function getRuleIdentifier(Rule $rule)
+    {
         return $rule->getKey() ?? get_class($rule);
     }
 
@@ -150,9 +160,11 @@ class Verify {
      * @return $this
      * @throws \LittleApps\LittleJWT\Exceptions\RuleFailedException Thrown if rule failed.
      */
-    protected function runRule(Rule $rule) {
-        if (!$rule->passes($this->jwt))
+    protected function runRule(Rule $rule)
+    {
+        if (! $rule->passes($this->jwt)) {
             throw new RuleFailedException($rule, $rule->message());
+        }
 
         return $this;
     }
