@@ -100,6 +100,9 @@ class TestCase extends Orchestra
         $migration = include __DIR__.'/../database/migrations/create_jwt_blacklist_table.php.stub';
         $migration->up();
 
+        $littlejwt = include __DIR__.'/../config/littlejwt.php';
+        config()->set('littlejwt', $littlejwt);
+
         config()->set('database.default', 'testing');
         config()->set('database.default', 'testing');
         config()->set('auth.guards.jwt', [
