@@ -4,10 +4,10 @@ namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
+
+use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
-
 use LittleApps\LittleJWT\Factories\JWTHasher;
-
 use LittleApps\LittleJWT\JWT\ClaimManager;
 
 class Build
@@ -16,13 +16,13 @@ class Build
 
     protected $jwk;
 
-    protected $callbacks;
+    protected $buildable;
 
-    public function __construct(Application $app, JWK $jwk)
+    public function __construct(Application $app, JWK $jwk, Buildable $buildable)
     {
         $this->app = $app;
         $this->jwk = $jwk;
-        $this->callbacks = [];
+        $this->buildable = $buildable;
     }
 
     /**
@@ -43,32 +43,15 @@ class Build
     }
 
     /**
-     * Adds a callback to send Builder through.
-     *
-     * @param callable $callback
-     * @return $this
-     */
-    public function addCallback(callable $callback)
-    {
-        $this->callbacks[] = $callback;
-
-        return $this;
-    }
-
-    /**
      * Creates the Builder instance
      *
      * @return Builder
      */
     protected function createBuilder()
     {
-        $builder = new Builder();
-
-        foreach ($this->callbacks as $callback) {
-            $callback($builder);
-        }
-
-        return $builder;
+        return tap(new Builder(), function (Builder $builder) {
+            $this->buildable->build($builder);
+        });
     }
 
     /**

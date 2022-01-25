@@ -8,12 +8,14 @@ use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builders\DefaultBuilder;
+use LittleApps\LittleJWT\Build\Builders\StackBuilder;
+use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Contracts\Verifiable;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\Verify\Verifiers\DefaultVerifier;
 
+use LittleApps\LittleJWT\Verify\Verifiers\DefaultVerifier;
 use LittleApps\LittleJWT\Verify\Verifiers\StackVerifier;
 
 use LittleApps\LittleJWT\Verify\Verify;
@@ -53,37 +55,47 @@ class LittleJWT
     }
 
     /**
-     * Allows for a JWT to be built.
+     * Creates a signed JWT instance.
      *
-     * @return Build Build instance without any callbacks.
+     * @param callable|Buildable $callback Callback or Buildable that recieves Builder build JWT.
+     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
+     * @return JWT
      */
-    public function buildJWT()
+    public function createJWT($callback = null, $applyDefault = true)
     {
-        $build = new Build($this->app, $this->jwk);
+        $build = $this->buildJWT($callback, $applyDefault);
 
-        return $build;
+        return $build->build();
     }
 
     /**
      * Creates a signed JWT instance.
      *
-     * @param \Closure $callback Callback that receives LittleApps\LittleJWT\Builder instance
+     * @param callable|Buildable $callback Callback or Buildable that recieves Builder build JWT.
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
-     * @return JWT
+     * @return Build
      */
-    public function createJWT(callable $callback = null, $applyDefault = true)
+    public function buildJWT($callback = null, $applyDefault = true)
     {
-        $build = $this->buildJWT();
+        if (is_object($callback) && $callback instanceof Buildable) {
+            $buildable = $callback;
+        } else {
+            $callbacks = [];
 
-        if ($applyDefault) {
-            $build->addCallback($this->getDefaultBuildableCallback());
+            if ($applyDefault) {
+                array_push($callbacks, $this->getDefaultBuildableCallback());
+            }
+
+            if (is_callable($callback)) {
+                array_push($callbacks, $callback);
+            }
+
+            $buildable = new StackBuilder($callbacks);
         }
 
-        if (! is_null($callback)) {
-            $build->addCallback($callback);
-        }
+        $build = new Build($this->app, $this->jwk, $buildable);
 
-        return $build->build();
+        return $build;
     }
 
     /**
