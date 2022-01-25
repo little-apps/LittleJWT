@@ -1,60 +1,72 @@
-# LittleJWT allows for JSON Web Tokens (JWTs) to be generated and verified in Laravel.
+# LittleJWT
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/little-apps/littlejwt/run-tests?label=tests)](https://github.com/little-apps/littlejwt/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/little-apps/littlejwt/Check%20&%20fix%20styling?label=code%20style)](https://github.com/little-apps/littlejwt/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+LittleJWT allows for JSON Web Tokens (JWTs) to be generated and verified in Laravel.
 
-## Support us
+## Show Your Support
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/LittleJWT.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/LittleJWT)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Little Apps relies on people like you to keep our software running. If you would like to show your support for Little Registry Cleaner, then you can [make a donation](https://www.little-apps.com/?donate) using PayPal, Payza or credit card (via Stripe). Please note that any amount helps (even just $1).
 
 ## Installation
 
-You can install the package via composer:
+Install the package via composer:
 
 ```bash
 composer require little-apps/littlejwt
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="littlejwt-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
+Publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="littlejwt-config"
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
+Generate a secret phrase for building and validating JWTs:
 
 ```bash
-php artisan vendor:publish --tag="littlejwt-views"
+php artisan littlejwt:secret
 ```
 
 ## Usage
 
+### Building JWTs
+
 ```php
-$littleJWT = new LittleApps\LittleJWT();
-echo $littleJWT->echoPhrase('Hello, LittleApps!');
+use LittleApps\LittleJWT\Facades\LittleJWT;
+use LittleApps\LittleJWT\Build\Builder;
+
+$token = LittleJWT::createToken(function (Builder $builder) {
+    $builder
+        ->abc('def', true)
+        ->ghi('klm')
+        ->nop('qrs', false);
+});
+
+// $token = "eyJhYmMiOiJkZWYiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJMYXJhdmVsIiwiZXhwIjoxNjQzMDg1NTEwLCJnaGkiOiJrbG0iLCJpYXQiOjE2NDMwODE5MTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJqdGkiOiJkZmI1NzkyNy0yMzA5LTRjMTYtOTkyOC0zYTc4NDk2NzBlOWMiLCJuYmYiOjE2NDMwODE5MTAsIm5vcCI6InFycyJ9.ZxWbIY8bYPw8ZOjxBxxtcR0-6GztbMnEStWpvpojN4k";
 ```
+
+### Verifying JWTs
+```php
+use LittleApps\LittleJWT\Facades\LittleJWT;
+use LittleApps\LittleJWT\Validation\Validator;
+
+$token = "eyJhYmMiOiJkZWYiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJMYXJhdmVsIiwiZXhwIjoxNjQzMDg1NTEwLCJnaGkiOiJrbG0iLCJpYXQiOjE2NDMwODE5MTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJqdGkiOiJkZmI1NzkyNy0yMzA5LTRjMTYtOTkyOC0zYTc4NDk2NzBlOWMiLCJuYmYiOjE2NDMwODE5MTAsIm5vcCI6InFycyJ9.ZxWbIY8bYPw8ZOjxBxxtcR0-6GztbMnEStWpvpojN4k";
+
+$passes = LittleJWT::validateToken($token, function (Validator $validator) {
+    $validator
+        ->equals('abc', 'def', true, true)
+        ->equals('ghi', 'klm')
+        ->equals('nop', 'qrs', true, false);
+});
+
+// $passes = true;
+```
+
+See the [GitHub wiki](https://github.com/little-apps/LittleJWT/wiki) for further documentation.
 
 ## Testing
 
