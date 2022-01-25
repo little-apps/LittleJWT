@@ -82,7 +82,7 @@ class TestCase extends Orchestra
                     ], 401);
                 });
 
-                $router->middleware('auth')->get('/user', function (Request $request) {
+                $router->middleware('auth:jwt')->get('/user', function (Request $request) {
                     return $request->user();
                 });
             });
