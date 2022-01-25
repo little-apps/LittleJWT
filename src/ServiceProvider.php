@@ -85,7 +85,6 @@ class ServiceProvider extends PackageServiceProvider
 
         $this->app->alias(LittleJWT::class, 'littlejwt');
         $this->app->alias(Builder::class, 'littlejwt.builder');
-        //$this->app->alias(Validator::class, 'littlejwt.verifier');
     }
 
     /**
