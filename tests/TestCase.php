@@ -69,7 +69,7 @@ class TestCase extends Orchestra
                 $router->post('/login', function (Request $request) {
                     $credentials = $request->validate([
                         'email' => ['required', 'email'],
-                        'password' => ['required']
+                        'password' => ['required'],
                     ]);
 
                     if (Auth::validate($credentials)) {
