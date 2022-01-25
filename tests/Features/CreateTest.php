@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 
 use LittleApps\LittleJWT\Tests\TestCase;
@@ -25,6 +26,18 @@ class CreateTest extends TestCase
         $jwt = LittleJWT::parseToken($token);
 
         $this->assertEquals($token, (string) $jwt);
+    }
+
+    /**
+     * Tests creating a signed JWT
+     *
+     * @return void
+     */
+    public function test_create_signed_jwt()
+    {
+        $jwt = LittleJWT::createJWT();
+
+        $this->assertInstanceOf(JWT::class, $jwt);
     }
 
     /**
