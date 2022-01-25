@@ -3,8 +3,8 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
-use Jose\Component\Core\JWK;
 
+use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\JWT\JWT;

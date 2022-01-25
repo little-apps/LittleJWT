@@ -5,7 +5,9 @@ namespace LittleApps\LittleJWT;
 use Closure;
 
 use Illuminate\Contracts\Foundation\Application;
+
 use Jose\Component\Core\JWK;
+
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builders\DefaultBuilder;
 use LittleApps\LittleJWT\Build\Builders\StackBuilder;

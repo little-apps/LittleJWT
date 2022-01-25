@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Facade;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
-
 use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\Testing\LittleJWTFake;
 

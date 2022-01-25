@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JWT;
-
 use LittleApps\LittleJWT\Tests\TestCase;
 
 class CreateTest extends TestCase

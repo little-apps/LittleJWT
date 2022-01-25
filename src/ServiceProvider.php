@@ -13,7 +13,6 @@ use Jose\Easy\Build;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Build\Builder;
-
 use LittleApps\LittleJWT\Build\Builders;
 use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
 use LittleApps\LittleJWT\Contracts\KeyBuildable;

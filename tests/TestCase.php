@@ -3,10 +3,10 @@
 namespace LittleApps\LittleJWT\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+
 use LittleApps\LittleJWT\ServiceProvider;
 
 use Orchestra\Testbench\TestCase as Orchestra;

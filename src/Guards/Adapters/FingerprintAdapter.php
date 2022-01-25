@@ -4,9 +4,9 @@ namespace LittleApps\LittleJWT\Guards\Adapters;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Container\Container;
-
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
+
 use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Validation\Validators;
 

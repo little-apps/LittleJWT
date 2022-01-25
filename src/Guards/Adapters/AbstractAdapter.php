@@ -7,9 +7,8 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
-use LittleApps\LittleJWT\Contracts\Verifiable;
-use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT;
+use LittleApps\LittleJWT\JWT\JWT;
 
 abstract class AbstractAdapter implements GuardAdapter
 {

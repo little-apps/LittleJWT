@@ -4,13 +4,13 @@ namespace LittleApps\LittleJWT\Guards;
 
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
-
 use Illuminate\Contracts\Auth\Guard as GuardContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
+
 use LittleApps\LittleJWT\Concerns\RequestHasToken;
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
