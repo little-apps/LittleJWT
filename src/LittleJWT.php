@@ -123,7 +123,7 @@ class LittleJWT
      * @param callable|Verifiable $callback Callback or Verifiable that recieves Verifier to set checks for JWT.
      * @return Verify Verify instance (before verification is done)
      */
-    public function verifyJWT(JWT $jwt, $callback = null, $applyDefault = true)
+    public function validJWT(JWT $jwt, $callback = null, $applyDefault = true)
     {
         if (is_object($callback) && $callback instanceof Verifiable) {
             $verifiable = $callback;
@@ -153,9 +153,9 @@ class LittleJWT
      * @param callable $callback Callback that recieves Verifier to set checks for JWT.
      * @return bool True if token is valid.
      */
-    public function verifiedJWT(JWT $jwt, callable $callback = null, $applyDefault = true)
+    public function verifyJWT(JWT $jwt, callable $callback = null, $applyDefault = true)
     {
-        return $this->verifyJWT($jwt, $callback, $applyDefault)->passes();
+        return $this->validJWT($jwt, $callback, $applyDefault)->passes();
     }
 
     /**
@@ -165,11 +165,11 @@ class LittleJWT
      * @param callable $callback Callback that recieves Verifier to set checks for JWT.
      * @return bool True if token is valid.
      */
-    public function verifiedToken(string $token, callable $callback = null, $applyDefault = true)
+    public function verifyToken(string $token, callable $callback = null, $applyDefault = true)
     {
         $jwt = $this->parseToken($token);
 
-        return ! is_null($jwt) ? $this->verifiedJWT($jwt, $callback, $applyDefault) : false;
+        return ! is_null($jwt) ? $this->verifyJWT($jwt, $callback, $applyDefault) : false;
     }
 
     /**

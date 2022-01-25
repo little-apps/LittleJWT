@@ -34,7 +34,7 @@ class VerifyTest extends TestCase
 
         $jwt = LittleJWT::createJWT();
 
-        LittleJWT::verifyJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
             $verifier
                 ->assertPasses();
         });
@@ -55,7 +55,7 @@ class VerifyTest extends TestCase
             $builder->sub($sub);
         });
 
-        LittleJWT::verifyJWT($jwt, function (TestVerifier $verifier) use ($sub) {
+        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) use ($sub) {
             $verifier
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
@@ -75,7 +75,7 @@ class VerifyTest extends TestCase
             $builder->exp(Carbon::now()->subMonth());
         });
 
-        LittleJWT::verifyJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
             $verifier
                 ->assertFails()
                 ->assertExpired()
@@ -101,7 +101,7 @@ class VerifyTest extends TestCase
 
         $jwt = LittleJWT::withJwk($otherJWk)->createJWT();
 
-        LittleJWT::verifyJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
             $verifier
                 ->assertInvalidSignature()
                 ->assertFails()
@@ -123,7 +123,7 @@ class VerifyTest extends TestCase
 
         Blacklist::blacklist($jwt);
 
-        LittleJWT::verifyJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
             $verifier
                 ->assertNotAllowed()
                 ->assertFails()

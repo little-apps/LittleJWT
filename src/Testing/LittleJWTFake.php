@@ -30,7 +30,7 @@ class LittleJWTFake extends LittleJWT
      * @param callable|Verifiable $callback Callback or Verifiable that recieves Verifier to set checks for JWT.
      * @return Verify Verify instance (before verification is done)
      */
-    public function verifyJWT(JWT $jwt, $callback = null, $applyDefault = false)
+    public function validJWT(JWT $jwt, $callback = null, $applyDefault = false)
     {
         $callbacks = [];
 

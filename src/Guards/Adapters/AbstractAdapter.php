@@ -65,7 +65,7 @@ abstract class AbstractAdapter implements GuardAdapter
     {
         $verifier = $this->buildVerifier();
 
-        return $this->jwt->verifiedJWT($jwt, [$verifier, 'verify']);
+        return $this->jwt->verifyJWT($jwt, [$verifier, 'verify']);
     }
 
     /**
