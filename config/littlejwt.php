@@ -3,10 +3,13 @@
 return [
     'key' => [
         /**
-         * The mechanism to sign/validate JWTs.
+         * The type of key to sign/validate JWTs.
          * Options: secret, file, or none.
          */
         'default' => 'secret',
+        /**
+         * Configuration options for a secret key.
+         */
         'secret' => [
             'phrase' => env('LITTLEJWT_KEY_PHRASE', ''),
             /**
@@ -15,12 +18,18 @@ return [
              */
             'allow_unsecure' => false
         ],
+        /**
+         * Configurations options for a file key.
+         */
         'file' => [
             /**
              * The type of file.
              * Options: pem, p12, or crt.
              */
             'type' => 'pem',
+            /**
+             * Path to the key file.
+             */
             'path' => '/path/to/my/key/file.pem',
             /**
              * The secret to use if the file is encrypted.
@@ -34,11 +43,17 @@ return [
      * The algorithm used by Little JWT.
      */
     'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
+    /**
+     * Blacklist configuration options.
+     */
     'blacklist' => [
         /**
          * Blacklist driver to use for storing blacklisted JWTs.
          */
         'driver' => 'cache',
+        /**
+         * Configuration options for cache driver.
+         */
         'cache' => [
             /**
              * How long a JWT stays in the blacklist (in seconds).
@@ -46,7 +61,13 @@ return [
              */
             'ttl' => 0
         ],
+        /**
+         * Configurations options for database driver.
+         */
         'database' => [
+            /**
+             * Table to store blacklisted JWTs.
+             */
             'table' => 'jwt_blacklist',
             'columns' => [
                 /**
@@ -65,11 +86,29 @@ return [
      * Claim options to use for the default generated JWTs.
      */
     'claims' => [
+        /**
+         * Value to use for the 'alg' claim.
+         */
         'alg' => 'HS256',
-        'ttl' => 3600, // Number of seconds before JWT expiry.
+        /**
+         * Number of seconds before JWT expires.
+         */
+        'ttl' => 3600,
+        /**
+         * Number of seconds to allow after JWT expiry date/time.
+         */
         'leeway' => 0,
+        /**
+         * Value to use for the 'iss' claim.
+         */
         'iss' => env('APP_URL', 'http://localhost'),
+        /**
+         * Value to user for the 'aud' claim.
+         */
         'aud' => env('APP_NAME', 'Laravel'),
+        /**
+         * Claim keys required in the header and payload.
+         */
         'required' => [
             'header' => ['alg'],
             'payload' => ['iss', 'iat', 'exp', 'nbf']
