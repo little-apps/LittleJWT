@@ -3,12 +3,10 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
-
 use Illuminate\Support\Carbon;
+
 use LittleApps\LittleJWT\Build\Builder;
-
 use LittleApps\LittleJWT\Contracts\KeyBuildable;
-
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
@@ -18,7 +16,7 @@ use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
-class VerifyTest extends TestCase
+class ValidateTest extends TestCase
 {
     use WithFaker;
     use InteractsWithLittleJWT;
@@ -34,8 +32,8 @@ class VerifyTest extends TestCase
 
         $jwt = LittleJWT::createJWT();
 
-        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
-            $verifier
+        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+            $validator
                 ->assertPasses();
         });
     }
@@ -55,8 +53,8 @@ class VerifyTest extends TestCase
             $builder->sub($sub);
         });
 
-        LittleJWT::validJWT($jwt, function (TestValidator $verifier) use ($sub) {
-            $verifier
+        LittleJWT::validJWT($jwt, function (TestValidator $validator) use ($sub) {
+            $validator
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
         });
@@ -75,8 +73,8 @@ class VerifyTest extends TestCase
             $builder->exp(Carbon::now()->subMonth());
         });
 
-        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
-            $verifier
+        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+            $validator
                 ->assertFails()
                 ->assertExpired()
                 ->assertErrorCount(1)
@@ -101,8 +99,8 @@ class VerifyTest extends TestCase
 
         $jwt = LittleJWT::withJwk($otherJWk)->createJWT();
 
-        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
-            $verifier
+        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+            $validator
                 ->assertInvalidSignature()
                 ->assertFails()
                 ->assertErrorCount(1)
@@ -123,8 +121,8 @@ class VerifyTest extends TestCase
 
         Blacklist::blacklist($jwt);
 
-        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
-            $verifier
+        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+            $validator
                 ->assertNotAllowed()
                 ->assertFails()
                 ->assertErrorCount(1)

@@ -4,13 +4,13 @@ namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
-use LittleApps\LittleJWT\JWT\JWT;
+
+
 use LittleApps\LittleJWT\LittleJWT;
-use LittleApps\LittleJWT\Verify\Validator;
-
-use LittleApps\LittleJWT\Verify\Verifiers\StackVerifier;
-
-use LittleApps\LittleJWT\Verify\Valid;
+use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\Validation\Valid;
+use LittleApps\LittleJWT\Validation\Validator;
+use LittleApps\LittleJWT\Validation\Validators\StackValidator;
 
 class LittleJWTFake extends LittleJWT
 {
@@ -23,44 +23,44 @@ class LittleJWTFake extends LittleJWT
     }
 
     /**
-     * Creates a Verify instance for checking if a JWT is valid.
+     * Creates a Valid instance for checking if a JWT is valid.
      * The default callback is not added when testing.
      *
      * @param JWT $jwt
-     * @param callable|Verifiable $callback Callback or Verifiable that recieves Verifier to set checks for JWT.
-     * @return Valid Valid instance (before verification is done)
+     * @param callable|Validatable $callback Callback or Validatable that recieves Validator to set checks for JWT.
+     * @return Valid Valid instance (before validation is done)
      */
     public function validJWT(JWT $jwt, $callback = null, $applyDefault = false)
     {
         $callbacks = [];
 
-        // Default callback is not added because it expects Verifier and not TestVerifier
+        // Default callback is not added because it expects Validator and not TestValidator
         if (! is_null($callback)) {
             array_push($callbacks, $callback);
         }
 
         $transformCallbacks = $this->createTransformCallback($callbacks);
 
-        $verifier = new StackVerifier([$transformCallbacks]);
+        $validator = new StackValidator([$transformCallbacks]);
 
-        $valid = new Valid($this->app, $jwt, $this->jwk, $verifier);
+        $valid = new Valid($this->app, $jwt, $this->jwk, $validator);
 
-        return $valid->verify();
+        return $valid->validate();
     }
 
     /**
-     * Creates the callback which transforms a Verifier to TestVerifier and sends it through the callbacks.
+     * Creates the callback which transforms a Validator to TestValidator and sends it through the callbacks.
      *
      * @param iterable $callbacks
      * @return \Closure
      */
     protected function createTransformCallback(iterable $callbacks)
     {
-        return function (Validator $verifier) use ($callbacks) {
-            $testVerifier = new TestValidator($this->app, $verifier);
+        return function (Validator $validator) use ($callbacks) {
+            $testValidator = new TestValidator($this->app, $validator);
 
             foreach ($callbacks as $callback) {
-                $callback($testVerifier);
+                $callback($testValidator);
             }
         };
     }

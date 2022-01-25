@@ -1,14 +1,14 @@
 <?php
 
-namespace LittleApps\LittleJWT\Verify\Verifiers;
+namespace LittleApps\LittleJWT\Validation\Validators;
 
 use Illuminate\Contracts\Foundation\Application;
+
 use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
 use LittleApps\LittleJWT\Contracts\Validatable;
+use LittleApps\LittleJWT\Validation\Validator;
 
-use LittleApps\LittleJWT\Verify\Validator;
-
-class GuardVerifier implements Validatable
+class GuardValidator implements Validatable
 {
     use HashableSubjectModel;
 
@@ -22,16 +22,16 @@ class GuardVerifier implements Validatable
         $this->model = $model;
     }
 
-    public function verify(Validator $verifier)
+    public function validate(Validator $validator)
     {
         $contains = ['sub'];
 
         if (! is_null($this->model)) {
             array_push($contains, 'prv');
 
-            $verifier->secureEquals('prv', $this->hashSubjectModel($this->model));
+            $validator->secureEquals('prv', $this->hashSubjectModel($this->model));
         }
 
-        $verifier->contains($contains);
+        $validator->contains($contains);
     }
 }

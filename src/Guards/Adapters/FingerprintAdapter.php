@@ -8,7 +8,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
 use LittleApps\LittleJWT\LittleJWT;
-use LittleApps\LittleJWT\Verify\Verifiers;
+use LittleApps\LittleJWT\Validation\Validators;
 
 class FingerprintAdapter extends AbstractAdapter
 {
@@ -107,17 +107,17 @@ class FingerprintAdapter extends AbstractAdapter
     }
 
     /**
-     * Builds the verifier used to verify a JWT and retrieve a user.
+     * Builds the Validator used to validate a JWT and retrieve a user.
      *
-     * @return \LittleApps\LittleJWT\Contracts\Verifiable
+     * @return \LittleApps\LittleJWT\Contracts\Validatable
      */
-    protected function buildVerifier()
+    protected function buildValidatable()
     {
         $fingerprintHash = $this->hashFingerprint($this->getFingerprintCookieValue() ?? '');
 
-        return new Verifiers\StackVerifier([
-            $this->baseAdapter->buildVerifier(),
-            new Verifiers\FingerprintVerifier($fingerprintHash),
+        return new Validators\StackValidator([
+            $this->baseAdapter->buildValidatable(),
+            new Validators\FingerprintValidator($fingerprintHash),
         ]);
     }
 }

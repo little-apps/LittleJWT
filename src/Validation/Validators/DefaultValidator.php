@@ -1,13 +1,13 @@
 <?php
 
-namespace LittleApps\LittleJWT\Verify\Verifiers;
+namespace LittleApps\LittleJWT\Validation\Validators;
 
 use Illuminate\Contracts\Foundation\Application;
+
 use LittleApps\LittleJWT\Contracts\Validatable;
+use LittleApps\LittleJWT\Validation\Validator;
 
-use LittleApps\LittleJWT\Verify\Validator;
-
-class DefaultVerifier implements Validatable
+class DefaultValidator implements Validatable
 {
     protected $app;
 
@@ -26,9 +26,9 @@ class DefaultVerifier implements Validatable
         ];
     }
 
-    public function verify(Validator $verifier)
+    public function validate(Validator $validator)
     {
-        $verifier
+        $validator
             ->algorithms([$this->config['alg']])
             ->contains($this->config['required']['header'], false, true)
             ->contains($this->config['required']['payload'])

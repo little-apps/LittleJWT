@@ -1,15 +1,15 @@
 <?php
 
-namespace LittleApps\LittleJWT\Verify;
+namespace LittleApps\LittleJWT\Validation;
 
 use Closure;
 
 use Illuminate\Support\Traits\Macroable;
+
 use Jose\Component\Core\JWK;
+
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
-
 use LittleApps\LittleJWT\Contracts\Rule;
-
 use LittleApps\LittleJWT\JWT\Rules;
 
 class Validator
@@ -233,12 +233,12 @@ class Validator
     }
 
     /**
-     * Adds a callback to be called after verify is done.
+     * Adds a callback to be called after validate is done.
      *
      * @param Closure $callback
      * @return $this
      */
-    public function afterVerify(Closure $callback)
+    public function afterValidate(Closure $callback)
     {
         $this->after->push($callback);
 
@@ -307,17 +307,17 @@ class Validator
     }
 
     /**
-     * Gets callbacks to call after verify.
+     * Gets callbacks to call after validation.
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAfterVerify()
+    public function getAfterValidation()
     {
         return collect($this->after);
     }
 
     /**
-     * Gets if verification should stop when first rule fails
+     * Gets if validation should stop when first rule fails
      *
      * @return bool
      */
@@ -327,7 +327,7 @@ class Validator
     }
 
     /**
-     * Gets the JWK associated with this verifier instance.
+     * Gets the JWK associated with this Validator instance.
      *
      * @return \Jose\Component\Core\JWK
      */

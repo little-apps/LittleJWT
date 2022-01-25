@@ -2,15 +2,15 @@
 
 namespace LittleApps\LittleJWT\Contracts;
 
-use LittleApps\LittleJWT\Verify\Validator;
+use LittleApps\LittleJWT\Validation\Validator;
 
 interface Validatable
 {
     /**
-     * Performs the default verification on a JWT (used by the guard).
+     * Performs the validation on a JWT.
      *
-     * @param Validator $verifier
+     * @param Validator $validator
      * @return void
      */
-    public function verify(Validator $verifier);
+    public function validate(Validator $validator);
 }

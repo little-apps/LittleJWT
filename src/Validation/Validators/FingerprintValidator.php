@@ -1,12 +1,11 @@
 <?php
 
-namespace LittleApps\LittleJWT\Verify\Verifiers;
+namespace LittleApps\LittleJWT\Validation\Validators;
 
 use LittleApps\LittleJWT\Contracts\Validatable;
+use LittleApps\LittleJWT\Validation\Validator;
 
-use LittleApps\LittleJWT\Verify\Validator;
-
-class FingerprintVerifier implements Validatable
+class FingerprintValidator implements Validatable
 {
     protected $fingerprintHash;
 
@@ -15,9 +14,9 @@ class FingerprintVerifier implements Validatable
         $this->fingerprintHash = $fingerprintHash;
     }
 
-    public function verify(Validator $verifier)
+    public function validate(Validator $validator)
     {
-        $verifier
+        $validator
             ->secureEquals('fgpt', $this->fingerprintHash)
             ->contains(['fgpt']);
     }

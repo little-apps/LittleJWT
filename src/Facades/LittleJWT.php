@@ -6,10 +6,9 @@ use Illuminate\Support\Facades\Facade;
 
 use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\Contracts\KeyBuildable;
-
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
 
+use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\Testing\LittleJWTFake;
 
 class LittleJWT extends Facade
@@ -29,7 +28,7 @@ class LittleJWT extends Facade
     }
 
     /**
-     * Creates a new instance of LittleJWT to use to build/verify with a different JWK.
+     * Creates a new instance of LittleJWT to use to build/validate with a different JWK.
      *
      * @param JWK $jwk
      * @param Closure|null $callback If not null, called with new LittleJWT instance as parameter.

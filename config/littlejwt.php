@@ -3,7 +3,7 @@
 return [
     'key' => [
         /**
-         * The mechanism to sign/verify JWTs.
+         * The mechanism to sign/validate JWTs.
          * Options: secret, file, or none.
          */
         'default' => 'secret',

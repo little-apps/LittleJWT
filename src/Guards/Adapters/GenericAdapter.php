@@ -2,19 +2,19 @@
 
 namespace LittleApps\LittleJWT\Guards\Adapters;
 
-use LittleApps\LittleJWT\Verify\Verifiers;
+use LittleApps\LittleJWT\Validation\Validators;
 
 class GenericAdapter extends AbstractAdapter
 {
     use Concerns\BuildsJwt;
 
     /**
-     * Builds the verifier used to verify a JWT and retrieve a user.
+     * Builds the Validatable used to validate a JWT.
      *
-     * @return \LittleApps\LittleJWT\Contracts\Verifiable
+     * @return \LittleApps\LittleJWT\Contracts\Validatable
      */
-    protected function buildVerifier()
+    protected function buildValidatable()
     {
-        return new Verifiers\GuardVerifier($this->container, $this->config['model']);
+        return new Validators\GuardValidator($this->container, $this->config['model']);
     }
 }

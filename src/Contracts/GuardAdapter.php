@@ -11,7 +11,7 @@ interface GuardAdapter
 {
     /**
      * Parse a token from a string to a JWT.
-     * This does NOT verify if the JWT is valid.
+     * This does NOT check if the JWT is valid.
      *
      * @param string $token
      * @return JWT JWT instance or null if unable to be parsed.
@@ -19,13 +19,12 @@ interface GuardAdapter
     public function parseToken(string $token);
 
     /**
-     * Runs JWT through verifier.
+     * Runs JWT through Validator.
      *
      * @param JWT $jwt
-     * @param Verifiable $verifier
-     * @return bool True if JWT is verified.
+     * @return bool True if JWT is validated.
      */
-    public function verifyJwt(JWT $jwt);
+    public function validateJwt(JWT $jwt);
 
     /**
      * Gets a user from the JWT

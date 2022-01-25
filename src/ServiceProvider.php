@@ -24,8 +24,8 @@ use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
-use LittleApps\LittleJWT\Verify\Verifier;
-use LittleApps\LittleJWT\Verify\Verifiers;
+use LittleApps\LittleJWT\Validation\Validators;
+
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -52,7 +52,7 @@ class ServiceProvider extends PackageServiceProvider
         $this->registerFactories();
         $this->registerBlacklistManager();
         $this->registerBuilders();
-        $this->registerVerifiers();
+        $this->registerValidators();
         $this->registerGuardAdapters();
     }
 
@@ -86,7 +86,7 @@ class ServiceProvider extends PackageServiceProvider
 
         $this->app->alias(LittleJWT::class, 'littlejwt');
         $this->app->alias(Builder::class, 'littlejwt.builder');
-        $this->app->alias(Verifier::class, 'littlejwt.verifier');
+        //$this->app->alias(Validator::class, 'littlejwt.verifier');
     }
 
     /**
@@ -174,25 +174,25 @@ class ServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Registers the JWT verifiers.
+     * Registers the JWT validators.
      *
      * @return void
      */
-    protected function registerVerifiers()
+    protected function registerValidators()
     {
-        $this->app->singleton(Verifiers\DefaultVerifier::class, function ($app) {
+        $this->app->singleton(Validators\DefaultValidator::class, function ($app) {
             $config = config('littlejwt', []);
 
-            return new Verifiers\DefaultVerifier($app, $config);
+            return new Validators\DefaultValidator($app, $config);
         });
 
-        $this->app->singleton(Verifiers\GuardVerifier::class, function ($app) {
+        $this->app->singleton(Validators\GuardValidator::class, function ($app) {
             $config = config('littlejwt', []);
 
-            return new Verifiers\GuardVerifier($app, $config);
+            return new Validators\GuardValidator($app, $config);
         });
 
-        $this->app->alias(Verifiers\GuardVerifier::class, 'littlejwt.verifiers.guard');
+        $this->app->alias(Validators\GuardValidator::class, 'littlejwt.validators.guard');
     }
 
     /**

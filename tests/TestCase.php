@@ -119,7 +119,7 @@ class TestCase extends Orchestra
                     'adapter' => \LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
                     /**
                     * The model used for JWT authentication.
-                    * NOTE: Setting this to false is will cause models in JWT to not be verified. This is NOT recommended.
+                    * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
                     */
                     'model' => \LittleApps\LittleJWT\Testing\Models\User::class,
                 ],

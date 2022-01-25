@@ -21,7 +21,7 @@ abstract class AbstractAdapter implements GuardAdapter
     protected $container;
 
     /**
-     * The instance for building and verifying JWTs
+     * The instance for building and validating JWTs
      *
      * @var LittleJWT
      */
@@ -44,7 +44,7 @@ abstract class AbstractAdapter implements GuardAdapter
 
     /**
      * Parse a token from a string to a JWT.
-     * This does NOT verify if the JWT is valid.
+     * This does NOT check if the JWT is valid.
      *
      * @param string $token
      * @return JWT JWT instance or null if unable to be parsed.
@@ -55,17 +55,16 @@ abstract class AbstractAdapter implements GuardAdapter
     }
 
     /**
-     * Runs JWT through verifier.
+     * Runs JWT through Validator.
      *
      * @param JWT $jwt
-     * @param Verifiable $verifier
-     * @return bool True if JWT is verified.
+     * @return bool True if JWT is validated.
      */
-    public function verifyJwt(JWT $jwt)
+    public function validateJwt(JWT $jwt)
     {
-        $verifier = $this->buildVerifier();
+        $validatable = $this->buildValidatable();
 
-        return $this->jwt->verifyJWT($jwt, [$verifier, 'verify']);
+        return $this->jwt->validateJWT($jwt, [$validatable, 'validate']);
     }
 
     /**
@@ -81,10 +80,10 @@ abstract class AbstractAdapter implements GuardAdapter
     }
 
     /**
-     * Builds the verifier used to verify a JWT and retrieve a user.
+     * Builds the Validatable used to validate a JWT.
      *
      * @abstract
-     * @return \LittleApps\LittleJWT\Contracts\Verifiable
+     * @return \LittleApps\LittleJWT\Contracts\Validatable
      */
-    abstract protected function buildVerifier();
+    abstract protected function buildValidatable();
 }

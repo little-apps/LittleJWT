@@ -13,7 +13,6 @@ use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
 use LittleApps\LittleJWT\Contracts\BlacklistDriver;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWT\Rules;
-use LittleApps\LittleJWT\Verify\Validator;
 
 use PHPUnit\Framework\Assert as PHPUnit;
 
@@ -76,7 +75,7 @@ class TestValidator
     protected $unexpectedErrorKeys;
 
     /**
-     * Constructor for TestVerify
+     * Constructor for TestValidator
      *
      * @param Application $app
      * @param Validator $validator
@@ -92,7 +91,7 @@ class TestValidator
         $this->expectedErrorKeys = collect();
         $this->unexpectedErrorKeys = collect();
 
-        $this->validator->afterVerify($this->getAfterVerifyCallback());
+        $this->validator->afterValidate($this->getAfterValidationCallback());
     }
 
     /**
@@ -353,19 +352,19 @@ class TestValidator
     }
 
     /**
-     * Gets callback to run after verify is done.
+     * Gets callback to run after validation is done.
      *
      * @return \Closure
      */
-    protected function getAfterVerifyCallback()
+    protected function getAfterValidationCallback()
     {
         return function ($passes, $errors) {
             if ($this->assertPasses) {
-                PHPUnit::assertTrue($passes, 'JWT verification did not pass.');
+                PHPUnit::assertTrue($passes, 'JWT validation did not pass.');
             }
 
             if ($this->assertFails) {
-                PHPUnit::assertFalse($passes, 'JWT verification passed.');
+                PHPUnit::assertFalse($passes, 'JWT validation passed.');
             }
 
             if ($this->expectedErrorCount !== false) {
