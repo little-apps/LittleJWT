@@ -8,12 +8,12 @@ use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Rule;
 
-use LittleApps\LittleJWT\Contracts\Verifiable;
+use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 
 use LittleApps\LittleJWT\JWT\JWT;
 
-class Verify
+class Valid
 {
     protected $app;
 
@@ -21,27 +21,26 @@ class Verify
 
     protected $jwk;
 
-    protected $verifiable;
+    protected $validatable;
 
     protected $errors;
 
     protected $lastRunResult;
 
     /**
-     * Initializes a Verify instance
+     * Initializes a Valid instance
      *
      * @param Application $app Application container
      * @param JWT $jwt JWT to run through Verifier
      * @param JWK $jwk JWK to use for verification.
-     * @param Verifier $verifier JWK to use for verification.
-     * @param Verifiable $verifiable Verifiable to use to build Verifier
+     * @param Validatable $validatable Validatable to use to validate JWT
      */
-    public function __construct(Application $app, JWT $jwt, JWK $jwk, Verifiable $verifiable)
+    public function __construct(Application $app, JWT $jwt, JWK $jwk, Validatable $validatable)
     {
         $this->app = $app;
         $this->jwt = $jwt;
         $this->jwk = $jwk;
-        $this->verifiable = $verifiable;
+        $this->validatable = $validatable;
 
         $this->errors = new MessageBag();
         $this->lastRunResult = null;
@@ -109,7 +108,7 @@ class Verify
     }
 
     /**
-     * Gets errors from last verify.
+     * Gets errors from last validate.
      *
      * @return \Illuminate\Support\MessageBag
      */
@@ -137,8 +136,8 @@ class Verify
     {
         $blacklistManager = $this->app->make(BlacklistManager::class);
 
-        return tap(new Verifier($blacklistManager, $this->jwk), function (Verifier $verifier) {
-            $this->verifiable->verify($verifier);
+        return tap(new Validator($blacklistManager, $this->jwk), function (Validator $validator) {
+            $this->validatable->verify($validator);
         });
     }
 

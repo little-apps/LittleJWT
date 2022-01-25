@@ -4,11 +4,11 @@ namespace LittleApps\LittleJWT\Verify\Verifiers;
 
 use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
-use LittleApps\LittleJWT\Contracts\Verifiable;
+use LittleApps\LittleJWT\Contracts\Validatable;
 
-use LittleApps\LittleJWT\Verify\Verifier;
+use LittleApps\LittleJWT\Verify\Validator;
 
-class GuardVerifier implements Verifiable
+class GuardVerifier implements Validatable
 {
     use HashableSubjectModel;
 
@@ -22,7 +22,7 @@ class GuardVerifier implements Verifiable
         $this->model = $model;
     }
 
-    public function verify(Verifier $verifier)
+    public function verify(Validator $verifier)
     {
         $contains = ['sub'];
 

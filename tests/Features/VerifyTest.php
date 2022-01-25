@@ -13,7 +13,7 @@ use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\JWT\Rules;
-use LittleApps\LittleJWT\Testing\TestVerifier;
+use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -34,7 +34,7 @@ class VerifyTest extends TestCase
 
         $jwt = LittleJWT::createJWT();
 
-        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
             $verifier
                 ->assertPasses();
         });
@@ -55,7 +55,7 @@ class VerifyTest extends TestCase
             $builder->sub($sub);
         });
 
-        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) use ($sub) {
+        LittleJWT::validJWT($jwt, function (TestValidator $verifier) use ($sub) {
             $verifier
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
@@ -75,7 +75,7 @@ class VerifyTest extends TestCase
             $builder->exp(Carbon::now()->subMonth());
         });
 
-        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
             $verifier
                 ->assertFails()
                 ->assertExpired()
@@ -101,7 +101,7 @@ class VerifyTest extends TestCase
 
         $jwt = LittleJWT::withJwk($otherJWk)->createJWT();
 
-        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
             $verifier
                 ->assertInvalidSignature()
                 ->assertFails()
@@ -123,7 +123,7 @@ class VerifyTest extends TestCase
 
         Blacklist::blacklist($jwt);
 
-        LittleJWT::validJWT($jwt, function (TestVerifier $verifier) {
+        LittleJWT::validJWT($jwt, function (TestValidator $verifier) {
             $verifier
                 ->assertNotAllowed()
                 ->assertFails()

@@ -12,7 +12,7 @@ use LittleApps\LittleJWT\Contracts\Rule;
 
 use LittleApps\LittleJWT\JWT\Rules;
 
-class Verifier
+class Validator
 {
     use Macroable;
 

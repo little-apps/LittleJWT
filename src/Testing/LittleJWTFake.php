@@ -6,11 +6,11 @@ use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT;
-use LittleApps\LittleJWT\Verify\Verifier;
+use LittleApps\LittleJWT\Verify\Validator;
 
 use LittleApps\LittleJWT\Verify\Verifiers\StackVerifier;
 
-use LittleApps\LittleJWT\Verify\Verify;
+use LittleApps\LittleJWT\Verify\Valid;
 
 class LittleJWTFake extends LittleJWT
 {
@@ -28,7 +28,7 @@ class LittleJWTFake extends LittleJWT
      *
      * @param JWT $jwt
      * @param callable|Verifiable $callback Callback or Verifiable that recieves Verifier to set checks for JWT.
-     * @return Verify Verify instance (before verification is done)
+     * @return Valid Valid instance (before verification is done)
      */
     public function validJWT(JWT $jwt, $callback = null, $applyDefault = false)
     {
@@ -43,9 +43,9 @@ class LittleJWTFake extends LittleJWT
 
         $verifier = new StackVerifier([$transformCallbacks]);
 
-        $verify = new Verify($this->app, $jwt, $this->jwk, $verifier);
+        $valid = new Valid($this->app, $jwt, $this->jwk, $verifier);
 
-        return $verify->verify();
+        return $valid->verify();
     }
 
     /**
@@ -56,8 +56,8 @@ class LittleJWTFake extends LittleJWT
      */
     protected function createTransformCallback(iterable $callbacks)
     {
-        return function (Verifier $verifier) use ($callbacks) {
-            $testVerifier = new TestVerifier($this->app, $verifier);
+        return function (Validator $verifier) use ($callbacks) {
+            $testVerifier = new TestValidator($this->app, $verifier);
 
             foreach ($callbacks as $callback) {
                 $callback($testVerifier);

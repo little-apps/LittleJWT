@@ -3,11 +3,11 @@
 namespace LittleApps\LittleJWT\Verify\Verifiers;
 
 use Illuminate\Contracts\Foundation\Application;
-use LittleApps\LittleJWT\Contracts\Verifiable;
+use LittleApps\LittleJWT\Contracts\Validatable;
 
-use LittleApps\LittleJWT\Verify\Verifier;
+use LittleApps\LittleJWT\Verify\Validator;
 
-class DefaultVerifier implements Verifiable
+class DefaultVerifier implements Validatable
 {
     protected $app;
 
@@ -26,7 +26,7 @@ class DefaultVerifier implements Verifiable
         ];
     }
 
-    public function verify(Verifier $verifier)
+    public function verify(Validator $verifier)
     {
         $verifier
             ->algorithms([$this->config['alg']])

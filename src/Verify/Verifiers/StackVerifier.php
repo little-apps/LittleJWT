@@ -2,10 +2,10 @@
 
 namespace LittleApps\LittleJWT\Verify\Verifiers;
 
-use LittleApps\LittleJWT\Contracts\Verifiable;
-use LittleApps\LittleJWT\Verify\Verifier;
+use LittleApps\LittleJWT\Contracts\Validatable;
+use LittleApps\LittleJWT\Verify\Validator;
 
-class StackVerifier implements Verifiable
+class StackVerifier implements Validatable
 {
     protected $stack;
 
@@ -14,12 +14,12 @@ class StackVerifier implements Verifiable
         $this->stack = $stack;
     }
 
-    public function verify(Verifier $verifier)
+    public function verify(Validator $verifier)
     {
         foreach ($this->stack as $callback) {
             if (is_callable($callback)) {
                 $callback($verifier);
-            } elseif (is_object($callback) && $callback instanceof Verifiable) {
+            } elseif (is_object($callback) && $callback instanceof Validatable) {
                 $callback->verify($verifier);
             }
         }
