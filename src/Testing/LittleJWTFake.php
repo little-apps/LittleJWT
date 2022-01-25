@@ -6,8 +6,8 @@ use Illuminate\Contracts\Foundation\Application;
 
 use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validator;
 use LittleApps\LittleJWT\Validation\Validators\StackValidator;
