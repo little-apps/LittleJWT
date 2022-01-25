@@ -69,7 +69,7 @@ class TestCase extends Orchestra
                 $router->post('/login', function (Request $request) {
                     $credentials = $request->validate([
                         'email' => ['required', 'email'],
-                        'password' => ['required'],
+                        'password' => ['required']
                     ]);
 
                     if (Auth::validate($credentials)) {
@@ -110,8 +110,8 @@ class TestCase extends Orchestra
             'adapter' => 'fingerprint',
             'provider' => 'users',
             /**
-            * The input key in the request to use.
-            */
+             * The input key in the request to use.
+             */
             'input_key' => 'token',
 
             'adapters' => [
