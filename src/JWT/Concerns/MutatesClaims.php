@@ -5,8 +5,8 @@ namespace LittleApps\LittleJWT\JWT\Concerns;
 use DateTimeInterface;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * Allows for claims to be serialized and deserialized.
