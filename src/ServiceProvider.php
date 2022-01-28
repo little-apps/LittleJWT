@@ -96,15 +96,14 @@ class ServiceProvider extends PackageServiceProvider
     {
         $this->app->singleton(AlgorithmManager::class, function ($app) {
             $algorithm = $app->make('littlejwt.algorithm');
-            $algorithms = ! is_null($algorithm) ? [$algorithm] : [];
 
-            return new AlgorithmManager($algorithms);
+            return new AlgorithmManager([$algorithm]);
         });
 
         $this->app->singleton('littlejwt.algorithm', function ($app) {
             $algorithm = $app->config->get('littlejwt.algorithm');
 
-            return ! is_null($algorithm) ? $app->make($algorithm) : null;
+            return $app->make($algorithm);
         });
 
         $this->app->singleton(JWSBuilder::class, function ($app) {
