@@ -107,10 +107,13 @@ class LittleJWT
      */
     public function parseToken(string $token)
     {
-        $builder = $this->app->make(JWTBuilder::class);
-
         try {
-            return $builder->buildFromExisting($token);
+            $builder = $this->app->make(JWTBuilder::class);
+
+            $headerMutators = $this->app->config->get('littlejwt.builder.mutators.header', []);
+            $payloadMutators = $this->app->config->get('littlejwt.builder.mutators.payload', []);
+
+            return $builder->buildFromExisting($token, $headerMutators, $payloadMutators);
         } catch (CantParseJWTException) {
             return null;
         }

@@ -43,6 +43,20 @@ return [
      * The algorithm used by Little JWT.
      */
     'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
+
+    'builder' => [
+        /**
+         * Mutators to use for claims in the header and payload.
+         */
+        'mutators' => [
+            'header' => [],
+            'payload' => [
+                'iat' => 'timestamp',
+                'nbf' => 'timestamp',
+                'exp' => 'timestamp'
+            ]
+        ]
+    ],
     'builders' => [
         'default' => [
             /**

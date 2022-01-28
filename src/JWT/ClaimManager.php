@@ -5,20 +5,24 @@ namespace LittleApps\LittleJWT\JWT;
 use Countable;
 
 use Illuminate\Contracts\Support\Jsonable;
-use LittleApps\LittleJWT\Utils\Base64Encoder;
-use LittleApps\LittleJWT\Utils\ClaimsSerializer;
 
+use LittleApps\LittleJWT\JWT\Concerns\MutatesClaims;
+use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 
 class ClaimManager implements Countable, Jsonable
 {
+    use MutatesClaims;
+
     protected $claims;
 
-    public function __construct(array $claims)
+    public function __construct(array $claims, array $mutators = [])
     {
         $this->claims = collect($claims)->map(function ($value, $key) {
-            return is_object($value) ? $value : ClaimsSerializer::unserialize($key, $value);
+            return is_object($value) ? $value : $this->unserialize($key, $value);
         });
+
+        $this->mutators = $mutators;
     }
 
     /**
@@ -84,7 +88,7 @@ class ClaimManager implements Countable, Jsonable
     public function toSerialized()
     {
         return $this->claims->map(function ($value, $key) {
-            return ClaimsSerializer::serialize($key, $value);
+            return $this->serialize($key, $value);
         })->all();
     }
 

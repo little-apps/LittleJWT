@@ -8,7 +8,6 @@ use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
 use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JWT;
-
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 
@@ -18,10 +17,12 @@ class JWTBuilder
      * Builds a JWT instance from an existing JWT string.
      *
      * @param string $token
+     * @param array $payloadMutators Mutators to use for payload claims.
+     * @param array $headerMutators Mutators to use for header claims.
      * @return JWT
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
-    public function buildFromExisting(string $token)
+    public function buildFromExisting(string $token, array $payloadMutators = [], array $headerMutators = [])
     {
         $parts = Str::of($token)->explode('.');
 
@@ -29,8 +30,8 @@ class JWTBuilder
             throw new CantParseJWTException();
         }
 
-        $headers = $this->buildClaimManagerFromPart($parts[0]);
-        $payload = $this->buildClaimManagerFromPart($parts[1]);
+        $headers = $this->buildClaimManagerFromPart($parts[0], $headerMutators);
+        $payload = $this->buildClaimManagerFromPart($parts[1], $payloadMutators);
         $signature = Base64Encoder::decode($parts[2]);
 
         return new JWT($headers, $payload, $signature);
@@ -61,10 +62,11 @@ class JWTBuilder
      * Builds ClaimManager from a part.
      *
      * @param string $part
+     * @param array $mutators
      * @return ClaimManager|null New ClaimManager instance or null if it cannot be created.
      * @throws CantParseJWTException Thrown if part cannot be decoded.
      */
-    protected function buildClaimManagerFromPart($part)
+    protected function buildClaimManagerFromPart(string $part, array $mutators)
     {
         $decoded = Base64Encoder::decode($part);
 
@@ -78,6 +80,6 @@ class JWTBuilder
             throw new CantParseJWTException();
         }
 
-        return new ClaimManager($array);
+        return new ClaimManager($array, $mutators);
     }
 }
