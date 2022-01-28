@@ -63,7 +63,11 @@ $passes = LittleJWT::validateToken($token, function (Validator $validator) {
         ->equals('nop', 'qrs', true, false);
 });
 
-// $passes = true;
+if ($passes) {
+    // JWT is valid.
+} else {
+    // JWT is invalid.
+}
 ```
 
 See the [GitHub wiki](https://github.com/little-apps/LittleJWT/wiki) for further documentation.
