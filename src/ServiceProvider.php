@@ -102,7 +102,7 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton('littlejwt.algorithm', function ($app) {
-            $algorithm = config('littlejwt.algorithm');
+            $algorithm = $app->config->get('littlejwt.algorithm');
 
             return ! is_null($algorithm) ? $app->make($algorithm) : null;
         });
@@ -162,7 +162,7 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(Builders\GuardBuilder::class, function ($app) {
-            $config = config('littlejwt', []);
+            $config = $app->config->get('littlejwt', []);
 
             return new Builders\GuardBuilder($app, $config);
         });
@@ -185,7 +185,7 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(Validators\GuardValidator::class, function ($app) {
-            $config = config('littlejwt', []);
+            $config = $app->config->get('littlejwt', []);
 
             return new Validators\GuardValidator($app, $config);
         });
@@ -244,7 +244,7 @@ class ServiceProvider extends PackageServiceProvider
 
             $provider = Auth::createUserProvider($config['provider'] ?? null);
 
-            $adapterConfig = $config['adapters'][$config['adapter']];
+            $adapterConfig = $app->config->get['adapters'][$config['adapter']];
             $adapter = $app->make($adapterConfig['adapter']);
 
             $guard = new Guard($app, $adapter, $provider, $app['request'], $config);
