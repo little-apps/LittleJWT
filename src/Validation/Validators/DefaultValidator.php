@@ -16,14 +16,7 @@ class DefaultValidator implements Validatable
     public function __construct(Application $app, array $config)
     {
         $this->app = $app;
-
-        $this->config = [
-            'alg' => $config['claims']['alg'],
-            'required' => $config['claims']['required'],
-            'leeway' => $config['claims']['leeway'],
-            'aud' => $config['claims']['aud'],
-            'iss' => $config['claims']['iss'],
-        ];
+        $this->config = $config;
     }
 
     public function validate(Validator $validator)

@@ -18,12 +18,7 @@ class DefaultBuilder implements Buildable
     public function __construct(Application $app, array $config)
     {
         $this->app = $app;
-        $this->config = [
-            'alg' => $config['claims']['alg'],
-            'ttl' => $config['claims']['ttl'],
-            'aud' => $config['claims']['aud'],
-            'iss' => $config['claims']['iss'],
-        ];
+        $this->config = $config;
     }
 
     public function build(Builder $builder)

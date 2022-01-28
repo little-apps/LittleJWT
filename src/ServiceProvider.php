@@ -156,7 +156,7 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerBuilders()
     {
         $this->app->singleton(Builders\DefaultBuilder::class, function ($app) {
-            $config = config('littlejwt', []);
+            $config = $app->config->get('littlejwt.builders.default', []);
 
             return new Builders\DefaultBuilder($app, $config);
         });
@@ -179,7 +179,7 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerValidators()
     {
         $this->app->singleton(Validators\DefaultValidator::class, function ($app) {
-            $config = config('littlejwt', []);
+            $config = $app->config->get('littlejwt.validators.default', []);
 
             return new Validators\DefaultValidator($app, $config);
         });

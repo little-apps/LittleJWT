@@ -43,6 +43,60 @@ return [
      * The algorithm used by Little JWT.
      */
     'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
+    'builders' => [
+        'default' => [
+            /**
+             * Value to use for the 'alg' claim.
+             */
+            'alg' => 'HS256',
+
+            /**
+             * Number of seconds before JWT expires.
+             */
+            'ttl' => 3600,
+
+            /**
+             * Value to use for the 'iss' claim.
+             */
+            'iss' => env('APP_URL', 'http://localhost'),
+
+            /**
+             * Value to user for the 'aud' claim.
+             */
+            'aud' => env('APP_NAME', 'Laravel'),
+        ]
+    ],
+    'validators' => [
+        'default' => [
+            /**
+             * Claim keys required in the header and payload.
+             */
+            'required' => [
+                'header' => ['alg'],
+                'payload' => ['iss', 'iat', 'exp', 'nbf']
+            ],
+
+            /**
+             * Number of seconds to allow after JWT expiry date/time.
+             */
+            'leeway' => 0,
+
+            /**
+             * Expected value for the 'alg' claim.
+             */
+            'alg' => 'HS256',
+
+            /**
+             * Expected value for the 'iss' claim.
+             */
+            'iss' => env('APP_URL', 'http://localhost'),
+
+            /**
+             * Expected value for the 'aud' claim.
+             */
+            'aud' => env('APP_NAME', 'Laravel'),
+        ]
+    ],
     /**
      * Blacklist configuration options.
      */
@@ -80,42 +134,5 @@ return [
                 'expiry' => 'expires_at'
             ]
         ]
-
     ],
-    /**
-     * Claim options to use for the default generated JWTs.
-     */
-    'claims' => [
-        /**
-         * Value to use for the 'alg' claim.
-         */
-        'alg' => 'HS256',
-        /**
-         * Number of seconds before JWT expires.
-         */
-        'ttl' => 3600,
-        /**
-         * Number of seconds to allow after JWT expiry date/time.
-         */
-        'leeway' => 0,
-        /**
-         * Value to use for the 'iss' claim.
-         */
-        'iss' => env('APP_URL', 'http://localhost'),
-        /**
-         * Value to user for the 'aud' claim.
-         */
-        'aud' => env('APP_NAME', 'Laravel'),
-        /**
-         * Claim keys required in the header and payload.
-         */
-        'required' => [
-            'header' => ['alg'],
-            'payload' => ['iss', 'iat', 'exp', 'nbf']
-        ],
-        /**
-         * Claims that are timestamps and need to be serialized.
-         */
-        'timestamps' => ['iat', 'nbf', 'exp']
-    ]
 ];
