@@ -157,8 +157,9 @@ class ServiceProvider extends PackageServiceProvider
         $this->app->singleton(Builders\DefaultBuilder::class, function ($app) {
             $config = $app->config->get('littlejwt.builders.default', []);
 
-            if (is_null($config['alg']))
+            if (is_null($config['alg'])) {
                 $config['alg'] = $app['littlejwt.algorithm']->name();
+            }
 
             return new Builders\DefaultBuilder($app, $config);
         });
@@ -183,8 +184,9 @@ class ServiceProvider extends PackageServiceProvider
         $this->app->singleton(Validators\DefaultValidator::class, function ($app) {
             $config = $app->config->get('littlejwt.validators.default', []);
 
-            if (is_null($config['alg']))
+            if (is_null($config['alg'])) {
                 $config['alg'] = $app['littlejwt.algorithm']->name();
+            }
 
             return new Validators\DefaultValidator($app, $config);
         });
