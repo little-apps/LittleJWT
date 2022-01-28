@@ -249,7 +249,7 @@ class ServiceProvider extends PackageServiceProvider
 
             $provider = Auth::createUserProvider($config['provider'] ?? null);
 
-            $adapterConfig = $app->config->get['adapters'][$config['adapter']];
+            $adapterConfig = $config['adapters'][$config['adapter']];
             $adapter = $app->make($adapterConfig['adapter']);
 
             $guard = new Guard($app, $adapter, $provider, $app['request'], $config);
