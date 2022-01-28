@@ -5,8 +5,8 @@ namespace LittleApps\LittleJWT\JWT\Concerns;
 use DateTimeInterface;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 /**
  * Allows for claims to be serialized and deserialized.
@@ -37,7 +37,7 @@ trait MutatesClaims
         'int',
         'json',
         'object',
-        'timestamp'
+        'timestamp',
     ];
 
     /**
@@ -85,7 +85,8 @@ trait MutatesClaims
      *
      * @return array
      */
-    protected function getMutatorDefinitions() {
+    protected function getMutatorDefinitions()
+    {
         return $this->mutators;
     }
 
@@ -95,7 +96,8 @@ trait MutatesClaims
      * @param string $key
      * @return string
      */
-    protected function getMutatorDefinition($key) {
+    protected function getMutatorDefinition($key)
+    {
         return $this->mutators[$key];
     }
 
@@ -103,7 +105,7 @@ trait MutatesClaims
      * Checks if mutator exists for key.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
     protected function hasMutator($key)
     {
@@ -114,7 +116,7 @@ trait MutatesClaims
      * Checks if mutator is primitive/built-in.
      *
      * @param string $mutator
-     * @return boolean
+     * @return bool
      */
     protected function isPrimitiveMutator($mutator)
     {
@@ -133,12 +135,13 @@ trait MutatesClaims
     {
         [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
-        if (method_exists($this, 'serializeAs' . Str::studly($mutator)))
+        if (method_exists($this, 'serializeAs' . Str::studly($mutator))) {
             return $this->{'serializeAs' . Str::studly($mutator)}($value, $key, $args);
-        else if ($this->isPrimitiveMutator($mutator))
+        } elseif ($this->isPrimitiveMutator($mutator)) {
             return $this->serializeAsPrimitive($value, $mutator, $args);
-        else
+        } else {
             return $value;
+        }
     }
 
     /**
@@ -149,7 +152,8 @@ trait MutatesClaims
      * @param array $args
      * @return mixed
      */
-    protected function serializeAsPrimitive($value, $mutator, $args) {
+    protected function serializeAsPrimitive($value, $mutator, $args)
+    {
         switch ($mutator) {
             case 'custom_datetime': {
                 [$format] = $args;
@@ -173,12 +177,13 @@ trait MutatesClaims
             case 'double':
             case 'float':
             case 'real': {
-                if (is_infinite($value))
+                if (is_infinite($value)) {
                     $value = $value !== -INF ? 'Infinity' : '-Infinity';
-                else if (is_nan($value))
+                } elseif (is_nan($value)) {
                     $value = 'NaN';
-                else
+                } else {
                     $value = (string) $value;
+                }
 
                 return $value;
             }
@@ -208,12 +213,13 @@ trait MutatesClaims
     {
         [$mutator, $args] = $this->parseMutatorDefinition($type);
 
-        if (method_exists($this, 'unserializeAs' . Str::studly($mutator)))
+        if (method_exists($this, 'unserializeAs' . Str::studly($mutator))) {
             return $this->{'unserializeAs' . Str::studly($mutator)}($value, $key, $args);
-        else if ($this->isPrimitiveMutator($mutator))
+        } elseif ($this->isPrimitiveMutator($mutator)) {
             return $this->unserializeAsPrimitive($value, $mutator, $args);
-        else
+        } else {
             return $value;
+        }
     }
 
     /**
@@ -224,7 +230,8 @@ trait MutatesClaims
      * @param array $args Any arguments for the mutator.
      * @return mixed
      */
-    protected function unserializeAsPrimitive($value, $mutator, $args) {
+    protected function unserializeAsPrimitive($value, $mutator, $args)
+    {
         switch ($mutator) {
             case 'array': {
                 return (array) $value;
@@ -244,7 +251,7 @@ trait MutatesClaims
                 return $this->createCarbonInstance($value, static::$dateTimeFormat);
             }
             case 'decimal': {
-                return (double) $value;
+                return (float) $value;
             }
             case 'encrypted': {
                 return Crypt::decrypt($value);
@@ -252,14 +259,15 @@ trait MutatesClaims
             case 'double':
             case 'float':
             case 'real': {
-                if ($value === 'Infinity')
+                if ($value === 'Infinity') {
                     $value = INF;
-                else if ($value === '-Infinity')
+                } elseif ($value === '-Infinity') {
                     $value = -INF;
-                else if ($value === 'NaN')
+                } elseif ($value === 'NaN') {
                     $value = NAN;
-                else
-                    $value = (double) $value;
+                } else {
+                    $value = (float) $value;
+                }
 
                 return $value;
             }
@@ -288,9 +296,11 @@ trait MutatesClaims
      * @param string|null $format If a string, used as format in $value.
      * @return Carbon
      */
-    protected function createCarbonInstance($value, $format = null) {
-        if ($value instanceof DateTimeInterface)
+    protected function createCarbonInstance($value, $format = null)
+    {
+        if ($value instanceof DateTimeInterface) {
             return Carbon::instance($value);
+        }
 
         return is_string($format) ? Carbon::parse($value) : Carbon::createFromFormat($format, $value);
     }
@@ -301,7 +311,8 @@ trait MutatesClaims
      * @param string $type Type and optional arguments seperated by a :
      * @return array Array with 2 elements: The mutator type and an array of any optional arguments.
      */
-    protected function parseMutatorDefinition($type) {
+    protected function parseMutatorDefinition($type)
+    {
         $parts = explode(':', $type);
 
         $mutator = $parts[0];
