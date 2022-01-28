@@ -61,8 +61,9 @@ return [
         'default' => [
             /**
              * Value to use for the 'alg' claim.
+             * If null, the name of algorithm class specified in the littlejwt.algorithm key is used.
              */
-            'alg' => 'HS256',
+            'alg' => null,
 
             /**
              * Number of seconds before JWT expires.
@@ -97,8 +98,9 @@ return [
 
             /**
              * Expected value for the 'alg' claim.
+             * If null, the name of algorithm class specified in the littlejwt.algorithm key is used.
              */
-            'alg' => 'HS256',
+            'alg' => null,
 
             /**
              * Expected value for the 'iss' claim.
