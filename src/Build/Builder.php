@@ -60,7 +60,7 @@ class Builder
      * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
      * @return $this
      */
-    public function addPayloadClaim($key, $value, $inHeader = false)
+    public function addPayloadClaim($key, $value)
     {
         $this->payload[$key] = $value;
 
