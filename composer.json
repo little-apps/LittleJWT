@@ -1,6 +1,6 @@
 {
     "name": "little-apps/littlejwt",
-    "description": "LittleJWT allows for JSON Web Tokens (JWTs) to be generated and verified in Laravel.",
+    "description": "Generate and verify JSON Web Tokens (JWTs) simply in Laravel using Little JWT.",
     "keywords": [
         "little-apps",
         "laravel",
