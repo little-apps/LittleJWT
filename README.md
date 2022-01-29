@@ -92,6 +92,18 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
+### Libraries
+
+Little JWT is built using the following libraries:
+
+ * [Laravel](https://laravel.com/)
+ * [Laravel Package Skeleton](https://github.com/spatie/package-skeleton-laravel)
+ * [PHP JWT Framework](https://github.com/web-token/jwt-framework)
+
+### Contributors
+
+Thank you to the following for their contributions:
+
 - [Nick H](https://github.com/little-apps)
 - [All Contributors](../../contributors)
 
