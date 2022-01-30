@@ -2,8 +2,6 @@
 
 namespace LittleApps\LittleJWT;
 
-use Closure;
-
 use Illuminate\Contracts\Foundation\Application;
 
 use Jose\Component\Core\JWK;

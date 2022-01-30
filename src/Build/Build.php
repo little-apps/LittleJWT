@@ -34,7 +34,8 @@ class Build
      * @param Buildable $buildable
      * @return $this
      */
-    public function passBuilderThru(Buildable $buildable) {
+    public function passBuilderThru(Buildable $buildable)
+    {
         $buildable->build($this->builder);
 
         return $this;
