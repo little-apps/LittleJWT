@@ -45,11 +45,11 @@ class LittleJWT
     /**
      * Creates a signed JWT
      *
-     * @param \Closure $callback Callback that receives LittleApps\LittleJWT\Builder instance
+     * @param callable $callback Callback that receives LittleApps\LittleJWT\Builder instance.
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return string
      */
-    public function createToken(Closure $callback = null, $applyDefault = true)
+    public function createToken(callable $callback = null, $applyDefault = true)
     {
         return (string) $this->createJWT($callback, $applyDefault);
     }
@@ -57,11 +57,11 @@ class LittleJWT
     /**
      * Creates a signed JWT instance.
      *
-     * @param callable|Buildable $callback Callback or Buildable that recieves Builder build JWT.
+     * @param callable $callback Callback that receives LittleApps\LittleJWT\Builder instance.
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return JWT
      */
-    public function createJWT($callback = null, $applyDefault = true)
+    public function createJWT(callable $callback = null, $applyDefault = true)
     {
         $build = $this->buildJWT();
 
