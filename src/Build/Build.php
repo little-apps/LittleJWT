@@ -16,13 +16,25 @@ class Build
 
     protected $jwk;
 
-    protected $buildable;
+    protected $builder;
 
-    public function __construct(Application $app, JWK $jwk, Buildable $buildable)
+    public function __construct(Application $app, JWK $jwk)
     {
         $this->app = $app;
         $this->jwk = $jwk;
-        $this->buildable = $buildable;
+        $this->builder = new Builder();
+    }
+
+    /**
+     * Passes a Builder through a Buildable instance
+     *
+     * @param Buildable $buildable
+     * @return $this
+     */
+    public function passBuilderThru(Buildable $buildable) {
+        $buildable->build($this->builder);
+
+        return $this;
     }
 
     /**
@@ -32,26 +44,12 @@ class Build
      */
     public function build()
     {
-        $builder = $this->createBuilder();
-
-        $headers = new ClaimManager($builder->getHeaders()->sortKeys()->all());
-        $payload = new ClaimManager($builder->getPayload()->sortKeys()->all());
+        $headers = new ClaimManager($this->builder->getHeaders()->sortKeys()->all());
+        $payload = new ClaimManager($this->builder->getPayload()->sortKeys()->all());
 
         $signature = $this->createJWTHasher()->hash($this->jwk, $headers, $payload);
 
         return $this->createJWTBuilder()->buildFromParts($headers, $payload, $signature);
-    }
-
-    /**
-     * Creates the Builder instance
-     *
-     * @return Builder
-     */
-    protected function createBuilder()
-    {
-        return tap(new Builder(), function (Builder $builder) {
-            $this->buildable->build($builder);
-        });
     }
 
     /**

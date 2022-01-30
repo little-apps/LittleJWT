@@ -63,37 +63,31 @@ class LittleJWT
      */
     public function createJWT($callback = null, $applyDefault = true)
     {
-        $build = $this->buildJWT($callback, $applyDefault);
+        $build = $this->buildJWT();
 
-        return $build->build();
+        $callbacks = [];
+
+        if ($applyDefault) {
+            array_push($callbacks, $this->getDefaultBuildableCallback());
+        }
+
+        if (is_callable($callback)) {
+            array_push($callbacks, $callback);
+        }
+
+        $buildable = new StackBuilder($callbacks);
+
+        return $build->passBuilderThru($buildable)->build();
     }
 
     /**
-     * Creates a signed JWT instance.
+     * Creates a Build instance to create a JWT.
      *
-     * @param callable|Buildable $callback Callback or Buildable that recieves Builder build JWT.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return Build
      */
-    public function buildJWT($callback = null, $applyDefault = true)
+    public function buildJWT()
     {
-        if (is_object($callback) && $callback instanceof Buildable) {
-            $buildable = $callback;
-        } else {
-            $callbacks = [];
-
-            if ($applyDefault) {
-                array_push($callbacks, $this->getDefaultBuildableCallback());
-            }
-
-            if (is_callable($callback)) {
-                array_push($callbacks, $callback);
-            }
-
-            $buildable = new StackBuilder($callbacks);
-        }
-
-        $build = new Build($this->app, $this->jwk, $buildable);
+        $build = new Build($this->app, $this->jwk);
 
         return $build;
     }
