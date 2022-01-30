@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
@@ -12,6 +13,8 @@ use LittleApps\LittleJWT\JWT\ClaimManager;
 
 class Build
 {
+    use ForwardsCalls;
+
     protected $app;
 
     protected $jwk;
@@ -70,5 +73,17 @@ class Build
     protected function createJWTHasher()
     {
         return $this->app->make(JWTHasher::class);
+    }
+
+    /**
+     * Forwards method calls to the Builder instance.
+     *
+     * @param string $name Method name
+     * @param array $parameters Method parameters
+     * @return mixed Returns $this if Builder instance is returned from forwarded method call.
+     */
+    public function __call($name, $parameters)
+    {
+        return $this->forwardDecoratedCallTo($this->builder, $name, $parameters);
     }
 }
