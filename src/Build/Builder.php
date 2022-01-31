@@ -227,7 +227,7 @@ class Builder
         if ($paramCount === 2) {
             $inHeader = (bool) $parameters[1];
         } else {
-            $inHeader = ($this->isHeaderClaim($name) && !$this->isPayloadClaim($name));
+            $inHeader = ($this->isHeaderClaim($name) && ! $this->isPayloadClaim($name));
         }
 
         return $inHeader ? $this->addHeaderClaim($name, $value) : $this->addPayloadClaim($name, $value);
@@ -237,7 +237,7 @@ class Builder
      * Checks if claim belongs in header.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
     protected function isHeaderClaim($key)
     {
@@ -248,7 +248,7 @@ class Builder
      * Checks if claim belongs in payload.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
     protected function isPayloadClaim($key)
     {

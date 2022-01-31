@@ -61,7 +61,8 @@ class Build
      *
      * @return Builder
      */
-    protected function buildBuilder() {
+    protected function buildBuilder()
+    {
         $headerClaims = $this->app->config->get('littlejwt.builder.claims.header', []);
         $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
 
