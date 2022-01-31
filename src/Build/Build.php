@@ -29,7 +29,7 @@ class Build
     }
 
     /**
-     * Passes a Builder through a Buildable instance
+     * Passes a Builder instance through a Buildable instance
      *
      * @param Buildable $buildable
      * @return $this
