@@ -21,7 +21,7 @@ class LittleJWT extends Facade
     {
         $jwk = $jwk ?? static::$app->make(KeyBuildable::class)->build();
 
-        static::swap($fake = new LittleJWTFake(static::$app, $jwk));
+        static::swap($fake = new LittleJWTFake(static::$app, static::getFacadeRoot()));
 
         return $fake;
     }
@@ -35,7 +35,9 @@ class LittleJWT extends Facade
      */
     public static function withJwk(JWK $jwk)
     {
-        return static::getMockableClass() !== LittleJWTFake::class ? new LittleJWTInstance(static::$app, $jwk) : new LittleJWTFake(static::$app, $jwk);
+        $jwkInstance = new LittleJWTInstance(static::$app, $jwk);
+
+        return (static::getFacadeRoot() instanceof LittleJWTFake) ? new LittleJWTFake(static::$app, $jwkInstance) : $jwkInstance;
     }
 
     /**

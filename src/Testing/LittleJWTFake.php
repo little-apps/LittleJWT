@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 use Jose\Component\Core\JWK;
 
@@ -12,14 +13,20 @@ use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validator;
 use LittleApps\LittleJWT\Validation\Validators\StackValidator;
 
-class LittleJWTFake extends LittleJWT
+class LittleJWTFake
 {
-    protected $app;
-    protected $jwk;
+    use ForwardsCalls;
 
-    public function __construct(Application $app, JWK $jwk)
+    protected $app;
+    protected $littleJWT;
+
+    public function __construct(Application $app, LittleJWT $littleJWT)
     {
-        parent::__construct($app, $jwk);
+        $this->app = $app;
+        $this->littleJWT = $littleJWT;
+    }
+
+    {
     }
 
     /**
@@ -63,5 +70,17 @@ class LittleJWTFake extends LittleJWT
                 $callback($testValidator);
             }
         };
+    }
+
+    /**
+     * Forwards method calls to the original LittleJWT instance.
+     *
+     * @param string $name Method name
+     * @param array $parameters Method parameters
+     * @return mixed
+     */
+    public function __call($name, $parameters)
+    {
+        return $this->forwardCallTo($this->littleJWT, $name, $parameters);
     }
 }
