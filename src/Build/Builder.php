@@ -248,7 +248,7 @@ class Builder
      * Checks if claim belongs in header.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
     protected function isHeaderClaim($key)
     {
@@ -259,7 +259,7 @@ class Builder
      * Checks if claim belongs in payload.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
     protected function isPayloadClaim($key)
     {
