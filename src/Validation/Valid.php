@@ -21,7 +21,7 @@ class Valid
 
     protected $jwk;
 
-    protected $validatable;
+    protected $validator;
 
     protected $errors;
 
@@ -33,17 +33,29 @@ class Valid
      * @param Application $app Application container
      * @param JWT $jwt JWT to run through Validator
      * @param JWK $jwk JWK to use for validation.
-     * @param Validatable $validatable Validatable to use to validate JWT
      */
-    public function __construct(Application $app, JWT $jwt, JWK $jwk, Validatable $validatable)
+    public function __construct(Application $app, JWT $jwt, JWK $jwk)
     {
         $this->app = $app;
         $this->jwt = $jwt;
         $this->jwk = $jwk;
-        $this->validatable = $validatable;
 
         $this->errors = new MessageBag();
         $this->lastRunResult = null;
+
+        $this->validator = $this->buildValidator();
+    }
+
+    /**
+     * Passes a Validator instance through a Validatable instance.
+     *
+     * @param Validatable $validatable
+     * @return $this
+     */
+    public function passValidatorThru(Validatable $validatable) {
+        $validatable->validate($this->validator);
+
+        return $this;
     }
 
     /**
@@ -65,9 +77,7 @@ class Valid
      */
     public function passes()
     {
-        $validator = $this->buildValidator();
-
-        $rules = $validator->getRulesBefore()->concat($validator->getRules());
+        $rules = $this->validator->getRulesBefore()->concat($this->validator->getRules());
 
         $this->errors = new MessageBag();
 
@@ -79,7 +89,7 @@ class Valid
             } catch (RuleFailedException $ex) {
                 $this->errors->add($this->getRuleIdentifier($rule), $ex->getMessage());
 
-                if ($validator->getStopOnFailure()) {
+                if ($this->validator->getStopOnFailure()) {
                     $stopped = true;
 
                     break;
@@ -89,7 +99,7 @@ class Valid
 
         $this->lastRunResult = ! $stopped && $this->errors->isEmpty();
 
-        foreach ($validator->getAfterValidation() as $after) {
+        foreach ($this->validator->getAfterValidation() as $after) {
             // Don't pass $this instance because of the risk of this method being called again (resulting in a stack overflow).
             $after($this->lastRunResult, $this->errors);
         }
@@ -136,9 +146,7 @@ class Valid
     {
         $blacklistManager = $this->app->make(BlacklistManager::class);
 
-        return tap(new Validator($blacklistManager, $this->jwk), function (Validator $validator) {
-            $this->validatable->validate($validator);
-        });
+        return new Validator($blacklistManager, $this->jwk);
     }
 
     /**
