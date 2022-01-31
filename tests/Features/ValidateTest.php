@@ -32,7 +32,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::createJWT();
 
-        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
             $validator
                 ->assertPasses();
         });
@@ -53,7 +53,7 @@ class ValidateTest extends TestCase
             $builder->sub($sub);
         });
 
-        LittleJWT::validJWT($jwt, function (TestValidator $validator) use ($sub) {
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($sub) {
             $validator
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
@@ -73,7 +73,7 @@ class ValidateTest extends TestCase
             $builder->exp(Carbon::now()->subMonth());
         });
 
-        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
             $validator
                 ->assertFails()
                 ->assertExpired()
@@ -99,7 +99,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::withJwk($otherJWk)->createJWT();
 
-        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
             $validator
                 ->assertInvalidSignature()
                 ->assertFails()
@@ -121,7 +121,7 @@ class ValidateTest extends TestCase
 
         Blacklist::blacklist($jwt);
 
-        LittleJWT::validJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
             $validator
                 ->assertNotAllowed()
                 ->assertFails()
