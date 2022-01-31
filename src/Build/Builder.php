@@ -199,7 +199,7 @@ class Builder
      */
     public function __set($key, $value)
     {
-        $this->addPayloadClaim($key, $value);
+        $this->addClaim($key, $value);
     }
 
     /**
@@ -238,12 +238,10 @@ class Builder
         [$value] = $parameters;
 
         if ($paramCount === 2) {
-            $inHeader = (bool) $parameters[1];
+            return (bool) $parameters[1] ? $this->addHeaderClaim($name, $value) : $this->addPayloadClaim($name, $value);
         } else {
-            $inHeader = ($this->isHeaderClaim($name) && !$this->isPayloadClaim($name));
+            return $this->addClaim($name, $value);
         }
-
-        return $inHeader ? $this->addHeaderClaim($name, $value) : $this->addPayloadClaim($name, $value);
     }
 
     /**
