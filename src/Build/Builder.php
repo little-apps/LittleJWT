@@ -224,13 +224,34 @@ class Builder
 
         [$value] = $parameters;
 
-        $inHeader = $paramCount === 2 ? (bool) $parameters[1] : $this->isHeaderClaim($name);
+        if ($paramCount === 2) {
+            $inHeader = (bool) $parameters[1];
+        } else {
+            $inHeader = ($this->isHeaderClaim($name) && !$this->isPayloadClaim($name));
+        }
 
         return $inHeader ? $this->addHeaderClaim($name, $value) : $this->addPayloadClaim($name, $value);
     }
 
+    /**
+     * Checks if claim belongs in header.
+     *
+     * @param string $key
+     * @return boolean
+     */
     protected function isHeaderClaim($key)
     {
         return in_array($key, $this->headerClaims);
+    }
+
+    /**
+     * Checks if claim belongs in payload.
+     *
+     * @param string $key
+     * @return boolean
+     */
+    protected function isPayloadClaim($key)
+    {
+        return in_array($key, $this->payloadClaims);
     }
 }
