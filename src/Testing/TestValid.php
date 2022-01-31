@@ -5,12 +5,11 @@ namespace LittleApps\LittleJWT\Testing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 
-use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Validation\Valid;
 
-class TestValid {
+class TestValid
+{
     use ForwardsCalls;
 
     protected $app;

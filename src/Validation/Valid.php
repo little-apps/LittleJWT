@@ -52,7 +52,8 @@ class Valid
      * @param Validatable $validatable
      * @return $this
      */
-    public function passValidatorThru(Validatable $validatable) {
+    public function passValidatorThru(Validatable $validatable)
+    {
         $validatable->validate($this->validator);
 
         return $this;

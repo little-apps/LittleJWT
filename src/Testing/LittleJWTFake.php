@@ -5,7 +5,6 @@ namespace LittleApps\LittleJWT\Testing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 
-use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT;
@@ -35,6 +34,7 @@ class LittleJWTFake
     public function validJWT(JWT $jwt)
     {
         $valid = $this->littleJWT->validJWT($jwt);
+
         return new TestValid($this->app, $valid);
     }
 
