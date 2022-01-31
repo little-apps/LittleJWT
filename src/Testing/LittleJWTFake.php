@@ -57,9 +57,9 @@ class LittleJWTFake
 
         $transformCallbacks = $this->createTransformCallback($callbacks);
 
-        $validator = new StackValidator([$transformCallbacks]);
+        $validatable = new StackValidator([$transformCallbacks]);
 
-        return $this->littleJWT->validateJWT($jwt, [$validator, 'validate'], $applyDefault);
+        return $this->littleJWT->validateJWT($jwt, [$validatable, 'validate'], $applyDefault);
     }
 
     /**
