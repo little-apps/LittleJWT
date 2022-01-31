@@ -31,12 +31,22 @@ class Builder
      *
      * @var array
      */
-    protected $headerClaims = ['alg', 'cty', 'typ', 'crit'];
+    protected $headerClaims;
 
-    public function __construct()
+    /**
+     * Claim keys that belong in payload.
+     *
+     * @var array
+     */
+    protected $payloadClaims;
+
+    public function __construct(array $headerClaims, array $payloadClaims)
     {
         $this->headers = collect();
         $this->payload = collect();
+
+        $this->headerClaims = $headerClaims;
+        $this->payloadClaims = $payloadClaims;
     }
 
     /**

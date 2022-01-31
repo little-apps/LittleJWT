@@ -55,6 +55,20 @@ return [
                 'nbf' => 'timestamp',
                 'exp' => 'timestamp'
             ]
+        ],
+        /**
+         * Indicates which claims should be added to the header or payload.
+         */
+        'claims' => [
+            'header' => [
+                'alg',
+                'cty',
+                'typ',
+                'crit'
+            ],
+            'payload' => [
+
+            ]
         ]
     ],
     'builders' => [

@@ -25,7 +25,7 @@ class Build
     {
         $this->app = $app;
         $this->jwk = $jwk;
-        $this->builder = new Builder();
+        $this->builder = $this->buildBuilder();
     }
 
     /**
@@ -54,6 +54,18 @@ class Build
         $signature = $this->createJWTHasher()->hash($this->jwk, $headers, $payload);
 
         return $this->createJWTBuilder()->buildFromParts($headers, $payload, $signature);
+    }
+
+    /**
+     * Builds the Builder.
+     *
+     * @return Builder
+     */
+    protected function buildBuilder() {
+        $headerClaims = $this->app->config->get('littlejwt.builder.claims.header', []);
+        $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
+
+        return new Builder($headerClaims, $payloadClaims);
     }
 
     /**
