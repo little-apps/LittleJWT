@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Signature\JWSBuilder;
-use Jose\Easy\Build;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
-use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Build\Builders;
 use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
 use LittleApps\LittleJWT\Contracts\KeyBuildable;
@@ -79,12 +77,7 @@ class ServiceProvider extends PackageServiceProvider
             return new LittleJWT($app, $jwk);
         });
 
-        $this->app->bind(Builder::class, function () {
-            return new Builder(Build::jws());
-        });
-
         $this->app->alias(LittleJWT::class, 'littlejwt');
-        $this->app->alias(Builder::class, 'littlejwt.builder');
     }
 
     /**
