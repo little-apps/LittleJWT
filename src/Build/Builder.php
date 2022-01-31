@@ -56,8 +56,9 @@ class Builder
      * @param mixed $value Claim value
      * @return $this
      */
-    public function addClaim($key, $value) {
-        $inHeader = ($this->isHeaderClaim($key) && !$this->isPayloadClaim($key));
+    public function addClaim($key, $value)
+    {
+        $inHeader = ($this->isHeaderClaim($key) && ! $this->isPayloadClaim($key));
 
         return $inHeader ? $this->addHeaderClaim($key, $value) : $this->addPayloadClaim($key, $value);
     }
