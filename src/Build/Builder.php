@@ -50,6 +50,19 @@ class Builder
     }
 
     /**
+     * Adds a claim to either the header or payload.
+     *
+     * @param string $key Claim key
+     * @param mixed $value Claim value
+     * @return $this
+     */
+    public function addClaim($key, $value) {
+        $inHeader = ($this->isHeaderClaim($key) && !$this->isPayloadClaim($key));
+
+        return $inHeader ? $this->addHeaderClaim($key, $value) : $this->addPayloadClaim($key, $value);
+    }
+
+    /**
      * Adds a claim to the header.
      *
      * @param string $key Claim key
