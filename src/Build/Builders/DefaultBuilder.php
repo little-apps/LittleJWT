@@ -29,8 +29,7 @@ class DefaultBuilder implements Buildable
             ->nbf(Carbon::now())
             ->exp(Carbon::now()->addSeconds($this->config['ttl']))
             ->iss($this->config['iss'])
-            ->jti((string) Str::uuid())
-            ->aud($this->config['aud']);
+            ->jti((string) Str::uuid());
 
         foreach ((array) $this->config['aud'] as $aud) {
             $builder->aud($aud);
