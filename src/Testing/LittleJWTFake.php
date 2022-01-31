@@ -34,10 +34,10 @@ class LittleJWTFake
      * The default callback is not added when testing.
      *
      * @param JWT $jwt
-     * @param callable|Validatable $callback Callback or Validatable that recieves Validator to set checks for JWT.
+     * @param callable $callback Callback that recieves Validator to set checks for JWT.
      * @return Valid Valid instance (before validation is done)
      */
-    public function validJWT(JWT $jwt, $callback = null, $applyDefault = false)
+    public function validateJWT(JWT $jwt, callable $callback = null, $applyDefault = false)
     {
         $callbacks = [];
 
@@ -50,9 +50,7 @@ class LittleJWTFake
 
         $validator = new StackValidator([$transformCallbacks]);
 
-        $valid = new Valid($this->app, $jwt, $this->jwk, $validator);
-
-        return $valid->validate();
+        return $this->littleJWT->validateJWT($jwt, [$validator, 'validate'], $applyDefault);
     }
 
     /**
