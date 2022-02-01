@@ -85,7 +85,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * Check an offset exists.
      *
      * @param string $offset
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
