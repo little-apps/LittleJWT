@@ -32,10 +32,25 @@ class CreateTest extends TestCase
      *
      * @return void
      */
-    public function test_create_signed_jwt()
+    public function test_create_default_jwt()
     {
         $jwt = LittleJWT::createJWT();
 
+    /**
+     * Tests using Build to create a signed JWT
+     *
+     * @return void
+     */
+    public function test_build_empty_jwt()
+    {
+        $build = LittleJWT::buildJWT();
+
+        $jwt = $build->build();
+
+        $this->assertCount(0, $jwt->getHeaders());
+        $this->assertCount(0, $jwt->getPayload());
+
+        $this->assertInstanceOf(Build::class, $build);
         $this->assertInstanceOf(JWT::class, $jwt);
     }
 
