@@ -9,7 +9,6 @@ use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builders\DefaultBuilder;
 use LittleApps\LittleJWT\Build\Builders\StackBuilder;
-use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
