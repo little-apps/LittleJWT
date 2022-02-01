@@ -67,6 +67,34 @@ class CreateTest extends TestCase
     }
 
     /**
+     * Tests using Build to create a JWT with custom claims.
+     *
+     * @return void
+     */
+    public function test_build_custom_jwt()
+    {
+        $build = LittleJWT::buildJWT();
+
+        $header = [$this->faker->word, $this->faker->uuid];
+        $payload = [$this->faker->word, $this->faker->uuid];
+
+        $jwt =
+            $build
+                ->addHeaderClaim($header[0], $header[1])
+                ->addPayloadClaim($payload[0], $payload[1])
+                ->build();
+
+        $this->assertCount(1, $jwt->getHeaders());
+        $this->assertEquals($header[1], $jwt->getHeaders()->get($header[0]));
+
+        $this->assertCount(1, $jwt->getPayload());
+        $this->assertEquals($payload[1], $jwt->getPayload()->get($payload[0]));
+
+        $this->assertInstanceOf(Build::class, $build);
+        $this->assertInstanceOf(JWT::class, $jwt);
+    }
+
+    /**
      * Tests a JWT has default claims.
      *
      * @return void
