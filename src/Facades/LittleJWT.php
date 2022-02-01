@@ -8,7 +8,7 @@ use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
-use LittleApps\LittleJWT\Testing\LittleJWTFake;
+use LittleApps\LittleJWT\Testing\LittleJWT as LittleJWTFake;
 
 class LittleJWT extends Facade
 {

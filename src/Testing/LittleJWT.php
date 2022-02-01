@@ -7,19 +7,22 @@ use Illuminate\Support\Traits\ForwardsCalls;
 
 
 use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\LittleJWT;
+use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validator;
 use LittleApps\LittleJWT\Validation\Validators\StackValidator;
 
-class LittleJWTFake
+/**
+ * @mixin \LittleApps\LittleJWT\LittleJWT
+ */
+class LittleJWT
 {
     use ForwardsCalls;
 
     protected $app;
     protected $littleJWT;
 
-    public function __construct(Application $app, LittleJWT $littleJWT)
+    public function __construct(Application $app, RealLittleJWT $littleJWT)
     {
         $this->app = $app;
         $this->littleJWT = $littleJWT;
