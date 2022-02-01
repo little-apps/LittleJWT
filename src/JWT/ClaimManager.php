@@ -2,15 +2,17 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
+use ArrayAccess;
 use Countable;
-
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 
 use LittleApps\LittleJWT\JWT\Concerns\MutatesClaims;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
+use RuntimeException;
 
-class ClaimManager implements Countable, Jsonable
+class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
     use MutatesClaims;
 
@@ -81,6 +83,53 @@ class ClaimManager implements Countable, Jsonable
     }
 
     /**
+     * Check an offset exists.
+     *
+     * @param string $offset
+     * @return boolean
+     */
+    public function offsetExists($offset): bool
+    {
+        return $this->has($offset);
+    }
+
+    /**
+     * Allows for claims to be retrieved as an array key.
+     *
+     * @param string $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * Throws an RuntimeException since ClaimManager is immutable.
+     *
+     * @param string $offset
+     * @param mixed $value
+     * @return void
+     * @throws RuntimeException
+     */
+    public function offsetSet($offset, $value): void
+    {
+        throw new RuntimeException('Attempt to mutate immutable ' . static::class . ' object.');
+    }
+
+    /**
+     * Throws an RuntimeException since ClaimManager is immutable.
+     *
+     * @param string $offset
+     * @return void
+     * @throws RuntimeException
+     */
+    public function offsetUnset($offset): void
+    {
+        throw new RuntimeException('Attempt to mutate immutable ' . static::class . ' object.');
+    }
+
+    /**
      * Gets the claims as key/value array with values serialized.
      *
      * @return array
@@ -90,6 +139,16 @@ class ClaimManager implements Countable, Jsonable
         return $this->claims->map(function ($value, $key) {
             return $this->serialize($key, $value);
         })->all();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->claims->toArray();
     }
 
     /**
