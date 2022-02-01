@@ -105,10 +105,12 @@ class CreateTest extends TestCase
 
         $jwt = LittleJWT::parseToken($token);
 
-        $claims = $jwt->getPayload()->get();
+        foreach (['alg'] as $key) {
+            $this->assertArrayHasKey($key, $jwt->getHeaders());
+        }
 
         foreach (['iss', 'iat', 'exp', 'nbf'] as $key) {
-            $this->assertArrayHasKey($key, $claims);
+            $this->assertArrayHasKey($key, $jwt->getPayload());
         }
     }
 
