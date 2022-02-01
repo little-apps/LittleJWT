@@ -54,8 +54,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return $this->claims->count();
     }
