@@ -36,6 +36,17 @@ class CreateTest extends TestCase
     {
         $jwt = LittleJWT::createJWT();
 
+        foreach (['alg'] as $key) {
+            $this->assertArrayHasKey($key, $jwt->getHeaders());
+        }
+
+        foreach (['iat', 'nbf', 'exp', 'iss', 'jti'] as $key) {
+            $this->assertArrayHasKey($key, $jwt->getPayload());
+        }
+
+        $this->assertInstanceOf(JWT::class, $jwt);
+    }
+
     /**
      * Tests using Build to create a signed JWT
      *
