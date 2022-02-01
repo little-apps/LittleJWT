@@ -99,7 +99,7 @@ class CreateTest extends TestCase
      *
      * @return void
      */
-    public function test_has_default_claims()
+    public function test_parse_default_claims()
     {
         $token = LittleJWT::createToken();
 
