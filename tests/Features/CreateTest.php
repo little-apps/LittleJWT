@@ -18,7 +18,7 @@ class CreateTest extends TestCase
      *
      * @return void
      */
-    public function test_create_signed_token()
+    public function test_create_default_token()
     {
         $token = LittleJWT::createToken();
 
