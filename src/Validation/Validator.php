@@ -171,7 +171,7 @@ class Validator
      * Checks value of claim is one of the expected values
      *
      * @param string $key Claim key
-     * @param mixed $haystack Expected values
+     * @param array $haystack Expected values
      * @param bool $strict If true, performs type comparison. (default: true)
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
