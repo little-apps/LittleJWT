@@ -108,7 +108,7 @@ class Validator
      */
     public function past($key, $leeway = 0, $inHeader = false)
     {
-        return $this->addRule(new Rules\Claims\After($key, $leeway, $inHeader));
+        return $this->addRule(new Rules\Claims\Past($key, $leeway, $inHeader));
     }
 
     /**
@@ -121,7 +121,7 @@ class Validator
      */
     public function future($key, $leeway = 0, $inHeader = false)
     {
-        return $this->addRule(new Rules\Claims\Before($key, $leeway, $inHeader));
+        return $this->addRule(new Rules\Claims\Future($key, $leeway, $inHeader));
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\JWT\JWT;
 
-class After extends Rule
+class Future extends Rule
 {
     protected $leeway;
 
@@ -20,13 +20,14 @@ class After extends Rule
     protected function checkClaim(JWT $jwt, $value)
     {
         $now = Carbon::now();
+        $expiry = Carbon::parse($value)->addSeconds($this->leeway);
 
-        // Check that now (+ leeway) is after the date/time
-        return $now->addSeconds($this->leeway)->isAfter(Carbon::parse($value));
+        // The expiry + leeway has to be after now.
+        return $expiry->isAfter($now);
     }
 
     protected function formatMessage()
     {
-        return "The ':key' claim is is before the current date/time.";
+        return "The ':key' claim is after the current date/time.";
     }
 }
