@@ -27,9 +27,9 @@ class DefaultValidator implements Validatable
             ->contains($this->config['required']['payload'])
             ->valid()
             ->allowed()
-            ->before('exp', $this->config['leeway'])
-            ->after('nbf', $this->config['leeway'])
-            ->after('iat')
+            ->future('exp', $this->config['leeway'])
+            ->past('nbf', $this->config['leeway'])
+            ->past('iat')
             ->equals('aud', $this->config['aud'])
             ->equals('iss', $this->config['iss']);
     }

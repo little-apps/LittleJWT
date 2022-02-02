@@ -99,29 +99,29 @@ class Validator
     }
 
     /**
-     * Checks that the current date/time is before the claims date/time.
-     *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow after claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
-     * @return $this
-     */
-    public function before($key, $leeway = 0, $inHeader = false)
-    {
-        return $this->addRule(new Rules\Claims\Before($key, $leeway, $inHeader));
-    }
-
-    /**
-     * Checks that the current date/time is after the claims date/time.
+     * Checks that the claims date/time is in the past.
      *
      * @param string $key Claim key
      * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function after($key, $leeway = 0, $inHeader = false)
+    public function past($key, $leeway = 0, $inHeader = false)
     {
         return $this->addRule(new Rules\Claims\After($key, $leeway, $inHeader));
+    }
+
+    /**
+     * Checks that the claim date/time is in the future.
+     *
+     * @param string $key Claim key
+     * @param int $leeway Leeway (in seconds) to allow after claims set date/time. (default: 0)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @return $this
+     */
+    public function future($key, $leeway = 0, $inHeader = false)
+    {
+        return $this->addRule(new Rules\Claims\Before($key, $leeway, $inHeader));
     }
 
     /**
