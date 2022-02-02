@@ -29,7 +29,7 @@ class Base64Encoder
     {
         try {
             return Base64Url::decode($encoded);
-        } catch (Exception $ex) {
+        } catch (Exception) {
             return false;
         }
     }
