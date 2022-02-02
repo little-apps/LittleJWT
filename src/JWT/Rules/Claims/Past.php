@@ -28,6 +28,6 @@ class Past extends Rule
 
     protected function formatMessage()
     {
-        return "The ':key' claim is is before the current date/time.";
+        return "The ':key' claim date/time is in the future.";
     }
 }

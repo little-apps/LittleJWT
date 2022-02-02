@@ -28,6 +28,6 @@ class Future extends Rule
 
     protected function formatMessage()
     {
-        return "The ':key' claim is after the current date/time.";
+        return "The ':key' claim date/time has past.";
     }
 }
