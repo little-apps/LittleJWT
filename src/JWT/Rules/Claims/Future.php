@@ -20,10 +20,10 @@ class Future extends Rule
     protected function checkClaim(JWT $jwt, $value)
     {
         $now = Carbon::now();
-        $expiry = Carbon::parse($value)->addSeconds($this->leeway);
+        $dateTime = Carbon::parse($value)->addSeconds($this->leeway);
 
         // The expiry + leeway has to be after now.
-        return $expiry->isAfter($now);
+        return $dateTime->isAfter($now);
     }
 
     protected function formatMessage()
