@@ -42,11 +42,12 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * Gets a claim value.
      *
      * @param string|null $key The claim key or if null, all the claim values. (default: null)
+     * @param mixed $default Default value if claim key doesn't exist. (default: null)
      * @return mixed
      */
-    public function get($key = null)
+    public function get($key = null, $default = null)
     {
-        return ! is_null($key) ? $this->claims->get($key) : collect($this->claims);
+        return ! is_null($key) ? $this->claims->get($key, $default) : collect($this->claims);
     }
 
     /**
