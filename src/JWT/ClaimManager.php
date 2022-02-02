@@ -41,7 +41,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Gets a claim value.
      *
-     * @param string|null $key The claim key or if null, all the claim values. (default: null)
+     * @param string|null $key The claim key or if null, all the claims. (default: null)
      * @param mixed $default Default value if claim key doesn't exist. (default: null)
      * @return mixed
      */
