@@ -224,7 +224,7 @@ class TestValidator
     public function assertExpired()
     {
         return $this->assertRuleFails(
-            new Rules\Claims\Before('exp', 0, false),
+            new Rules\Claims\Past('exp', 0, false),
             'Failed asserting that the JWT is expired.'
         );
     }
@@ -237,7 +237,7 @@ class TestValidator
     public function assertNotExpired()
     {
         return $this->assertRulePasses(
-            new Rules\Claims\Before('exp', 0, false),
+            new Rules\Claims\Future('exp', 0, false),
             'Failed asserting that the JWT is not expired.'
         );
     }
