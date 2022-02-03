@@ -2,8 +2,6 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use DateTimeInterface;
-
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
@@ -226,7 +224,8 @@ class TestValidator
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function assertPastPasses($key, $leeway = 0, $inHeader = false) {
+    public function assertPastPasses($key, $leeway = 0, $inHeader = false)
+    {
         return $this->assertRulePasses(
             new Rules\Claims\Past($key, $leeway, $inHeader),
             'Failed asserting that the JWT claim is in the past.'
@@ -241,7 +240,8 @@ class TestValidator
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function assertPastFails($key, $leeway = 0, $inHeader = false) {
+    public function assertPastFails($key, $leeway = 0, $inHeader = false)
+    {
         return $this->assertRuleFails(
             new Rules\Claims\Past($key, $leeway, $inHeader),
             'Failed asserting that the JWT claim is in the past.'
@@ -256,7 +256,8 @@ class TestValidator
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function assertFuturePasses($key, $leeway = 0, $inHeader = false) {
+    public function assertFuturePasses($key, $leeway = 0, $inHeader = false)
+    {
         return $this->assertRulePasses(
             new Rules\Claims\Future($key, $leeway, $inHeader),
             'Failed asserting that the JWT claim is in the future.'
@@ -271,7 +272,8 @@ class TestValidator
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function assertFutureFails($key, $leeway = 0, $inHeader = false) {
+    public function assertFutureFails($key, $leeway = 0, $inHeader = false)
+    {
         return $this->assertRuleFails(
             new Rules\Claims\Future($key, $leeway, $inHeader),
             'Failed asserting that the JWT claim is in the future.'

@@ -96,7 +96,7 @@ class ValidateTest extends TestCase
         LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
             $validator
                 ->assertPasses()
-                ->assertCustomClaimPasses('abc', function($value) {
+                ->assertCustomClaimPasses('abc', function ($value) {
                     // Should not reach here because claim 'abc' doesn't exist.
                     return false;
                 });
