@@ -141,7 +141,7 @@ return [
                  * The model used for JWT authentication.
                  * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
                  */
-                'model' => \LittleApps\LittleJWT\Testing\Models\User::class,
+                'model' => \App\Models\User::class,
             ],
             'fingerprint' => [
                 'adapter' => \LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,

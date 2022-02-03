@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -101,7 +102,9 @@ class TestCase extends Orchestra
         $migration->up();
 
         $littlejwt = include __DIR__.'/../config/littlejwt.php';
+
         config()->set('littlejwt', $littlejwt);
+        config()->set('littlejwt.guard.adapters.generic.model', \LittleApps\LittleJWT\Testing\Models\User::class);
 
         config()->set('database.default', 'testing');
         config()->set('auth.defaults.guard', 'jwt');
