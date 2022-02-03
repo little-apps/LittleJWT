@@ -149,6 +149,10 @@ return [
                  * Name of the cookie to hold the fingerprint.
                  */
                 'cookie' => 'fingerprint',
+                /**
+                 * How long the fingerprint cookie should live for (in minutes).
+                 * If 0, the cookie has no expiry.
+                 */
                 'ttl' => 0,
             ],
         ],
