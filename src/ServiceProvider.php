@@ -224,7 +224,7 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function getAdapterConfig(string $adapter)
     {
-        return $this->app['config']["auth.guards.jwt.adapters.{$adapter}"];
+        return $this->app['config']["littlejwt.guard.adapters.{$adapter}"];
     }
 
     /**
@@ -244,7 +244,7 @@ class ServiceProvider extends PackageServiceProvider
 
             $provider = Auth::createUserProvider($config['provider'] ?? null);
 
-            $adapterConfig = $config['adapters'][$config['adapter']];
+            $adapterConfig = $this->getAdapterConfig($config['adapter']);
             $adapter = $app->make($adapterConfig['adapter']);
 
             $guard = new Guard($app, $adapter, $provider, $app['request'], $config);

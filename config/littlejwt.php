@@ -128,6 +128,32 @@ return [
         ]
     ],
     /**
+     * Configuration options for the LittleJWT guard.
+     */
+    'guard' => [
+        /**
+         * An adapter handles validating JWTs and is attached to the guard.
+         */
+        'adapters' => [
+            'generic' => [
+                'adapter' => \LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
+                /**
+                 * The model used for JWT authentication.
+                 * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
+                 */
+                'model' => \LittleApps\LittleJWT\Testing\Models\User::class,
+            ],
+            'fingerprint' => [
+                'adapter' => \LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,
+                /**
+                 * Name of the cookie to hold the fingerprint.
+                 */
+                'cookie' => 'fingerprint',
+                'ttl' => 0,
+            ],
+        ],
+    ],
+    /**
      * Blacklist configuration options.
      */
     'blacklist' => [

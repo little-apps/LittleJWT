@@ -109,29 +109,7 @@ class TestCase extends Orchestra
             'driver' => 'littlejwt',
             'adapter' => 'fingerprint',
             'provider' => 'users',
-            /**
-             * The input key in the request to use.
-             */
             'input_key' => 'token',
-
-            'adapters' => [
-                'generic' => [
-                    'adapter' => \LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
-                    /**
-                    * The model used for JWT authentication.
-                    * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
-                    */
-                    'model' => \LittleApps\LittleJWT\Testing\Models\User::class,
-                ],
-                'fingerprint' => [
-                    'adapter' => \LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,
-                    /**
-                    * Name of the cookie to hold the fingerprint.
-                    */
-                    'cookie' => 'fingerprint',
-                    'ttl' => 0,
-                ],
-            ],
         ]);
     }
 }
