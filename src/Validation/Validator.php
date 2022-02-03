@@ -198,10 +198,10 @@ class Validator
     /**
      * Adds callback that is called with JWT and returns true/false.
      *
-     * @param Closure $callback
+     * @param callable(JWT $jwt):boolean $callback
      * @return $this
      */
-    public function callback(Closure $callback)
+    public function callback(callable $callback)
     {
         return $this->addRule(new Rules\Callback($callback));
     }

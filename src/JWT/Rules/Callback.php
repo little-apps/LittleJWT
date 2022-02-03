@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules;
 
-use Closure;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 
 use LittleApps\LittleJWT\JWT\JWT;
@@ -16,9 +15,9 @@ class Callback extends Rule
     /**
      * Constructor for Callback rule.
      *
-     * @param Closure $callback Callback that recieves the JWT and returns true/false or throws a RuleFailedException.
+     * @param callable $callback Callback that recieves the JWT and returns true/false or throws a RuleFailedException.
      */
-    public function __construct(Closure $callback)
+    public function __construct(callable $callback)
     {
         $this->callback = $callback;
     }
