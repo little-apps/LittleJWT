@@ -76,7 +76,7 @@ class ValidateTest extends TestCase
         LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
             $validator
                 ->assertFails()
-                ->assertExpired()
+                ->assertFutureFails('exp')
                 ->assertErrorCount(1)
                 ->assertErrorKeyExists('exp');
         });

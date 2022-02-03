@@ -2,6 +2,8 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
+use DateTimeInterface;
+
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
@@ -217,28 +219,62 @@ class TestValidator
     }
 
     /**
-     * Assert the JWT is expired.
+     * Asserts the JWT payload/header claim is in the past.
      *
+     * @param string $key Claim key
+     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function assertExpired()
-    {
-        return $this->assertRuleFails(
-            new Rules\Claims\Past('exp', 0, false),
-            'Failed asserting that the JWT is expired.'
+    public function assertPastPasses($key, $leeway = 0, $inHeader = false) {
+        return $this->assertRulePasses(
+            new Rules\Claims\Past($key, $leeway, $inHeader),
+            'Failed asserting that the JWT claim is in the past.'
         );
     }
 
     /**
-     * Assert the JWT is not expired.
+     * Asserts the JWT payload/header claim is not in the past.
      *
+     * @param string $key Claim key
+     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function assertNotExpired()
-    {
+    public function assertPastFails($key, $leeway = 0, $inHeader = false) {
+        return $this->assertRuleFails(
+            new Rules\Claims\Past($key, $leeway, $inHeader),
+            'Failed asserting that the JWT claim is in the past.'
+        );
+    }
+
+    /**
+     * Asserts the JWT payload/header claim is in the future.
+     *
+     * @param string $key Claim key
+     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @return $this
+     */
+    public function assertFuturePasses($key, $leeway = 0, $inHeader = false) {
         return $this->assertRulePasses(
-            new Rules\Claims\Future('exp', 0, false),
-            'Failed asserting that the JWT is not expired.'
+            new Rules\Claims\Future($key, $leeway, $inHeader),
+            'Failed asserting that the JWT claim is in the future.'
+        );
+    }
+
+    /**
+     * Asserts the JWT payload/header claim is not in the future.
+     *
+     * @param string $key Claim key
+     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @return $this
+     */
+    public function assertFutureFails($key, $leeway = 0, $inHeader = false) {
+        return $this->assertRuleFails(
+            new Rules\Claims\Future($key, $leeway, $inHeader),
+            'Failed asserting that the JWT claim is in the future.'
         );
     }
 
