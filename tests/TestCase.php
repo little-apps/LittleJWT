@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
