@@ -2,15 +2,13 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
-use Closure;
-
 use LittleApps\LittleJWT\JWT\JWT;
 
 class Callback extends Rule
 {
     protected $callback;
 
-    public function __construct($key, Closure $callback, $inHeader)
+    public function __construct($key, callable $callback, $inHeader)
     {
         parent::__construct($key, $inHeader);
 

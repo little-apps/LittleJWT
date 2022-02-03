@@ -210,11 +210,11 @@ class Validator
      * Adds callback that is called with claim value and returns true/false.
      *
      * @param string $key Claim key
-     * @param Closure $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JWT $jwt):boolean $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
-    public function claimCallback($key, Closure $callback, $inHeader = false)
+    public function claimCallback($key, callable $callback, $inHeader = false)
     {
         return $this->addRule(new Rules\Claims\Callback($key, $callback, $inHeader));
     }
