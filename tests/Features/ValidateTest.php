@@ -83,6 +83,27 @@ class ValidateTest extends TestCase
     }
 
     /**
+     * Tests validating a claim that doesn't exist.
+     *
+     * @return void
+     */
+    public function test_validate_missing_claim()
+    {
+        LittleJWT::fake();
+
+        $jwt = LittleJWT::createJWT();
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+            $validator
+                ->assertPasses()
+                ->assertCustomClaimPasses('abc', function($value) {
+                    // Should not reach here because claim 'abc' doesn't exist.
+                    return false;
+                });
+        });
+    }
+
+    /**
      * Tests that a JWT has an invalid signature.
      *
      * @return void
