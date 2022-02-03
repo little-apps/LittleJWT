@@ -52,7 +52,7 @@ class FingerprintAdapter extends AbstractAdapter
 
         return
             ResponseFactory::withJwt($jwt)
-                ->withCookie($this->getFingerprintCookieName(), $fingerprint);
+                ->withCookie($this->getFingerprintCookieName(), $fingerprint, $this->getFingerprintCookieTtl());
     }
 
     /**
@@ -73,6 +73,16 @@ class FingerprintAdapter extends AbstractAdapter
     public function getFingerprintCookieName()
     {
         return $this->config['cookie'] ?? 'fingerprint';
+    }
+
+    /**
+     * Gets the cookies time to live.
+     *
+     * @return int Time to live (in minutes). 0 means forever.
+     */
+    public function getFingerprintCookieTtl()
+    {
+        return $this->config['ttl'] ?? 0;
     }
 
     /**
