@@ -389,6 +389,66 @@ class TestValidator
     }
 
     /**
+     * Asserts a custom check passes.
+     *
+     * @param callable(JWT $jwt):boolean $callback
+     * @return $this
+     */
+    public function assertCustomPasses(callable $callback)
+    {
+        return $this->assertRulePasses(
+            new Rules\Callback($callback),
+            'Failed asserting that the custom check passes.'
+        );
+    }
+
+    /**
+     * Asserts a custom check fails.
+     *
+     * @param callable(JWT $jwt):boolean $callback
+     * @return $this
+     */
+    public function assertCustomFails(callable $callback)
+    {
+        return $this->assertRuleFails(
+            new Rules\Callback($callback),
+            'Failed asserting that the custom check fails.'
+        );
+    }
+
+    /**
+     * Asserts a custom claim check passes.
+     *
+     * @param string $key Claim key
+     * @param callable(mixed $value, string $key, JWT $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @return $this
+     */
+    public function assertCustomClaimPasses($key, callable $callback, $inHeader = false)
+    {
+        return $this->assertRulePasses(
+            new Rules\Claims\Callback($key, $callback, $inHeader),
+            'Failed asserting that the custom check passes.'
+        );
+    }
+
+    /**
+     * Asserts a custom claim check fails.
+     *
+     * @param string $key Claim key
+     * @param callable(mixed $value, string $key, JWT $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @return $this
+     */
+    public function assertCustomClaimFails($key, callable $callback, $inHeader = false)
+    {
+        return $this->assertRuleFails(
+            new Rules\Claims\Callback($key, $callback, $inHeader),
+            'Failed asserting that the custom check fails.'
+        );
+    }
+
+    /**
      * Gets callback to run after validation is done.
      *
      * @return \Closure
