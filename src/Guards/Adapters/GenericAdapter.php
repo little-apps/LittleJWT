@@ -9,12 +9,15 @@ class GenericAdapter extends AbstractAdapter
     use Concerns\BuildsJwt;
 
     /**
-     * Builds the Validatable used to validate a JWT.
+     * Gets a callback that recieves a Validator to specify the JWT validations.
      *
-     * @return \LittleApps\LittleJWT\Contracts\Validatable
+     * @abstract
+     * @return callable
      */
-    protected function buildValidatable()
+    protected function getValidatorCallback()
     {
-        return new Validators\GuardValidator($this->container, $this->config['model']);
+        $validatable = new Validators\GuardValidator($this->container, $this->config['model']);
+
+        return [$validatable, 'validate'];
     }
 }

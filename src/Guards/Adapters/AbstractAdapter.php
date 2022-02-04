@@ -61,9 +61,9 @@ abstract class AbstractAdapter implements GuardAdapter
      */
     public function validateJwt(JWT $jwt)
     {
-        $validatable = $this->buildValidatable();
+        $callback = $this->getValidatorCallback();
 
-        return $this->jwt->validateJWT($jwt, [$validatable, 'validate']);
+        return $this->jwt->validateJWT($jwt, $callback);
     }
 
     /**
@@ -79,10 +79,10 @@ abstract class AbstractAdapter implements GuardAdapter
     }
 
     /**
-     * Builds the Validatable used to validate a JWT.
+     * Gets a callback that recieves a Validator to specify the JWT validations.
      *
      * @abstract
-     * @return \LittleApps\LittleJWT\Contracts\Validatable
+     * @return callable
      */
-    abstract protected function buildValidatable();
+    abstract protected function getValidatorCallback();
 }

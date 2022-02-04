@@ -117,17 +117,20 @@ class FingerprintAdapter extends AbstractAdapter
     }
 
     /**
-     * Builds the Validator used to validate a JWT and retrieve a user.
+     * Gets a callback that recieves a Validator to specify the JWT validations.
      *
-     * @return \LittleApps\LittleJWT\Contracts\Validatable
+     * @abstract
+     * @return callable
      */
-    protected function buildValidatable()
+    protected function getValidatorCallback()
     {
         $fingerprintHash = $this->hashFingerprint($this->getFingerprintCookieValue() ?? '');
 
-        return new Validators\StackValidator([
-            $this->baseAdapter->buildValidatable(),
+        $validatable = new Validators\StackValidator([
+            $this->baseAdapter->getValidatorCallback(),
             new Validators\FingerprintValidator($fingerprintHash),
         ]);
+
+        return [$validatable, 'validate'];
     }
 }
