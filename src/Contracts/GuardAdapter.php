@@ -19,7 +19,7 @@ interface GuardAdapter
     public function parseToken(string $token);
 
     /**
-     * Runs JWT through Validator.
+     * Validate the JWT.
      *
      * @param JWT $jwt
      * @return bool True if JWT is validated.
