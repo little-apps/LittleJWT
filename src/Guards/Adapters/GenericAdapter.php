@@ -11,7 +11,6 @@ class GenericAdapter extends AbstractAdapter
     /**
      * Gets a callback that receives a Validator to specify the JWT validations.
      *
-     * @abstract
      * @return callable
      */
     protected function getValidatorCallback()
