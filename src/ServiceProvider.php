@@ -238,7 +238,6 @@ class ServiceProvider extends PackageServiceProvider
             // Return an instance of Illuminate\Contracts\Auth\Guard...
             $config = array_merge([
                 'input_key' => 'token',
-                'model' => false,
                 'adapter' => 'generic',
             ], $config);
 
