@@ -136,6 +136,10 @@ return [
          */
         'adapters' => [
             'generic' => [
+                /**
+                 * The class for the adapter.
+                 * This should not be changed.
+                 */
                 'adapter' => \LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
                 /**
                  * The model used for JWT authentication.
@@ -144,6 +148,10 @@ return [
                 'model' => \App\Models\User::class,
             ],
             'fingerprint' => [
+                /**
+                 * The class for the adapter.
+                 * This should not be changed.
+                 */
                 'adapter' => \LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,
                 /**
                  * Name of the cookie to hold the fingerprint.
