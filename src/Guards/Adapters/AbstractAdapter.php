@@ -79,7 +79,7 @@ abstract class AbstractAdapter implements GuardAdapter
     }
 
     /**
-     * Gets a callback that recieves a Validator to specify the JWT validations.
+     * Gets a callback that receives a Validator to specify the JWT validations.
      *
      * @abstract
      * @return callable
