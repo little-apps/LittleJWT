@@ -70,7 +70,9 @@ if ($passes) {
 }
 ```
 
-See the [GitHub wiki](https://github.com/little-apps/LittleJWT/wiki) for further documentation.
+## Further Documentation
+
+Further documentation is located at [docs.getlittlejwt.com](https://docs.getlittlejwt.com/).
 
 ## Testing
 
