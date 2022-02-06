@@ -1,4 +1,4 @@
-# LittleJWT
+![Imgur](https://i.imgur.com/N3D0oUY.png?1)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/little-apps/littlejwt/run-tests?label=tests)](https://github.com/little-apps/littlejwt/actions?query=workflow%3Arun-tests+branch%3Amain)
