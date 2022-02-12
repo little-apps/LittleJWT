@@ -14,22 +14,22 @@ class GuardValidator implements Validatable
 
     protected $app;
 
-    protected $model;
+    protected $config;
 
-    public function __construct(Application $app, string $model)
+    public function __construct(Application $app, array $config)
     {
         $this->app = $app;
-        $this->model = $model;
+        $this->config = $config;
     }
 
     public function validate(Validator $validator)
     {
         $contains = ['sub'];
 
-        if (! is_null($this->model)) {
+        if (! empty($this->config['model'])) {
             array_push($contains, 'prv');
 
-            $validator->secureEquals('prv', $this->hashSubjectModel($this->model));
+            $validator->secureEquals('prv', $this->hashSubjectModel($this->config['model']));
         }
 
         $validator->contains($contains);

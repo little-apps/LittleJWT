@@ -74,6 +74,11 @@ return [
     'builders' => [
         'default' => [
             /**
+             * Buildable instance to use for this builder.
+             */
+            'buildable' => \LittleApps\LittleJWT\Build\Builders\DefaultBuilder::class,
+
+            /**
              * Value to use for the 'alg' claim.
              * If null, the name of algorithm class specified in the littlejwt.algorithm key is used.
              */
@@ -125,7 +130,19 @@ return [
              * Expected value for the 'aud' claim.
              */
             'aud' => env('APP_NAME', 'Laravel'),
-        ]
+        ],
+        'guard' => [
+            /**
+             * Validatable instance to use for this validator.
+             */
+            'validatable' => \LittleApps\LittleJWT\Validation\Validators\GuardValidator::class,
+
+            /**
+             * The model used for JWT authentication.
+             * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
+             */
+            'model' => \App\Models\User::class,
+        ],
     ],
     /**
      * Configuration options for the LittleJWT guard.
@@ -141,11 +158,6 @@ return [
                  * This should not be changed.
                  */
                 'adapter' => \LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
-                /**
-                 * The model used for JWT authentication.
-                 * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
-                 */
-                'model' => \App\Models\User::class,
             ],
             'fingerprint' => [
                 /**
@@ -153,10 +165,12 @@ return [
                  * This should not be changed.
                  */
                 'adapter' => \LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,
+
                 /**
                  * Name of the cookie to hold the fingerprint.
                  */
                 'cookie' => 'fingerprint',
+
                 /**
                  * How long the fingerprint cookie should live for (in minutes).
                  * If 0, the cookie has no expiry.

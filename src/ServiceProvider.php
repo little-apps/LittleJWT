@@ -147,24 +147,20 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerBuilders()
     {
-        $this->app->singleton(Builders\DefaultBuilder::class, function ($app) {
-            $config = $app->config->get('littlejwt.builders.default', []);
+        $builders = $this->app->config->get('littlejwt.builders', []);
 
-            if (is_null($config['alg'])) {
-                $config['alg'] = $app['littlejwt.algorithm']->name();
-            }
+        foreach ($builders as $builder => $options) {
+            if (!isset($options['buildable']))
+                continue;
 
-            return new Builders\DefaultBuilder($app, $config);
-        });
+            $buildable = $options['buildable'];
 
-        $this->app->singleton(Builders\GuardBuilder::class, function ($app) {
-            $config = $app->config->get('littlejwt', []);
+            $config = array_diff_key($options, array_flip(['buildable']));
 
-            return new Builders\GuardBuilder($app, $config);
-        });
-
-        $this->app->alias(Builders\DefaultBuilder::class, 'littlejwt.builders.default');
-        $this->app->alias(Builders\GuardBuilder::class, 'littlejwt.builders.guard');
+            $this->app->singleton("littlejwt.builders.{$builder}", function ($app) use ($buildable, $config) {
+                return $app->make($buildable, ['config' => $config]);
+            });
+        }
     }
 
     /**
@@ -174,23 +170,20 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerValidators()
     {
-        $this->app->singleton(Validators\DefaultValidator::class, function ($app) {
-            $config = $app->config->get('littlejwt.validators.default', []);
+        $validators = $this->app->config->get('littlejwt.validators', []);
 
-            if (is_null($config['alg'])) {
-                $config['alg'] = $app['littlejwt.algorithm']->name();
-            }
+        foreach ($validators as $validator => $options) {
+            if (!isset($options['validatable']))
+                continue;
 
-            return new Validators\DefaultValidator($app, $config);
-        });
+            $validatable = $options['validatable'];
 
-        $this->app->singleton(Validators\GuardValidator::class, function ($app) {
-            $config = $app->config->get('littlejwt', []);
+            $config = array_diff_key($options, array_flip(['validatable']));
 
-            return new Validators\GuardValidator($app, $config);
-        });
-
-        $this->app->alias(Validators\GuardValidator::class, 'littlejwt.validators.guard');
+            $this->app->singleton("littlejwt.validators.{$validator}", function ($app) use ($validatable, $config) {
+                return $app->make($validatable, ['config' => $config]);
+            });
+        }
     }
 
     /**

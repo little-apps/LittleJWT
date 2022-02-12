@@ -2,8 +2,6 @@
 
 namespace LittleApps\LittleJWT\Guards\Adapters;
 
-use LittleApps\LittleJWT\Validation\Validators;
-
 class GenericAdapter extends AbstractAdapter
 {
     use Concerns\BuildsJwt;
@@ -15,7 +13,7 @@ class GenericAdapter extends AbstractAdapter
      */
     protected function getValidatorCallback()
     {
-        $validatable = new Validators\GuardValidator($this->container, $this->config['model']);
+        $validatable = $this->container->make('littlejwt.validators.guard');
 
         return [$validatable, 'validate'];
     }

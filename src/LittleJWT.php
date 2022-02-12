@@ -172,7 +172,9 @@ class LittleJWT
      */
     protected function getDefaultBuildableCallback()
     {
-        $buildable = $this->app->make(DefaultBuilder::class);
+        $builder = sprintf('littlejwt.builders.%s', $this->app->config->get('littlejwt.defaults.builder'));
+
+        $buildable = $this->app[$builder];
 
         return [$buildable, 'build'];
     }
@@ -184,7 +186,9 @@ class LittleJWT
      */
     protected function getDefaultValidatorCallback()
     {
-        $validatable = $this->app->make(DefaultValidator::class);
+        $validator = sprintf('littlejwt.validators.%s', $this->app->config->get('littlejwt.defaults.validator'));
+
+        $validatable = $this->app->make($validator);
 
         return [$validatable, 'validate'];
     }
