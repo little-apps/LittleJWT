@@ -8,6 +8,6 @@ class InvalidTokenException extends HttpException
 {
     public function __construct($message = null)
     {
-        parent::__construct($message ?? 'The provided JWT is invalid.');
+        parent::__construct(401, $message ?? 'The provided JWT is invalid.');
     }
 }
