@@ -7,14 +7,12 @@ use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Build\Build;
-use LittleApps\LittleJWT\Build\Builders\DefaultBuilder;
 use LittleApps\LittleJWT\Build\Builders\StackBuilder;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Validation\Valid;
-use LittleApps\LittleJWT\Validation\Validators\DefaultValidator;
 use LittleApps\LittleJWT\Validation\Validators\StackValidator;
 
 class LittleJWT

@@ -35,10 +35,11 @@ class ServiceProvider extends PackageServiceProvider
             ->hasMigration('create_jwt_blacklist_table')
             ->hasCommand(GenerateSecretCommand::class);
 
-        if (! $this->app->runningUnitTests())
+        if (! $this->app->runningUnitTests()) {
             $package->hasConfigFile();
-        else
+        } else {
             $this->mergeConfigFrom($package->basePath('/../config/littlejwt.testing.php'), 'littlejwt');
+        }
     }
 
     /**
@@ -154,8 +155,9 @@ class ServiceProvider extends PackageServiceProvider
         $builders = $this->app->config->get('littlejwt.builders', []);
 
         foreach ($builders as $builder => $options) {
-            if (!isset($options['buildable']))
+            if (! isset($options['buildable'])) {
                 continue;
+            }
 
             $buildable = $options['buildable'];
 
@@ -177,8 +179,9 @@ class ServiceProvider extends PackageServiceProvider
         $validators = $this->app->config->get('littlejwt.validators', []);
 
         foreach ($validators as $validator => $options) {
-            if (!isset($options['validatable']))
+            if (! isset($options['validatable'])) {
                 continue;
+            }
 
             $validatable = $options['validatable'];
 
