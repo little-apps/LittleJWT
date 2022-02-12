@@ -115,6 +115,11 @@ return [
     'validators' => [
         'default' => [
             /**
+             * Validatable instance to use for this validator.
+             */
+            'validatable' => \LittleApps\LittleJWT\Validation\Validators\DefaultValidator::class,
+
+            /**
              * Claim keys required in the header and payload.
              */
             'required' => [
