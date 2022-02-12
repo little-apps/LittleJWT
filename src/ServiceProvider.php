@@ -221,7 +221,8 @@ class ServiceProvider extends PackageServiceProvider
      *
      * @return void
      */
-    protected function registerMiddleware() {
+    protected function registerMiddleware()
+    {
         $this->app['router']->aliasMiddleware('validtoken', ValidToken::class);
     }
 

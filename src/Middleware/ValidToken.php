@@ -26,7 +26,7 @@ class ValidToken
     {
         $token = $this->getTokenForRequest($request);
 
-        if (is_null($token) || !$this->validate($token, $validators)) {
+        if (is_null($token) || ! $this->validate($token, $validators)) {
             $this->invalid();
         }
 
@@ -38,11 +38,13 @@ class ValidToken
      *
      * @param string $token
      * @param iterable $validators
-     * @return boolean
+     * @return bool
      */
-    protected function validate($token, iterable $validators) {
-        if (empty($validators))
+    protected function validate($token, iterable $validators)
+    {
+        if (empty($validators)) {
             return LittleJWT::validateToken($token);
+        }
 
         $stack = [];
 
@@ -62,7 +64,8 @@ class ValidToken
      *
      * @throws InvalidTokenException
      */
-    protected function invalid() {
+    protected function invalid()
+    {
         throw new InvalidTokenException();
     }
 }
