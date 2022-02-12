@@ -19,6 +19,7 @@ use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\Middleware\ValidToken;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 
 use Spatie\LaravelPackageTools\Package;
@@ -54,6 +55,7 @@ class ServiceProvider extends PackageServiceProvider
         $this->registerBuilders();
         $this->registerValidators();
         $this->registerGuardAdapters();
+        $this->registerMiddleware();
     }
 
     /**
@@ -212,6 +214,15 @@ class ServiceProvider extends PackageServiceProvider
 
             return new Adapters\FingerprintAdapter($app, $jwt, $generic, $config);
         });
+    }
+
+    /**
+     * Registers the middleware.
+     *
+     * @return void
+     */
+    protected function registerMiddleware() {
+        $this->app['router']->aliasMiddleware('validtoken', ValidToken::class);
     }
 
     /**
