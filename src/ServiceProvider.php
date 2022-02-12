@@ -32,9 +32,13 @@ class ServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('littlejwt')
-            ->hasConfigFile()
             ->hasMigration('create_jwt_blacklist_table')
             ->hasCommand(GenerateSecretCommand::class);
+
+        if (! $this->app->runningUnitTests())
+            $package->hasConfigFile();
+        else
+            $this->mergeConfigFrom($package->basePath('/../config/littlejwt.testing.php'), 'littlejwt');
     }
 
     /**
