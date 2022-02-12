@@ -71,6 +71,18 @@ return [
             ]
         ]
     ],
+    'defaults' => [
+        /**
+         * The default builder to use by createToken and createJWT in LittleJWT.
+         */
+        'builder' => 'default',
+
+        /**
+         * The default validator to use by validateToken and validateJWT in LittleJWT.
+         */
+        'validator' => 'default'
+    ],
+
     'builders' => [
         'default' => [
             /**
