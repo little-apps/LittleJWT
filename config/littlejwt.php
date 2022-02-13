@@ -86,7 +86,7 @@ return [
     'buildables' => [
         'default' => [
             /**
-             * Buildable instance to use for this builder.
+             * Fully qualified buildable class to use.
              */
             'buildable' => \LittleApps\LittleJWT\Build\Buildables\DefaultBuildable::class,
 
