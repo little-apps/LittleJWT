@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Guards\Adapters\Concerns;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 use Illuminate\Support\Facades\Response as ResponseFactory;
-use LittleApps\LittleJWT\Build\Builders\GuardBuilder;
+use LittleApps\LittleJWT\Build\Buildables\GuardBuildable;
 
 trait BuildsJwt
 {
@@ -19,9 +19,9 @@ trait BuildsJwt
      */
     public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
     {
-        $builder = new GuardBuilder($this->container, $user, $payloadClaims, $headerClaims);
+        $buildable = new GuardBuildable($this->container, $user, $payloadClaims, $headerClaims);
 
-        return $this->jwt->createJWT([$builder, 'build']);
+        return $this->jwt->createJWT([$buildable, 'build']);
     }
 
     /**

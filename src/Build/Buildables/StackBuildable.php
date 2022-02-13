@@ -1,11 +1,11 @@
 <?php
 
-namespace LittleApps\LittleJWT\Build\Builders;
+namespace LittleApps\LittleJWT\Build\Buildables;
 
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class StackBuilder implements Buildable
+class StackBuildable implements Buildable
 {
     protected $stack;
 

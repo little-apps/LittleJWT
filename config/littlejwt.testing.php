@@ -75,7 +75,7 @@ return [
         /**
          * The default builder to use by createToken and createJWT in LittleJWT.
          */
-        'builder' => 'default',
+        'buildable' => 'default',
 
         /**
          * The default validatable to use by validateToken and validateJWT in LittleJWT.
@@ -83,12 +83,12 @@ return [
         'validatable' => 'default'
     ],
 
-    'builders' => [
+    'buildables' => [
         'default' => [
             /**
              * Buildable instance to use for this builder.
              */
-            'buildable' => \LittleApps\LittleJWT\Build\Builders\DefaultBuilder::class,
+            'buildable' => \LittleApps\LittleJWT\Build\Buildables\DefaultBuildable::class,
 
             /**
              * Value to use for the 'alg' claim.

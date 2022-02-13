@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleApps\LittleJWT\Build\Builders;
+namespace LittleApps\LittleJWT\Build\Buildables;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Foundation\Application;
@@ -12,7 +12,7 @@ use LittleApps\LittleJWT\Concerns\HasUser;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class GuardBuilder implements Buildable
+class GuardBuildable implements Buildable
 {
     use HashableSubjectModel;
     use HasUser;
@@ -24,7 +24,7 @@ class GuardBuilder implements Buildable
     protected $headerClaims;
 
     /**
-     * Constructs a GuardBuilder instance.
+     * Constructs a GuardBuildable instance.
      *
      * @param Application $app Application container
      * @param Authenticatable $user User to use for subject in JWT.

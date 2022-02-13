@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleApps\LittleJWT\Build\Builders;
+namespace LittleApps\LittleJWT\Build\Buildables;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Carbon;
@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class DefaultBuilder implements Buildable
+class DefaultBuildable implements Buildable
 {
     protected $app;
 

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Build\Build;
-use LittleApps\LittleJWT\Build\Builders\StackBuilder;
+use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
@@ -70,7 +70,7 @@ class LittleJWT
             array_push($callbacks, $callback);
         }
 
-        $buildable = new StackBuilder($callbacks);
+        $buildable = new StackBuildable($callbacks);
 
         return $build->passBuilderThru($buildable)->build();
     }
@@ -170,7 +170,7 @@ class LittleJWT
      */
     protected function getDefaultBuildableCallback()
     {
-        $alias = sprintf('littlejwt.builders.%s', $this->app->config->get('littlejwt.defaults.builder'));
+        $alias = sprintf('littlejwt.buildables.%s', $this->app->config->get('littlejwt.defaults.buildable'));
 
         $buildable = $this->app->make($alias);
 

@@ -52,7 +52,7 @@ class ServiceProvider extends PackageServiceProvider
         $this->registerJoseLibrary();
         $this->registerFactories();
         $this->registerBlacklistManager();
-        $this->registerBuilders();
+        $this->registerBuildables();
         $this->registerValidatables();
         $this->registerGuardAdapters();
         $this->registerMiddleware();
@@ -146,15 +146,15 @@ class ServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Registers the JWT builders.
+     * Registers the JWT buildables.
      *
      * @return void
      */
-    protected function registerBuilders()
+    protected function registerBuildables()
     {
-        $builders = $this->app->config->get('littlejwt.builders', []);
+        $buildables = $this->app->config->get('littlejwt.buildables', []);
 
-        foreach ($builders as $builder => $options) {
+        foreach ($buildables as $key => $options) {
             if (! isset($options['buildable'])) {
                 continue;
             }
@@ -163,7 +163,7 @@ class ServiceProvider extends PackageServiceProvider
 
             $config = array_diff_key($options, array_flip(['buildable']));
 
-            $this->app->singleton("littlejwt.builders.{$builder}", function ($app) use ($buildable, $config) {
+            $this->app->singleton("littlejwt.buildables.{$key}", function ($app) use ($buildable, $config) {
                 return $app->make($buildable, ['config' => $config]);
             });
         }
