@@ -170,9 +170,9 @@ class LittleJWT
      */
     protected function getDefaultBuildableCallback()
     {
-        $builder = sprintf('littlejwt.builders.%s', $this->app->config->get('littlejwt.defaults.builder'));
+        $alias = sprintf('littlejwt.builders.%s', $this->app->config->get('littlejwt.defaults.builder'));
 
-        $buildable = $this->app[$builder];
+        $buildable = $this->app->make($alias);
 
         return [$buildable, 'build'];
     }
