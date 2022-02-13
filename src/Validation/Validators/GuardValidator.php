@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Validation\Validators;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 
 use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
 use LittleApps\LittleJWT\Contracts\Validatable;
@@ -25,6 +26,12 @@ class GuardValidator implements Validatable
     public function validate(Validator $validator)
     {
         $contains = ['sub'];
+
+        if ($this->config['exists']) {
+            $validator->claimCallback('sub', function($value) {
+                return !is_null(Auth::getProvider()->retrieveById($value));
+            });
+        }
 
         if (! empty($this->config['model'])) {
             array_push($contains, 'prv');

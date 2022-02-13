@@ -153,6 +153,12 @@ return [
             'validatable' => \LittleApps\LittleJWT\Validation\Validators\GuardValidator::class,
 
             /**
+             * If true, the guard validator checks that a user exists with the 'sub' claim identifier.
+             * This is separate than the user provider retrieving the user to associate with the guard.
+             */
+            'exists' => true,
+
+            /**
              * The model used for JWT authentication.
              * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
              */
