@@ -13,7 +13,7 @@ Next, ensure the security issue is with Little JWT itself and not with any of pa
 | PHP JWT Framework | https://github.com/web-token/jwt-framework/issues/new/choose |
 
 
-If you're sure the vulnerability is caused by Electrux, [open an issue](https://github.com/little-apps/LittleJWT/issues/new) and include the following:
+If you're sure the vulnerability is caused by Little JWT, [open an issue](https://github.com/little-apps/LittleJWT/issues/new) and include the following:
 
  * **Who** the vulnerability affects.
  * **What** the security vulnerability is.
