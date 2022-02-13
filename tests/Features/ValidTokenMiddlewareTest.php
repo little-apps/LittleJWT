@@ -135,10 +135,11 @@ class ValidTokenMiddlewareTest extends TestCase
     public function test_valid_token_guard_missing_claim()
     {
         $jwt = LittleJWT::createJWT(function (Builder $builder) {
-            if ($this->faker->boolean)
+            if ($this->faker->boolean) {
                 $builder->sub($this->user->getAuthIdentifier());
-            else
+            } else {
                 $builder->prv($this->hashSubjectModel($this->user));
+            }
         });
 
         $response = $this

@@ -32,8 +32,8 @@ class GuardValidator implements Validatable
         $contains = ['sub'];
 
         if ($this->config['exists']) {
-            $validator->claimCallback('sub', function($value) {
-                return !is_null(Auth::getProvider()->retrieveById($value));
+            $validator->claimCallback('sub', function ($value) {
+                return ! is_null(Auth::getProvider()->retrieveById($value));
             });
         }
 

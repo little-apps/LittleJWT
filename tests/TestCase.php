@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 use LittleApps\LittleJWT\ServiceProvider;
-use LittleApps\LittleJWT\Middleware\ValidToken;
 
 use Orchestra\Testbench\TestCase as Orchestra;
 
