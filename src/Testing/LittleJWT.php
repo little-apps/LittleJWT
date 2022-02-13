@@ -9,8 +9,8 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
-use LittleApps\LittleJWT\Validation\Validator;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
+use LittleApps\LittleJWT\Validation\Validator;
 
 /**
  * @mixin \LittleApps\LittleJWT\LittleJWT
