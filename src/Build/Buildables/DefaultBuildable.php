@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Build\Buildables;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Carbon;
 
 use Illuminate\Support\Str;
@@ -13,7 +12,7 @@ class DefaultBuildable implements Buildable
 {
     protected $config;
 
-    public function __construct(Application $app, array $config)
+    public function __construct(array $config)
     {
         $this->config = $config;
     }
