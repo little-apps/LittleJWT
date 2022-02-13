@@ -7,11 +7,19 @@ return [
          * Options: secret, file, or none.
          */
         'default' => 'secret',
+
         /**
          * Configuration options for a secret key.
          */
         'secret' => [
+            /**
+             * The secret phrase to use.
+             * Do not share this with anyone.
+             * It's highly recommended you use the 'littlejwt:secret' artisan command to generate a secure phrase.
+             * Changing the phrase will cause previously generated JWTs to be invalid.
+             */
             'phrase' => env('LITTLEJWT_KEY_PHRASE', ''),
+
             /**
              * Whether to perform checks if phrase is not set or is empty.
              * It's NOT recommended to set this to true.
@@ -27,10 +35,14 @@ return [
              * Options: pem, p12, or crt.
              */
             'type' => 'pem',
+
             /**
              * Path to the key file.
+             * Do not share this with anyone.
+             * Changing the file will cause previously generated JWTs to be invalid.
              */
             'path' => '/path/to/my/key/file.pem',
+
             /**
              * The secret to use if the file is encrypted.
              * This does not apply to crt files.
@@ -226,11 +238,13 @@ return [
              * Table to store blacklisted JWTs.
              */
             'table' => 'jwt_blacklist',
+
             'columns' => [
                 /**
                  * The name of the column that holds the JWT identifier.
                  */
                 'identifier' => 'jwt',
+
                 /**
                  * The name of the column that holds the expiry date/time for the JWT.
                  */
