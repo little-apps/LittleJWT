@@ -19,7 +19,7 @@ trait BuildsJwt
      */
     public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
     {
-        $buildable = new GuardBuildable($this->container, $user, $payloadClaims, $headerClaims);
+        $buildable = new GuardBuildable($user, $payloadClaims, $headerClaims);
 
         return $this->jwt->createJWT([$buildable, 'build']);
     }

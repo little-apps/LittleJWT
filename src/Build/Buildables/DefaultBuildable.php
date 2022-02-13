@@ -11,13 +11,10 @@ use LittleApps\LittleJWT\Contracts\Buildable;
 
 class DefaultBuildable implements Buildable
 {
-    protected $app;
-
     protected $config;
 
     public function __construct(Application $app, array $config)
     {
-        $this->app = $app;
         $this->config = $config;
     }
 

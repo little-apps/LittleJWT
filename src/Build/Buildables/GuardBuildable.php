@@ -17,8 +17,6 @@ class GuardBuildable implements Buildable
     use HashableSubjectModel;
     use HasUser;
 
-    protected $app;
-
     protected $payloadClaims;
 
     protected $headerClaims;
@@ -26,14 +24,12 @@ class GuardBuildable implements Buildable
     /**
      * Constructs a GuardBuildable instance.
      *
-     * @param Application $app Application container
      * @param Authenticatable $user User to use for subject in JWT.
      * @param array $payloadClaims Any extra claims to include in the payload. (default: empty array)
      * @param array $headerClaims Any extra claims to include in the header. (default: empty array)
      */
-    public function __construct(Application $app, Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
+    public function __construct(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
     {
-        $this->app = $app;
         $this->user = $user;
         $this->payloadClaims = $payloadClaims;
         $this->headerClaims = $headerClaims;
