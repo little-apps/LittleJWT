@@ -9,6 +9,10 @@ use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
+/**
+ * The validator used by the guard.
+ * This class is not responsible for fetching the associated user.
+ */
 class GuardValidator implements Validatable
 {
     use HashableSubjectModel;
