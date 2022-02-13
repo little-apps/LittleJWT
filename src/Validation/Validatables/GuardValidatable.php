@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleApps\LittleJWT\Validation\Validators;
+namespace LittleApps\LittleJWT\Validation\Validatables;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +12,7 @@ use LittleApps\LittleJWT\Validation\Validator;
  * The validator used by the guard.
  * This class is not responsible for fetching the associated user.
  */
-class GuardValidator implements Validatable
+class GuardValidatable implements Validatable
 {
     use HashableSubjectModel;
 

@@ -13,7 +13,7 @@ use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Validation\Valid;
-use LittleApps\LittleJWT\Validation\Validators\StackValidator;
+use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
 class LittleJWT
 {
@@ -133,14 +133,14 @@ class LittleJWT
         $callbacks = [];
 
         if ($applyDefault) {
-            array_push($callbacks, $this->getDefaultValidatorCallback());
+            array_push($callbacks, $this->getDefaultValidatableCallback());
         }
 
         if (is_callable($callback)) {
             array_push($callbacks, $callback);
         }
 
-        $validatable = new StackValidator($callbacks);
+        $validatable = new StackValidatable($callbacks);
 
         return
             $this
@@ -182,11 +182,11 @@ class LittleJWT
      *
      * @return callable
      */
-    protected function getDefaultValidatorCallback()
+    protected function getDefaultValidatableCallback()
     {
-        $validator = sprintf('littlejwt.validators.%s', $this->app->config->get('littlejwt.defaults.validator'));
+        $alias = sprintf('littlejwt.validatables.%s', $this->app->config->get('littlejwt.defaults.validatable'));
 
-        $validatable = $this->app->make($validator);
+        $validatable = $this->app->make($alias);
 
         return [$validatable, 'validate'];
     }

@@ -1,11 +1,11 @@
 <?php
 
-namespace LittleApps\LittleJWT\Validation\Validators;
+namespace LittleApps\LittleJWT\Validation\Validatables;
 
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
-class FingerprintValidator implements Validatable
+class FingerprintValidatable implements Validatable
 {
     protected $fingerprintHash;
 

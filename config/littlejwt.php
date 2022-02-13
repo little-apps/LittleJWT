@@ -78,9 +78,9 @@ return [
         'builder' => 'default',
 
         /**
-         * The default validator to use by validateToken and validateJWT in LittleJWT.
+         * The default validatable to use by validateToken and validateJWT in LittleJWT.
          */
-        'validator' => 'default'
+        'validatable' => 'default'
     ],
 
     'builders' => [
@@ -111,12 +111,12 @@ return [
             'aud' => env('APP_NAME', 'Laravel'),
         ]
     ],
-    'validators' => [
+    'validatables' => [
         'default' => [
             /**
              * Validatable instance to use for this validator.
              */
-            'validatable' => \LittleApps\LittleJWT\Validation\Validators\DefaultValidator::class,
+            'validatable' => \LittleApps\LittleJWT\Validation\Validatables\DefaultValidatable::class,
 
             /**
              * Claim keys required in the header and payload.
@@ -150,7 +150,7 @@ return [
             /**
              * Validatable instance to use for this validator.
              */
-            'validatable' => \LittleApps\LittleJWT\Validation\Validators\GuardValidator::class,
+            'validatable' => \LittleApps\LittleJWT\Validation\Validatables\GuardValidatable::class,
 
             /**
              * If true, the guard validator checks that a user exists with the 'sub' claim identifier.

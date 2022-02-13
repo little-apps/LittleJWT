@@ -1,11 +1,11 @@
 <?php
 
-namespace LittleApps\LittleJWT\Validation\Validators;
+namespace LittleApps\LittleJWT\Validation\Validatables;
 
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
-class DefaultValidator implements Validatable
+class DefaultValidatable implements Validatable
 {
     protected $config;
 

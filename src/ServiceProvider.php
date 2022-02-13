@@ -53,7 +53,7 @@ class ServiceProvider extends PackageServiceProvider
         $this->registerFactories();
         $this->registerBlacklistManager();
         $this->registerBuilders();
-        $this->registerValidators();
+        $this->registerValidatables();
         $this->registerGuardAdapters();
         $this->registerMiddleware();
     }
@@ -174,11 +174,11 @@ class ServiceProvider extends PackageServiceProvider
      *
      * @return void
      */
-    protected function registerValidators()
+    protected function registerValidatables()
     {
-        $validators = $this->app->config->get('littlejwt.validators', []);
+        $validatables = $this->app->config->get('littlejwt.validatables', []);
 
-        foreach ($validators as $validator => $options) {
+        foreach ((array) $validatables as $key => $options) {
             if (! isset($options['validatable'])) {
                 continue;
             }
@@ -187,7 +187,7 @@ class ServiceProvider extends PackageServiceProvider
 
             $config = array_diff_key($options, array_flip(['validatable']));
 
-            $this->app->singleton("littlejwt.validators.{$validator}", function ($app) use ($validatable, $config) {
+            $this->app->singleton("littlejwt.validatables.{$key}", function ($app) use ($validatable, $config) {
                 return $app->make($validatable, ['config' => $config]);
             });
         }

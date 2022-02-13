@@ -13,7 +13,7 @@ class GenericAdapter extends AbstractAdapter
      */
     protected function getValidatorCallback()
     {
-        $validatable = $this->container->make('littlejwt.validators.guard');
+        $validatable = $this->container->make('littlejwt.validatables.guard');
 
         return [$validatable, 'validate'];
     }

@@ -10,7 +10,7 @@ use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validator;
-use LittleApps\LittleJWT\Validation\Validators\StackValidator;
+use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
 /**
  * @mixin \LittleApps\LittleJWT\LittleJWT
@@ -60,7 +60,7 @@ class LittleJWT
 
         $transformCallbacks = $this->createTransformCallback($callbacks);
 
-        $validatable = new StackValidator([$transformCallbacks]);
+        $validatable = new StackValidatable([$transformCallbacks]);
 
         return $this->littleJWT->validateJWT($jwt, [$validatable, 'validate'], $applyDefault);
     }

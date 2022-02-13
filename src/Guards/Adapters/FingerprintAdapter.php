@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\LittleJWT;
-use LittleApps\LittleJWT\Validation\Validators;
+use LittleApps\LittleJWT\Validation\Validatables;
 
 class FingerprintAdapter extends AbstractAdapter
 {
@@ -125,9 +125,9 @@ class FingerprintAdapter extends AbstractAdapter
     {
         $fingerprintHash = $this->hashFingerprint($this->getFingerprintCookieValue() ?? '');
 
-        $validatable = new Validators\StackValidator([
+        $validatable = new Validatables\StackValidatable([
             $this->baseAdapter->getValidatorCallback(),
-            new Validators\FingerprintValidator($fingerprintHash),
+            new Validatables\FingerprintValidatable($fingerprintHash),
         ]);
 
         return [$validatable, 'validate'];

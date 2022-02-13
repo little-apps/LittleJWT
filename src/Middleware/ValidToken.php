@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\App;
 use LittleApps\LittleJWT\Concerns\RequestHasToken;
 use LittleApps\LittleJWT\Exceptions\InvalidTokenException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\Validation\Validators\StackValidator;
+use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
 class ValidToken
 {
@@ -22,11 +22,11 @@ class ValidToken
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$validators)
+    public function handle(Request $request, Closure $next, ...$validatables)
     {
         $token = $this->getTokenForRequest($request);
 
-        if (is_null($token) || ! $this->validate($token, $validators)) {
+        if (is_null($token) || ! $this->validate($token, $validatables)) {
             $this->invalid();
         }
 
@@ -34,27 +34,27 @@ class ValidToken
     }
 
     /**
-     * Runs the token through the validators.
+     * Runs the token through the validatables.
      *
      * @param string $token
-     * @param iterable $validators
+     * @param iterable $validatables
      * @return bool
      */
-    protected function validate($token, iterable $validators)
+    protected function validate($token, iterable $validatables)
     {
-        if (empty($validators)) {
+        if (empty($validatables)) {
             return LittleJWT::validateToken($token);
         }
 
         $stack = [];
 
-        foreach ($validators as $validator) {
-            $validatable = App::make("littlejwt.validators.{$validator}");
+        foreach ($validatables as $key) {
+            $validatable = App::make("littlejwt.validatables.{$key}");
 
             array_push($stack, $validatable);
         }
 
-        $stackValidator = new StackValidator($stack);
+        $stackValidator = new StackValidatable($stack);
 
         return LittleJWT::validateToken($token, [$stackValidator, 'validate'], false);
     }
