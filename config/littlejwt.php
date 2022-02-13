@@ -159,8 +159,8 @@ return [
             'exists' => true,
 
             /**
-             * The model used for JWT authentication.
-             * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
+             * The expected value for the provider ('prv') payload claim.
+             * If false, the 'prv' payload claim is not validated (not recommended).
              */
             'model' => \App\Models\User::class,
         ],
