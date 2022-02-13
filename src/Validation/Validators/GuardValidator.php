@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Validation\Validators;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 
 use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
@@ -17,13 +16,10 @@ class GuardValidator implements Validatable
 {
     use HashableSubjectModel;
 
-    protected $app;
-
     protected $config;
 
-    public function __construct(Application $app, array $config)
+    public function __construct(array $config)
     {
-        $this->app = $app;
         $this->config = $config;
     }
 

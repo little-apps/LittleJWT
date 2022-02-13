@@ -2,20 +2,15 @@
 
 namespace LittleApps\LittleJWT\Validation\Validators;
 
-use Illuminate\Contracts\Foundation\Application;
-
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
 class DefaultValidator implements Validatable
 {
-    protected $app;
-
     protected $config;
 
-    public function __construct(Application $app, array $config)
+    public function __construct(array $config)
     {
-        $this->app = $app;
         $this->config = $config;
     }
 
