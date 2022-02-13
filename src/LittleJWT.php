@@ -15,6 +15,12 @@ use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
+/**
+ * This class is responsible for generating and validating JSON Web Tokens.
+ * @author Nick H <nick@little-apps.com>
+ * @license https://github.com/little-apps/LittleJWT/blob/main/LICENSE.md
+ * @see https://www.getlittlejwt.com
+ */
 class LittleJWT
 {
     /**
