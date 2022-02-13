@@ -1,6 +1,6 @@
 ![Imgur](https://i.imgur.com/N3D0oUY.png?1)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/little-apps/littlejwt)](https://packagist.org/packages/little-apps/littlejwt)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/little-apps/littlejwt/run-tests?label=tests)](https://github.com/little-apps/littlejwt/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/little-apps/littlejwt/Check%20&%20fix%20styling?label=code%20style)](https://github.com/little-apps/littlejwt/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
