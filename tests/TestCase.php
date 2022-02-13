@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 use LittleApps\LittleJWT\ServiceProvider;
+use LittleApps\LittleJWT\Middleware\ValidToken;
 
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -84,6 +85,14 @@ class TestCase extends Orchestra
 
                 $router->middleware('auth:jwt')->get('/user', function (Request $request) {
                     return $request->user();
+                });
+
+                $router->middleware('validtoken')->get('/middleware', function (Request $request) {
+                    return ['status' => true];
+                });
+
+                $router->middleware('validtoken:guard')->get('/middleware/guard', function (Request $request) {
+                    return ['status' => true];
                 });
             });
     }
