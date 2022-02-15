@@ -12,4 +12,4 @@ Initial release
 
 Works with Laravel 8.x and 9.x.
 
-**Full Changelog**: https://github.com/little-apps/LittleJWT/commits/v1.0.1
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.0.0...v1.0.1
