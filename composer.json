@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.0",
         "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^8.73",
+        "illuminate/contracts": "^8.0 || ^9.0",
 		"web-token/jwt-core": "^2.2",
         "web-token/jwt-easy": "^2.2",
         "web-token/jwt-key-mgmt": "^2.2",
