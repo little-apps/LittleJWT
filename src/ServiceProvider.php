@@ -19,7 +19,7 @@ use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\Middleware\ValidToken;
+use LittleApps\LittleJWT\Laravel\Middleware\ValidToken;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 
 use Spatie\LaravelPackageTools\Package;

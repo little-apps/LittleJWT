@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleApps\LittleJWT\Middleware;
+namespace LittleApps\LittleJWT\Laravel\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

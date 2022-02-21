@@ -86,7 +86,7 @@ class TestCase extends Orchestra
                     return $request->user();
                 });
 
-                $router->middleware(\LittleApps\LittleJWT\Middleware\ValidToken::class)->get('/middleware', function (Request $request) {
+                $router->middleware(\LittleApps\LittleJWT\Laravel\Middleware\ValidToken::class)->get('/middleware', function (Request $request) {
                     return ['status' => true];
                 });
 
