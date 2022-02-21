@@ -4,9 +4,9 @@ namespace LittleApps\LittleJWT\Laravel\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 use LittleApps\LittleJWT\Concerns\RequestHasToken;
+use LittleApps\LittleJWT\Concerns\ResolvesValidatables;
 use LittleApps\LittleJWT\Exceptions\InvalidTokenException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
@@ -14,6 +14,7 @@ use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 class ValidToken
 {
     use RequestHasToken;
+    use ResolvesValidatables;
 
     /**
      * Handle an incoming request.
@@ -49,7 +50,7 @@ class ValidToken
         $stack = [];
 
         foreach ($validatables as $key) {
-            $validatable = App::make("littlejwt.validatables.{$key}");
+            $validatable = $this->resolveValidatable($key);
 
             array_push($stack, $validatable);
         }

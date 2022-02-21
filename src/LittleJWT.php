@@ -8,6 +8,7 @@ use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
+use LittleApps\LittleJWT\Concerns\ResolvesValidatables;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
@@ -23,6 +24,8 @@ use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
  */
 class LittleJWT
 {
+    use ResolvesValidatables;
+
     /**
      * Application container
      *
@@ -190,9 +193,7 @@ class LittleJWT
      */
     protected function getDefaultValidatableCallback()
     {
-        $alias = sprintf('littlejwt.validatables.%s', $this->app->config->get('littlejwt.defaults.validatable'));
-
-        $validatable = $this->app->make($alias);
+        $validatable = $this->resolveValidatable($this->app->config->get('littlejwt.defaults.validatable'));
 
         return [$validatable, 'validate'];
     }
