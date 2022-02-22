@@ -26,9 +26,11 @@ class GuardValidatable implements Validatable
 
     public function validate(Validator $validator)
     {
-        $contains = ['sub'];
+        $contains = [];
 
         if ($this->config['exists']) {
+            array_push($contains, 'sub');
+
             $validator->claimCallback('sub', function ($value) {
                 return ! is_null(Auth::getProvider()->retrieveById($value));
             });
