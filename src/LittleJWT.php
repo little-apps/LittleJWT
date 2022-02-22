@@ -157,8 +157,9 @@ class LittleJWT
 
         $valid = $this->validJWT($jwt);
 
-        if (is_callable($passthrough))
+        if (is_callable($passthrough)) {
             $valid->passValidatorThru($passthrough);
+        }
 
         // Run the JWT through a Valid instance and return the result.
         return $valid->passes();

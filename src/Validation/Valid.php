@@ -9,7 +9,6 @@ use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Rule;
-use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 use LittleApps\LittleJWT\JWT\JWT;
 
