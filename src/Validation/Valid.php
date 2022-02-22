@@ -77,14 +77,14 @@ class Valid
     }
 
     /**
-     * Passes a Validator instance through a Validatable instance.
+     * Passes a Validator instance through a callback.
      *
-     * @param Validatable $validatable
+     * @param callable(Validator $validator) $callback
      * @return $this
      */
-    public function passValidatorThru(Validatable $validatable)
+    public function passValidatorThru(callable $callback)
     {
-        $validatable->validate($this->validator);
+        $callback($this->validator);
 
         return $this;
     }
