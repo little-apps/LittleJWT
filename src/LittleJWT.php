@@ -140,24 +140,28 @@ class LittleJWT
      */
     public function validateJWT(JWT $jwt, callable $callback = null, $applyDefault = true)
     {
-        $callbacks = [];
-
         if ($applyDefault) {
-            array_push($callbacks, $this->getDefaultValidatableCallback());
+            $callbacks = [$this->getDefaultValidatableCallback()];
+
+            if (is_callable($callback)) {
+                array_push($callbacks, $callback);
+            }
+
+            $validatable = new StackValidatable($callbacks);
+
+            $passthrough = [$validatable, 'validate'];
+        } else {
+            // No need to create a StackValidatable instance for just 1 validatable
+            $passthrough = $callback;
         }
 
-        if (is_callable($callback)) {
-            array_push($callbacks, $callback);
-        }
+        $valid = $this->validJWT($jwt);
 
-        $validatable = new StackValidatable($callbacks);
+        if (is_callable($passthrough))
+            $valid->passValidatorThru($passthrough);
 
         // Run the JWT through a Valid instance and return the result.
-        return
-            $this
-                ->validJWT($jwt)
-                ->passValidatorThru($validatable)
-                ->passes();
+        return $valid->passes();
     }
 
     /**
