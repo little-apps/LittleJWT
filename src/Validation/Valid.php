@@ -15,16 +15,46 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class Valid
 {
+    /**
+     * Application container
+     *
+     * @var Application
+     */
     protected $app;
 
+    /**
+     * JWT to validate
+     *
+     * @var JWT
+     */
     protected $jwt;
 
+    /**
+     * JSON Web Key to verify signature with
+     *
+     * @var JWK
+     */
     protected $jwk;
 
+    /**
+     * Validator instance that holds rules.
+     *
+     * @var Validator
+     */
     protected $validator;
 
+    /**
+     * Any errors that occurred.
+     *
+     * @var MessageBag
+     */
     protected $errors;
 
+    /**
+     * The result of the last validation (or null if validation hasn't been done).
+     *
+     * @var boolean|null
+     */
     protected $lastRunResult;
 
     /**
