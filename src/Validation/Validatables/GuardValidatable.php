@@ -9,8 +9,9 @@ use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
 /**
- * The validator used by the guard.
+ * The validator used by the generic guard adapter.
  * This class is not responsible for fetching the associated user.
+ * @see https://docs.getlittlejwt.com/en/guard#generic-adapter-generic
  */
 class GuardValidatable implements Validatable
 {

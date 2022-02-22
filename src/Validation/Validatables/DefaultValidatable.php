@@ -5,6 +5,10 @@ namespace LittleApps\LittleJWT\Validation\Validatables;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
+/**
+ * The default validatable for Little JWT.
+ * @see https://docs.getlittlejwt.com/en/validatables#default-validatable
+ */
 class DefaultValidatable implements Validatable
 {
     protected $config;

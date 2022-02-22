@@ -5,6 +5,9 @@ namespace LittleApps\LittleJWT\Validation\Validatables;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
+/**
+ * Allows for multiple callbacks and validatables to be stacked on top of each other.
+ */
 class StackValidatable implements Validatable
 {
     protected $stack;

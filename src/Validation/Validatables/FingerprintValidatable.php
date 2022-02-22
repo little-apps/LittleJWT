@@ -5,6 +5,10 @@ namespace LittleApps\LittleJWT\Validation\Validatables;
 use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
+/**
+ * Used by the fingerprint guard adapter to check the JWT has the correct fingerprint hash.
+ * @see https://docs.getlittlejwt.com/en/guard#fingerprint-adapter-fingerprint
+ */
 class FingerprintValidatable implements Validatable
 {
     protected $fingerprintHash;
