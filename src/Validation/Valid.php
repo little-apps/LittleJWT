@@ -53,7 +53,7 @@ class Valid
     /**
      * The result of the last validation (or null if validation hasn't been done).
      *
-     * @var boolean|null
+     * @var bool|null
      */
     protected $lastRunResult;
 
