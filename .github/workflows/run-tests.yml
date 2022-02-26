@@ -21,7 +21,7 @@ jobs:
           - laravel: ^8.0
             testbench: ^6.24
           - laravel: ^9.0
-            testbench: ^7.1
+            testbench: 7.1.*
             flags: --dev
         exclude:
           - laravel: ^9.0
