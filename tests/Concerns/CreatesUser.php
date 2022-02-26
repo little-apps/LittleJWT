@@ -25,7 +25,7 @@ trait CreatesUser
      */
     protected function createUser()
     {
-        return User::factory()->create();
+        return factory(User::class)->create();
     }
 
     /**

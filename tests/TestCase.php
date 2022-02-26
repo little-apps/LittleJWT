@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -15,10 +14,6 @@ class TestCase extends Orchestra
 {
     protected function setUp(): void
     {
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'LittleApps\\LittleJWT\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
-
         parent::setUp();
 
         Auth::shouldUse('jwt');
@@ -52,6 +47,8 @@ class TestCase extends Orchestra
     protected function defineDatabaseMigrations()
     {
         $this->loadLaravelMigrations();
+
+        $this->withFactories(__DIR__.'/../database/factories/legacy');
     }
 
     /**
