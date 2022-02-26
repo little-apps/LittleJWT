@@ -112,7 +112,7 @@ class LittleJWT
             $payloadMutators = $this->app->config->get('littlejwt.builder.mutators.payload', []);
 
             return $builder->buildFromExisting($token, $headerMutators, $payloadMutators);
-        } catch (CantParseJWTException) {
+        } catch (CantParseJWTException $ex) {
             return null;
         }
     }

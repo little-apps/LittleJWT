@@ -31,7 +31,7 @@ class JsonEncoder
             $ret = JoseJsonConverter::decode($encoded);
 
             return is_array($ret) ? $ret : null;
-        } catch (Exception) {
+        } catch (Exception $ex) {
             return null;
         }
     }
