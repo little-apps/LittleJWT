@@ -11,6 +11,11 @@ Generate and verify JSON Web Tokens (JWTs) simply in Laravel using Little JWT. I
 
 Little Apps relies on people like you to keep our software running. If you would like to show your support for Little Registry Cleaner, then you can [make a donation](https://www.little-apps.com/?donate) using PayPal, Payza or credit card (via Stripe). Please note that any amount helps (even just $1).
 
+## Requirements
+
+ * PHP v7.4 or higher
+ * Laravel 7.x or 8.x
+
 ## Installation
 
 Install the package via composer:
