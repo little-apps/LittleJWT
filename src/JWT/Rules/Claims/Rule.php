@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
-use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Contracts\Rule as RuleContract;
 
 use LittleApps\LittleJWT\JWT\JWT;
@@ -43,7 +42,8 @@ abstract class Rule implements RuleContract
             ':key' => $this->getKey(),
         ];
 
-        return Str::replace(array_keys($replace), array_values($replace), $this->formatMessage());
+        // Doesn't use Str::replace because Laravel 7.x doesn't support it.
+        return str_replace(array_keys($replace), array_values($replace), $this->formatMessage());
     }
 
     /**
