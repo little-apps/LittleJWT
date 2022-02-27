@@ -98,6 +98,9 @@ class Build
      */
     public function __call($name, $parameters)
     {
-        return $this->forwardDecoratedCallTo($this->builder, $name, $parameters);
+        // Use forwardCallTo since Laravel 7.x doesn't support forwardDecoratedCallTo
+        $ret = $this->forwardCallTo($this->builder, $name, $parameters);
+
+        return $ret === $this->builder ? $this : $ret;
     }
 }
