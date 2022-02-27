@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 use LittleApps\LittleJWT\ServiceProvider;
+use LittleApps\LittleJWT\Testing\Models\User;
 
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -106,6 +107,7 @@ class TestCase extends Orchestra
         $migration->up();
 
         config()->set('auth.defaults.guard', 'jwt');
+        config()->set('auth.providers.users.model', User::class);
         config()->set('auth.guards.jwt', [
             'driver' => 'littlejwt',
             'adapter' => 'fingerprint',
