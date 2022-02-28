@@ -4,9 +4,10 @@
     "keywords": [
         "little-apps",
         "laravel",
-        "littlejwt"
+        "littlejwt",
+        "json web token"
     ],
-    "homepage": "https://github.com/little-apps/littlejwt",
+    "homepage": "https://getlittlejwt.com",
     "license": "MIT",
     "authors": [
         {
@@ -15,6 +16,9 @@
             "role": "Developer"
         }
     ],
+    "support": {
+        "docs": "https://docs.getlittlejwt.com/"
+    },
     "require": {
         "php": "^7.4|^8.0",
         "spatie/laravel-package-tools": "^1.9",
