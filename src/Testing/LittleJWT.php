@@ -5,7 +5,6 @@ namespace LittleApps\LittleJWT\Testing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 
-
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
