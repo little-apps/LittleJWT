@@ -46,7 +46,7 @@ class ValidToken
             return LittleJWT::validateToken($token);
         }
 
-        $stack = array_map(fn($key) => ValidatableBuilder::resolve($key), (array) $validatables);
+        $stack = array_map(fn ($key) => ValidatableBuilder::resolve($key), (array) $validatables);
 
         $stackValidator = new StackValidatable($stack);
 
