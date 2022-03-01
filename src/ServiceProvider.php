@@ -16,10 +16,13 @@ use LittleApps\LittleJWT\Contracts\KeyBuildable;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
+use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\Laravel\Middleware\ValidToken;
+use LittleApps\LittleJWT\Laravel\Middleware\ValidToken as ValidTokenMiddleware;
+use LittleApps\LittleJWT\Laravel\Rules\ValidToken as ValidTokenRule;
+use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 
 use Spatie\LaravelPackageTools\Package;
@@ -67,6 +70,7 @@ class ServiceProvider extends PackageServiceProvider
     {
         $this->bootGuard();
         $this->bootMacros();
+        $this->bootValidatorRules();
     }
 
     /**
@@ -223,7 +227,7 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerMiddleware()
     {
-        $this->app['router']->aliasMiddleware('validtoken', ValidToken::class);
+        $this->app['router']->aliasMiddleware('validtoken', ValidTokenMiddleware::class);
     }
 
     /**
@@ -261,6 +265,24 @@ class ServiceProvider extends PackageServiceProvider
             $app->refresh('request', $guard, 'setRequest');
 
             return $guard;
+        });
+    }
+
+    protected function bootValidatorRules() {
+        $this->app['validator']->extendImplicit('validtoken', function($attribute, $value, $parameters, $validator) {
+            if (!empty($parameters)) {
+                $stack = array_map(function($key) {
+                    return is_string($key) ? ValidatableBuilder::resolve($key) : $key;
+                }, (array) $parameters);
+
+                $validatable = new StackValidatable($stack);
+
+                $rule = new ValidTokenRule([$validatable, 'validate'], false);
+            } else {
+                $rule = new ValidTokenRule();
+            }
+
+            return $rule->passes($attribute, $value);
         });
     }
 
