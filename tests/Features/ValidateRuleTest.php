@@ -3,12 +3,12 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
 
-use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Build\Buildables\GuardBuildable;
 use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
+use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Laravel\Rules\ValidToken;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
@@ -35,8 +35,8 @@ class ValidateRuleTest extends TestCase
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                new ValidToken
-            ]
+                new ValidToken(),
+            ],
         ]);
 
         $this->assertTrue($validator->passes());
@@ -57,8 +57,8 @@ class ValidateRuleTest extends TestCase
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                'validtoken'
-            ]
+                'validtoken',
+            ],
         ]);
 
         $this->assertTrue($validator->passes());
@@ -74,15 +74,15 @@ class ValidateRuleTest extends TestCase
     {
         LittleJWT::fake();
 
-        $token = LittleJWT::createToken(function(Builder $builder) {
+        $token = LittleJWT::createToken(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
         });
 
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                new ValidToken
-            ]
+                new ValidToken(),
+            ],
         ]);
 
         $this->assertFalse($validator->passes());
@@ -98,15 +98,15 @@ class ValidateRuleTest extends TestCase
     {
         LittleJWT::fake();
 
-        $token = LittleJWT::createToken(function(Builder $builder) {
+        $token = LittleJWT::createToken(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
         });
 
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                'validtoken'
-            ]
+                'validtoken',
+            ],
         ]);
 
         $this->assertFalse($validator->passes());
@@ -129,8 +129,8 @@ class ValidateRuleTest extends TestCase
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                'validtoken:default,guard'
-            ]
+                'validtoken:default,guard',
+            ],
         ]);
 
         $this->assertTrue($validator->passes());
@@ -154,7 +154,7 @@ class ValidateRuleTest extends TestCase
                         ->valid(fn ($num) => $num !== $this->user->getAuthIdentifier())
                         ->numberBetween(1, 999)
                 );
-            }
+            },
         ];
 
         $buildable = new StackBuildable($stack);
@@ -164,8 +164,8 @@ class ValidateRuleTest extends TestCase
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                'validtoken:default,guard'
-            ]
+                'validtoken:default,guard',
+            ],
         ]);
 
         $this->assertFalse($validator->passes());

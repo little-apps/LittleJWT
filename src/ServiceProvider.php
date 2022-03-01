@@ -22,8 +22,8 @@ use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Laravel\Middleware\ValidToken as ValidTokenMiddleware;
 use LittleApps\LittleJWT\Laravel\Rules\ValidToken as ValidTokenRule;
-use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
+use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -268,10 +268,11 @@ class ServiceProvider extends PackageServiceProvider
         });
     }
 
-    protected function bootValidatorRules() {
-        $this->app['validator']->extendImplicit('validtoken', function($attribute, $value, $parameters, $validator) {
-            if (!empty($parameters)) {
-                $stack = array_map(function($key) {
+    protected function bootValidatorRules()
+    {
+        $this->app['validator']->extendImplicit('validtoken', function ($attribute, $value, $parameters, $validator) {
+            if (! empty($parameters)) {
+                $stack = array_map(function ($key) {
                     return is_string($key) ? ValidatableBuilder::resolve($key) : $key;
                 }, (array) $parameters);
 

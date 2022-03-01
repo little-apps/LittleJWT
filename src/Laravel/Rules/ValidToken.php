@@ -36,7 +36,8 @@ class ValidToken implements ImplicitRule
      * @param mixed $token
      * @return bool
      */
-    protected function validate($token) {
+    protected function validate($token)
+    {
         return LittleJWT::validateToken(
             $token,
             $this->callback,
