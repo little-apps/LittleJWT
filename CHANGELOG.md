@@ -22,9 +22,3 @@ Works with Laravel 8.x and 9.x.
 Initial release
 
 **Full Changelog**: https://github.com/little-apps/LittleJWT/commits/v1.0.0
-
-## 1.0.1 - 2022-02-15
-
-Works with Laravel 8.x and 9.x.
-
-**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.0.0...v1.0.1
