@@ -45,8 +45,9 @@ class LittleJWT
      * The default callback is not added when testing.
      *
      * @param JWT $jwt
-     * @param callable $callback Callback that recieves Validator to set checks for JWT.
-     * @return Valid Valid instance (before validation is done)
+     * @param callable $callback Callable that receives TestValidator to set assertions for JWT.
+     * @param bool $applyDefault If true, the default validatable is used first. (default: false)
+     * @return bool True if token is valid.
      */
     public function validateJWT(JWT $jwt, callable $callback = null, $applyDefault = false)
     {
