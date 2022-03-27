@@ -39,11 +39,28 @@ class ValidateTest extends TestCase
     }
 
     /**
+     * Tests that a default token is valid.
+     *
+     * @return void
+     */
+    public function test_empty_token_valid()
+    {
+        LittleJWT::fake();
+
+        $jwt = LittleJWT::createToken();
+
+        LittleJWT::validateToken($jwt, function (TestValidator $validator) {
+            $validator
+                ->assertPasses();
+        });
+    }
+
+    /**
      * Tests that a JWT has a sub.
      *
      * @return void
      */
-    public function test_jwt_valid()
+    public function test_jwt_sub_valid()
     {
         LittleJWT::fake();
 
@@ -54,6 +71,28 @@ class ValidateTest extends TestCase
         });
 
         LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($sub) {
+            $validator
+                ->assertPasses()
+                ->assertClaimMatches('sub', $sub);
+        });
+    }
+
+    /**
+     * Tests that a token has a sub.
+     *
+     * @return void
+     */
+    public function test_token_sub_valid()
+    {
+        LittleJWT::fake();
+
+        $sub = $this->faker->uuid;
+
+        $jwt = LittleJWT::createToken(function (Builder $builder) use ($sub) {
+            $builder->sub($sub);
+        });
+
+        LittleJWT::validateToken($jwt, function (TestValidator $validator) use ($sub) {
             $validator
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
@@ -83,11 +122,11 @@ class ValidateTest extends TestCase
     }
 
     /**
-     * Tests validating a claim that doesn't exist.
+     * Tests a claim doesn't exist in JWT.
      *
      * @return void
      */
-    public function test_validate_missing_claim()
+    public function test_jwt_missing_claim()
     {
         LittleJWT::fake();
 
@@ -100,6 +139,24 @@ class ValidateTest extends TestCase
                     // Should not reach here because claim 'abc' doesn't exist.
                     return false;
                 });
+        });
+    }
+
+    /**
+     * Tests a claim doesn't exist in token.
+     *
+     * @return void
+     */
+    public function test_token_missing_claim()
+    {
+        LittleJWT::fake();
+
+        $token = LittleJWT::createToken();
+
+        LittleJWT::validateToken($token, function (TestValidator $validator) {
+            $validator
+                ->assertFails()
+                ->assertClaimsDoesntExist(['abc']);
         });
     }
 
