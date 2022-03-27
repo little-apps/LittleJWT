@@ -62,6 +62,13 @@ class TestValidator
     protected $expectedErrorCount;
 
     /**
+     * The unexpected error count.
+     *
+     * @var int|false
+     */
+    protected $unexpectedErrorCount;
+
+    /**
      * The expected error keys.
      *
      * @var \Illuminate\Support\Collection
@@ -89,6 +96,7 @@ class TestValidator
         $this->assertPasses = false;
         $this->assertFails = false;
         $this->expectedErrorCount = false;
+        $this->unexpectedErrorCount = false;
         $this->expectedErrorKeys = collect();
         $this->unexpectedErrorKeys = collect();
 
@@ -130,6 +138,19 @@ class TestValidator
     public function assertErrorCount($count = false)
     {
         $this->expectedErrorCount = $count;
+
+        return $this;
+    }
+
+    /**
+     * Asserts that there weren't so many errors from the JWT validation.
+     *
+     * @param int|false $count Error count or false to disable assert (default: false)
+     * @return $this
+     */
+    public function assertNotErrorCount($count = false)
+    {
+        $this->unexpectedErrorCount = $count;
 
         return $this;
     }
@@ -468,6 +489,10 @@ class TestValidator
 
             if ($this->expectedErrorCount !== false) {
                 PHPUnit::assertEquals($this->expectedErrorCount, $errors->count(), 'The error count does not match.');
+            }
+
+            if ($this->unexpectedErrorCount !== false) {
+                PHPUnit::assertNotEquals($this->unexpectedErrorCount, $errors->count(), 'The error count matches.');
             }
 
             if ($this->expectedErrorKeys->count() > 0) {
