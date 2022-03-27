@@ -390,13 +390,13 @@ class TestValidator
     /**
      * Asserts a JWT is allowed (not blacklisted).
      *
-     * @param BlacklistDriver $driver Blacklist driver to use. If null, default is used. (default: null)
+     * @param string $driver Blacklist driver to use. If null, default is used. (default: null)
      * @return $this
      */
-    public function assertAllowed(BlacklistDriver $driver = null)
+    public function assertAllowed(string $driver = null)
     {
         return $this->assertRulePasses(
-            new Rules\Allowed($driver ?? $this->app->make(BlacklistManager::class)->driver()),
+            new Rules\Allowed($this->app->make(BlacklistManager::class)->driver($driver)),
             'Failed asserting that the JWT is not blacklisted.'
         );
     }
@@ -404,13 +404,13 @@ class TestValidator
     /**
      * Asserts a JWT is allowed (not blacklisted).
      *
-     * @param BlacklistDriver $driver Blacklist driver to use. If null, default is used. (default: null)
+     * @param string $driver Blacklist driver to use. If null, default is used. (default: null)
      * @return $this
      */
-    public function assertNotAllowed(BlacklistDriver $driver = null)
+    public function assertNotAllowed(string $driver = null)
     {
         return $this->assertRuleFails(
-            new Rules\Allowed($driver ?? $this->app->make(BlacklistManager::class)->driver()),
+            new Rules\Allowed($this->app->make(BlacklistManager::class)->driver($driver)),
             'Failed asserting that the JWT is blacklisted.'
         );
     }
