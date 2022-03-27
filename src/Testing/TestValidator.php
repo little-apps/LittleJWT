@@ -155,7 +155,7 @@ class TestValidator
      */
     public function assertErrorKeyDoesntExist($key)
     {
-        $this->expectedErrorKeys->push($key);
+        $this->unexpectedErrorKeys->push($key);
 
         return $this;
     }
