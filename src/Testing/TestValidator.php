@@ -10,7 +10,6 @@ use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
-use LittleApps\LittleJWT\Contracts\BlacklistDriver;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\Validation\Validator;
