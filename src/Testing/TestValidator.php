@@ -307,11 +307,12 @@ class TestValidator
      * @param string $claimKey
      * @param mixed $value
      * @param bool $strict
+     * @param bool $inHeader
      * @return $this
      */
-    public function assertClaimMatches($claimKey, $value, $strict = false)
+    public function assertClaimMatches($claimKey, $value, $strict = false, $inHeader = false)
     {
-        return $this->assertRulePasses(new Rules\Claims\Equals($claimKey, $value, $strict));
+        return $this->assertRulePasses(new Rules\Claims\Equals($claimKey, $value, $strict, $inHeader));
     }
 
     /**
@@ -320,11 +321,12 @@ class TestValidator
      * @param string $claimKey
      * @param mixed $value
      * @param bool $strict
+     * @param bool $inHeader
      * @return $this
      */
-    public function assertClaimDoesntMatch($claimKey, $value, $strict = false)
+    public function assertClaimDoesntMatch($claimKey, $value, $strict = false, $inHeader = false)
     {
-        return $this->assertRuleFails(new Rules\Claims\Equals($claimKey, $value, $strict));
+        return $this->assertRuleFails(new Rules\Claims\Equals($claimKey, $value, $strict, $inHeader));
     }
 
     /**
@@ -332,27 +334,29 @@ class TestValidator
      *
      * @param mixed $expected Expected claim keys as an array or multiple parameters.
      * @param bool $strict If true, only expected claims can exist.
+     * @param bool $inHeader If true, asserts the claim keys are in the header.
      * @return $this
      */
-    public function assertClaimsExists($expected, $strict = false)
+    public function assertClaimsExists($expected, $strict = false, $inHeader = false)
     {
         $expected = is_array($expected) ? $expected : func_get_args();
 
-        return $this->assertRulePasses(new Rules\ContainsClaims($expected, false, $strict));
+        return $this->assertRulePasses(new Rules\ContainsClaims($expected, $inHeader, $strict));
     }
 
     /**
      * Asserts a claim exists in payload.
      *
      * @param mixed $expected Expected claim keys as an array or multiple parameters.
-     * @param bool $strict If true, only expected claims can exist.
+     * @param bool $strict If true, only expected claims can't exist.
+     * @param bool $inHeader If true, asserts the claim keys are not in the header.
      * @return $this
      */
-    public function assertClaimsDoesntExist($expected, $strict = false)
+    public function assertClaimsDoesntExist($expected, $strict = false, $inHeader = false)
     {
         $expected = is_array($expected) ? $expected : func_get_args();
 
-        return $this->assertRuleFails(new Rules\ContainsClaims($expected, false, $strict));
+        return $this->assertRuleFails(new Rules\ContainsClaims($expected, $inHeader, $strict));
     }
 
     /**
