@@ -2,6 +2,15 @@
 
 All notable changes to `LittleJWT` will be documented in this file.
 
+## v1.1.2 - 2022-03-28
+
+## What's Changed
+
+- The `validateToken` method is faked, allowing for tokens to also be tested.
+- Various fixes to testing and documentation.
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.1.1...v1.1.2
+
 ## v1.1.1 - 2022-03-26
 
 ## What's Changed
