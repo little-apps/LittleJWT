@@ -52,7 +52,7 @@ $token = LittleJWT::createToken(function (Builder $builder) {
         ->nop('qrs', false);
 });
 
-// $token = "eyJhYmMiOiJkZWYiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJMYXJhdmVsIiwiZXhwIjoxNjQzMDg1NTEwLCJnaGkiOiJrbG0iLCJpYXQiOjE2NDMwODE5MTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJqdGkiOiJkZmI1NzkyNy0yMzA5LTRjMTYtOTkyOC0zYTc4NDk2NzBlOWMiLCJuYmYiOjE2NDMwODE5MTAsIm5vcCI6InFycyJ9.ZxWbIY8bYPw8ZOjxBxxtcR0-6GztbMnEStWpvpojN4k";
+// $token = "ey...";
 ```
 
 ### Validating JWTs
@@ -60,7 +60,7 @@ $token = LittleJWT::createToken(function (Builder $builder) {
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Validation\Validator;
 
-$token = "eyJhYmMiOiJkZWYiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJMYXJhdmVsIiwiZXhwIjoxNjQzMDg1NTEwLCJnaGkiOiJrbG0iLCJpYXQiOjE2NDMwODE5MTAsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJqdGkiOiJkZmI1NzkyNy0yMzA5LTRjMTYtOTkyOC0zYTc4NDk2NzBlOWMiLCJuYmYiOjE2NDMwODE5MTAsIm5vcCI6InFycyJ9.ZxWbIY8bYPw8ZOjxBxxtcR0-6GztbMnEStWpvpojN4k";
+$token = "ey...";
 
 $passes = LittleJWT::validateToken($token, function (Validator $validator) {
     $validator
