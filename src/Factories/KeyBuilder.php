@@ -14,8 +14,19 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyBuilder implements Keyable
 {
+    /**
+     * Used to specify a secret phrase is used to create JWK.
+     */
     public const KEY_SECRET = 'secret';
+
+    /**
+     * Used to specify a key file is used to create JWK. The KEY_FILES_* constants are the different types of acceptable key files.
+     */
     public const KEY_FILE = 'file';
+
+    /**
+     * Used to specify no JWK is used (not recommended).
+     */
     public const KEY_NONE = 'none';
 
     public const KEY_FILES_PEM = 'pem';
