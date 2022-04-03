@@ -95,10 +95,11 @@ class KeyBuilder implements Keyable
     /**
      * Generates a random JWK
      *
-     * @param integer $size # of bits for key size (must be multiple of 8)
+     * @param int $size # of bits for key size (must be multiple of 8)
      * @return JWK
      */
-    public function generateRandomJwk($size = 1024) {
+    public function generateRandomJwk($size = 1024)
+    {
         return JWKFactory::createOctKey(
             $size, // Size in bits of the key. We recommend at least 128 bits.
             [

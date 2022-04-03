@@ -19,7 +19,7 @@ class LittleJWT extends Facade
      */
     public static function fake(JWK $jwk = null)
     {
-        if (!is_null($jwk)) {
+        if (! is_null($jwk)) {
             // Use random JWK if null is specified.
             $jwk = static::$app->make(Keyable::class)->generateRandomJwk();
         }
