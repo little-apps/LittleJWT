@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Contracts\KeyBuildable;
+use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
@@ -169,7 +169,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $otherJWk = $this->app->make(KeyBuildable::class)->build([
+        $otherJWk = $this->app->make(Keyable::class)->build([
             KeyBuilder::KEY_SECRET => [
                 'phrase' => Base64Encoder::encode($this->faker->sha256),
             ],

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\Contracts\KeyBuildable;
+use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
 use LittleApps\LittleJWT\Testing\LittleJWT as LittleJWTFake;
 
@@ -19,7 +19,7 @@ class LittleJWT extends Facade
      */
     public static function fake(JWK $jwk = null)
     {
-        $jwk = $jwk ?? static::$app->make(KeyBuildable::class)->build();
+        $jwk = $jwk ?? static::$app->make(Keyable::class)->build();
 
         static::swap($fake = new LittleJWTFake(static::$app, static::getFacadeRoot()));
 

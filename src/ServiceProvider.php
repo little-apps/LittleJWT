@@ -12,7 +12,7 @@ use Jose\Component\Signature\JWSBuilder;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
-use LittleApps\LittleJWT\Contracts\KeyBuildable;
+use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
@@ -81,7 +81,7 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerCore()
     {
         $this->app->singleton(LittleJWT::class, function ($app) {
-            $jwk = $app->make(KeyBuildable::class)->build();
+            $jwk = $app->make(Keyable::class)->build();
 
             return new LittleJWT($app, $jwk);
         });
@@ -138,7 +138,7 @@ class ServiceProvider extends PackageServiceProvider
             return new JWTBuilder();
         });
 
-        $this->app->singleton(KeyBuildable::class, function ($app) {
+        $this->app->singleton(Keyable::class, function ($app) {
             $config = $app->config->get('littlejwt.key', []);
 
             return new KeyBuilder($app, $config);
