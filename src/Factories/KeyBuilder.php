@@ -25,6 +25,11 @@ class KeyBuilder implements Keyable
     public const KEY_FILE = 'file';
 
     /**
+     * Used to specify a random JWK is used each time.
+     */
+    public const KEY_RANDOM = 'random';
+
+    /**
      * Used to specify no JWK is used (not recommended).
      */
     public const KEY_NONE = 'none';
@@ -73,6 +78,12 @@ class KeyBuilder implements Keyable
                 return $this->buildFromSecret($config[static::KEY_SECRET]);
             }
 
+            case static::KEY_RANDOM: {
+                $size = $config[static::KEY_RANDOM]['size'] ?? 1024;
+
+                return $this->generateRandomJwk($size);
+            }
+
             default: {
                 Log::warning('LittleJWT is reverting to use no key. This is NOT recommended.');
 
@@ -82,6 +93,21 @@ class KeyBuilder implements Keyable
     }
 
     private function buildFromSecret($config)
+    /**
+     * Generates a random JWK
+     *
+     * @param integer $size # of bits for key size (must be multiple of 8)
+     * @return JWK
+     */
+    public function generateRandomJwk($size = 1024) {
+        return JWKFactory::createOctKey(
+            $size, // Size in bits of the key. We recommend at least 128 bits.
+            [
+                'alg' => 'HS256', // This key must only be used with the HS256 algorithm
+                'use' => 'sig',    // This key is used for signature/verification operations only
+            ]
+        );
+    }
     {
         if (! isset($config['allow_unsecure']) || ! $config['allow_unsecure']) {
             if (! isset($config['phrase'])) {
