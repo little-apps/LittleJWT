@@ -4,7 +4,7 @@ namespace LittleApps\LittleJWT\Commands;
 
 use Illuminate\Console\Command;
 
-use Jose\Component\KeyManagement\JWKFactory;
+use LittleApps\LittleJWT\Contracts\Keyable;
 
 class GenerateSecretCommand extends Command
 {
@@ -45,13 +45,7 @@ class GenerateSecretCommand extends Command
     {
         $size = $this->option('size');
 
-        $jwk = JWKFactory::createOctKey(
-            $size, // Size in bits of the key. We recommend at least 128 bits.
-            [
-                'alg' => 'HS256', // This key must only be used with the HS256 algorithm
-                'use' => 'sig',    // This key is used for signature/verification operations only
-            ]
-        );
+        $jwk = $this->laravel[Keyable::class]->generateRandomJwk($size);
 
         // The generated k is base64 encoded.
         $secret = $jwk->get('k');
