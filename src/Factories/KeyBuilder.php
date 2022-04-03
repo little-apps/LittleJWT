@@ -92,7 +92,6 @@ class KeyBuilder implements Keyable
         }
     }
 
-    private function buildFromSecret($config)
     /**
      * Generates a random JWK
      *
@@ -108,6 +107,14 @@ class KeyBuilder implements Keyable
             ]
         );
     }
+
+    /**
+     * Builds JWK from secret phrase.
+     *
+     * @param array $config
+     * @return JWK
+     */
+    public function buildFromSecret(array $config)
     {
         if (! isset($config['allow_unsecure']) || ! $config['allow_unsecure']) {
             if (! isset($config['phrase'])) {
@@ -122,7 +129,13 @@ class KeyBuilder implements Keyable
         return JWKFactory::createFromSecret($phrase, $this->extra);
     }
 
-    private function buildFromFile($config)
+    /**
+     * Builds JWK from key file.
+     *
+     * @param array $config
+     * @return JWK
+     */
+    public function buildFromFile($config)
     {
         if (! is_file($config['path'])) {
             throw new MissingKeyException();
