@@ -50,11 +50,14 @@ return [
              */
             'secret' => ''
         ],
+
+        /**
+         * The algorithm used to verify and sign JSON Web Tokens (JWTs).
+         * @see https://web-token.spomky-labs.com/the-components/signed-tokens-jws/signature-algorithms List of supported algorithms
+         */
+        'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
+        //'algorithm' => \Jose\Component\Signature\Algorithm\PS256::class,
     ],
-    /**
-     * The algorithm used by Little JWT.
-     */
-    'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
 
     'builder' => [
         /**
