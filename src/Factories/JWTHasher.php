@@ -3,9 +3,10 @@
 namespace LittleApps\LittleJWT\Factories;
 
 use Jose\Component\Core\JWK;
-use Jose\Component\Signature\Algorithm\MacAlgorithm;
 use Jose\Component\Core\Algorithm as AlgorithmContract;
+use Jose\Component\Signature\Algorithm;
 
+use LittleApps\LittleJWT\Exceptions\IncompatibleHashAlgorithmJWK;
 use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JWT;
 
@@ -32,16 +33,10 @@ class JWTHasher
      */
     public function verify(JWK $jwk, JWT $jwt)
     {
-        $algorithm = $this->app->make('littlejwt.algorithm');
-
-        if (! ($algorithm instanceof MacAlgorithm)) {
-            return false;
-        }
-
         $expected = $jwt->getSignature();
         $input = $this->createInput($jwt->getHeaders(), $jwt->getPayload());
 
-        return $algorithm->verify($jwk, $input, $expected);
+        return $this->algorithm->verify($jwk, $input, $expected);
     }
 
     /**
@@ -53,13 +48,14 @@ class JWTHasher
      */
     public function hash(JWK $jwk, ClaimManager $headers, ClaimManager $payload)
     {
-        $algorithm = $this->app->make('littlejwt.algorithm');
+        $input = $this->createInput($headers, $payload);
 
-        if (! ($algorithm instanceof MacAlgorithm)) {
-            return false;
+            if ($this->algorithm instanceof Algorithm\MacAlgorithm)
+                return $this->algorithm->hash($jwk, $input);
+            else
+                return $this->algorithm->sign($jwk, $input);
         }
 
-        return $algorithm->hash($jwk, $this->createInput($headers, $payload));
     }
 
     /**
