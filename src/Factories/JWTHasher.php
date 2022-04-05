@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
+use InvalidArgumentException;
 use Jose\Component\Core\JWK;
 use Jose\Component\Core\Algorithm as AlgorithmContract;
 use Jose\Component\Signature\Algorithm;
@@ -45,15 +46,19 @@ class JWTHasher
      * @param JWK $jwk JWK to use to create signature.
      * @param JWT $jwt JWT to create signature for.
      * @return string
+     * @throws IncompatibleHashAlgorithmJWK Thrown if the JWK is incompatible with the hashing algorithm.
      */
     public function hash(JWK $jwk, ClaimManager $headers, ClaimManager $payload)
     {
         $input = $this->createInput($headers, $payload);
 
+        try {
             if ($this->algorithm instanceof Algorithm\MacAlgorithm)
                 return $this->algorithm->hash($jwk, $input);
             else
                 return $this->algorithm->sign($jwk, $input);
+        } catch (InvalidArgumentException $e) { dd($e);
+            throw new IncompatibleHashAlgorithmJWK($e);
         }
 
     }
