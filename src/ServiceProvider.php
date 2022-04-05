@@ -7,9 +7,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 
-use Jose\Component\Core\AlgorithmManager;
-use Jose\Component\Signature\JWSBuilder;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
 use LittleApps\LittleJWT\Contracts\Keyable;
@@ -52,7 +49,6 @@ class ServiceProvider extends PackageServiceProvider
     public function packageRegistered()
     {
         $this->registerCore();
-        $this->registerJoseLibrary();
         $this->registerFactories();
         $this->registerBlacklistManager();
         $this->registerBuildables();
@@ -87,32 +83,6 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->alias(LittleJWT::class, 'littlejwt');
-    }
-
-    /**
-     * Registers the classes used by the Jose library.
-     *
-     * @return void
-     */
-    protected function registerJoseLibrary()
-    {
-        $this->app->singleton(AlgorithmManager::class, function ($app) {
-            $algorithm = $app->make('littlejwt.algorithm');
-
-            return new AlgorithmManager([$algorithm]);
-        });
-
-        $this->app->singleton('littlejwt.algorithm', function ($app) {
-            $algorithm = $app->config->get('littlejwt.algorithm');
-
-            return $app->make($algorithm);
-        });
-
-        $this->app->singleton(JWSBuilder::class, function ($app) {
-            $algorithmManager = $app->make(AlgorithmManager::class);
-
-            return new JWSBuilder($algorithmManager);
-        });
     }
 
     /**
