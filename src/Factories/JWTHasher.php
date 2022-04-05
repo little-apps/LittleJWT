@@ -2,22 +2,25 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
-use Illuminate\Contracts\Foundation\Application;
-
 use Jose\Component\Core\JWK;
 use Jose\Component\Signature\Algorithm\MacAlgorithm;
+use Jose\Component\Core\Algorithm as AlgorithmContract;
 
 use LittleApps\LittleJWT\JWT\ClaimManager;
-
 use LittleApps\LittleJWT\JWT\JWT;
 
 class JWTHasher
 {
-    protected $app;
+    protected $algorithm;
 
-    public function __construct(Application $app)
+    /**
+     * Initializes JWTHasher instance
+     *
+     * @param AlgorithmContract $algorithm Algorithm to use for verifying and signing JWTs
+     */
+    public function __construct(AlgorithmContract $algorithm)
     {
-        $this->app = $app;
+        $this->algorithm = $algorithm;
     }
 
     /**

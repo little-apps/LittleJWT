@@ -145,7 +145,9 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(JWTHasher::class, function ($app) {
-            return new JWTHasher($app);
+            $algorithm = $app->config->get('littlejwt.key.algorithm');
+
+            return new JWTHasher($app->make($algorithm));
         });
     }
 
