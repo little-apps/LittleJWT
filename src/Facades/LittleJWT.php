@@ -38,9 +38,9 @@ class LittleJWT extends Facade
      */
     public static function withJwk(JWK $jwk)
     {
-        $jwkInstance = new LittleJWTInstance(static::$app, $jwk);
+        $jwtInstance = new LittleJWTInstance(static::$app, $jwk);
 
-        return (static::getFacadeRoot() instanceof LittleJWTFake) ? new LittleJWTFake(static::$app, $jwkInstance) : $jwkInstance;
+        return (static::getFacadeRoot() instanceof LittleJWTFake) ? new LittleJWTFake(static::$app, $jwtInstance) : $jwtInstance;
     }
 
     /**
