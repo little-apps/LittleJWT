@@ -15,7 +15,8 @@ class IncompatibleHashAlgorithmJWK extends Exception
         $this->baseException = $e;
     }
 
-    public function getBaseException() {
+    public function getBaseException()
+    {
         return $this->baseException;
     }
 }
