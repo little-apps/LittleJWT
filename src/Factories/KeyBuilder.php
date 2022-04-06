@@ -168,9 +168,11 @@ class KeyBuilder implements Keyable
      * @return mixed
      * @throws BadMethodCallException Thrown if method doesn't exist in JWKFactory
      */
-    public function __call($name, $params) {
-        if (method_exists(JWKFactory::class, $name))
+    public function __call($name, $params)
+    {
+        if (method_exists(JWKFactory::class, $name)) {
             return call_user_func_array([JWKFactory::class, $name], $params);
+        }
 
         static::throwBadMethodCallException($name);
     }
