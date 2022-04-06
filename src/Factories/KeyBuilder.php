@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
@@ -14,6 +15,8 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyBuilder implements Keyable
 {
+    use ForwardsCalls;
+
     /**
      * Used to specify a secret phrase is used to create JWK.
      */
@@ -155,5 +158,20 @@ class KeyBuilder implements Keyable
                     return JWKFactory::createFromKeyFile($config['path'], $config['secret'], $this->extra);
                 }
         }
+    }
+
+    /**
+     * Forwards calls to static methods in JWKFactory
+     *
+     * @param string $name Method name
+     * @param array $params Method parameters
+     * @return mixed
+     * @throws BadMethodCallException Thrown if method doesn't exist in JWKFactory
+     */
+    public function __call($name, $params) {
+        if (method_exists(JWKFactory::class, $name))
+            return call_user_func_array([JWKFactory::class, $name], $params);
+
+        static::throwBadMethodCallException($name);
     }
 }
