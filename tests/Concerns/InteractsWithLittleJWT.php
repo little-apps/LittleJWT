@@ -4,6 +4,8 @@ namespace LittleApps\LittleJWT\Tests\Concerns;
 
 use App\Classes\LittleJWT\JWT\JWT as JWTPayload;
 
+use LittleApps\LittleJWT\Factories\JWTHasher;
+
 use Illuminate\Contracts\Auth\Authenticatable;
 
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +71,20 @@ trait InteractsWithLittleJWT
 
         $this->app['auth']->guard($driver)->setUser($user);
         $this->app['auth']->shouldUse($driver);
+
+        return $this;
+    }
+
+    /**
+     * Specifies the algorithm to use
+     *
+     * @param string $algorithm Fully qualified class name
+     * @return $this
+     */
+    protected function useAlgorithm(string $algorithm) {
+        $this->app->singleton(JWTHasher::class, function ($app) use ($algorithm) {
+            return new JWTHasher($app->make($algorithm));
+        });
 
         return $this;
     }
