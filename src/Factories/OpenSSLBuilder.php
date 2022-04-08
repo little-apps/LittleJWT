@@ -5,14 +5,15 @@ namespace LittleApps\LittleJWT\Factories;
 use LittleApps\LittleJWT\Exceptions\OpenSSLException;
 
 use OpenSSLAsymmetricKey;
-use OpenSSLCertificateSigningRequest;
 use OpenSSLCertificate;
+use OpenSSLCertificateSigningRequest;
 
-class OpenSSLBuilder {
-    const PRIVATE_KEY_TYPES_RSA = OPENSSL_KEYTYPE_RSA;
-    const PRIVATE_KEY_TYPES_DSA = OPENSSL_KEYTYPE_DSA;
-    const PRIVATE_KEY_TYPES_DH = OPENSSL_KEYTYPE_DH;
-    const PRIVATE_KEY_TYPES_EC = OPENSSL_KEYTYPE_EC;
+class OpenSSLBuilder
+{
+    public const PRIVATE_KEY_TYPES_RSA = OPENSSL_KEYTYPE_RSA;
+    public const PRIVATE_KEY_TYPES_DSA = OPENSSL_KEYTYPE_DSA;
+    public const PRIVATE_KEY_TYPES_DH = OPENSSL_KEYTYPE_DH;
+    public const PRIVATE_KEY_TYPES_EC = OPENSSL_KEYTYPE_EC;
 
     protected $config;
 
@@ -26,7 +27,8 @@ class OpenSSLBuilder {
      *
      * @return array
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
@@ -38,7 +40,8 @@ class OpenSSLBuilder {
      * @return \OpenSSLAsymmetricKey
      * @see https://www.php.net/manual/en/function.openssl-get-curve-names.php Possible curve names
      */
-    public function generatePrivateKey($type = self::PRIVATE_KEY_TYPES_RSA, $curveName = 'prime256v1') {
+    public function generatePrivateKey($type = self::PRIVATE_KEY_TYPES_RSA, $curveName = 'prime256v1')
+    {
         // Generate a new private (and public) key pair
         $pkey = openssl_pkey_new($this->getConfig() + [
             "private_key_type" => $type,
@@ -58,7 +61,8 @@ class OpenSSLBuilder {
      * @param string $digestAlg Algorithm to use
      * @return OpenSSLCertificateSigningRequest
      */
-    public function generateCertificateSignRequest(string $commonName, OpenSSLAsymmetricKey $privKey, string $digestAlg = 'sha384') {
+    public function generateCertificateSignRequest(string $commonName, OpenSSLAsymmetricKey $privKey, string $digestAlg = 'sha384')
+    {
         $csr = openssl_csr_new(compact('commonName'), $privKey, $this->getConfig() + ['digest_alg' => $digestAlg]);
 
         throw_if($csr === false, OpenSSLException::class, openssl_error_string());
@@ -74,7 +78,8 @@ class OpenSSLBuilder {
      * @param string $digestAlg Algorithm to use
      * @return OpenSSLCertificate
      */
-    public function generateCertificate(OpenSSLCertificateSigningRequest $csr, OpenSSLAsymmetricKey $privKey, string $digestAlg = 'sha384') {
+    public function generateCertificate(OpenSSLCertificateSigningRequest $csr, OpenSSLAsymmetricKey $privKey, string $digestAlg = 'sha384')
+    {
         $cert = openssl_csr_sign($csr, null, $privKey, 365, $this->getConfig() + ['digest_alg' => $digestAlg]);
 
         throw_if($cert === false, OpenSSLException::class, openssl_error_string());
@@ -88,7 +93,8 @@ class OpenSSLBuilder {
      * @param OpenSSLAsymmetricKey $privKey
      * @return string
      */
-    public function exportPrivateKey(OpenSSLAsymmetricKey $privKey, string $passPhrase = null) {
+    public function exportPrivateKey(OpenSSLAsymmetricKey $privKey, string $passPhrase = null)
+    {
         $exported = openssl_pkey_export($privKey, $output, $passPhrase, $this->getConfig());
 
         throw_if($exported === false, OpenSSLException::class, openssl_error_string());
@@ -104,7 +110,8 @@ class OpenSSLBuilder {
      * @param string $passPhrase
      * @return string
      */
-    public function exportPkcs12(OpenSSLCertificate $cert, OpenSSLAsymmetricKey $privKey, string $passPhrase = '') {
+    public function exportPkcs12(OpenSSLCertificate $cert, OpenSSLAsymmetricKey $privKey, string $passPhrase = '')
+    {
         $exported = openssl_pkcs12_export($cert, $output, $privKey, $passPhrase, $this->getConfig());
 
         throw_if($exported === false, OpenSSLException::class, openssl_error_string());

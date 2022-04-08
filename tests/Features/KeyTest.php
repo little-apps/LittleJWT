@@ -5,23 +5,22 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
 
+use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
+use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
-use LittleApps\LittleJWT\Testing\TestValidator;
-use LittleApps\LittleJWT\Utils\Base64Encoder;
 
-use Jose\Component\Core\JWK;
+use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyTest extends TestCase
 {
     use WithFaker;
     use InteractsWithLittleJWT;
-
 
     /**
      * Tests that a JWK secret is generated using the littlejwt:secret command.
@@ -41,7 +40,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_create_validate_jwk_secret() {
+    public function test_create_validate_jwk_secret()
+    {
         $phrase = Base64Encoder::encode($this->faker->sha1());
         $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
 
@@ -57,7 +57,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_create_validate_jwk_prv_key_file() {
+    public function test_create_validate_jwk_prv_key_file()
+    {
         $this->useAlgorithm(\Jose\Component\Signature\Algorithm\RS256::class);
 
         Storage::fake();
@@ -69,7 +70,7 @@ class KeyTest extends TestCase
         $config = [
             'type' => KeyBuilder::KEY_FILES_PEM,
             'path' => Storage::path('jwk.key'),
-            'secret' => ''
+            'secret' => '',
         ];
 
         $jwk = $this->app[Keyable::class]->buildFromFile($config);
@@ -84,7 +85,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_create_validate_jwk_prv() {
+    public function test_create_validate_jwk_prv()
+    {
         $this->useAlgorithm(\Jose\Component\Signature\Algorithm\RS256::class);
 
         Storage::fake();
@@ -104,7 +106,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_create_validate_jwk_p12() {
+    public function test_create_validate_jwk_p12()
+    {
         $this->useAlgorithm(\Jose\Component\Signature\Algorithm\RS256::class);
 
         Storage::fake();
@@ -128,16 +131,17 @@ class KeyTest extends TestCase
      * @param JWK $jwk JWK to use to create and validate token.
      * @return bool True if JWT is valid.
      */
-    protected function createValidateWithJwk(JWK $jwk) {
+    protected function createValidateWithJwk(JWK $jwk)
+    {
         LittleJWT::fake($jwk);
 
         $canary = $this->faker->uuid();
 
-        $jwt = LittleJWT::createJwt(function(Builder $builder) use ($canary) {
+        $jwt = LittleJWT::createJwt(function (Builder $builder) use ($canary) {
             $builder->can($canary);
         });
 
-        return LittleJWT::validateJWT($jwt, function(TestValidator $validator) use ($canary) {
+        return LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($canary) {
             $validator
                 ->assertPasses()
                 ->assertClaimMatches('can', $canary);
