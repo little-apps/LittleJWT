@@ -32,7 +32,7 @@ class KeyTest extends TestCase
         $this
             ->artisan('littlejwt:secret -d')
                 ->expectsOutput('Generated secret key:')
-                ->assertSuccessful();
+                ->assertExitCode(0);
     }
 
     /**
