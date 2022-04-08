@@ -13,6 +13,7 @@ use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
+use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
@@ -118,6 +119,12 @@ class ServiceProvider extends PackageServiceProvider
             $algorithm = $app->config->get('littlejwt.key.algorithm');
 
             return new JWTHasher($app->make($algorithm));
+        });
+
+        $this->app->singleton(OpenSSLBuilder::class, function ($app) {
+            $config = $app->config->get('littlejwt.openssl', []);
+
+            return new OpenSSLBuilder($config);
         });
     }
 

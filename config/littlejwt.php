@@ -254,4 +254,12 @@ return [
             ]
         ]
     ],
+
+    /**
+     * Configuration options to use with OpenSSL.
+     * @see https://www.php.net/manual/en/function.openssl-csr-new.php The config parameter contains possible config options.
+     */
+    'openssl' => [
+        'config' => env('LITTLEJWT_OPENSSL_CNF', '')
+    ],
 ];
