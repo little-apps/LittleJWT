@@ -6,11 +6,20 @@ use BadMethodCallException;
 
 use Illuminate\Support\Traits\Macroable;
 
+use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
+
 class Builder
 {
     use Macroable {
         __call as macroCall;
     }
+
+    /**
+     * Claim Manager Builder
+     *
+     * @var \LittleApps\LittleJWT\Factories\ClaimManagerBuilder
+     */
+    protected $claimManagerBuilder;
 
     /**
      * Header claims
@@ -40,13 +49,14 @@ class Builder
      */
     protected $payloadClaims;
 
-    public function __construct(array $headerClaims, array $payloadClaims)
+    public function __construct(ClaimManagerBuilder $claimManagerBuilder, array $headerClaims, array $payloadClaims)
     {
-        $this->headers = collect();
-        $this->payload = collect();
-
+        $this->claimManagerBuilder = $claimManagerBuilder;
         $this->headerClaims = $headerClaims;
         $this->payloadClaims = $payloadClaims;
+
+        $this->headers = collect();
+        $this->payload = collect();
     }
 
     /**
@@ -132,23 +142,23 @@ class Builder
     }
 
     /**
-     * Gets a copy of the header claims.
+     * Gets the header claims inside a ClaimManager.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
     public function getHeaders()
     {
-        return collect($this->headers);
+        return $this->claimManagerBuilder->buildClaimManagerForHeader($this->headers->all());
     }
 
     /**
-     * Gets a copy of the payload claims.
+     * Gets the payload claims inside a ClaimManager.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
     public function getPayload()
     {
-        return collect($this->payload);
+        return $this->claimManagerBuilder->buildClaimManagerForPayload($this->payload->all());
     }
 
     /**

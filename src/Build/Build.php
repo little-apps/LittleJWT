@@ -7,9 +7,9 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
+use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
-use LittleApps\LittleJWT\JWT\ClaimManager;
 
 class Build
 {
@@ -48,8 +48,8 @@ class Build
      */
     public function build()
     {
-        $headers = new ClaimManager($this->builder->getHeaders()->sortKeys()->all());
-        $payload = new ClaimManager($this->builder->getPayload()->sortKeys()->all());
+        $headers = $this->builder->getHeaders();
+        $payload = $this->builder->getPayload();
 
         $signature = $this->createJWTHasher()->hash($this->jwk, $headers, $payload);
 
@@ -63,10 +63,11 @@ class Build
      */
     protected function buildBuilder()
     {
+        $claimManagerBuilder = $this->app->make(ClaimManagerBuilder::class);
         $headerClaims = $this->app->config->get('littlejwt.builder.claims.header', []);
         $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
 
-        return new Builder($headerClaims, $payloadClaims);
+        return new Builder($claimManagerBuilder, $headerClaims, $payloadClaims);
     }
 
     /**
