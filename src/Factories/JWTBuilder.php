@@ -48,7 +48,7 @@ class JWTBuilder
 
         $signature = Base64Encoder::decode($parts[2]);
 
-        return new JWT($headers, $payload, $signature);
+        return $this->buildFromParts($headers, $payload, $signature);
     }
 
     /**
