@@ -4,6 +4,8 @@ namespace LittleApps\LittleJWT\JWT;
 
 use ArrayAccess;
 use Countable;
+use RuntimeException;
+
 use Illuminate\Contracts\Support\Arrayable;
 
 use Illuminate\Contracts\Support\Jsonable;
@@ -11,7 +13,6 @@ use LittleApps\LittleJWT\JWT\Concerns\MutatesClaims;
 
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
-use RuntimeException;
 
 class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
