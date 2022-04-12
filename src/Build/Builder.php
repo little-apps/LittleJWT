@@ -169,7 +169,7 @@ class Builder
      */
     public function all()
     {
-        return $this->getHeaders()->merge($this->getPayload());
+        return $this->headers->merge($this->payload);
     }
 
     /**
