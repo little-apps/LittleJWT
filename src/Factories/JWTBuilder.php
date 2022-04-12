@@ -2,12 +2,10 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -90,7 +88,7 @@ class JWTBuilder
 
         $array = JsonEncoder::decode($decoded);
 
-        if (!is_array($array)) {
+        if (! is_array($array)) {
             throw new CantParseJWTException();
         }
 

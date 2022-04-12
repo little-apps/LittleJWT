@@ -135,8 +135,6 @@ class ServiceProvider extends PackageServiceProvider
 
             return new OpenSSLBuilder($config);
         });
-
-
     }
 
     /**
