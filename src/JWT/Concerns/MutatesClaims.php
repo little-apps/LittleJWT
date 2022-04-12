@@ -302,7 +302,7 @@ trait MutatesClaims
             return Carbon::instance($value);
         }
 
-        return is_string($format) ? Carbon::parse($value) : Carbon::createFromFormat($format, $value);
+        return is_string($format) ? Carbon::createFromFormat($format, $value) : Carbon::parse($value);
     }
 
     /**
