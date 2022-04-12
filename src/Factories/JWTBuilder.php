@@ -58,6 +58,7 @@ class JWTBuilder
      * @param ClaimManager $payload
      * @param string $signature
      * @return JWT
+     * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
     public function buildFromParts(ClaimManager $headers, ClaimManager $payload, $signature)
     {
