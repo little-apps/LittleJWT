@@ -8,8 +8,8 @@ use LittleApps\LittleJWT\JWT\ClaimManager;
 
 class ClaimManagerBuilder
 {
-    const PART_HEADER = 'header';
-    const PART_PAYLOAD = 'payload';
+    public const PART_HEADER = 'header';
+    public const PART_PAYLOAD = 'payload';
 
     protected $mutators;
 
@@ -29,7 +29,8 @@ class ClaimManagerBuilder
      * @param array $claims Header claims
      * @return ClaimManager
      */
-    public function buildClaimManagerForHeader(array $claims) {
+    public function buildClaimManagerForHeader(array $claims)
+    {
         return $this->buildClaimManagerFor(static::PART_HEADER, $claims);
     }
 
@@ -39,7 +40,8 @@ class ClaimManagerBuilder
      * @param array $claims
      * @return ClaimManager
      */
-    public function buildClaimManagerForPayload(array $claims) {
+    public function buildClaimManagerForPayload(array $claims)
+    {
         return $this->buildClaimManagerFor(static::PART_PAYLOAD, $claims);
     }
 
@@ -50,7 +52,8 @@ class ClaimManagerBuilder
      * @param array $claims Associative array of claims
      * @return ClaimManager
      */
-    public function buildClaimManagerFor(string $part, array $claims) {
+    public function buildClaimManagerFor(string $part, array $claims)
+    {
         $sorted = Arr::sortRecursive($claims);
         $mutators = $this->getMutatorsFor($part);
 
@@ -63,7 +66,8 @@ class ClaimManagerBuilder
      * @param string $part One of PART_* constants.
      * @return array
      */
-    public function getMutatorsFor(string $part) {
+    public function getMutatorsFor(string $part)
+    {
         return Arr::get($this->mutators, $part, []);
     }
 }

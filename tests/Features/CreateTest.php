@@ -139,10 +139,11 @@ class CreateTest extends TestCase
      *
      * @return void
      */
-    public function test_numeric_date_format() {
+    public function test_numeric_date_format()
+    {
         $expectedDateTime = Carbon::now()->addDay();
 
-        $token = LittleJWT::createToken(function (Builder $builder) use($expectedDateTime) {
+        $token = LittleJWT::createToken(function (Builder $builder) use ($expectedDateTime) {
             $builder->exp($expectedDateTime);
         });
 
