@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
 use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
@@ -107,6 +108,11 @@ class ServiceProvider extends PackageServiceProvider
     {
         $this->app->singleton(JWTBuilder::class, function () {
             return new JWTBuilder();
+        $this->app->bind(ClaimManagerBuilder::class, function ($app) {
+            $config = $app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
+
+            return new ClaimManagerBuilder($config);
+        });
         });
 
         $this->app->singleton(Keyable::class, function ($app) {
