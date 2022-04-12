@@ -57,11 +57,11 @@ class OpenSSLBuilder
      * Generates a CSR
      *
      * @param string $commonName
-     * @param OpenSSLAsymmetricKey $privKey
+     * @param OpenSSLAsymmetricKey|resource $privKey
      * @param string $digestAlg Algorithm to use
      * @return OpenSSLCertificateSigningRequest
      */
-    public function generateCertificateSignRequest(string $commonName, OpenSSLAsymmetricKey $privKey, string $digestAlg = 'sha384')
+    public function generateCertificateSignRequest(string $commonName, $privKey, string $digestAlg = 'sha384')
     {
         $csr = openssl_csr_new(compact('commonName'), $privKey, $this->getConfig() + ['digest_alg' => $digestAlg]);
 
@@ -73,12 +73,12 @@ class OpenSSLBuilder
     /**
      * Generates a certificate
      *
-     * @param OpenSSLCertificateSigningRequest $csr
-     * @param OpenSSLAsymmetricKey $privKey
+     * @param OpenSSLCertificateSigningRequest|resource $csr
+     * @param OpenSSLAsymmetricKey|resource $privKey
      * @param string $digestAlg Algorithm to use
-     * @return OpenSSLCertificate
+     * @return OpenSSLCertificate|resource
      */
-    public function generateCertificate(OpenSSLCertificateSigningRequest $csr, OpenSSLAsymmetricKey $privKey, string $digestAlg = 'sha384')
+    public function generateCertificate($csr, $privKey, string $digestAlg = 'sha384')
     {
         $cert = openssl_csr_sign($csr, null, $privKey, 365, $this->getConfig() + ['digest_alg' => $digestAlg]);
 
@@ -90,10 +90,10 @@ class OpenSSLBuilder
     /**
      * Exports private key as string
      *
-     * @param OpenSSLAsymmetricKey $privKey
+     * @param OpenSSLAsymmetricKey|resource $privKey
      * @return string
      */
-    public function exportPrivateKey(OpenSSLAsymmetricKey $privKey, string $passPhrase = null)
+    public function exportPrivateKey($privKey, string $passPhrase = null)
     {
         $exported = openssl_pkey_export($privKey, $output, $passPhrase, $this->getConfig());
 
@@ -105,12 +105,12 @@ class OpenSSLBuilder
     /**
      * Exports certificate and private key to string in PKCS#12 format
      *
-     * @param OpenSSLCertificate $cert
-     * @param OpenSSLAsymmetricKey $privKey
+     * @param OpenSSLCertificate|resource $cert
+     * @param OpenSSLAsymmetricKey|resource $privKey
      * @param string $passPhrase
      * @return string
      */
-    public function exportPkcs12(OpenSSLCertificate $cert, OpenSSLAsymmetricKey $privKey, string $passPhrase = '')
+    public function exportPkcs12($cert, $privKey, string $passPhrase = '')
     {
         $exported = openssl_pkcs12_export($cert, $output, $privKey, $passPhrase, $this->getConfig());
 
