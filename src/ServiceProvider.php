@@ -106,13 +106,16 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerFactories()
     {
-        $this->app->singleton(JWTBuilder::class, function () {
-            return new JWTBuilder();
         $this->app->bind(ClaimManagerBuilder::class, function ($app) {
             $config = $app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
 
             return new ClaimManagerBuilder($config);
         });
+
+        $this->app->singleton(JWTBuilder::class, function ($app) {
+            $claimManagerBuilder = $app->make(ClaimManagerBuilder::class);
+
+            return new JWTBuilder($claimManagerBuilder);
         });
 
         $this->app->singleton(Keyable::class, function ($app) {
@@ -132,6 +135,8 @@ class ServiceProvider extends PackageServiceProvider
 
             return new OpenSSLBuilder($config);
         });
+
+
     }
 
     /**

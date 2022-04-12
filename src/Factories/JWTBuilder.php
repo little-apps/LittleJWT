@@ -2,10 +2,12 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
+use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -13,16 +15,21 @@ use LittleApps\LittleJWT\Utils\JsonEncoder;
 
 class JWTBuilder
 {
+    protected $claimManagerBuilder;
+
+    public function __construct(ClaimManagerBuilder $claimManagerBuilder)
+    {
+        $this->claimManagerBuilder = $claimManagerBuilder;
+    }
+
     /**
      * Builds a JWT instance from an existing JWT string.
      *
      * @param string $token
-     * @param array $payloadMutators Mutators to use for payload claims.
-     * @param array $headerMutators Mutators to use for header claims.
      * @return JWT
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
-    public function buildFromExisting(string $token, array $payloadMutators = [], array $headerMutators = [])
+    public function buildFromExisting(string $token)
     {
         $parts = Str::of($token)->explode('.');
 
@@ -30,8 +37,15 @@ class JWTBuilder
             throw new CantParseJWTException();
         }
 
-        $headers = $this->buildClaimManagerFromPart($parts[0], $headerMutators);
-        $payload = $this->buildClaimManagerFromPart($parts[1], $payloadMutators);
+        // Create claim managers for header and payload.
+        $headers = $this->claimManagerBuilder->buildClaimManagerForHeader(
+            $this->decodeClaims($parts[0])
+        );
+
+        $payload = $this->claimManagerBuilder->buildClaimManagerForPayload(
+            $this->decodeClaims($parts[1])
+        );
+
         $signature = Base64Encoder::decode($parts[2]);
 
         return new JWT($headers, $payload, $signature);
@@ -59,16 +73,15 @@ class JWTBuilder
     }
 
     /**
-     * Builds ClaimManager from a part.
+     * Decodes JWT claims part into an array.
      *
-     * @param string $part
-     * @param array $mutators
-     * @return ClaimManager|null New ClaimManager instance or null if it cannot be created.
+     * @param string $claims
+     * @return array Array of claims
      * @throws CantParseJWTException Thrown if part cannot be decoded.
      */
-    protected function buildClaimManagerFromPart(string $part, array $mutators)
+    protected function decodeClaims(string $claims)
     {
-        $decoded = Base64Encoder::decode($part);
+        $decoded = Base64Encoder::decode($claims);
 
         if ($decoded === false) {
             throw new CantParseJWTException();
@@ -76,10 +89,10 @@ class JWTBuilder
 
         $array = JsonEncoder::decode($decoded);
 
-        if (is_null($array)) {
+        if (!is_array($array)) {
             throw new CantParseJWTException();
         }
 
-        return new ClaimManager($array, $mutators);
+        return $array;
     }
 }
