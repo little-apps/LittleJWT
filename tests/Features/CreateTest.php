@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builder;
@@ -131,5 +132,24 @@ class CreateTest extends TestCase
 
         $this->assertNotNull($jwt->getPayload()->get('sub'));
         $this->assertEquals($sub, $jwt->getPayload()->get('sub'));
+    }
+
+    /**
+     * Tests claims use the date format specified in the RFC (https://www.rfc-editor.org/rfc/rfc7519#section-2)
+     *
+     * @return void
+     */
+    public function test_numeric_date_format() {
+        $expectedDateTime = Carbon::now()->addDay();
+
+        $token = LittleJWT::createToken(function (Builder $builder) use($expectedDateTime) {
+            $builder->exp($expectedDateTime);
+        });
+
+        $jwt = LittleJWT::parseToken($token);
+
+        $this->assertTrue(Carbon::createFromFormat('U', $jwt->getPayload()->get('exp')) !== false);
+
+        $this->assertTrue(is_numeric($jwt->getPayload()->get('exp')));
     }
 }
