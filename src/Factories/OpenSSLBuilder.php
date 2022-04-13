@@ -17,6 +17,11 @@ class OpenSSLBuilder
 
     protected $config;
 
+    /**
+     * Initializes OpenSSLBuilder instance.
+     *
+     * @param array $config Default configuration options to pass to openssl functions.
+     */
     public function __construct(array $config)
     {
         $this->config = $config;
