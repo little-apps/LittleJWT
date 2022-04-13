@@ -2,17 +2,20 @@
 
 namespace LittleApps\LittleJWT\Commands\Concerns;
 
-trait GeneratesEnvVariables {
+trait GeneratesEnvVariables
+{
     /**
      * Updates the specified env file with the specified variables.
      *
      * @param string $envPath Path to .env file
      * @param array $variables Associative array of environment variables to append or replace.
-     * @return boolean True if .env file was updated.
+     * @return bool True if .env file was updated.
      */
-    protected function updateEnvFile(string $envPath, array $variables) {
-        if (($contents = file_get_contents($envPath)) === false)
+    protected function updateEnvFile(string $envPath, array $variables)
+    {
+        if (($contents = file_get_contents($envPath)) === false) {
             return false;
+        }
 
         $contents = $this->updateEnvFileContents($contents, $variables);
 
@@ -26,9 +29,10 @@ trait GeneratesEnvVariables {
      * @param array $variables Associative array of environment variables to append or replace.
      * @return string Updated .env file contents
      */
-    protected function updateEnvFileContents(string $contents, array $variables) {
+    protected function updateEnvFileContents(string $contents, array $variables)
+    {
         foreach ($variables as $key => $value) {
-            if (!$this->envKeyExists($key)) {
+            if (! $this->envKeyExists($key)) {
                 // Append to .env file
                 $contents = $this->appendEnvFile($contents, $key, $value);
             } else {
@@ -44,10 +48,11 @@ trait GeneratesEnvVariables {
      * Checks if env key already exists.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
-    protected function envKeyExists(string $key) {
-        return !is_null(env($key));
+    protected function envKeyExists(string $key)
+    {
+        return ! is_null(env($key));
     }
 
     /**
@@ -58,7 +63,8 @@ trait GeneratesEnvVariables {
      * @param mixed $value Value
      * @return string Updated contents
      */
-    protected function appendEnvFile(string $contents, string $key, $value) {
+    protected function appendEnvFile(string $contents, string $key, $value)
+    {
         return sprintf('%s%s%s%s', $contents, PHP_EOL, $this->createLineForEnvFile($key, $value), PHP_EOL);
     }
 
@@ -70,7 +76,8 @@ trait GeneratesEnvVariables {
      * @param mixed $value Value
      * @return string Updated contents
      */
-    protected function replaceEnvFile(string $contents, string $key, $value) {
+    protected function replaceEnvFile(string $contents, string $key, $value)
+    {
         $regex = sprintf('/^(%s)=([^\r\n]+)$/m', $key);
         $sub = $this->createLineForEnvFile($key, $value);
 
@@ -95,20 +102,25 @@ trait GeneratesEnvVariables {
      * @param mixed $value
      * @return string
      */
-    protected function transformEnvValue($value) {
+    protected function transformEnvValue($value)
+    {
         switch (gettype($value)) {
             case 'boolean':
                 $value = $value ? 'true' : 'false';
+
                 break;
             case 'NULL':
                 $value = 'null';
+
                 break;
             case 'string':
                 $value = sprintf('"%s"', $value);
+
                 break;
 
             default:
                 $value = (string) $value;
+
                 break;
         }
 

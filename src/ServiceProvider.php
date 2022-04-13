@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
-use LittleApps\LittleJWT\Commands;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;

@@ -72,11 +72,8 @@ class GeneratePhraseCommand extends Command
 
                 return 1;
             }
-
         }
 
         return 0;
     }
-
-
 }

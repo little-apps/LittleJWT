@@ -70,7 +70,7 @@ class OpenSSLBuilder
     public function generateCertificateSignRequest(string $commonName, $privKey, array $config = [])
     {
         $defaultConfig = [
-            'digest_alg' => 'sha384'
+            'digest_alg' => 'sha384',
         ];
 
         $csr = openssl_csr_new(compact('commonName'), $privKey, $config + $defaultConfig + $this->getConfig());
@@ -91,7 +91,7 @@ class OpenSSLBuilder
     public function generateCertificate($csr, $privKey, array $config = [])
     {
         $defaultConfig = [
-            'digest_alg' => 'sha384'
+            'digest_alg' => 'sha384',
         ];
 
         $cert = openssl_csr_sign($csr, null, $privKey, 365, $config + $defaultConfig + $this->getConfig());
