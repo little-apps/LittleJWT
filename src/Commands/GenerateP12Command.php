@@ -85,7 +85,7 @@ class GenerateP12Command extends Command
 
         if ($this->option('display')) {
             $this->info('Generated environment variables:');
-            $this->newLine();
+            $this->line('');
 
             foreach ($vars as $key => $value) {
                 $this->info($this->createLineForEnvFile($key, $value));
