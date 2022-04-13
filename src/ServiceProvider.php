@@ -35,6 +35,8 @@ class ServiceProvider extends PackageServiceProvider
             ->hasMigration('create_jwt_blacklist_table')
             ->hasCommands(
                 Commands\GeneratePhraseCommand::class,
+                Commands\GenerateP12Command::class,
+                Commands\GeneratePemCommand::class
             );
 
         if (! $this->app->runningUnitTests()) {
