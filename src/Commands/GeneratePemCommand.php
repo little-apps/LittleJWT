@@ -55,16 +55,19 @@ class GeneratePemCommand extends Command
 
         if (is_null($file)) {
             $this->line($pem);
+
             return 0;
         }
 
-        if (!$this->option('force') && file_exists($file)) {
+        if (! $this->option('force') && file_exists($file)) {
             $this->error('File "%s" already exists. Pass the --force option to overwrite it.');
+
             return 1;
         }
 
         if (file_put_contents($file, $pem) === false) {
             $this->error(sprintf('An error occurred writing to file "%s".', $file));
+
             return 1;
         }
 

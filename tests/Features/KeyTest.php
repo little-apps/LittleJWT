@@ -40,7 +40,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_p12_outputted() {
+    public function test_p12_outputted()
+    {
         $this
             ->artisan('littlejwt:p12')
                 ->assertExitCode(0);
@@ -51,7 +52,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_p12_file_generated() {
+    public function test_p12_file_generated()
+    {
         Storage::fake();
 
         $path = str_replace('\\', '//', Storage::path('jwk.p12'));
@@ -71,7 +73,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_p12_file_not_overwritten() {
+    public function test_p12_file_not_overwritten()
+    {
         Storage::fake();
 
         $existing = $this->faker->text;
@@ -93,7 +96,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_p12_file_overwritten() {
+    public function test_p12_file_overwritten()
+    {
         Storage::fake();
 
         $existing = $this->faker->text;
@@ -117,7 +121,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_pem_outputted() {
+    public function test_pem_outputted()
+    {
         $this
             ->artisan('littlejwt:pem')
                 ->assertExitCode(0);
@@ -128,7 +133,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_pem_file_generated() {
+    public function test_pem_file_generated()
+    {
         Storage::fake();
 
         $path = str_replace('\\', '//', Storage::path('jwk.pem'));
@@ -148,7 +154,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_pem_file_not_overwritten() {
+    public function test_pem_file_not_overwritten()
+    {
         Storage::fake();
 
         $existing = $this->faker->text;
@@ -170,7 +177,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_pem_file_overwritten() {
+    public function test_pem_file_overwritten()
+    {
         Storage::fake();
 
         $existing = $this->faker->text;
