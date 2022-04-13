@@ -34,21 +34,21 @@ return [
              * The type of file.
              * Options: pem, p12, or crt.
              */
-            'type' => 'pem',
+            'type' => env('LITTLEJWT_KEY_FILE_TYPE', 'pem'),
 
             /**
              * Path to the key file.
              * Do not share this with anyone.
              * Changing the file will cause previously generated JWTs to be invalid.
              */
-            'path' => '/path/to/my/key/file.pem',
+            'path' => env('LITTLEJWT_KEY_FILE_PATH', '/path/to/my/key/file.pem'),
 
             /**
              * The secret to use if the file is encrypted.
              * This does not apply to crt files.
              * Leave empty if file is not encrypted.
              */
-            'secret' => ''
+            'secret' => env('LITTLEJWT_KEY_FILE_SECRET', '')
         ],
 
         /**
