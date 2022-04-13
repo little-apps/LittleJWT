@@ -35,18 +35,19 @@ class OpenSSLBuilder
     /**
      * Generates a private key
      *
-     * @param int $type One of PRIVATE_KEY_TYPES_* constants (default is PRIVATE_KEY_TYPES_RSA)
-     * @param string $curveName Curve name (default is prime256v1)
+     * @param array $config Configuration options to pass to openssl_pkey_new(). (default: ["private_key_type" => static::PRIVATE_KEY_TYPES_RSA, "curve_name" => 'prime256v1'])
      * @return \OpenSSLAsymmetricKey
      * @see https://www.php.net/manual/en/function.openssl-get-curve-names.php Possible curve names
      */
-    public function generatePrivateKey($type = self::PRIVATE_KEY_TYPES_RSA, $curveName = 'prime256v1')
+    public function generatePrivateKey(array $config = [])
     {
+        $defaultConfig = [
+            "private_key_type" => static::PRIVATE_KEY_TYPES_RSA,
+            "curve_name" => 'prime256v1',
+        ];
+
         // Generate a new private (and public) key pair
-        $pkey = openssl_pkey_new($this->getConfig() + [
-            "private_key_type" => $type,
-            "curve_name" => $curveName,
-        ]);
+        $pkey = openssl_pkey_new($config + $defaultConfig + $this->getConfig());
 
         throw_if($pkey === false, OpenSSLException::class, openssl_error_string());
 
@@ -58,12 +59,16 @@ class OpenSSLBuilder
      *
      * @param string $commonName
      * @param OpenSSLAsymmetricKey|resource $privKey
-     * @param string $digestAlg Algorithm to use
-     * @return OpenSSLCertificateSigningRequest
+     * @param array $config Configuration options to pass to openssl_csr_new(). (default: ['digest_alg' => 'sha384'])
+     * @return OpenSSLCertificateSigningRequest|resource
      */
-    public function generateCertificateSignRequest(string $commonName, $privKey, string $digestAlg = 'sha384')
+    public function generateCertificateSignRequest(string $commonName, $privKey, array $config = [])
     {
-        $csr = openssl_csr_new(compact('commonName'), $privKey, $this->getConfig() + ['digest_alg' => $digestAlg]);
+        $defaultConfig = [
+            'digest_alg' => 'sha384'
+        ];
+
+        $csr = openssl_csr_new(compact('commonName'), $privKey, $config + $defaultConfig + $this->getConfig());
 
         throw_if($csr === false, OpenSSLException::class, openssl_error_string());
 
@@ -75,12 +80,16 @@ class OpenSSLBuilder
      *
      * @param OpenSSLCertificateSigningRequest|resource $csr
      * @param OpenSSLAsymmetricKey|resource $privKey
-     * @param string $digestAlg Algorithm to use
+     * @param array $config Configuration options to pass to openssl_csr_sign(). (default: ['digest_alg' => 'sha384'])
      * @return OpenSSLCertificate|resource
      */
-    public function generateCertificate($csr, $privKey, string $digestAlg = 'sha384')
+    public function generateCertificate($csr, $privKey, array $config = [])
     {
-        $cert = openssl_csr_sign($csr, null, $privKey, 365, $this->getConfig() + ['digest_alg' => $digestAlg]);
+        $defaultConfig = [
+            'digest_alg' => 'sha384'
+        ];
+
+        $cert = openssl_csr_sign($csr, null, $privKey, 365, $config + $defaultConfig + $this->getConfig());
 
         throw_if($cert === false, OpenSSLException::class, openssl_error_string());
 
@@ -91,11 +100,13 @@ class OpenSSLBuilder
      * Exports private key as string
      *
      * @param OpenSSLAsymmetricKey|resource $privKey
+     * @param string $passPhrase
+     * @param array $config Configuration options to pass to openssl_pkey_export(). (default: empty array)
      * @return string
      */
-    public function exportPrivateKey($privKey, string $passPhrase = null)
+    public function exportPrivateKey($privKey, string $passPhrase = null, array $config = [])
     {
-        $exported = openssl_pkey_export($privKey, $output, $passPhrase, $this->getConfig());
+        $exported = openssl_pkey_export($privKey, $output, $passPhrase, $config + $this->getConfig());
 
         throw_if($exported === false, OpenSSLException::class, openssl_error_string());
 
@@ -108,11 +119,12 @@ class OpenSSLBuilder
      * @param OpenSSLCertificate|resource $cert
      * @param OpenSSLAsymmetricKey|resource $privKey
      * @param string $passPhrase
+     * @param array $config Configuration options to pass to openssl_pkcs12_export(). (default: empty array)
      * @return string
      */
-    public function exportPkcs12($cert, $privKey, string $passPhrase = '')
+    public function exportPkcs12($cert, $privKey, string $passPhrase = '', array $config = [])
     {
-        $exported = openssl_pkcs12_export($cert, $output, $privKey, $passPhrase, $this->getConfig());
+        $exported = openssl_pkcs12_export($cert, $output, $privKey, $passPhrase, $config + $this->getConfig());
 
         throw_if($exported === false, OpenSSLException::class, openssl_error_string());
 
