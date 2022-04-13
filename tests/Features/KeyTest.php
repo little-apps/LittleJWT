@@ -23,14 +23,14 @@ class KeyTest extends TestCase
     use InteractsWithLittleJWT;
 
     /**
-     * Tests that a JWK secret is generated using the littlejwt:secret command.
+     * Tests that a JWK secret phrase is generated using the littlejwt:phrase command.
      *
      * @return void
      */
-    public function test_secret_key_generated()
+    public function test_secret_phrase_generated()
     {
         $this
-            ->artisan('littlejwt:secret -d')
+            ->artisan('littlejwt:phrase -d')
                 ->expectsOutput('Generated secret key:')
                 ->assertExitCode(0);
     }

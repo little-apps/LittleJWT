@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
-use LittleApps\LittleJWT\Commands\GenerateSecretCommand;
+use LittleApps\LittleJWT\Commands;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
@@ -34,7 +34,9 @@ class ServiceProvider extends PackageServiceProvider
         $package
             ->name('littlejwt')
             ->hasMigration('create_jwt_blacklist_table')
-            ->hasCommand(GenerateSecretCommand::class);
+            ->hasCommands(
+                Commands\GeneratePhraseCommand::class,
+            );
 
         if (! $this->app->runningUnitTests()) {
             $package->hasConfigFile();
