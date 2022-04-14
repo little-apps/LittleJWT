@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
@@ -129,6 +130,9 @@ class ServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(JWTHasher::class, function ($app) {
             $algorithm = $app->config->get('littlejwt.key.algorithm');
+
+            if (is_null($algorithm))
+                throw new InvalidHashAlgorithmException('No hash algorithm is set.');
 
             return new JWTHasher($app->make($algorithm));
         });

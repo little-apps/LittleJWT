@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
@@ -285,6 +286,20 @@ class KeyTest extends TestCase
         $jwk = $this->app[Keyable::class]->createFromPKCS12CertificateFile(Storage::path('jwk.p12'));
 
         $this->assertTrue($this->createValidateWithJwk($jwk));
+    }
+
+    /**
+     * Tests the InvalidHashAlgorithmException is thrown when algorithm isn't set.
+     *
+     * @return void
+     */
+    public function test_invalid_hash_algorithm_thrown()
+    {
+        $this->expectException(InvalidHashAlgorithmException::class);
+
+        config()->set('littlejwt.key.algorithm', null);
+
+        LittleJWT::createToken();
     }
 
     /**
