@@ -34,7 +34,7 @@ php artisan vendor:publish --tag="littlejwt-config"
 Generate a secret phrase for building and validating JWTs:
 
 ```bash
-php artisan littlejwt:secret
+php artisan littlejwt:phrase
 ```
 
 ## Usage
