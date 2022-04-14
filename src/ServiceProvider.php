@@ -131,8 +131,9 @@ class ServiceProvider extends PackageServiceProvider
         $this->app->singleton(JWTHasher::class, function ($app) {
             $algorithm = $app->config->get('littlejwt.key.algorithm');
 
-            if (is_null($algorithm))
+            if (is_null($algorithm)) {
                 throw new InvalidHashAlgorithmException('No hash algorithm is set.');
+            }
 
             return new JWTHasher($app->make($algorithm));
         });
