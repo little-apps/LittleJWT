@@ -7,10 +7,9 @@ All notable changes to `LittleJWT` will be documented in this file.
 ## What's Changed
 
 - Configuration file changes:
-- - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
-- - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
-- - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
-- 
+  - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
+  - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
+  - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
 - Generate private and PKCS12 key types with Artisan commands.
 - Use random one-time JSON Web Keys.
 - Centralized building `ClaimManager` instances and mutating claims with `ClaimManagerBuilder` factory.
