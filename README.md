@@ -37,6 +37,8 @@ Generate a secret phrase for building and validating JWTs:
 php artisan littlejwt:phrase
 ```
 
+> Information on generating different types of keys can be found in [the documentation](https://docs.getlittlejwt.com/json-web-keys#key-types).
+
 ## Usage
 
 ### Building JWTs
