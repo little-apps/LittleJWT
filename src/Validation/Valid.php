@@ -8,12 +8,15 @@ use Illuminate\Support\MessageBag;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
+use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 use LittleApps\LittleJWT\JWT\JWT;
 
 class Valid
 {
+    use PassableThru;
+
     /**
      * Application container
      *
@@ -34,13 +37,6 @@ class Valid
      * @var JWK
      */
     protected $jwk;
-
-    /**
-     * Validator instance that holds rules.
-     *
-     * @var Validator
-     */
-    protected $validator;
 
     /**
      * Any errors that occurred.
@@ -83,9 +79,7 @@ class Valid
      */
     public function passValidatorThru(callable $callback)
     {
-        $callback($this->validator);
-
-        return $this;
+        return $this->passThru($callback);
     }
 
     /**
@@ -107,7 +101,9 @@ class Valid
      */
     public function passes()
     {
-        $rules = $this->validator->getRulesBefore()->concat($this->validator->getRules());
+        $this->runThru($validator = $this->buildValidator());
+
+        $rules = $validator->getRulesBefore()->concat($validator->getRules());
 
         $this->errors = new MessageBag();
 
@@ -119,7 +115,7 @@ class Valid
             } catch (RuleFailedException $ex) {
                 $this->errors->add($this->getRuleIdentifier($rule), $ex->getMessage());
 
-                if ($this->validator->getStopOnFailure()) {
+                if ($validator->getStopOnFailure()) {
                     $stopped = true;
 
                     break;
@@ -129,7 +125,7 @@ class Valid
 
         $this->lastRunResult = ! $stopped && $this->errors->isEmpty();
 
-        foreach ($this->validator->getAfterValidation() as $after) {
+        foreach ($validator->getAfterValidation() as $after) {
             // Don't pass $this instance because of the risk of this method being called again (resulting in a stack overflow).
             $after($this->lastRunResult, $this->errors);
         }
