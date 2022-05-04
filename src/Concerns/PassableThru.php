@@ -12,7 +12,8 @@ trait PassableThru
      * @param callable $callback
      * @return $this
      */
-    protected function passThru(callable $callback) {
+    protected function passThru(callable $callback)
+    {
         array_push($this->passThruStack, $callback);
 
         return $this;
@@ -24,7 +25,8 @@ trait PassableThru
      * @param array ...$params
      * @return $this
      */
-    protected function runThru(...$params) {
+    protected function runThru(...$params)
+    {
         foreach ($this->passThruStack as $callback) {
             $callback(...$params);
         }
