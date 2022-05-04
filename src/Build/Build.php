@@ -6,6 +6,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Jose\Component\Core\JWK;
 
+use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
@@ -14,6 +15,7 @@ use LittleApps\LittleJWT\Factories\JWTHasher;
 class Build
 {
     use ForwardsCalls;
+    use PassableThru;
 
     protected $app;
 
@@ -36,9 +38,7 @@ class Build
      */
     public function passBuilderThru(Buildable $buildable)
     {
-        $buildable->build($this->builder);
-
-        return $this;
+        return $this->passThru([$buildable, 'build']);
     }
 
     /**
@@ -48,6 +48,8 @@ class Build
      */
     public function build()
     {
+        $this->runThru($this->builder);
+
         $headers = $this->builder->getHeaders();
         $payload = $this->builder->getPayload();
 
