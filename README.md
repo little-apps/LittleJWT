@@ -49,8 +49,11 @@ use LittleApps\LittleJWT\Build\Builder;
 
 $token = LittleJWT::createToken(function (Builder $builder) {
     $builder
+        // Adds claim 'abc' with value 'def' to header claims.
         ->abc('def', true)
+        // Adds claim 'ghi' with value 'klm' to payload claims.
         ->ghi('klm')
+        // Adds claim 'nop' with value 'qrs' to payload claims.
         ->nop('qrs', false);
 });
 
@@ -66,8 +69,11 @@ $token = "ey...";
 
 $passes = LittleJWT::validateToken($token, function (Validator $validator) {
     $validator
+        // Checks the value of the 'abc' claim in the header === (strictly equals) 'def'
         ->equals('abc', 'def', true, true)
+        // Checks the value of the 'ghi' claim in the payload == (equals) 'klm'
         ->equals('ghi', 'klm')
+        // Checks the value of the 'nop' claim in the payload === (strictly equals) 'qrs'
         ->equals('nop', 'qrs', true, false);
 });
 
