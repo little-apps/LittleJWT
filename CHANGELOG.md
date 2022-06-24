@@ -2,14 +2,30 @@
 
 All notable changes to `LittleJWT` will be documented in this file.
 
+## v1.3.0 - 2022-06-24
+
+### What's Changed
+
+- Renamed the "littlejwt:secret" command to "littlejwt:phrase".
+- The `web-token/jwt-signature-algorithm-hmac` package is automatically installed with Little JWT (fixes issue #12).
+- The `LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException` exception is thrown if no hashing algorithm is set in the config file.
+- Uses `LittleApps\LittleJWT\Concerns\PassableThru` trait to send `LittleApps\LittleJWT\Build\Builder` and `LittleApps\LittleJWT\Validation\Validator` instances through callbacks.
+
+#### Notes
+
+- This is considered a minor version update (and not a patch to version 1.2) because it now automatically installs a Composer package and it may cause issues updating Composer (possibly because a different version or variation of the `web-token/jwt-signature-algorithm-hmac` package was installed).
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.2.0...v1.2.1
+
 ## v1.2.0 - 2022-04-14
 
 ## What's Changed
 
 - Configuration file changes:
-  - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
-  - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
-  - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
+- - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
+- - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
+- - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
+- 
 - Generate private and PKCS12 key types with Artisan commands.
 - Use random one-time JSON Web Keys.
 - Centralized building `ClaimManager` instances and mutating claims with `ClaimManagerBuilder` factory.
