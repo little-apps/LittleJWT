@@ -147,16 +147,16 @@ class KeyBuilder implements Keyable
 
         switch ($config['type']) {
             case static::KEY_FILES_CRT: {
-                    return JWKFactory::createFromCertificateFile($config['path'], $this->extra);
-                }
+                return JWKFactory::createFromCertificateFile($config['path'], $this->extra);
+            }
 
             case static::KEY_FILES_P12: {
-                    return JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $this->extra);
-                }
+                return JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $this->extra);
+            }
 
             default: {
-                    return JWKFactory::createFromKeyFile($config['path'], $config['secret'], $this->extra);
-                }
+                return JWKFactory::createFromKeyFile($config['path'], $config['secret'], $this->extra);
+            }
         }
     }
 
