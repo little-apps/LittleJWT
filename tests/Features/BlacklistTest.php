@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithTimeBackwardsCompatible;
+use LittleApps\LittleJWT\Tests\TestCase;
 
 class BlacklistTest extends TestCase
 {
