@@ -37,7 +37,8 @@ class ServiceProvider extends PackageServiceProvider
             ->hasCommands(
                 Commands\GeneratePhraseCommand::class,
                 Commands\GenerateP12Command::class,
-                Commands\GeneratePemCommand::class
+                Commands\GeneratePemCommand::class,
+                Commands\BlacklistPurgeCommand::class
             );
 
         if (! $this->app->runningUnitTests()) {
