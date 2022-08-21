@@ -7,9 +7,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
+use LittleApps\LittleJWT\Tests\Concerns\InteractsWithTimeBackwardsCompatible;
 
 class BlacklistTest extends TestCase
 {
+    use InteractsWithTimeBackwardsCompatible;
     use WithFaker;
 
     /**
@@ -60,7 +62,7 @@ class BlacklistTest extends TestCase
 
         $this->assertTrue(Blacklist::isBlacklisted($jwt));
 
-        $this->travel(24)->hours();
+        $this->travelTo(now()->addHours(24));
 
         Blacklist::purge();
 
@@ -85,7 +87,7 @@ class BlacklistTest extends TestCase
 
         $original = Blacklist::getBlacklist();
 
-        $this->travel(24)->hours();
+        $this->travelTo(now()->addHours(24));
 
         $this
             ->artisan('littlejwt:purge')
@@ -113,7 +115,7 @@ class BlacklistTest extends TestCase
 
         $original = Blacklist::getBlacklist();
 
-        $this->travel(24)->hours();
+        $this->travelTo(now()->addHours(24));
 
         $this
             ->artisan('littlejwt:purge xyz')
