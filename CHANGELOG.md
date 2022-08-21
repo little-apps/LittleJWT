@@ -2,6 +2,16 @@
 
 All notable changes to `LittleJWT` will be documented in this file.
 
+## v1.4.0 - 2022-08-21
+
+### What's Changed
+
+- Added `littlejwt:purge` command to purge blacklist.
+- Create tests for the blacklist.
+- Bump dependabot/fetch-metadata from 1.3.1 to 1.3.3 by @dependabot in https://github.com/little-apps/LittleJWT/pull/14
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.3.0...v1.4.0
+
 ## v1.3.0 - 2022-06-24
 
 ### What's Changed
@@ -23,8 +33,11 @@ All notable changes to `LittleJWT` will be documented in this file.
 
 - Configuration file changes:
 - - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
+- 
 - - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
+- 
 - - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
+- 
 - 
 - Generate private and PKCS12 key types with Artisan commands.
 - Use random one-time JSON Web Keys.
