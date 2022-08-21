@@ -2,13 +2,13 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\Blacklist\Drivers\AbstractDriver;
 use Illuminate\Support\Carbon;
+use LittleApps\LittleJWT\Blacklist\Drivers\AbstractDriver;
+use LittleApps\LittleJWT\JWT\JWT;
 
 class ArrayBlacklistDriver extends AbstractDriver
 {
-    const DEFAULT_TTL = 0;
+    public const DEFAULT_TTL = 0;
 
     protected $blacklist;
 
@@ -27,7 +27,7 @@ class ArrayBlacklistDriver extends AbstractDriver
     {
         $expires = $this->blacklist->get($this->getUniqueId($jwt));
 
-        return !is_null($expires) && ! $this->isExpired($expires);
+        return ! is_null($expires) && ! $this->isExpired($expires);
     }
 
     /**
@@ -53,7 +53,7 @@ class ArrayBlacklistDriver extends AbstractDriver
      */
     public function purge()
     {
-        $this->blacklist = $this->blacklist->filter(fn ($value) => !$this->isExpired($value));
+        $this->blacklist = $this->blacklist->filter(fn ($value) => ! $this->isExpired($value));
 
         return $this;
     }
@@ -63,7 +63,8 @@ class ArrayBlacklistDriver extends AbstractDriver
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getBlacklist() {
+    public function getBlacklist()
+    {
         return collect($this->blacklist);
     }
 
@@ -71,9 +72,10 @@ class ArrayBlacklistDriver extends AbstractDriver
      * Checks if date/time is expired.
      *
      * @param Carbon $expires
-     * @return boolean True if date/time has past.
+     * @return bool True if date/time has past.
      */
-    protected function isExpired(Carbon $expires) {
+    protected function isExpired(Carbon $expires)
+    {
         return now()->isAfter($expires);
     }
 }
