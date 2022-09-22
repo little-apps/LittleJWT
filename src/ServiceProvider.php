@@ -4,6 +4,8 @@ namespace LittleApps\LittleJWT;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 
@@ -321,8 +323,12 @@ class ServiceProvider extends PackageServiceProvider
             return ResponseFactory::json(ResponseBuilder::buildFromJwt($jwt));
         });
 
-        Response::macro('attachJwt', function ($jwt) {
+        $attachJwtCallback = function ($jwt) {
             return $this->header('Authorization', sprintf('Bearer %s', (string) $jwt));
-        });
+        };
+
+        Response::macro('attachJwt', $attachJwtCallback);
+        JsonResponse::macro('attachJwt', $attachJwtCallback);
+        RedirectResponse::macro('attachJwt', $attachJwtCallback);
     }
 }
