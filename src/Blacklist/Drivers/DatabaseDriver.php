@@ -44,7 +44,7 @@ class DatabaseDriver extends AbstractDriver
 
         DB::table($this->getTableName())->insert([
             $this->getIdentifierColumnName() => $this->getUniqueId($jwt),
-            $this->getIdentifierExpiryName() => $ttl > 0 ? Carbon::now()->addSeconds($ttl) : null,
+            $this->getIdentifierExpiryName() => $ttl > 0 ? Carbon::now()->addSeconds($ttl) : 0,
         ]);
 
         return $this;
