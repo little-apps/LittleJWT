@@ -29,7 +29,8 @@ abstract class AbstractDriver implements BlacklistDriver
      *
      * @return int TTL in seconds (0 means forever)
      */
-    protected function getDefaultTtl() {
+    protected function getDefaultTtl()
+    {
         return config('littlejwt.blacklist.ttl', 0);
     }
 }
