@@ -226,14 +226,16 @@ return [
         'driver' => 'cache',
 
         /**
+         * How long a JWT stays in the blacklist (in seconds).
+         * Set to 0 to have JWTs blacklisted forever.
+         */
+        'ttl' => 0,
+
+        /**
          * Configuration options for cache driver.
          */
         'cache' => [
-            /**
-             * How long a JWT stays in the blacklist (in seconds).
-             * Set to 0 to have JWTs blacklisted forever.
-             */
-            'ttl' => 0
+
         ],
 
         /**
