@@ -23,4 +23,13 @@ abstract class AbstractDriver implements BlacklistDriver
         // Otherwise, use sha1 of JWT token.
         return sha1((string) $jwt);
     }
+
+    /**
+     * Gets default TTL to use for blacklist
+     *
+     * @return int TTL in seconds (0 means forever)
+     */
+    protected function getDefaultTtl() {
+        return config('littlejwt.blacklist.ttl', 0);
+    }
 }

@@ -38,7 +38,7 @@ class CacheDriver extends AbstractDriver
      */
     public function blacklist(JWT $jwt, $ttl = -1)
     {
-        $ttl = $ttl >= 0 ? $ttl : $this->options['ttl'];
+        $ttl = $ttl >= 0 ? $ttl : $this->getDefaultTtl();
 
         // The cache uses null to indicate it should be stored forever.
         $this->manager->put($this->getUniqueId($jwt), $jwt, $ttl > 0 ? $ttl : null);

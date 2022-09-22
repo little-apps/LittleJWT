@@ -40,7 +40,7 @@ class DatabaseDriver extends AbstractDriver
      */
     public function blacklist(JWT $jwt, $ttl = -1)
     {
-        $ttl = $ttl >= 0 ? $ttl : $this->options['ttl'];
+        $ttl = $ttl >= 0 ? $ttl : $this->getDefaultTtl();
 
         DB::table($this->getTableName())->insert([
             $this->getIdentifierColumnName() => $this->getUniqueId($jwt),
