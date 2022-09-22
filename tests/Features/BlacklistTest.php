@@ -15,21 +15,25 @@ class BlacklistTest extends TestCase
     use InteractsWithTimeBackwardsCompatible;
     use WithFaker;
 
+
+
     /**
-     * Tests that a JWT is blacklisted.
+     * Tests that a JWT is blacklisted using the JTI.
      *
      * @return void
      */
-    public function test_jwt_blacklisted()
+    public function test_jwt_blacklisted_jti()
     {
         LittleJWT::fake();
-        Blacklist::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
+            $jwt = LittleJWT::createJWT();
 
-        Blacklist::blacklist($jwt);
+            $driver->blacklist($jwt);
 
-        $this->assertTrue(Blacklist::isBlacklisted($jwt));
+            $this->assertTrue($driver->isBlacklisted($jwt));
+        });
+
     }
 
     /**
@@ -40,15 +44,16 @@ class BlacklistTest extends TestCase
     public function test_jwt_blacklisted_jwt_hash()
     {
         LittleJWT::fake();
-        Blacklist::fake();
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) {
-            $builder->remove('jti');
+        $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
+            $jwt = LittleJWT::createJWT(function (Builder $builder) {
+                $builder->remove('jti');
+            });
+
+            $driver->blacklist($jwt);
+
+            $this->assertTrue($driver->isBlacklisted($jwt));
         });
-
-        Blacklist::blacklist($jwt);
-
-        $this->assertTrue(Blacklist::isBlacklisted($jwt));
     }
 
     /**
@@ -59,11 +64,13 @@ class BlacklistTest extends TestCase
     public function test_jwt_not_blacklisted()
     {
         LittleJWT::fake();
-        Blacklist::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
 
-        $this->assertFalse(Blacklist::isBlacklisted($jwt));
+            $jwt = LittleJWT::createJWT();
+
+            $this->assertFalse($driver->isBlacklisted($jwt));
+        });
     }
 
     /**
@@ -74,19 +81,20 @@ class BlacklistTest extends TestCase
     public function test_purged_pragmatically()
     {
         LittleJWT::fake();
-        Blacklist::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
+            $jwt = LittleJWT::createJWT();
 
-        Blacklist::blacklist($jwt, 60);
+            $driver->blacklist($jwt, 60);
 
-        $this->assertTrue(Blacklist::isBlacklisted($jwt));
+            $this->assertTrue($driver->isBlacklisted($jwt));
 
-        $this->travelTo(now()->addHours(24));
+            $this->travelTo(now()->addHours(24));
 
-        Blacklist::purge();
+            $driver->purge();
 
-        $this->assertFalse(Blacklist::isBlacklisted($jwt));
+            $this->assertFalse($driver->isBlacklisted($jwt));
+        });
     }
 
     /**
@@ -142,5 +150,18 @@ class BlacklistTest extends TestCase
                 ->assertExitCode(1);
 
         $this->assertEquals($original, Blacklist::getBlacklist());
+    }
+
+    /**
+     * Calls callback with BlacklistDriver instance for each specified driver
+     *
+     * @param array $drivers
+     * @param callable $callback
+     * @return void
+     */
+    protected function withBlacklistDrivers(array $drivers, callable $callback) {
+        collect($drivers)
+            ->map(fn ($driver) => Blacklist::driver($driver))
+            ->each($callback);
     }
 }
