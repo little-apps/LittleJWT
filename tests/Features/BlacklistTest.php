@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
 
+use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithTimeBackwardsCompatible;
@@ -25,6 +26,25 @@ class BlacklistTest extends TestCase
         Blacklist::fake();
 
         $jwt = LittleJWT::createJWT();
+
+        Blacklist::blacklist($jwt);
+
+        $this->assertTrue(Blacklist::isBlacklisted($jwt));
+    }
+
+    /**
+     * Tests that a JWT is blacklisted using the hash of the entire JWT.
+     *
+     * @return void
+     */
+    public function test_jwt_blacklisted_jwt_hash()
+    {
+        LittleJWT::fake();
+        Blacklist::fake();
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) {
+            $builder->remove('jti');
+        });
 
         Blacklist::blacklist($jwt);
 
