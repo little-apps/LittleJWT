@@ -322,9 +322,7 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         Response::macro('attachJwt', function ($jwt) {
-            $this->header('Authorization', sprintf('Bearer %s', (string) $jwt));
-
-            return $this;
+            return $this->header('Authorization', sprintf('Bearer %s', (string) $jwt));
         });
     }
 }
