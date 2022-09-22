@@ -15,8 +15,6 @@ class BlacklistTest extends TestCase
     use InteractsWithTimeBackwardsCompatible;
     use WithFaker;
 
-
-
     /**
      * Tests that a JWT is blacklisted using the JTI.
      *
@@ -33,7 +31,6 @@ class BlacklistTest extends TestCase
 
             $this->assertTrue($driver->isBlacklisted($jwt));
         });
-
     }
 
     /**
@@ -66,7 +63,6 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
 
         $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
-
             $jwt = LittleJWT::createJWT();
 
             $this->assertFalse($driver->isBlacklisted($jwt));
@@ -159,7 +155,8 @@ class BlacklistTest extends TestCase
      * @param callable $callback
      * @return void
      */
-    protected function withBlacklistDrivers(array $drivers, callable $callback) {
+    protected function withBlacklistDrivers(array $drivers, callable $callback)
+    {
         collect($drivers)
             ->map(fn ($driver) => Blacklist::driver($driver))
             ->each($callback);
