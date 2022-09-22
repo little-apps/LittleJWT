@@ -80,6 +80,24 @@ class TestCase extends Orchestra
                     ], 401);
                 });
 
+                $router->post('/login/response', function (Request $request) {
+                    $credentials = $request->validate([
+                        'email' => ['required', 'email'],
+                        'password' => ['required'],
+                    ]);
+
+                    if (Auth::validate($credentials)) {
+                        $jwt = Auth::buildJwtForUser(Auth::user());
+
+                        return Response::withJwt($jwt)->attachJwt($jwt);
+                    }
+
+                    return Response::json([
+                        'status' => 'error',
+                        'message' => 'The provided credentials do not match our records.',
+                    ], 401);
+                });
+
                 $router->middleware('auth:jwt')->get('/user', function (Request $request) {
                     return $request->user();
                 });
