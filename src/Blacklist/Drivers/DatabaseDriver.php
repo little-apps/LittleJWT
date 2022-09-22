@@ -58,7 +58,7 @@ class DatabaseDriver extends AbstractDriver
     public function purge()
     {
         DB::table($this->getTableName())
-            ->whereDate($this->getIdentifierExpiryName(), '>', Carbon::now())
+            ->where($this->getIdentifierExpiryName(), '>', Carbon::now()->getTimestamp())
                 ->delete();
 
         return $this;
