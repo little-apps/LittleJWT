@@ -16,7 +16,7 @@ class BlacklistTest extends TestCase
     use WithFaker;
 
     /**
-     * Tests that a JWT is blacklisted using the JTI.
+     * Tests that the JTI for a JWT is blacklisted.
      *
      * @return void
      */
@@ -34,7 +34,7 @@ class BlacklistTest extends TestCase
     }
 
     /**
-     * Tests that a JWT is blacklisted using the JTI.
+     * Tests that the JTI for a JWT is blacklisted permanently.
      *
      * @return void
      */
