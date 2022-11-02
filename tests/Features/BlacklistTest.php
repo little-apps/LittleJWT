@@ -34,6 +34,24 @@ class BlacklistTest extends TestCase
     }
 
     /**
+     * Tests that a JWT is blacklisted using the JTI.
+     *
+     * @return void
+     */
+    public function test_jwt_blacklisted_jti_permanently()
+    {
+        LittleJWT::fake();
+
+        $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
+            $jwt = LittleJWT::createJWT();
+
+            $driver->blacklist($jwt, 0);
+
+            $this->assertTrue($driver->isBlacklisted($jwt));
+        });
+    }
+
+    /**
      * Tests that a JWT is blacklisted using the hash of the entire JWT.
      *
      * @return void
