@@ -4,7 +4,7 @@
 
 First, ensure you're using the latest packages from the [Composer package manager](https://getcomposer.org/). Use the ``composer update`` command to update them.
 
-Next, ensure the security issue is with Little JWT itself and not with any of packages it uses. If it is with another package, the table below lists some of the places to report the vulnerability:
+Next, ensure the security issue is with Little JWT itself and not with any packages it uses. If it is with another package, the table below lists where to report the vulnerability:
 
 | Package | Link |
 |-|-|
