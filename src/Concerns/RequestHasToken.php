@@ -24,8 +24,9 @@ trait RequestHasToken
         ];
 
         foreach ($tokens as $token) {
-            if (!empty($token))
+            if (! empty($token)) {
                 return $token;
+            }
         }
 
         return null;
