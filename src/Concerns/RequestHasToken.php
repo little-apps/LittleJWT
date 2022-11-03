@@ -16,20 +16,18 @@ trait RequestHasToken
      */
     public function getTokenForRequest(Request $request, $inputKey = 'token')
     {
-        $token = $request->query($inputKey);
+        $tokens = [
+            $request->query($inputKey),
+            $request->input($inputKey),
+            $request->bearerToken(),
+            $request->getPassword(),
+        ];
 
-        if (empty($token)) {
-            $token = $request->input($inputKey);
+        foreach ($tokens as $token) {
+            if (!empty($token))
+                return $token;
         }
 
-        if (empty($token)) {
-            $token = $request->bearerToken();
-        }
-
-        if (empty($token)) {
-            $token = $request->getPassword();
-        }
-
-        return $token;
+        return null;
     }
 }
