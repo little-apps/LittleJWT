@@ -5,9 +5,12 @@ namespace LittleApps\LittleJWT\Blacklist\Drivers;
 use Illuminate\Cache\CacheManager;
 
 use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
 class CacheDriver extends AbstractDriver
 {
+    use JWTHelpers;
+
     protected $manager;
 
     protected $options;

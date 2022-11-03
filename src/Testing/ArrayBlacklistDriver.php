@@ -4,10 +4,13 @@ namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Blacklist\Drivers\AbstractDriver;
+use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\JWT\JWT;
 
 class ArrayBlacklistDriver extends AbstractDriver
 {
+    use JWTHelpers;
+
     public const DEFAULT_TTL = 0;
 
     protected $blacklist;

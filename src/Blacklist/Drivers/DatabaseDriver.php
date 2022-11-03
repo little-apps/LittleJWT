@@ -6,9 +6,12 @@ use Illuminate\Support\Carbon;
 
 use Illuminate\Support\Facades\DB;
 use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
 class DatabaseDriver extends AbstractDriver
 {
+    use JWTHelpers;
+
     protected $options;
 
     public function __construct(array $options)
