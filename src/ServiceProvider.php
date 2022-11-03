@@ -295,22 +295,33 @@ class ServiceProvider extends PackageServiceProvider
     {
         $littleJwt = $this->app->make(LittleJWT::class);
 
+        /**
+         * Get the token for the request.
+         *
+         * @param Request $request Request to get token from
+         * @param string $inputKey Name of input to get token from (if it exists).
+         *
+         * @return string|null
+         */
         Request::macro('getToken', function ($inputKey = 'token') {
-            $token = $this->query($inputKey);
+            /*
+             * This exact same functionality exists in the getTokenForRequest method in a \Illuminate\Auth\TokenGuard instance.
+             * However, it's not guaranteed that the token guard will be set and it doesn't make sense to instantiate it just to use 1 method.
+             */
+            $tokens = [
+                $this->query($inputKey),
+                $this->input($inputKey),
+                $this->bearerToken(),
+                $this->getPassword(),
+            ];
 
-            if (empty($token)) {
-                $token = $this->input($inputKey);
+            foreach ($tokens as $token) {
+                if (! empty($token)) {
+                    return $token;
+                }
             }
 
-            if (empty($token)) {
-                $token = $this->bearerToken();
-            }
-
-            if (empty($token)) {
-                $token = $this->getPassword();
-            }
-
-            return $token;
+            return null;
         });
 
         Request::macro('getJwt', function ($inputKey = 'token') use ($littleJwt) {

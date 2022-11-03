@@ -11,12 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
 
-use LittleApps\LittleJWT\Concerns\RequestHasToken;
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
 class Guard implements GuardContract
 {
-    use GuardHelpers, RequestHasToken, ForwardsCalls, Macroable {
+    use GuardHelpers, ForwardsCalls, Macroable {
         __call as macroCall;
     }
 
@@ -71,7 +70,8 @@ class Guard implements GuardContract
         }
 
         // If user is not set, try to retrieve it from JWT.
-        $token = $this->getTokenForRequest($this->request);
+        // TODO: Allow input key to be specified in configuration.
+        $token = $this->request->getToken();
 
         if (! empty($token)) {
             $user = $this->getUserFromToken($token);
