@@ -6,8 +6,8 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 use LittleApps\LittleJWT\Build\Builder;
 
-use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Concerns\HasUser;
+use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
 

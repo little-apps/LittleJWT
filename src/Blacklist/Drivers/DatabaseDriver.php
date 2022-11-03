@@ -5,8 +5,8 @@ namespace LittleApps\LittleJWT\Blacklist\Drivers;
 use Illuminate\Support\Carbon;
 
 use Illuminate\Support\Facades\DB;
-use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
+use LittleApps\LittleJWT\JWT\JWT;
 
 class DatabaseDriver extends AbstractDriver
 {
