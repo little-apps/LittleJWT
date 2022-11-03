@@ -6,14 +6,14 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 use LittleApps\LittleJWT\Build\Builder;
 
-use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
+use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Concerns\HasUser;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
 
 class GuardBuildable implements Buildable
 {
-    use HashableSubjectModel;
+    use JWTHelpers;
     use HasUser;
 
     protected $payloadClaims;

@@ -9,7 +9,7 @@ use Illuminate\Support\Traits\Macroable;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
-use LittleApps\LittleJWT\Concerns\HashableSubjectModel;
+use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\Validation\Validator;
@@ -21,7 +21,7 @@ use PHPUnit\Framework\Assert as PHPUnit;
  */
 class TestValidator
 {
-    use HashableSubjectModel, Macroable, ForwardsCalls {
+    use JWTHelpers, Macroable, ForwardsCalls {
         __call as macroCall;
     }
 

@@ -2,7 +2,9 @@
 
 namespace LittleApps\LittleJWT\Concerns;
 
-trait HashableSubjectModel
+use LittleApps\LittleJWT\JWT\JWT;
+
+trait JWTHelpers
 {
     /**
      * Generates a hash for class.
