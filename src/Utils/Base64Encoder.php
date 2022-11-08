@@ -2,10 +2,6 @@
 
 namespace LittleApps\LittleJWT\Utils;
 
-use Base64Url\Base64Url;
-
-use Exception;
-
 class Base64Encoder
 {
     /**
@@ -16,7 +12,7 @@ class Base64Encoder
      */
     public static function encode($data)
     {
-        return Base64Url::encode($data);
+        return rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($data)), '=');
     }
 
     /**
@@ -27,10 +23,8 @@ class Base64Encoder
      */
     public static function decode($encoded)
     {
-        try {
-            return Base64Url::decode($encoded);
-        } catch (Exception $ex) {
-            return false;
-        }
+        $decoded = base64_decode(str_replace(['-', '_'], ['+', '/'], $encoded), true);
+
+        return $decoded;
     }
 }
