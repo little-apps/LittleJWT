@@ -216,6 +216,31 @@ class KeyTest extends TestCase
     }
 
     /**
+     * Tests the JWK is properly base64url encoded.
+     *
+     * @return void
+     */
+    public function test_jwk_base64url_encoded()
+    {
+        $binary = '';
+
+        for ($i = 0; $i < 100; $i++) {
+            $binary .= chr($this->faker->numberBetween(248, 253));
+        }
+
+        $this->assertTrue(strpos(base64_encode($binary), '+') !== false || strpos(base64_encode($binary), '/') !== false);
+
+        $phrase = Base64Encoder::encode($binary);
+        $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
+
+        LittleJWT::fake($jwk);
+
+        $token = LittleJWT::createToken();
+
+        $this->assertTrue(strpos($token, '-') !== false || strpos($token, '_') !== false);
+    }
+
+    /**
      * Tests the JWT is created and validated using a private key file.
      *
      * @return void
