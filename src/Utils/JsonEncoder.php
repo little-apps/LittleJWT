@@ -3,9 +3,9 @@
 namespace LittleApps\LittleJWT\Utils;
 
 use Exception;
-use RuntimeException;
-use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
 use Jose\Component\Core\Util\JsonConverter as JoseJsonConverter;
+use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
+use RuntimeException;
 
 class JsonEncoder
 {
