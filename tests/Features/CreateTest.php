@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\Tests\TestCase;
@@ -152,5 +153,28 @@ class CreateTest extends TestCase
         $this->assertTrue(Carbon::createFromFormat('U', $jwt->getPayload()->get('exp')) !== false);
 
         $this->assertTrue(is_numeric($jwt->getPayload()->get('exp')));
+    }
+
+    /**
+     * Tests that the JSON encoding fails when a claim has non-UTF8 characters.
+     *
+     * @return void
+     */
+    public function test_claims_has_non_utf8()
+    {
+        $binary = '';
+
+        for ($i = 0; $i < 100; $i++) {
+            $binary .= chr($this->faker->numberBetween(248, 253));
+        }
+
+        // Ensures value doesn't have printable characters
+        $this->assertFalse(mb_detect_encoding($binary, null, true));
+
+        $this->expectException(InvalidClaimValueException::class);
+
+        LittleJWT::createToken(function (Builder $builder) use ($binary) {
+            $builder->bin($binary);
+        });
     }
 }
