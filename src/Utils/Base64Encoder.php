@@ -23,8 +23,6 @@ class Base64Encoder
      */
     public static function decode($encoded)
     {
-        $decoded = base64_decode(str_replace(['-', '_'], ['+', '/'], $encoded), true);
-
-        return $decoded;
+        return base64_decode(str_replace(['-', '_'], ['+', '/'], $encoded), true);
     }
 }
