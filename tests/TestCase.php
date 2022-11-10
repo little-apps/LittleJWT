@@ -71,7 +71,7 @@ class TestCase extends Orchestra
                         'fullUrl' => $request->fullUrl(),
                         'headers' => $request->header(),
                         'server' => $request->server(),
-                        'body' => $request->all()
+                        'body' => $request->all(),
                     ];
                 });
 
