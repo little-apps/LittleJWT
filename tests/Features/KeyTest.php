@@ -259,6 +259,7 @@ class KeyTest extends TestCase
         // Creates query with sprintf, because http_build_query escapes special characters (like + and =)
         $response = $this->getJson(sprintf('/api/io?token=%s&uuid=%s', $token, $uuid));
 
+        // Tests the token (and UUID) are parsed correctly
         $response->assertJson(['body' => compact('token', 'uuid')]);
     }
 
