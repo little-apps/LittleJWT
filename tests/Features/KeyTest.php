@@ -247,15 +247,8 @@ class KeyTest extends TestCase
      */
     public function test_base64url_encoded_query()
     {
-        $binary = '';
-
-        for ($n = 0; $n < 100; $n++) {
-            $binary .= chr($this->faker->numberBetween(248, 253));
-        }
-
-        $this->assertTrue(strpos(base64_encode($binary), '+') !== false || strpos(base64_encode($binary), '/') !== false);
-
-        $phrase = Base64Encoder::encode($binary);
+        // No need to regenerate binary data for every test run
+        $phrase = Base64Encoder::encode(base64_decode('+fv5/Pr8+fj8/fv4+v36/fn8/fv7+fj9+/34+Pn7/Po='));
         $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
 
         LittleJWT::fake($jwk);
