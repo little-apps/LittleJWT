@@ -64,6 +64,17 @@ class TestCase extends Orchestra
         $router
             ->prefix('api')
             ->group(function ($router) {
+                $router->any('/io', function (Request $request) {
+                    return [
+                        'method' => $request->method(),
+                        'url' => $request->url(),
+                        'fullUrl' => $request->fullUrl(),
+                        'headers' => $request->header(),
+                        'server' => $request->server(),
+                        'body' => $request->all()
+                    ];
+                });
+
                 $router->post('/login', function (Request $request) {
                     $credentials = $request->validate([
                         'email' => ['required', 'email'],
