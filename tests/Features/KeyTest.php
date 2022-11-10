@@ -241,6 +241,35 @@ class KeyTest extends TestCase
     }
 
     /**
+     * Tests that base64 is properly encoded for the HTTP query
+     *
+     * @return void
+     */
+    public function test_base64url_encoded_query()
+    {
+        $binary = '';
+
+        for ($n = 0; $n < 100; $n++) {
+            $binary .= chr($this->faker->numberBetween(248, 253));
+        }
+
+        $this->assertTrue(strpos(base64_encode($binary), '+') !== false || strpos(base64_encode($binary), '/') !== false);
+
+        $phrase = Base64Encoder::encode($binary);
+        $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
+
+        LittleJWT::fake($jwk);
+
+        $token = LittleJWT::createToken();
+        $uuid = $this->faker->uuid();
+
+        // Creates query with sprintf, because http_build_query escapes special characters (like + and =)
+        $response = $this->getJson(sprintf('/api/io?token=%s&uuid=%s', $token, $uuid));
+
+        $response->assertJson(['body' => compact('token', 'uuid')]);
+    }
+
+    /**
      * Tests the JWT is created and validated using a private key file.
      *
      * @return void
