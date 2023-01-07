@@ -26,7 +26,7 @@ trait InteractsWithTimeBackwardsCompatible
      * @param  callable|null  $callback
      * @return mixed
      */
-    public function travelTo(DateTimeInterface $date, $callback = null)
+    public function travelTo($date, $callback = null)
     {
         Carbon::setTestNow($date);
 
