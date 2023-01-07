@@ -222,15 +222,9 @@ class KeyTest extends TestCase
      */
     public function test_jwk_base64url_encoded()
     {
-        $binary = '';
+        $dangerous = base64_decode('+/n7+P37/fj6+fv8+Pr8+fr9/Pr7+/v7/Pj9+fz9+Pn6+vr6+/r4/Pv7+Pr8+f38+Pz4+Pr9/fv5/fr8+/z4+vz8+fv7+fz9+Pz7+/38/Pj7/Pj8+fj9/fz6/Pr8/Pn5+v37+g==');
 
-        for ($i = 0; $i < 100; $i++) {
-            $binary .= chr($this->faker->numberBetween(248, 253));
-        }
-
-        $this->assertTrue(strpos(base64_encode($binary), '+') !== false || strpos(base64_encode($binary), '/') !== false);
-
-        $phrase = Base64Encoder::encode($binary);
+        $phrase = Base64Encoder::encode($dangerous);
         $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
 
         LittleJWT::fake($jwk);
@@ -238,6 +232,7 @@ class KeyTest extends TestCase
         $token = LittleJWT::createToken();
 
         $this->assertTrue(strpos($token, '-') !== false || strpos($token, '_') !== false);
+        $this->assertTrue(strpos($token, '+') === false || strpos($token, '/') === false);
     }
 
     /**
