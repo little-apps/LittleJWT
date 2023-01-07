@@ -23,6 +23,8 @@ jobs:
             testbench: ^5.20
           - laravel: 8.x
             testbench: ^6.24
+          - laravel: 9.x
+            testbench: ^7.18
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ubuntu-latest
 
