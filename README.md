@@ -15,7 +15,7 @@ Little Apps relies on people like you to keep our software running. If you would
 ## Requirements
 
  * PHP v7.4 or higher
- * Laravel 7.x or 8.x
+ * Laravel 7.x, 8.x, or 9.x
 
 ## Installation
 
@@ -120,7 +120,7 @@ Little JWT is built using the following libraries:
 
 Thank you to the following for their contributions:
 
-- [Nick H](https://github.com/little-apps)
+- [Little Apps](https://github.com/little-apps)
 - [All Contributors](../../contributors)
 
 ## License
