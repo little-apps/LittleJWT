@@ -12,7 +12,7 @@ class Base64Encoder
      */
     public static function encode($data)
     {
-        return rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($data)), '=');
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
     /**
@@ -23,6 +23,6 @@ class Base64Encoder
      */
     public static function decode($encoded)
     {
-        return base64_decode(str_replace(['-', '_'], ['+', '/'], $encoded), true);
+        return base64_decode(str_pad(strtr($encoded, '-_', '+/'), 4 - ((strlen($encoded) % 4) ?: 4), '=', STR_PAD_RIGHT));
     }
 }
