@@ -23,6 +23,6 @@ class Base64Encoder
      */
     public static function decode($encoded)
     {
-        return base64_decode(str_pad(strtr($encoded, '-_', '+/'), 4 - ((strlen($encoded) % 4) ?: 4), '=', STR_PAD_RIGHT));
+        return base64_decode(strtr($encoded, '-_', '+/'), true);
     }
 }
