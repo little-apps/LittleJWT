@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Tests\Concerns;
 
-use DateTimeInterface;
 use Exception;
 use Illuminate\Support\Carbon;
 
