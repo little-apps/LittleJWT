@@ -20,8 +20,8 @@
         "docs": "https://docs.getlittlejwt.com/"
     },
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/contracts": "^7.0|^8.0|^9.0",
+        "php": "^7.4|^8.0|^8.1",
+        "illuminate/contracts": "^7.0|^8.0|^9.0|^10.0",
         "spatie/laravel-package-tools": "^1.9",
         "web-token/jwt-core": "^2.2",
         "web-token/jwt-key-mgmt": "^2.2",
