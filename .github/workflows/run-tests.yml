@@ -31,6 +31,10 @@ jobs:
         exclude:
           - laravel: 9.x
             php: 7.4
+          - laravel: 10.x
+            php: 7.4
+          - laravel: 10.x
+            php: 8.0
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ubuntu-latest
 
