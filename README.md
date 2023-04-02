@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/little-apps/LittleJWT/badge.svg?branch=main)](https://coveralls.io/github/little-apps/LittleJWT?branch=main)
 [![Total Downloads](https://img.shields.io/packagist/dt/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
 
-Generate and verify JSON Web Tokens (JWTs) simply in Laravel using Little JWT. It's an alternative to [Tymon's JWT Auth library](https://github.com/tymondesigns/jwt-auth) and is designed to be more extensible.
+Secure Your Laravel Web App with Little JWT - The Key to Effortless Token Management!
 
 ## Show Your Support
 
