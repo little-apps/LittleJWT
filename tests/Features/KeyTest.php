@@ -229,7 +229,9 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        $token = LittleJWT::createToken(null, false);
+        $token = LittleJWT::createToken(function (Builder $builder) {
+            $builder->foo('bar');
+        }, false);
 
         $this->assertTrue(strpos($token, '-') !== false || strpos($token, '_') !== false);
         $this->assertTrue(strpos($token, '+') === false || strpos($token, '/') === false);
