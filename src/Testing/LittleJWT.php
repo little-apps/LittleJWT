@@ -62,7 +62,7 @@ class LittleJWT
 
         $validatable = new StackValidatable([$transformCallbacks]);
 
-        return $this->littleJWT->validateJWT($jwt, [$validatable, 'validate'], $applyDefault);
+        return $this->littleJWT->validateJWT($jwt, $validatable, $applyDefault);
     }
 
     /**

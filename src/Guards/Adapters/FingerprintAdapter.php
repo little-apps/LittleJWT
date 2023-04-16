@@ -130,6 +130,6 @@ class FingerprintAdapter extends AbstractAdapter
             new Validatables\FingerprintValidatable($fingerprintHash),
         ]);
 
-        return [$validatable, 'validate'];
+        return $validatable;
     }
 }

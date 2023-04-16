@@ -9,7 +9,7 @@ use LittleApps\LittleJWT\Validation\Validator;
  * The default validatable for Little JWT.
  * @see https://docs.getlittlejwt.com/en/validatables#default-validatable
  */
-class DefaultValidatable implements Validatable
+class DefaultValidatable
 {
     protected $config;
 
@@ -18,7 +18,7 @@ class DefaultValidatable implements Validatable
         $this->config = $config;
     }
 
-    public function validate(Validator $validator)
+    public function __invoke(Validator $validator)
     {
         $validator
             ->algorithms([$this->config['alg']])

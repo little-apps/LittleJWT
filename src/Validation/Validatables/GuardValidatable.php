@@ -13,7 +13,7 @@ use LittleApps\LittleJWT\Validation\Validator;
  * This class is not responsible for fetching the associated user.
  * @see https://docs.getlittlejwt.com/en/guard#generic-adapter-generic
  */
-class GuardValidatable implements Validatable
+class GuardValidatable
 {
     use JWTHelpers;
 
@@ -24,7 +24,7 @@ class GuardValidatable implements Validatable
         $this->config = $config;
     }
 
-    public function validate(Validator $validator)
+    public function __invoke(Validator $validator)
     {
         $contains = [];
 

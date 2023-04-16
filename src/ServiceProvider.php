@@ -277,7 +277,7 @@ class ServiceProvider extends PackageServiceProvider
 
                 $validatable = new StackValidatable($stack);
 
-                $rule = new ValidTokenRule([$validatable, 'validate'], false);
+                $rule = new ValidTokenRule($validatable, false);
             } else {
                 $rule = new ValidTokenRule();
             }

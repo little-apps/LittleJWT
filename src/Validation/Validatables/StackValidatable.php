@@ -8,7 +8,7 @@ use LittleApps\LittleJWT\Validation\Validator;
 /**
  * Allows for multiple callbacks and validatables to be stacked on top of each other.
  */
-class StackValidatable implements Validatable
+class StackValidatable
 {
     protected $stack;
 
@@ -17,7 +17,7 @@ class StackValidatable implements Validatable
         $this->stack = $stack;
     }
 
-    public function validate(Validator $validator)
+    public function __invoke(Validator $validator)
     {
         foreach ($this->stack as $callback) {
             if (is_callable($callback)) {

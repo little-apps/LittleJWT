@@ -15,6 +15,6 @@ class GenericAdapter extends AbstractAdapter
     {
         $validatable = $this->container->make('littlejwt.validatables.guard');
 
-        return [$validatable, 'validate'];
+        return $validatable;
     }
 }

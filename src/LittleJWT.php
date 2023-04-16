@@ -144,9 +144,7 @@ class LittleJWT
                 array_push($callbacks, $callback);
             }
 
-            $validatable = new StackValidatable($callbacks);
-
-            $passthrough = [$validatable, 'validate'];
+            $passthrough = new StackValidatable($callbacks);
         } else {
             // No need to create a StackValidatable instance for just 1 validatable
             $passthrough = $callback;
@@ -200,6 +198,6 @@ class LittleJWT
     {
         $validatable = ValidatableBuilder::resolve($this->app->config->get('littlejwt.defaults.validatable'));
 
-        return [$validatable, 'validate'];
+        return $validatable;
     }
 }

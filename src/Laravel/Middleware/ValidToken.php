@@ -47,7 +47,7 @@ class ValidToken
 
         $stackValidator = new StackValidatable($stack);
 
-        return LittleJWT::validateToken($token, [$stackValidator, 'validate'], false);
+        return LittleJWT::validateToken($token, $stackValidator, false);
     }
 
     /**
