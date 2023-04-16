@@ -31,14 +31,15 @@ class Build
     }
 
     /**
-     * Passes a Builder instance through a Buildable instance
+     * Passes a Builder instance through a callback.
      *
-     * @param Buildable $buildable
+     * @param callable(Builder $builder) $callback
+
      * @return $this
      */
-    public function passBuilderThru(Buildable $buildable)
+    public function passBuilderThru(callable $callback)
     {
-        return $this->passThru([$buildable, 'build']);
+        return $this->passThru($callback);
     }
 
     /**

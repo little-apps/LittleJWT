@@ -21,7 +21,7 @@ trait BuildsJwt
     {
         $buildable = new GuardBuildable($user, $payloadClaims, $headerClaims);
 
-        return $this->jwt->createJWT([$buildable, 'build']);
+        return $this->jwt->createJWT($buildable);
     }
 
     /**

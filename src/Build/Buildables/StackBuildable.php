@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Build\Buildables;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class StackBuildable implements Buildable
+class StackBuildable
 {
     protected $stack;
 
@@ -14,7 +14,7 @@ class StackBuildable implements Buildable
         $this->stack = $stack;
     }
 
-    public function build(Builder $builder)
+    public function __invoke(Builder $builder)
     {
         foreach ($this->stack as $callback) {
             if (is_callable($callback)) {

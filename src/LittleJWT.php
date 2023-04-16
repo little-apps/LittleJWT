@@ -184,9 +184,7 @@ class LittleJWT
     {
         $alias = sprintf('littlejwt.buildables.%s', $this->app->config->get('littlejwt.defaults.buildable'));
 
-        $buildable = $this->app->make($alias);
-
-        return [$buildable, 'build'];
+        return $this->app->make($alias);
     }
 
     /**

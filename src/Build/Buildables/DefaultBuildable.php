@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class DefaultBuildable implements Buildable
+class DefaultBuildable
 {
     protected $config;
 
@@ -17,7 +17,7 @@ class DefaultBuildable implements Buildable
         $this->config = $config;
     }
 
-    public function build(Builder $builder)
+    public function __invoke(Builder $builder)
     {
         $builder
             ->alg($this->config['alg'])

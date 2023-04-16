@@ -114,7 +114,7 @@ class ValidateRuleTest extends TestCase
     {
         $buildable = new GuardBuildable($this->user);
 
-        $token = LittleJWT::createToken([$buildable, 'build']);
+        $token = LittleJWT::createToken($buildable);
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -147,7 +147,7 @@ class ValidateRuleTest extends TestCase
 
         $buildable = new StackBuildable($stack);
 
-        $token = LittleJWT::createToken([$buildable, 'build']);
+        $token = LittleJWT::createToken($buildable);
 
         $validator = Validator::make(compact('token'), [
             'token' => [

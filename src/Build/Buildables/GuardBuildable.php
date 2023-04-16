@@ -11,7 +11,7 @@ use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
 use LittleApps\LittleJWT\Contracts\Buildable;
 
-class GuardBuildable implements Buildable
+class GuardBuildable
 {
     use JWTHelpers;
     use HasUser;
@@ -34,7 +34,7 @@ class GuardBuildable implements Buildable
         $this->headerClaims = $headerClaims;
     }
 
-    public function build(Builder $builder)
+    public function __invoke(Builder $builder)
     {
         $builder
             ->sub($this->user->getAuthIdentifier())
