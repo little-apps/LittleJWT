@@ -67,8 +67,6 @@ class Valid
 
         $this->errors = new MessageBag();
         $this->lastRunResult = null;
-
-        $this->validator = $this->buildValidator();
     }
 
     /**
