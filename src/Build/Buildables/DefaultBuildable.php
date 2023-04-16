@@ -6,7 +6,6 @@ use Illuminate\Support\Carbon;
 
 use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Contracts\Buildable;
 
 class DefaultBuildable
 {

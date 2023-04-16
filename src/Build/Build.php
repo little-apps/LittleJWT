@@ -7,7 +7,6 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Concerns\PassableThru;
-use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;

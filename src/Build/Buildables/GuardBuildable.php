@@ -9,8 +9,6 @@ use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Concerns\HasUser;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
-use LittleApps\LittleJWT\Contracts\Buildable;
-
 class GuardBuildable
 {
     use JWTHelpers;
