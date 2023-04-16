@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Validation\Validatables;
 
-use LittleApps\LittleJWT\Contracts\Validatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
 /**
