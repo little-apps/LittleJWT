@@ -111,8 +111,9 @@ class LittleJWT
 
             return $builder->buildFromExisting($token, $headerMutators, $payloadMutators);
         } catch (CantParseJWTException $ex) {
-            if ($throw)
+            if ($throw) {
                 throw $ex;
+            }
 
             return null;
         }
