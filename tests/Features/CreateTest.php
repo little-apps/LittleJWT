@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JWT;
@@ -176,5 +177,49 @@ class CreateTest extends TestCase
         LittleJWT::createToken(function (Builder $builder) use ($binary) {
             $builder->bin($binary);
         });
+    }
+
+    /**
+     * Tests parsing a JWT that doesn't have 3 parts.
+     *
+     * @return void
+     */
+    public function test_parse_missing_part()
+    {
+        $token = implode('.', array_slice(explode('.', LittleJWT::createToken()), 0, 1));
+
+        $this->expectException(CantParseJWTException::class);
+
+        $jwt = LittleJWT::parseToken($token, true);
+    }
+
+    /**
+     * Tests parsing a JWT that doesn't have an array/object as the header.
+     *
+     * @return void
+     */
+    public function test_parse_invalid_header()
+    {
+        $parts = explode('.', LittleJWT::createToken());
+        $token = implode('.', ['foo', $parts[1], $parts[2]]);
+
+        $this->expectException(CantParseJWTException::class);
+
+        $jwt = LittleJWT::parseToken($token, true);
+    }
+
+    /**
+     * Tests parsing a JWT that doesn't have an array/object as the payload.
+     *
+     * @return void
+     */
+    public function test_parse_invalid_payload()
+    {
+        $parts = explode('.', LittleJWT::createToken());
+        $token = implode('.', [$parts[0], 'foo', $parts[2]]);
+
+        $this->expectException(CantParseJWTException::class);
+
+        $jwt = LittleJWT::parseToken($token, true);
     }
 }
