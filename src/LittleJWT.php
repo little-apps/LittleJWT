@@ -97,10 +97,11 @@ class LittleJWT
      * Builds a JWT instance from a string.
      * This does NOT check that the JWT is valid.
      *
-     * @param string $token
+     * @param string $token Token to parse
+     * @param bool $throw If true, CantParseJWTException is thrown instead of returning null. (default: false)
      * @return \LittleApps\LittleJWT\JWT\JWT|null Returns JWT or null if token cannot be parsed.
      */
-    public function parseToken(string $token)
+    public function parseToken(string $token, bool $throw = false)
     {
         try {
             $builder = $this->app->make(JWTBuilder::class);
@@ -110,6 +111,9 @@ class LittleJWT
 
             return $builder->buildFromExisting($token, $headerMutators, $payloadMutators);
         } catch (CantParseJWTException $ex) {
+            if ($throw)
+                throw $ex;
+
             return null;
         }
     }
