@@ -3,12 +3,14 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
+use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
@@ -213,6 +215,48 @@ class KeyTest extends TestCase
         $passes = $this->createValidateWithJwk($jwk);
 
         $this->assertTrue($passes);
+    }
+
+    /**
+     * Tests a JWK secret with a missing phrase is attempted.
+     *
+     * @return void
+     */
+    public function test_create_validate_jwk_secret_missing_phrase_attempted()
+    {
+        $this->expectException(MissingKeyException::class);
+
+        $this->app[Keyable::class]->buildFromSecret([]);
+    }
+
+    /**
+     * Tests a JWK secret with an empty phrase is attempted.
+     *
+     * @return void
+     */
+    public function test_create_validate_jwk_secret_empty_phrase_attempted()
+    {
+        $spy = Log::spy();
+
+        $this->app[Keyable::class]->buildFromSecret(['allow_unsecure' => false, 'phrase' => '']);
+
+        $spy->shouldHaveReceived('warning', ['LittleJWT is using an empty secret phrase. This is NOT recommended.']);
+    }
+
+    /**
+     * Tests a JWK secret with an empty phrase is created.
+     *
+     * @return void
+     */
+    public function test_create_validate_jwk_secret_empty_phrase_created()
+    {
+        $spy = Log::spy();
+
+        $jwk = $this->app[Keyable::class]->buildFromSecret(['allow_unsecure' => true, 'phrase' => '']);
+
+        $this->assertInstanceOf(JWK::class, $jwk);
+
+        $spy->shouldNotHaveReceived('warning', ['LittleJWT is using an empty secret phrase. This is NOT recommended.']);
     }
 
     /**
