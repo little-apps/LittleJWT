@@ -68,11 +68,23 @@ class Build
         return $this->createJWTBuilder()->buildFromParts($headers, $payload, $signature);
     }
 
+    /**
+     * Checks if callback is instance and has getMutators method.
+     *
+     * @param mixed $callback
+     * @return boolean
+     */
     protected function hasMutators($callback)
     {
         return method_exists($callback, 'getMutators');
     }
 
+    /**
+     * Extracts mutators from invokable callback.
+     *
+     * @param mixed $callback
+     * @return void
+     */
     protected function extractMutators($callback)
     {
         $mutators = $callback->getMutators();
