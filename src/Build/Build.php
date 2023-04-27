@@ -22,6 +22,8 @@ class Build
 
     protected $builder;
 
+    protected $mutators;
+
     public function __construct(Application $app, JWK $jwk)
     {
         $this->app = $app;
@@ -38,7 +40,12 @@ class Build
      */
     public function passBuilderThru(callable $callback)
     {
-        return $this->passThru($callback);
+        return $this->passThru(function(...$args) use ($callback) {
+            if ($this->hasMutators($callback))
+                $this->extractMutators($callback);
+
+            $callback(...$args);
+        });
     }
 
     /**
@@ -48,14 +55,30 @@ class Build
      */
     public function build()
     {
+        $this->mutators = ['header' => [], 'payload' => []];
+
         $this->runThru($this->builder);
 
-        $headers = $this->builder->getHeaders();
-        $payload = $this->builder->getPayload();
+        $headers = $this->builder->getHeaders($this->mutators['header']);
+        $payload = $this->builder->getPayload($this->mutators['payload']);
 
         $signature = $this->createJWTHasher()->hash($this->jwk, $headers, $payload);
 
         return $this->createJWTBuilder()->buildFromParts($headers, $payload, $signature);
+    }
+
+    protected function hasMutators($callback) {
+        return method_exists($callback, 'getMutators');
+    }
+
+    protected function extractMutators($callback) {
+        $mutators = $callback->getMutators();
+
+        if (isset($mutators['header']) && is_array($mutators['header']))
+            $this->mutators['header'] = array_merge($this->mutators['header'], $mutators['header']);
+
+        if (isset($mutators['payload']) && is_array($mutators['payload']))
+            $this->mutators['payload'] = array_merge($this->mutators['payload'], $mutators['payload']);
     }
 
     /**

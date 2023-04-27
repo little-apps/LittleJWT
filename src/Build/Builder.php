@@ -144,21 +144,23 @@ class Builder
     /**
      * Gets the header claims inside a ClaimManager.
      *
+     * @param array $mutators Header mutators to use (overrides config mutators)
      * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
-    public function getHeaders()
+    public function getHeaders(array $mutators)
     {
-        return $this->claimManagerBuilder->buildClaimManagerForHeader($this->headers->all());
+        return $this->claimManagerBuilder->buildClaimManagerForHeader($this->headers->all(), $mutators);
     }
 
     /**
      * Gets the payload claims inside a ClaimManager.
      *
+     * @param array $mutators Payload mutators to use (overrides config mutators)
      * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
-    public function getPayload()
+    public function getPayload(array $mutators)
     {
-        return $this->claimManagerBuilder->buildClaimManagerForPayload($this->payload->all());
+        return $this->claimManagerBuilder->buildClaimManagerForPayload($this->payload->all(), $mutators);
     }
 
     /**

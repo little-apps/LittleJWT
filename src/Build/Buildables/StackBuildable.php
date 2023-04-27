@@ -14,6 +14,26 @@ class StackBuildable
         $this->stack = $stack;
     }
 
+    /**
+     * Gets the mutators for all buildables in stack.
+     *
+     * @return array [
+     *      'header' => [],
+     *      'payload' => []
+     * ]
+     */
+    public function getMutators() {
+        $mutators = [];
+
+        foreach ($this->stack as $callback) {
+            if (method_exists($callback, 'getMutators')) {
+                $mutators = array_merge_recursive($mutators, $callback->getMutators());
+            }
+        }
+
+        return $mutators;
+    }
+
     public function __invoke(Builder $builder)
     {
         foreach ($this->stack as $callback) {

@@ -36,12 +36,15 @@ class JWTBuilder
         }
 
         // Create claim managers for header and payload.
+        // TODO: Allow additional mutators to be passed to method and used.
         $headers = $this->claimManagerBuilder->buildClaimManagerForHeader(
-            $this->decodeClaims($parts[0])
+            $this->decodeClaims($parts[0]),
+            []
         );
 
         $payload = $this->claimManagerBuilder->buildClaimManagerForPayload(
-            $this->decodeClaims($parts[1])
+            $this->decodeClaims($parts[1]),
+            []
         );
 
         $signature = Base64Encoder::decode($parts[2]);
@@ -60,7 +63,7 @@ class JWTBuilder
      */
     public function buildFromParts(ClaimManager $headers, ClaimManager $payload, $signature)
     {
-        // Returns if signature isn't already base64 encoded.
+        // Returns bytes if signature isn't already base64 encoded.
         $decoded = Base64Encoder::decode($signature);
 
         // If decoded, set signature to decoded.
