@@ -65,6 +65,30 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests float claim is mutated
+     *
+     * @return void
+     */
+    public function test_float_claim_mutated()
+    {
+        $mutators = [
+            'payload' => [
+                'num' => 'float',
+            ],
+        ];
+
+        $buildable = new TestBuildable(function (Builder $builder) {
+            $builder->num(NAN);
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token);
+
+        $this->assertEquals('NaN', $jwt->getPayload()->get('num'));
+    }
+
+    /**
      * Tests buildable mutator overrides default mutator in config file.
      *
      * @return void
