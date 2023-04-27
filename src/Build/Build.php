@@ -72,7 +72,7 @@ class Build
      * Checks if callback is instance and has getMutators method.
      *
      * @param mixed $callback
-     * @return boolean
+     * @return bool
      */
     protected function hasMutators($callback)
     {
