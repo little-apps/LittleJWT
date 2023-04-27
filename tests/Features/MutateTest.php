@@ -7,8 +7,8 @@ use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Testing\TestBuildable;
+use LittleApps\LittleJWT\Tests\TestCase;
 
 class MutateTest extends TestCase
 {
@@ -23,8 +23,8 @@ class MutateTest extends TestCase
     {
         $mutators = [
             'payload' => [
-                'tim' => 'date'
-            ]
+                'tim' => 'date',
+            ],
         ];
 
         $time = time();
@@ -73,8 +73,8 @@ class MutateTest extends TestCase
     {
         $mutators = [
             'payload' => [
-                'iat' => 'date'
-            ]
+                'iat' => 'date',
+            ],
         ];
 
         $time = time();
@@ -99,7 +99,7 @@ class MutateTest extends TestCase
     {
         $mutators = [
             'payload' => [
-            ]
+            ],
         ];
 
         $time = time();

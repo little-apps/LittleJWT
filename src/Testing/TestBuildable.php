@@ -21,7 +21,8 @@ class TestBuildable
      *
      * @return array
      */
-    public function getMutators() {
+    public function getMutators()
+    {
         return $this->mutators;
     }
 
@@ -31,7 +32,8 @@ class TestBuildable
      * @param Builder $builder
      * @return void
      */
-    public function __invoke(Builder $builder) {
+    public function __invoke(Builder $builder)
+    {
         call_user_func($this->callback, $builder);
     }
 }

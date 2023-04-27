@@ -40,9 +40,10 @@ class Build
      */
     public function passBuilderThru(callable $callback)
     {
-        return $this->passThru(function(...$args) use ($callback) {
-            if ($this->hasMutators($callback))
+        return $this->passThru(function (...$args) use ($callback) {
+            if ($this->hasMutators($callback)) {
                 $this->extractMutators($callback);
+            }
 
             $callback(...$args);
         });
@@ -67,18 +68,22 @@ class Build
         return $this->createJWTBuilder()->buildFromParts($headers, $payload, $signature);
     }
 
-    protected function hasMutators($callback) {
+    protected function hasMutators($callback)
+    {
         return method_exists($callback, 'getMutators');
     }
 
-    protected function extractMutators($callback) {
+    protected function extractMutators($callback)
+    {
         $mutators = $callback->getMutators();
 
-        if (isset($mutators['header']) && is_array($mutators['header']))
+        if (isset($mutators['header']) && is_array($mutators['header'])) {
             $this->mutators['header'] = array_merge($this->mutators['header'], $mutators['header']);
+        }
 
-        if (isset($mutators['payload']) && is_array($mutators['payload']))
+        if (isset($mutators['payload']) && is_array($mutators['payload'])) {
             $this->mutators['payload'] = array_merge($this->mutators['payload'], $mutators['payload']);
+        }
     }
 
     /**

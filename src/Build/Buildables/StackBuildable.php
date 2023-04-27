@@ -22,7 +22,8 @@ class StackBuildable
      *      'payload' => []
      * ]
      */
-    public function getMutators() {
+    public function getMutators()
+    {
         $mutators = [];
 
         foreach ($this->stack as $callback) {
