@@ -68,7 +68,8 @@ return [
             'payload' => [
                 'iat' => 'timestamp',
                 'nbf' => 'timestamp',
-                'exp' => 'timestamp'
+                'exp' => 'timestamp',
+                
             ]
         ],
 
