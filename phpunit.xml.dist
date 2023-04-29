@@ -25,10 +25,11 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="APP_KEY" value="Ye71qDL/qxyTvKqduLuSzKaoiGL7hx+jJzOC2syZBwE="/>
+        <env name="APP_KEY" value="base64:Ye71qDL/qxyTvKqduLuSzKaoiGL7hx+jJzOC2syZBwE="/>
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="LITTLEJWT_KEY_PHRASE" value="cnyDJzAY074tTIuvlc5Th7q1uV3JTOcWeq2IywX9wrY_6uPOyzeUrWmnb9WoE0ZQtQb8vlxsZI0FVNIKGMB2MIah6SSICltXe6oReSZum0zZz9FE8pGL_f9-xFrtmudhm2-Njc3Elnz2P6RA9axtVWbkf5ZbwNjOM4c6nGx8dhI"/>
+        <env name="LITTLEJWT_OPENSSL_CNF" value="C:\\xampp\\php\\extras\\openssl\\openssl.cnf"/>
     </php>
     <coverage>
         <include>
