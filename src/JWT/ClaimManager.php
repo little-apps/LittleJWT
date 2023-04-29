@@ -7,7 +7,6 @@ use Countable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use LittleApps\LittleJWT\JWT\Concerns\MutatesClaims;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 use RuntimeException;
@@ -33,7 +32,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      *
      * @return $this
      */
-    public function unserialized() {
+    public function unserialized()
+    {
         $this->claims->transform(fn ($value, $key) => $this->mutatorManager->unserialize($key, $value));
 
         return $this;

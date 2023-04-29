@@ -2,9 +2,9 @@
 
 namespace LittleApps\LittleJWT\JWT\Mutators;
 
-use LittleApps\LittleJWT\Contracts\Mutator;
-
 use Illuminate\Support\Facades\Crypt;
+
+use LittleApps\LittleJWT\Contracts\Mutator;
 
 class EncryptMutator implements Mutator
 {

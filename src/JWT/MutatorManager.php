@@ -2,15 +2,13 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
-use LittleApps\LittleJWT\Contracts\Mutator;
-use LittleApps\LittleJWT\JWT\Mutators;
-
 use DateTimeInterface;
 
 use Illuminate\Contracts\Foundation\Application;
+
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+use LittleApps\LittleJWT\Contracts\Mutator;
 
 /**
  * Allows for claims to be serialized and deserialized.
@@ -39,7 +37,7 @@ class MutatorManager
         'json' => Mutators\JsonMutator::class,
         'object' => Mutators\ObjectMutator::class,
         'timestamp' => Mutators\TimestampMutator::class,
-        'model'
+        'model',
     ];
 
     /**
@@ -131,7 +129,7 @@ class MutatorManager
      * Checks if mutator has mapping to class.
      *
      * @param string $mutator
-     * @return boolean
+     * @return bool
      */
     protected function hasMutatorMapping($mutator)
     {
@@ -142,9 +140,10 @@ class MutatorManager
      * Checks if value is a Mutator isntance.
      *
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
-    protected function isMutatorInstance($value) {
+    protected function isMutatorInstance($value)
+    {
         return is_object($value) && $value instanceof Mutator;
     }
 
@@ -152,9 +151,10 @@ class MutatorManager
      * Checks if value is a mutator definition.
      *
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
-    protected function isMutatorDefinition($value) {
+    protected function isMutatorDefinition($value)
+    {
         return is_string($value);
     }
 
@@ -170,7 +170,7 @@ class MutatorManager
     {
         if ($this->isMutatorInstance($definition)) {
             return $this->serializeThruMutator($definition, $value, $key, []);
-        } else if ($this->isMutatorDefinition($definition)) {
+        } elseif ($this->isMutatorDefinition($definition)) {
             [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
             if (method_exists($this, 'serializeAs' . Str::studly($mutator))) {
@@ -225,7 +225,7 @@ class MutatorManager
     {
         if ($this->isMutatorInstance($definition)) {
             return $this->unserializeThruMutator($definition, $value, $key, []);
-        } else if ($this->isMutatorDefinition($definition)) {
+        } elseif ($this->isMutatorDefinition($definition)) {
             [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
             if (method_exists($this, 'unserializeAs' . Str::studly($mutator))) {

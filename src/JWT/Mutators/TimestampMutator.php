@@ -5,7 +5,8 @@ namespace LittleApps\LittleJWT\JWT\Mutators;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\JWT\Mutators\Concerns\MutatesDateTime;
 
-class TimestampMutator implements Mutator {
+class TimestampMutator implements Mutator
+{
     use MutatesDateTime;
 
     public static $format = 'U';

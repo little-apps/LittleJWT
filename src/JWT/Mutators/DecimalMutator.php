@@ -4,8 +4,8 @@ namespace LittleApps\LittleJWT\JWT\Mutators;
 
 use LittleApps\LittleJWT\Contracts\Mutator;
 
-class DecimalMutator implements Mutator {
-
+class DecimalMutator implements Mutator
+{
     /**
      * Serializes claim value
      *

@@ -5,7 +5,8 @@ namespace LittleApps\LittleJWT\JWT\Mutators;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\JWT\Mutators\Concerns\MutatesDateTime;
 
-class DateMutator implements Mutator {
+class DateMutator implements Mutator
+{
     use MutatesDateTime;
 
     public static $format = 'Y-m-d';

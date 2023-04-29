@@ -5,7 +5,8 @@ namespace LittleApps\LittleJWT\JWT\Mutators;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\JWT\Mutators\Concerns\MutatesDateTime;
 
-class CustomDateTimeMutator implements Mutator {
+class CustomDateTimeMutator implements Mutator
+{
     use MutatesDateTime;
 
     /**

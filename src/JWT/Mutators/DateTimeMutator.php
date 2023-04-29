@@ -6,7 +6,8 @@ use DateTimeInterface;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\JWT\Mutators\Concerns\MutatesDateTime;
 
-class DateTimeMutator implements Mutator {
+class DateTimeMutator implements Mutator
+{
     use MutatesDateTime;
 
     public static $format = DateTimeInterface::ISO8601;

@@ -6,7 +6,8 @@ use DateTimeInterface;
 
 use Illuminate\Support\Carbon;
 
-trait MutatesDateTime {
+trait MutatesDateTime
+{
     /**
      * Creates a Carbon instance from a value using an (optional) format.
      *
