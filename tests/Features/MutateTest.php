@@ -389,5 +389,4 @@ class MutateTest extends TestCase
         $this->assertNotEquals('secret', $jwtEncrypted->getPayload()->get('foo'));
         $this->assertEquals('secret', $jwt->getPayload()->get('foo'));
     }
-    }
 }
