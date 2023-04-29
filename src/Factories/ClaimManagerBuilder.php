@@ -2,15 +2,29 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 
 use LittleApps\LittleJWT\JWT\ClaimManager;
+use LittleApps\LittleJWT\JWT\MutatorManager;
 
 class ClaimManagerBuilder
 {
     public const PART_HEADER = 'header';
     public const PART_PAYLOAD = 'payload';
 
+    /**
+     * Application container
+     *
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * Global mutators
+     *
+     * @var array ['header' => [], 'payload' => []]
+     */
     protected $mutators;
 
     /**
@@ -18,8 +32,9 @@ class ClaimManagerBuilder
      *
      * @param array $mutators Configuration options for mutators
      */
-    public function __construct(array $mutators)
+    public function __construct(Application $app, array $mutators)
     {
+        $this->app = $app;
         $this->mutators = $mutators;
     }
 
@@ -58,9 +73,21 @@ class ClaimManagerBuilder
     public function buildClaimManagerFor(string $part, array $claims, array $mutators)
     {
         $sorted = Arr::sortRecursive($claims);
-        $mutators = array_merge($this->getMutatorsFor($part), $mutators);
 
-        return new ClaimManager($sorted, $mutators);
+        $mutatorManager = $this->buildMutatorManager(array_merge($this->getMutatorsFor($part), $mutators));
+
+        return new ClaimManager($this->app, $mutatorManager, $sorted);
+    }
+
+    /**
+     * Builds MutatorManager
+     *
+     * @param array $mutators
+     * @return MutatorManager
+     */
+    public function buildMutatorManager(array $mutators)
+    {
+        return new MutatorManager($this->app, $mutators);
     }
 
     /**

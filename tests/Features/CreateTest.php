@@ -149,7 +149,7 @@ class CreateTest extends TestCase
             $builder->exp($expectedDateTime);
         });
 
-        $jwt = LittleJWT::parseToken($token);
+        $jwt = LittleJWT::parseToken($token, ['payload' => ['exp' => 'none']]);
 
         $this->assertTrue(Carbon::createFromFormat('U', $jwt->getPayload()->get('exp')) !== false);
 
@@ -190,7 +190,7 @@ class CreateTest extends TestCase
 
         $this->expectException(CantParseJWTException::class);
 
-        $jwt = LittleJWT::parseToken($token, true);
+        $jwt = LittleJWT::parseToken($token, [], true);
     }
 
     /**
@@ -205,7 +205,7 @@ class CreateTest extends TestCase
 
         $this->expectException(CantParseJWTException::class);
 
-        $jwt = LittleJWT::parseToken($token, true);
+        $jwt = LittleJWT::parseToken($token, [], true);
     }
 
     /**
@@ -220,6 +220,6 @@ class CreateTest extends TestCase
 
         $this->expectException(CantParseJWTException::class);
 
-        $jwt = LittleJWT::parseToken($token, true);
+        $jwt = LittleJWT::parseToken($token, [], true);
     }
 }

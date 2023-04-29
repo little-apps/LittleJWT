@@ -27,7 +27,7 @@ class JWTBuilder
      * @return JWT
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
-    public function buildFromExisting(string $token)
+    public function buildFromExisting(string $token, array $mutators)
     {
         $parts = Str::of($token)->explode('.');
 
@@ -36,16 +36,15 @@ class JWTBuilder
         }
 
         // Create claim managers for header and payload.
-        // TODO: Allow additional mutators to be passed to method and used.
         $headers = $this->claimManagerBuilder->buildClaimManagerForHeader(
             $this->decodeClaims($parts[0]),
-            []
-        );
+            $mutators['header']
+        )->unserialized();
 
         $payload = $this->claimManagerBuilder->buildClaimManagerForPayload(
             $this->decodeClaims($parts[1]),
-            []
-        );
+            $mutators['payload']
+        )->unserialized();
 
         $signature = Base64Encoder::decode($parts[2]);
 

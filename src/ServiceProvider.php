@@ -116,7 +116,7 @@ class ServiceProvider extends PackageServiceProvider
         $this->app->bind(ClaimManagerBuilder::class, function ($app) {
             $config = $app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
 
-            return new ClaimManagerBuilder($config);
+            return new ClaimManagerBuilder($app, $config);
         });
 
         $this->app->singleton(JWTBuilder::class, function ($app) {

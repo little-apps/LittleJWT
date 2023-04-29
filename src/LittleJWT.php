@@ -98,18 +98,16 @@ class LittleJWT
      * This does NOT check that the JWT is valid.
      *
      * @param string $token Token to parse
+     * @param array $mutators Mutators to use for unserialization (includes global mutators). (default: [])
      * @param bool $throw If true, CantParseJWTException is thrown instead of returning null. (default: false)
      * @return \LittleApps\LittleJWT\JWT\JWT|null Returns JWT or null if token cannot be parsed.
      */
-    public function parseToken(string $token, bool $throw = false)
+    public function parseToken(string $token, array $mutators = [], bool $throw = false)
     {
         try {
             $builder = $this->app->make(JWTBuilder::class);
 
-            $headerMutators = $this->app->config->get('littlejwt.builder.mutators.header', []);
-            $payloadMutators = $this->app->config->get('littlejwt.builder.mutators.payload', []);
-
-            return $builder->buildFromExisting($token, $headerMutators, $payloadMutators);
+            return $builder->buildFromExisting($token, array_merge_recursive(['header' => [], 'payload' => []], $mutators));
         } catch (CantParseJWTException $ex) {
             if ($throw) {
                 throw $ex;

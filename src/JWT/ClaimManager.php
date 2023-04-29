@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\JWT;
 
 use ArrayAccess;
 use Countable;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use LittleApps\LittleJWT\JWT\Concerns\MutatesClaims;
@@ -13,17 +14,29 @@ use RuntimeException;
 
 class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
-    use MutatesClaims;
+    protected $app;
+
+    protected $mutatorManager;
 
     protected $claims;
 
-    public function __construct(array $claims, array $mutators = [])
+    public function __construct(Application $app, MutatorManager $mutatorManager, array $claims)
     {
-        $this->claims = collect($claims)->map(function ($value, $key) {
-            return is_object($value) ? $value : $this->unserialize($key, $value);
-        });
+        $this->app = $app;
+        $this->mutatorManager = $mutatorManager;
 
-        $this->mutators = $mutators;
+        $this->claims = collect($claims);
+    }
+
+    /**
+     * Unserialize claims
+     *
+     * @return $this
+     */
+    public function unserialized() {
+        $this->claims->transform(fn ($value, $key) => $this->mutatorManager->unserialize($key, $value));
+
+        return $this;
     }
 
     /**
@@ -136,7 +149,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     public function toSerialized()
     {
         return $this->claims->map(function ($value, $key) {
-            return $this->serialize($key, $value);
+            return $this->mutatorManager->serialize($key, $value);
         })->all();
     }
 
