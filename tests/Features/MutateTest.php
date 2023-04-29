@@ -7,11 +7,11 @@ use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
+use LittleApps\LittleJWT\JWT\Mutators;
 use LittleApps\LittleJWT\Testing\TestBuildable;
 use LittleApps\LittleJWT\Testing\TestMutator;
-use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
-use LittleApps\LittleJWT\JWT\Mutators;
+use LittleApps\LittleJWT\Tests\TestCase;
 
 class MutateTest extends TestCase
 {
@@ -148,10 +148,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_custom_datetime() {
+    public function test_mutates_custom_datetime()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'custom_datetime:Y'
+                'foo' => 'custom_datetime:Y',
             ],
         ];
 
@@ -173,10 +174,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_date() {
+    public function test_mutates_date()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'date'
+                'foo' => 'date',
             ],
         ];
 
@@ -198,10 +200,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_datetime() {
+    public function test_mutates_datetime()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'datetime'
+                'foo' => 'datetime',
             ],
         ];
 
@@ -223,10 +226,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_decimal() {
+    public function test_mutates_decimal()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'decimal:2'
+                'foo' => 'decimal:2',
             ],
         ];
 
@@ -246,13 +250,14 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_custom() {
+    public function test_mutates_custom()
+    {
         $mutators = [
             'payload' => [
                 'foo' => new TestMutator(
                     fn ($value) => strrev($value),
                     fn ($value) => strrev($value),
-                )
+                ),
             ],
         ];
 
@@ -272,13 +277,14 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_custom_reverse() {
+    public function test_mutates_custom_reverse()
+    {
         $mutators = [
             'payload' => [
                 'foo' => new TestMutator(
                     fn ($value) => strrev($value),
                     fn ($value) => strrev($value),
-                )
+                ),
             ],
         ];
 
@@ -298,10 +304,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_array() {
+    public function test_mutates_array()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'array'
+                'foo' => 'array',
             ],
         ];
 
@@ -322,10 +329,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_bool() {
+    public function test_mutates_bool()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'bool'
+                'foo' => 'bool',
             ],
         ];
 
@@ -346,10 +354,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_double() {
+    public function test_mutates_double()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'double'
+                'foo' => 'double',
             ],
         ];
 
@@ -370,10 +379,11 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_encrypted() {
+    public function test_mutates_encrypted()
+    {
         $mutators = [
             'payload' => [
-                'foo' => 'encrypted'
+                'foo' => 'encrypted',
             ],
         ];
 
