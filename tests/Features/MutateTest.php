@@ -480,6 +480,81 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests claim is mutated as integer.
+     *
+     * @return void
+     */
+    public function test_mutates_integer()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'int',
+            ],
+        ];
+
+        $buildable = new TestBuildable(function (Builder $builder) {
+            $builder->foo('1234');
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertEquals('integer', gettype($jwt->getPayload()->get('foo')));
+        $this->assertEquals(1234, $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests claim is mutated to JSON.
+     *
+     * @return void
+     */
+    public function test_mutates_json()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'json',
+            ],
+        ];
+
+        $buildable = new TestBuildable(function (Builder $builder) {
+            $builder->foo(['a' => 'b', 'c' => 'd']);
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertEquals('array', gettype($jwt->getPayload()->get('foo')));
+        $this->assertEquals(['a' => 'b', 'c' => 'd'], $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests claim mutates to object.
+     *
+     * @return void
+     */
+    public function test_mutates_object()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'object',
+            ],
+        ];
+
+        $buildable = new TestBuildable(function (Builder $builder) {
+            $builder->foo(['a' => 'b', 'c' => 'd']);
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertEquals('object', gettype($jwt->getPayload()->get('foo')));
+        $this->assertEquals((object) ['a' => 'b', 'c' => 'd'], $jwt->getPayload()->get('foo'));
+    }
+
+    /**
      * Tests a model claim is mutated.
      *
      * @return void
