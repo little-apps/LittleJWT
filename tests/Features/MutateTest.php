@@ -8,9 +8,9 @@ use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\Mutators;
+use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
 use LittleApps\LittleJWT\Testing\TestMutator;
-use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\TestCase;
 
@@ -406,12 +406,13 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutates_model() {
+    public function test_mutates_model()
+    {
         $user = $this->user;
 
         $mutators = [
             'payload' => [
-                'sub' => sprintf('model:%s', User::class)
+                'sub' => sprintf('model:%s', User::class),
             ],
         ];
 

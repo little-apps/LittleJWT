@@ -2,9 +2,9 @@
 
 namespace LittleApps\LittleJWT\JWT\Mutators;
 
-use LittleApps\LittleJWT\Contracts\Mutator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use LittleApps\LittleJWT\Contracts\Mutator;
 
 class ModelMutator implements Mutator
 {
@@ -42,7 +42,7 @@ class ModelMutator implements Mutator
 
             if (\is_subclass_of($table, Model::class)) {
                 try {
-                    $model = new $table;
+                    $model = new $table();
 
                     return $model->findOrFail($value);
                 } catch (ModelNotFoundException $ex) {
