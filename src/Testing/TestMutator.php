@@ -9,14 +9,14 @@ class TestMutator implements Mutator
     /**
      * Serialize callback to use.
      *
-     * @var callable(mixed, string, array, array $claims): mixed
+     * @var callable(mixed, string, array, array): mixed
      */
     protected $serializeCallback;
 
     /**
      * Unserialize callback to use.
      *
-     * @var callable(mixed, string, array, array $claims): mixed
+     * @var callable(mixed, string, array, array): mixed
      */
     protected $unserializeCallback;
 
