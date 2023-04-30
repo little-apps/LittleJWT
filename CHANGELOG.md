@@ -1,6 +1,28 @@
 # Changelog
 
-All notable changes to `LittleJWT` will be documented in this file.
+All notable changes to LittleJWT will be documented in this file.
+
+## v1.5.1 - 2023-04-17
+
+### What's Changed
+
+- Removed unneeded call to buildValidator in Valid constructor.
+- Uses [ATOM constant in DateTimeInterface](https://www.php.net/DateTimeInterface) to format date/time in ISO8601.
+- Fixed tests for base64 URL encoding and decoding.
+- Bump dependabot/fetch-metadata from 1.3.5 to 1.3.6 by **@dependabot** in [#19](https://github.com/little-apps/LittleJWT/pull/19)
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.5.0...v1.5.1
+
+## v1.5.0 - 2023-02-26
+
+### What's Changed
+
+- Supports Laravel 10.x and PHP 8.1.
+- Removed web-token/jwt-easy package dependency.
+- The ``LittleApps\LittleJWT\Exceptions\InvalidClaimValueException`` is thrown if a JWT claim cannot be encoded.
+- Base64 URL encoding and decoding is done internally.
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.4.0...v1.5.0
 
 ## v1.4.0 - 2022-08-21
 
@@ -32,13 +54,9 @@ All notable changes to `LittleJWT` will be documented in this file.
 ## What's Changed
 
 - Configuration file changes:
-- - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
-- 
-- - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
-- 
-- - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
-- 
-- 
+  - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
+  - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
+  - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
 - Generate private and PKCS12 key types with Artisan commands.
 - Use random one-time JSON Web Keys.
 - Centralized building `ClaimManager` instances and mutating claims with `ClaimManagerBuilder` factory.
