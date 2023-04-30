@@ -37,7 +37,7 @@ class MutatorManager
         'json' => Mutators\JsonMutator::class,
         'object' => Mutators\ObjectMutator::class,
         'timestamp' => Mutators\TimestampMutator::class,
-        'model',
+        'model' => Mutators\ModelMutator::class,
     ];
 
     /**
