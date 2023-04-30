@@ -32,7 +32,7 @@ class Callback extends Rule
      *
      * @param JWT $jwt JWT instance.
      * @param mixed $value Claim value.
-     * @return boolean
+     * @return bool
      */
     protected function checkClaim(JWT $jwt, $value)
     {

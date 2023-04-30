@@ -20,7 +20,7 @@ class Past extends Rule
      *
      * @param string $key Claim key to check.
      * @param int $leeway Additional number of seconds to allow date/time be in past.
-     * @param boolean $inHeader If true, uses header claim.
+     * @param bool $inHeader If true, uses header claim.
      */
     public function __construct($key, $leeway, $inHeader)
     {

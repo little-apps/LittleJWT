@@ -21,7 +21,7 @@ class SecureEquals extends Rule
      *
      * @param string $key Claim key
      * @param mixed $expected Expected claim value
-     * @param boolean $inHeader If true, pulls claim value from header.
+     * @param bool $inHeader If true, pulls claim value from header.
      */
     public function __construct($key, $expected, $inHeader = false)
     {

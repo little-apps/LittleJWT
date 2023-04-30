@@ -16,7 +16,7 @@ class OneOf extends Rule
     /**
      * If true, uses strict comparison when comparing claim value with possible claim values.
      *
-     * @var boolean
+     * @var bool
      */
     protected $strict;
 

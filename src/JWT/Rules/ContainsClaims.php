@@ -16,14 +16,14 @@ class ContainsClaims extends Rule
     /**
      * Whether claims should be in header.
      *
-     * @var boolean
+     * @var bool
      */
     protected $inHeader;
 
     /**
      * If true, every claim key must exist only once.
      *
-     * @var boolean
+     * @var bool
      */
     protected $strict;
 

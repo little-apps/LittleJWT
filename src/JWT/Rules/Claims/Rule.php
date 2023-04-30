@@ -18,7 +18,7 @@ abstract class Rule implements RuleContract
     /**
      * If true, gets claim value from header.
      *
-     * @var boolean
+     * @var bool
      */
     protected $inHeader;
 

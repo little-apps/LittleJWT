@@ -16,7 +16,7 @@ class Equals extends Rule
     /**
      * If true, strict comparison is used.
      *
-     * @var boolean
+     * @var bool
      */
     protected $strict;
 
@@ -25,8 +25,8 @@ class Equals extends Rule
      *
      * @param string $key Claim key.
      * @param mixed $expected Expected claim value.
-     * @param boolean $strict If true, strict comparsion is used.
-     * @param boolean $inHeader If true, checks header instead of payload.
+     * @param bool $strict If true, strict comparsion is used.
+     * @param bool $inHeader If true, checks header instead of payload.
      */
     public function __construct($key, $expected, $strict = true, $inHeader = false)
     {

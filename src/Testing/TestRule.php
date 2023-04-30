@@ -26,7 +26,7 @@ class TestRule implements Rule
     /**
      * If true, asserts test passes. If false, asserts test fails.
      *
-     * @var boolean
+     * @var bool
      */
     protected $assertPasses;
 
