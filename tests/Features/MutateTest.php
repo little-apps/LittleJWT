@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 
+use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\Mutators;
@@ -454,7 +455,7 @@ class MutateTest extends TestCase
     }
 
     /**
-     * Tests claim is encrypted and decrypt
+     * Tests claim is encrypted and decrypted.
      *
      * @return void
      */
@@ -477,6 +478,56 @@ class MutateTest extends TestCase
 
         $this->assertNotEquals('secret', $jwtEncrypted->getPayload()->get('foo'));
         $this->assertEquals('secret', $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests the JWT is null because a claim cannot be decrypted.
+     *
+     * @return void
+     */
+    public function test_cant_mutate_decrypted_null()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'encrypted',
+            ],
+        ];
+
+        $buildable = new TestBuildable(function (Builder $builder) {
+            $builder
+                ->foo('secret');
+        }, []);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertNull($jwt);
+    }
+
+    /**
+     * Tests an exception is thrown because a claim cannot be decrypted.
+     *
+     * @return void
+     */
+    public function test_cant_mutate_decrypted_throws()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'encrypted',
+            ],
+        ];
+
+        $buildable = new TestBuildable(function (Builder $builder) {
+            $builder
+                ->foo('secret');
+        }, []);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $this->expectException(CantParseJWTException::class);
+
+        LittleJWT::parseToken($token, $mutators, true);
     }
 
     /**

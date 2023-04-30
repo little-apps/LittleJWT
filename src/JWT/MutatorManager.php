@@ -3,12 +3,14 @@
 namespace LittleApps\LittleJWT\JWT;
 
 use DateTimeInterface;
+use Throwable;
 
 use Illuminate\Contracts\Foundation\Application;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Contracts\Mutator;
+use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
 /**
  * Allows for claims to be serialized and deserialized.
@@ -87,8 +89,12 @@ class MutatorManager
      */
     public function unserialize($key, $value, array $claims)
     {
-        if ($this->hasMutator($key)) {
-            $value = $this->unserializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
+        try {
+            if ($this->hasMutator($key)) {
+                $value = $this->unserializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
+            }
+        } catch (Throwable $ex) {
+            throw new CantParseJWTException();
         }
 
         return $value;
