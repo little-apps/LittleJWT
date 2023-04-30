@@ -37,6 +37,8 @@ class Callback extends Rule
      */
     public function passes(JWT $jwt)
     {
+        $this->lastMessage = null;
+
         try {
             return (bool) call_user_func($this->callback, $jwt);
         } catch (RuleFailedException $ex) {
