@@ -9,12 +9,13 @@ class ObjectMutator implements Mutator
     /**
      * Serializes claim value
      *
-     * @param  mixed  $value Claim value
-     * @param  string $key   Claim key
-     * @param  array  $args  Any arguments to use for mutation
-     * @return mixed
+     * @param mixed $value Unserialized claim value
+     * @param string $key Claim key
+     * @param array $args Any arguments to use for mutation
+     * @param array $claims All claims
+     * @return string|array|int
      */
-    public function serialize($value, string $key, array $args)
+    public function serialize($value, string $key, array $args, array $claims)
     {
         return json_encode($value);
     }
@@ -22,12 +23,13 @@ class ObjectMutator implements Mutator
     /**
      * Unserializes claim value
      *
-     * @param  mixed  $value Claim value
-     * @param  string $key   Claim key
-     * @param  array  $args  Any arguments to use for mutation
+     * @param string|array|int $value Serialized claim value
+     * @param string $key Claim key
+     * @param array $args Any arguments to use for mutation
+     * @param array $claims All claims
      * @return mixed
      */
-    public function unserialize($value, string $key, array $args)
+    public function unserialize($value, string $key, array $args, array $claims)
     {
         return json_decode($value, false);
     }

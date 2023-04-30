@@ -65,12 +65,13 @@ class MutatorManager
      *
      * @param string $key
      * @param mixed $value The claim value before it's processed through json_encode.
+     * @param array $claims All of the claims.
      * @return mixed
      */
-    public function serialize($key, $value)
+    public function serialize($key, $value, array $claims)
     {
         if ($this->hasMutator($key)) {
-            $value = $this->serializeAs($key, $value, $this->getMutatorDefinition($key));
+            $value = $this->serializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
         }
 
         return $value;
@@ -82,12 +83,13 @@ class MutatorManager
      *
      * @param string $key
      * @param mixed $value The claim value after it's sent through json_decode.
+     * @param array $claims All other claims
      * @return mixed
      */
-    public function unserialize($key, $value)
+    public function unserialize($key, $value, array $claims)
     {
         if ($this->hasMutator($key)) {
-            $value = $this->unserializeAs($key, $value, $this->getMutatorDefinition($key));
+            $value = $this->unserializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
         }
 
         return $value;
@@ -164,19 +166,20 @@ class MutatorManager
      * @param string $key
      * @param mixed $value
      * @param string|Mutator $definition
+     * @param array $claims All claims
      * @return string
      */
-    protected function serializeAs($key, $value, $definition)
+    protected function serializeAs($key, $value, $definition, array $claims)
     {
         if ($this->isMutatorInstance($definition)) {
-            return $this->serializeThruMutator($definition, $value, $key, []);
+            return $this->serializeThruMutator($definition, $value, $key, [], $claims);
         } elseif ($this->isMutatorDefinition($definition)) {
             [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
             if (method_exists($this, 'serializeAs' . Str::studly($mutator))) {
                 return $this->{'serializeAs' . Str::studly($mutator)}($value, $key, $args);
             } elseif ($this->hasMutatorMapping($mutator)) {
-                return $this->serializeAsMapping($mutator, $value, $key, $args);
+                return $this->serializeAsMapping($mutator, $value, $key, $args, $claims);
             }
         }
 
@@ -192,11 +195,11 @@ class MutatorManager
      * @param array $args
      * @return mixed
      */
-    protected function serializeAsMapping(string $mutator, $value, string $key, array $args)
+    protected function serializeAsMapping(string $mutator, $value, string $key, array $args, array $claims)
     {
         $instance = $this->app->make(static::$primitiveMutatorsMapping[$mutator]);
 
-        return $this->serializeThruMutator($instance, $value, $key, $args);
+        return $this->serializeThruMutator($instance, $value, $key, $args, $claims);
     }
 
     /**
@@ -206,11 +209,12 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
+     * @param array $claims
      * @return mixed
      */
-    protected function serializeThruMutator(Mutator $mutator, $value, $key, $args)
+    protected function serializeThruMutator(Mutator $mutator, $value, $key, array $args, array $claims)
     {
-        return $mutator->serialize($value, $key, $args);
+        return $mutator->serialize($value, $key, $args, $claims);
     }
 
     /**
@@ -219,19 +223,20 @@ class MutatorManager
      * @param string $key Claim key
      * @param mixed $value Claim value
      * @param string|Mutator $definition Type definition
+     * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeAs($key, $value, $definition)
+    protected function unserializeAs($key, $value, $definition, array $claims)
     {
         if ($this->isMutatorInstance($definition)) {
-            return $this->unserializeThruMutator($definition, $value, $key, []);
+            return $this->unserializeThruMutator($definition, $value, $key, [], $claims);
         } elseif ($this->isMutatorDefinition($definition)) {
             [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
             if (method_exists($this, 'unserializeAs' . Str::studly($mutator))) {
                 return $this->{'unserializeAs' . Str::studly($mutator)}($value, $key, $args);
             } elseif ($this->hasMutatorMapping($mutator)) {
-                return $this->unserializeAsMapping($mutator, $value, $key, $args);
+                return $this->unserializeAsMapping($mutator, $value, $key, $args, $claims);
             }
 
         }
@@ -246,13 +251,14 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
+     * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeAsMapping(string $mutator, $value, string $key, array $args)
+    protected function unserializeAsMapping(string $mutator, $value, string $key, array $args, array $claims)
     {
         $instance = $this->app->make(static::$primitiveMutatorsMapping[$mutator]);
 
-        return $this->unserializeThruMutator($instance, $value, $key, $args);
+        return $this->unserializeThruMutator($instance, $value, $key, $args, $claims);
     }
 
     /**
@@ -262,11 +268,12 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
+     * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeThruMutator(Mutator $mutator, $value, $key, $args)
+    protected function unserializeThruMutator(Mutator $mutator, $value, $key, array $args, array $claims)
     {
-        return $mutator->unserialize($value, $key, $args);
+        return $mutator->unserialize($value, $key, $args, $claims);
     }
 
     /**

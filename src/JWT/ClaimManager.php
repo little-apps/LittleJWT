@@ -34,7 +34,9 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     public function unserialized()
     {
-        $this->claims->transform(fn ($value, $key) => $this->mutatorManager->unserialize($key, $value));
+        $claims = $this->claims->all();
+
+        $this->claims->transform(fn ($value, $key) => $this->mutatorManager->unserialize($key, $value, $claims));
 
         return $this;
     }
@@ -148,8 +150,10 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     public function toSerialized()
     {
-        return $this->claims->map(function ($value, $key) {
-            return $this->mutatorManager->serialize($key, $value);
+        $claims = $this->claims->all();
+
+        return $this->claims->map(function ($value, $key) use ($claims) {
+            return $this->mutatorManager->serialize($key, $value, $claims);
         })->all();
     }
 
