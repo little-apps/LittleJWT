@@ -18,26 +18,28 @@ class TestMutator implements Mutator
     /**
      * Serializes claim value
      *
-     * @param mixed $value Claim value
+     * @param mixed $value Unserialized claim value
      * @param string $key Claim key
      * @param array $args Any arguments to use for mutation
-     * @return mixed
+     * @param array $claims All claims
+     * @return string|array|int
      */
-    public function serialize($value, string $key, array $args)
+    public function serialize($value, string $key, array $args, array $claims)
     {
-        return call_user_func($this->serializeCallback, $value, $key, $args);
+        return call_user_func($this->serializeCallback, $value, $key, $args, $claims);
     }
 
     /**
      * Unserializes claim value
      *
-     * @param mixed $value Claim value
+     * @param string|array|int $value Serialized claim value
      * @param string $key Claim key
      * @param array $args Any arguments to use for mutation
+     * @param array $claims All claims
      * @return mixed
      */
-    public function unserialize($value, string $key, array $args)
+    public function unserialize($value, string $key, array $args, array $claims)
     {
-        return call_user_func($this->unserializeCallback, $value, $key, $args);
+        return call_user_func($this->unserializeCallback, $value, $key, $args, $claims);
     }
 }
