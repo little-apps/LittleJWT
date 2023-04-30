@@ -9,14 +9,29 @@ use PHPUnit\Framework\Assert as PHPUnit;
 
 class TestRule implements Rule
 {
+    /**
+     * Rule to test
+     *
+     * @var Rule
+     */
     protected $baseRule;
 
+    /**
+     * Message to use when test fails.
+     *
+     * @var string
+     */
     protected $message;
 
+    /**
+     * If true, asserts test passes. If false, asserts test fails.
+     *
+     * @var boolean
+     */
     protected $assertPasses;
 
     /**
-     * Constructor for TestRule
+     * Constructor for TestRule.
      *
      * @param Rule $baseRule Rule to test
      * @param bool $assertPasses If true, asserts test passes. If false, asserts test fails.

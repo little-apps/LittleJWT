@@ -6,6 +6,11 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 trait HasUser
 {
+    /**
+     * User (or null if not set)
+     *
+     * @var Authenticatable|null
+     */
     protected $user;
 
     /**

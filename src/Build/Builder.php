@@ -49,6 +49,13 @@ class Builder
      */
     protected $payloadClaims;
 
+    /**
+     * Initializes Builder instance.
+     *
+     * @param ClaimManagerBuilder $claimManagerBuilder
+     * @param array $headerClaims
+     * @param array $payloadClaims
+     */
     public function __construct(ClaimManagerBuilder $claimManagerBuilder, array $headerClaims, array $payloadClaims)
     {
         $this->claimManagerBuilder = $claimManagerBuilder;

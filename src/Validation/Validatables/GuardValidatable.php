@@ -16,13 +16,29 @@ class GuardValidatable
 {
     use JWTHelpers;
 
+    /**
+     * Configuration options.
+     *
+     * @var array
+     */
     protected $config;
 
+    /**
+     * Initializes guard validatable.
+     *
+     * @param array $config
+     */
     public function __construct(array $config)
     {
         $this->config = $config;
     }
 
+    /**
+     * Applies validator rules.
+     *
+     * @param Validator $validator
+     * @return void
+     */
     public function __invoke(Validator $validator)
     {
         $contains = [];

@@ -6,8 +6,25 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class JWT
 {
+    /**
+     * Header claim manager.
+     *
+     * @var ClaimManager
+     */
     protected $headers;
+
+    /**
+     * Payload claim manager.
+     *
+     * @var ClaimManager
+     */
     protected $payload;
+
+    /**
+     * Signature
+     *
+     * @var string
+     */
     protected $signature;
 
     /**

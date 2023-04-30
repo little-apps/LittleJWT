@@ -4,8 +4,16 @@ namespace LittleApps\LittleJWT\Exceptions;
 
 use Exception;
 
+/**
+ * Thrown when a claim value cannot be encoded.
+ */
 class InvalidClaimValueException extends Exception
 {
+    /**
+     * Data that was trying to be encoded.
+     *
+     * @var mixed
+     */
     protected $data;
 
     public function __construct($data, Exception $previous = null)

@@ -6,9 +6,26 @@ use LittleApps\LittleJWT\Contracts\Mutator;
 
 class TestMutator implements Mutator
 {
+    /**
+     * Serialize callback to use.
+     *
+     * @var callable(mixed $value, string $key, array $args, array $claims): mixed
+     */
     protected $serializeCallback;
+
+    /**
+     * Unserialize callback to use.
+     *
+     * @var callable(mixed $value, string $key, array $args, array $claims): mixed
+     */
     protected $unserializeCallback;
 
+    /**
+     * Initalizes test mutator.
+     *
+     * @param callable(mixed $value, string $key, array $args, array $claims): mixed $serializeCallback Serialize callback
+     * @param callable(mixed $value, string $key, array $args, array $claims): mixed $unserializeCallback Unserialize callback
+     */
     public function __construct(callable $serializeCallback, callable $unserializeCallback)
     {
         $this->serializeCallback = $serializeCallback;

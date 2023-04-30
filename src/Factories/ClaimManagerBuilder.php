@@ -23,7 +23,7 @@ class ClaimManagerBuilder
     /**
      * Global mutators
      *
-     * @var array ['header' => [], 'payload' => []]
+     * @var array{'header': array, 'payload': array} ['header' => [], 'payload' => []]
      */
     protected $mutators;
 

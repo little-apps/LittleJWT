@@ -15,6 +15,11 @@ class OpenSSLBuilder
     public const PRIVATE_KEY_TYPES_DH = OPENSSL_KEYTYPE_DH;
     public const PRIVATE_KEY_TYPES_EC = OPENSSL_KEYTYPE_EC;
 
+    /**
+     * Configuration options for OpenSSL.
+     *
+     * @var array
+     */
     protected $config;
 
     /**

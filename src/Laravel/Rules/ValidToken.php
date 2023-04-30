@@ -8,10 +8,26 @@ use LittleApps\LittleJWT\Facades\LittleJWT;
 
 class ValidToken implements ImplicitRule
 {
+    /**
+     * Validatable to use.
+     *
+     * @var callable(\LittleApps\LittleJWT\Validation\Validator): void
+     */
     protected $callback;
 
+    /**
+     * Whether to apply default validatables.
+     *
+     * @var boolean
+     */
     protected $applyDefault;
 
+    /**
+     * Initializes implicit valid token rule.
+     *
+     * @param (callable(\LittleApps\LittleJWT\Validation\Validator): void)|null $callback Validatable to use.
+     * @param boolean $applyDefault Whether to apply default validatables (default: true)
+     */
     public function __construct(callable $callback = null, $applyDefault = true)
     {
         $this->callback = $callback;

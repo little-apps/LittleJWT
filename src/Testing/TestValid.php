@@ -12,6 +12,13 @@ use LittleApps\LittleJWT\Validation\Valid;
 
 class TestValid extends Valid
 {
+    /**
+     * Initializes TestValid instance.
+     *
+     * @param Application $app Application container.
+     * @param JWT $jwt JWT to test.
+     * @param JWK $jwk JWK to verify with.
+     */
     public function __construct(Application $app, JWT $jwt, JWK $jwk)
     {
         parent::__construct($app, $jwt, $jwk);

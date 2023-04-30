@@ -12,6 +12,11 @@ class DatabaseDriver extends AbstractDriver
 {
     use JWTHelpers;
 
+    /**
+     * Options for database driver.
+     *
+     * @var array
+     */
     protected $options;
 
     public function __construct(array $options)

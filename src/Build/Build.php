@@ -16,14 +16,41 @@ class Build
     use ForwardsCalls;
     use PassableThru;
 
+    /**
+     * Application container.
+     *
+     * @var Application
+     */
     protected $app;
 
+    /**
+     * The JWK to sign JWTs.
+     *
+     * @var JWK
+     */
     protected $jwk;
 
+    /**
+     * Builder to build JWTs.
+     *
+     * @var Builder
+     */
     protected $builder;
 
+    /**
+     * Mutators to use for serializing.
+     * Populated when build() is called.
+     *
+     * @var array<\LittleApps\LittleJWT\Contracts\Mutator>
+     */
     protected $mutators;
 
+    /**
+     * Initializes Build instance.
+     *
+     * @param Application $app Application container.
+     * @param JWK $jwk JWK to sign JWTs with.
+     */
     public function __construct(Application $app, JWK $jwk)
     {
         $this->app = $app;

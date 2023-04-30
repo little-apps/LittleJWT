@@ -13,8 +13,16 @@ class ArrayBlacklistDriver extends AbstractDriver
 
     public const DEFAULT_TTL = 0;
 
+    /**
+     * Blacklisted JWTs.
+     *
+     * @var \Illuminate\Support\Collection
+     */
     protected $blacklist;
 
+    /**
+     * Intializes array black list driver.
+     */
     public function __construct()
     {
         $this->blacklist = collect();

@@ -41,10 +41,25 @@ class KeyBuilder implements Keyable
     public const KEY_FILES_P12 = 'p12';
     public const KEY_FILES_CRT = 'crt';
 
+    /**
+     * Application container.
+     *
+     * @var Application
+     */
     protected $app;
 
+    /**
+     * Configuration options for building keys.
+     *
+     * @var array
+     */
     protected $config;
 
+    /**
+     * Extra configuration options to pass to JWKFactory.
+     *
+     * @var array
+     */
     protected $extra;
 
     public function __construct(Application $app, array $config)

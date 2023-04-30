@@ -8,8 +8,20 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class Past extends Rule
 {
+    /**
+     * Leeway (in seconds) to allow date/time be in past.
+     *
+     * @var int
+     */
     protected $leeway;
 
+    /**
+     * Initializes Past rule.
+     *
+     * @param string $key Claim key to check.
+     * @param int $leeway Additional number of seconds to allow date/time be in past.
+     * @param boolean $inHeader If true, uses header claim.
+     */
     public function __construct($key, $leeway, $inHeader)
     {
         parent::__construct($key, $inHeader);
@@ -17,6 +29,9 @@ class Past extends Rule
         $this->leeway = $leeway;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function checkClaim(JWT $jwt, $value)
     {
         $now = Carbon::now()->addSeconds($this->leeway);
@@ -26,6 +41,9 @@ class Past extends Rule
         return $dateTime->isBefore($now);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function formatMessage()
     {
         return "The ':key' claim date/time is in the future.";

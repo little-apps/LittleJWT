@@ -11,8 +11,18 @@ class CacheDriver extends AbstractDriver
 {
     use JWTHelpers;
 
+    /**
+     * Cache manager.
+     *
+     * @var CacheManager
+     */
     protected $manager;
 
+    /**
+     * Options for caching.
+     *
+     * @var array
+     */
     protected $options;
 
     public function __construct(CacheManager $manager, array $options)

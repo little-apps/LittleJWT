@@ -31,6 +31,9 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class ServiceProvider extends PackageServiceProvider
 {
+    /**
+     * @inheritDoc
+     */
     public function configurePackage(Package $package): void
     {
         $package

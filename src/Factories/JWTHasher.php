@@ -13,6 +13,11 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class JWTHasher
 {
+    /**
+     * Algorithm to use for verifying and signing.
+     *
+     * @var AlgorithmContract
+     */
     protected $algorithm;
 
     /**

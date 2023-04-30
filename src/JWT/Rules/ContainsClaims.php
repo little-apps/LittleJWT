@@ -6,8 +6,25 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class ContainsClaims extends Rule
 {
+    /**
+     * Expected claim keys.
+     *
+     * @var array<string>
+     */
     protected $expected;
+
+    /**
+     * Whether claims should be in header.
+     *
+     * @var boolean
+     */
     protected $inHeader;
+
+    /**
+     * If true, every claim key must exist only once.
+     *
+     * @var boolean
+     */
     protected $strict;
 
     public function __construct(iterable $expected, $inHeader = false, $strict = false)
@@ -17,6 +34,9 @@ class ContainsClaims extends Rule
         $this->strict = (bool) $strict;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function passes(JWT $jwt)
     {
         $claims = $this->inHeader ? $jwt->getHeaders() : $jwt->getPayload();
@@ -37,6 +57,9 @@ class ContainsClaims extends Rule
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function message()
     {
         return 'The JWT did not have the expected claim keys.';

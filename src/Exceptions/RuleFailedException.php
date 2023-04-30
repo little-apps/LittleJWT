@@ -5,6 +5,9 @@ namespace LittleApps\LittleJWT\Exceptions;
 use Exception;
 use LittleApps\LittleJWT\Contracts\Rule;
 
+/**
+ * Thrown when a rule failed.
+ */
 class RuleFailedException extends Exception
 {
     /**

@@ -12,8 +12,7 @@ use LittleApps\LittleJWT\Contracts\Mutator;
 
 /**
  * Allows for claims to be serialized and deserialized.
- * The claims are still sent through json_encode/json_decode.
- * The purpose of this trait is to allow for further control over the serialization/deserialization process.
+ * The serialization happens before the JWT is JSON encoded and the unserialization happens after the JWT is decoded.
  */
 class MutatorManager
 {
@@ -50,7 +49,7 @@ class MutatorManager
     /**
      * Claim keys to mutate.
      *
-     * @var array
+     * @var list<string>
      */
     protected $mutators = [];
 

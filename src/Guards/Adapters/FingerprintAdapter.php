@@ -15,8 +15,21 @@ class FingerprintAdapter extends AbstractAdapter
     use Concerns\BuildsJwt;
     use Concerns\HasRequest;
 
+    /**
+     * Base adapter to add fingerprint for.
+     *
+     * @var AbstractAdapter
+     */
     protected $baseAdapter;
 
+    /**
+     * Intializes fingerprint adapter.
+     *
+     * @param Container $container Application container.
+     * @param LittleJWT $jwt LIttleJWT instance.
+     * @param GenericAdapter $adapter Adapter to add fingerprint for.
+     * @param array $config Configuration options.
+     */
     public function __construct(Container $container, LittleJWT $jwt, GenericAdapter $adapter, array $config)
     {
         parent::__construct($container, $jwt, $config);

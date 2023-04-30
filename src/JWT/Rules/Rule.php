@@ -8,24 +8,17 @@ use LittleApps\LittleJWT\JWT\JWT;
 abstract class Rule implements RuleContract
 {
     /**
-     * Checks if JWT passes rule.
-     *
-     * @param \LittleApps\LittleJWT\JWT\JWT $jwt
-     * @return bool True if JWT passes rule check.
+     * @inheritDoc
      */
     abstract public function passes(JWT $jwt);
 
     /**
-     * Gets the error message for when the rule fails.
-     *
-     * @return string
+     * @inheritDoc
      */
     abstract public function message();
 
     /**
-     * Gets the key to be used for the error messages.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getKey()
     {

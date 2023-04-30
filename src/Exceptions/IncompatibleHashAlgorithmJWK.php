@@ -4,8 +4,16 @@ namespace LittleApps\LittleJWT\Exceptions;
 
 use Exception;
 
+/**
+ * This exception is thrown when the JWT is tried to be verified with an incompatible hash algorithm.
+ */
 class IncompatibleHashAlgorithmJWK extends Exception
 {
+    /**
+     * Base exception that caused this to be thrown.
+     *
+     * @var Exception
+     */
     protected $baseException;
 
     public function __construct(Exception $e)
@@ -15,6 +23,11 @@ class IncompatibleHashAlgorithmJWK extends Exception
         $this->baseException = $e;
     }
 
+    /**
+     * Gets base exception.
+     *
+     * @return Exception
+     */
     public function getBaseException()
     {
         return $this->baseException;

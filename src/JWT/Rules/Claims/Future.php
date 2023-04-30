@@ -8,8 +8,20 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class Future extends Rule
 {
+    /**
+     * Leeway (in seconds) to allow date/time be in future.
+     *
+     * @var int
+     */
     protected $leeway;
 
+    /**
+     * Intializes Future rule.
+     *
+     * @param string $key Claim key to check.
+     * @param int $leeway Additional number of seconds to allow date/time be in future.
+     * @param boolean $inHeader If true, uses header claim.
+     */
     public function __construct($key, $leeway, $inHeader)
     {
         parent::__construct($key, $inHeader);

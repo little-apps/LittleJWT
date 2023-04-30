@@ -8,8 +8,18 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 abstract class Rule implements RuleContract
 {
+    /**
+     * Claim key to check
+     *
+     * @var string
+     */
     protected $key;
 
+    /**
+     * If true, gets claim value from header.
+     *
+     * @var boolean
+     */
     protected $inHeader;
 
     /**
@@ -24,6 +34,9 @@ abstract class Rule implements RuleContract
         $this->inHeader = $inHeader;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function passes(JWT $jwt)
     {
         // Checks that claim exists before continuing.
@@ -36,6 +49,9 @@ abstract class Rule implements RuleContract
         return $this->checkClaim($jwt, $this->getValue($jwt));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function message()
     {
         $replace = [

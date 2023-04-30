@@ -6,8 +6,18 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class OneOf extends Rule
 {
+    /**
+     * Possible claim values.
+     *
+     * @var list<mixed>
+     */
     protected $haystack;
 
+    /**
+     * If true, uses strict comparison when comparing claim value with possible claim values.
+     *
+     * @var boolean
+     */
     protected $strict;
 
     public function __construct($key, array $haystack, $strict = true, $inHeader = false)
@@ -18,11 +28,17 @@ class OneOf extends Rule
         $this->strict = $strict;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function checkClaim(JWT $jwt, $value)
     {
         return in_array($value, $this->haystack, $this->strict);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function formatMessage()
     {
         return "The ':key' claim is not one of expected values.";

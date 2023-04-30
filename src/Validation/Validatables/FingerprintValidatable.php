@@ -10,13 +10,29 @@ use LittleApps\LittleJWT\Validation\Validator;
  */
 class FingerprintValidatable
 {
+    /**
+     * Expected fingerprint hash.
+     *
+     * @var string
+     */
     protected $fingerprintHash;
 
+    /**
+     * Initalizes fingerprint validatable.
+     *
+     * @param string $fingerprintHash Expected fingerprint hash.
+     */
     public function __construct(string $fingerprintHash)
     {
         $this->fingerprintHash = $fingerprintHash;
     }
 
+    /**
+     * Applies validator rules.
+     *
+     * @param Validator $validator
+     * @return void
+     */
     public function __invoke(Validator $validator)
     {
         $validator

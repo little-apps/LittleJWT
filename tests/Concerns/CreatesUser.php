@@ -11,8 +11,18 @@ use LittleApps\LittleJWT\Testing\Models\User;
 
 trait CreatesUser
 {
+    /**
+     * User (or null if not set)
+     *
+     * @var Authenticatable|null
+     */
     protected $user;
 
+    /**
+     * Sets up trait.
+     *
+     * @return void
+     */
     protected function setUpUser()
     {
         $this->user = $this->createUser();

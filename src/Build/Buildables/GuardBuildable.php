@@ -14,8 +14,18 @@ class GuardBuildable
     use JWTHelpers;
     use HasUser;
 
+    /**
+     * Payload claims to include.
+     *
+     * @var array
+     */
     protected $payloadClaims;
 
+    /**
+     * Header claims to include.
+     *
+     * @var array
+     */
     protected $headerClaims;
 
     /**
@@ -32,6 +42,12 @@ class GuardBuildable
         $this->headerClaims = $headerClaims;
     }
 
+    /**
+     * Builds JWT for use with guard.
+     *
+     * @param Builder $builder
+     * @return void
+     */
     public function __invoke(Builder $builder)
     {
         $builder

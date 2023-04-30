@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Facade;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Testing\ArrayBlacklistDriver;
 
+/**
+ * @mixin \LittleApps\LittleJWT\Blacklist\BlacklistManager
+ */
 class Blacklist extends Facade
 {
     /**

@@ -10,13 +10,29 @@ use LittleApps\LittleJWT\Validation\Validator;
  */
 class StackValidatable
 {
+    /**
+     * Validatables to call
+     *
+     * @var list<callable(Validator): void>
+     */
     protected $stack;
 
+    /**
+     * Initializes stack validatable.
+     *
+     * @param list<callable(Validator): void> $stack Validatables to call
+     */
     public function __construct(array $stack)
     {
         $this->stack = $stack;
     }
 
+    /**
+     * Applies validator rules.
+     *
+     * @param Validator $validator
+     * @return void
+     */
     public function __invoke(Validator $validator)
     {
         foreach ($this->stack as $callback) {

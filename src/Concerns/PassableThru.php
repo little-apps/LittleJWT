@@ -4,6 +4,11 @@ namespace LittleApps\LittleJWT\Concerns;
 
 trait PassableThru
 {
+    /**
+     * Callbacks
+     *
+     * @var array<callable>
+     */
     protected $passThruStack = [];
 
     /**

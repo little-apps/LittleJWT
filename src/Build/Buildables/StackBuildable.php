@@ -7,6 +7,11 @@ use LittleApps\LittleJWT\Contracts\Buildable;
 
 class StackBuildable
 {
+    /**
+     * Buildables to call.
+     *
+     * @var list<object|callable(Builder): void>
+     */
     protected $stack;
 
     public function __construct(array $stack)
@@ -17,7 +22,7 @@ class StackBuildable
     /**
      * Gets the mutators for all buildables in stack.
      *
-     * @return array [
+     * @return array{'header': array, 'payload': array} [
      *      'header' => [],
      *      'payload' => []
      * ]
@@ -35,6 +40,12 @@ class StackBuildable
         return $mutators;
     }
 
+    /**
+     * Calls buildables in stack.
+     *
+     * @param Builder $builder
+     * @return void
+     */
     public function __invoke(Builder $builder)
     {
         foreach ($this->stack as $callback) {

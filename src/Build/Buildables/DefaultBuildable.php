@@ -9,6 +9,11 @@ use LittleApps\LittleJWT\Build\Builder;
 
 class DefaultBuildable
 {
+    /**
+     * Configuration for buildable.
+     *
+     * @var array
+     */
     protected $config;
 
     public function __construct(array $config)
@@ -16,6 +21,12 @@ class DefaultBuildable
         $this->config = $config;
     }
 
+    /**
+     * Builds JWT with default claims.
+     *
+     * @param Builder $builder
+     * @return void
+     */
     public function __invoke(Builder $builder)
     {
         $builder

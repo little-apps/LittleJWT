@@ -11,13 +11,29 @@ use LittleApps\LittleJWT\Validation\Validator;
  */
 class DefaultValidatable
 {
+    /**
+     * Default validatable configuration options.
+     *
+     * @var array
+     */
     protected $config;
 
+    /**
+     * Intializes default validatable.
+     *
+     * @param array $config
+     */
     public function __construct(array $config)
     {
         $this->config = $config;
     }
 
+    /**
+     * Applies validator rules.
+     *
+     * @param Validator $validator
+     * @return void
+     */
     public function __invoke(Validator $validator)
     {
         $validator

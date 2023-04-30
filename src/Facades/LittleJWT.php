@@ -10,6 +10,9 @@ use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
 use LittleApps\LittleJWT\Testing\LittleJWT as LittleJWTFake;
 
+/**
+ * @mixin \LittleApps\LittleJWT\LittleJWT
+ */
 class LittleJWT extends Facade
 {
     /**

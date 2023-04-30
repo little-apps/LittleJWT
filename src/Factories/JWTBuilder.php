@@ -13,8 +13,18 @@ use LittleApps\LittleJWT\Utils\JsonEncoder;
 
 class JWTBuilder
 {
+    /**
+     * Claim Manager Builder
+     *
+     * @var ClaimManagerBuilder
+     */
     protected $claimManagerBuilder;
 
+    /**
+     * Initializes JWT Builder
+     *
+     * @param ClaimManagerBuilder $claimManagerBuilder
+     */
     public function __construct(ClaimManagerBuilder $claimManagerBuilder)
     {
         $this->claimManagerBuilder = $claimManagerBuilder;

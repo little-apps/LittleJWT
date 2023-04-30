@@ -8,8 +8,18 @@ use LittleApps\LittleJWT\JWT\JWT;
 
 class Callback extends Rule
 {
+    /**
+     * Callback to call
+     *
+     * @var callable
+     */
     protected $callback;
 
+    /**
+     * Holds last rule fail message.
+     *
+     * @var string|null
+     */
     protected $lastMessage;
 
     /**
@@ -22,6 +32,9 @@ class Callback extends Rule
         $this->callback = $callback;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function passes(JWT $jwt)
     {
         try {
@@ -33,6 +46,9 @@ class Callback extends Rule
         return false;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function message()
     {
         return $this->lastMessage ?? 'The callback validation did not pass.';

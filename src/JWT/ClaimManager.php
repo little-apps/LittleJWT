@@ -13,10 +13,25 @@ use RuntimeException;
 
 class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
+    /**
+     * Application container
+     *
+     * @var Application
+     */
     protected $app;
 
+    /**
+     * Mutator manager
+     *
+     * @var MutatorManager
+     */
     protected $mutatorManager;
 
+    /**
+     * Claims
+     *
+     * @var \Illuminate\Support\Collection
+     */
     protected $claims;
 
     public function __construct(Application $app, MutatorManager $mutatorManager, array $claims)
