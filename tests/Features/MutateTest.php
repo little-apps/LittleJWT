@@ -171,6 +171,32 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests custom date/time is mutated and parsed.
+     *
+     * @return void
+     */
+    public function test_mutates_custom_datetime_parse()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'custom_datetime:Y',
+            ],
+        ];
+
+        $time = time();
+
+        $buildable = new TestBuildable(function (Builder $builder) use ($time) {
+            $builder->foo($time);
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertTrue(Carbon::parse($time)->eq($jwt->getPayload()->get('foo')));
+    }
+
+    /**
      * Tests date is mutated.
      *
      * @return void
@@ -197,6 +223,32 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests date is mutated and parsed.
+     *
+     * @return void
+     */
+    public function test_mutates_date_parse()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'date',
+            ],
+        ];
+
+        $time = time();
+
+        $buildable = new TestBuildable(function (Builder $builder) use ($time) {
+            $builder->foo($time);
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertTrue($jwt->getPayload()->get('foo')->isSameAs(Mutators\DateMutator::$format, Carbon::parse($time)));
+    }
+
+    /**
      * Tests date/time is mutated.
      *
      * @return void
@@ -220,6 +272,32 @@ class MutateTest extends TestCase
         $jwt = LittleJWT::parseToken($token);
 
         $this->assertEquals(Carbon::parse($time)->format(Mutators\DateTimeMutator::$format), $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests date/time is mutated and parsed.
+     *
+     * @return void
+     */
+    public function test_mutates_datetime_parse()
+    {
+        $mutators = [
+            'payload' => [
+                'foo' => 'datetime',
+            ],
+        ];
+
+        $time = time();
+
+        $buildable = new TestBuildable(function (Builder $builder) use ($time) {
+            $builder->foo($time);
+        }, $mutators);
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token, $mutators);
+
+        $this->assertTrue($jwt->getPayload()->get('foo')->isSameAs(Mutators\DateTimeMutator::$format, Carbon::parse($time)));
     }
 
     /**
