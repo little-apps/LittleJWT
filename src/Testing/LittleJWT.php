@@ -5,6 +5,8 @@ namespace LittleApps\LittleJWT\Testing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 
+use Jose\Component\Core\JWK;
+
 use LittleApps\LittleJWT\JWT\JWT;
 use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
@@ -14,17 +16,13 @@ use LittleApps\LittleJWT\Validation\Validator;
 /**
  * @mixin \LittleApps\LittleJWT\LittleJWT
  */
-class LittleJWT
+class LittleJWT extends RealLittleJWT
 {
     use ForwardsCalls;
 
-    protected $app;
-    protected $littleJWT;
-
-    public function __construct(Application $app, RealLittleJWT $littleJWT)
+    public function __construct(Application $app, JWK $jwk)
     {
-        $this->app = $app;
-        $this->littleJWT = $littleJWT;
+        parent::__construct($app, $jwk);
     }
 
     /**
@@ -35,9 +33,7 @@ class LittleJWT
      */
     public function validJWT(JWT $jwt)
     {
-        $valid = $this->littleJWT->validJWT($jwt);
-
-        return new TestValid($this->app, $valid);
+        return new TestValid($this->app, $jwt, $this->jwk);
     }
 
     /**
@@ -58,11 +54,9 @@ class LittleJWT
             array_push($callbacks, $callback);
         }
 
-        $transformCallbacks = $this->createTransformCallback($callbacks);
+        $validatable = new StackValidatable($callbacks);
 
-        $validatable = new StackValidatable([$transformCallbacks]);
-
-        return $this->littleJWT->validateJWT($jwt, $validatable, $applyDefault);
+        return parent::validateJWT($jwt, $validatable, $applyDefault);
     }
 
     /**
@@ -78,34 +72,5 @@ class LittleJWT
         $jwt = $this->parseToken($token);
 
         return ! is_null($jwt) ? $this->validateJWT($jwt, $callback, $applyDefault) : false;
-    }
-
-    /**
-     * Creates the callback which transforms a Validator to TestValidator and sends it through the callbacks.
-     *
-     * @param iterable $callbacks
-     * @return \Closure
-     */
-    protected function createTransformCallback(iterable $callbacks)
-    {
-        return function (Validator $validator) use ($callbacks) {
-            $testValidator = new TestValidator($this->app, $validator);
-
-            foreach ($callbacks as $callback) {
-                $callback($testValidator);
-            }
-        };
-    }
-
-    /**
-     * Forwards method calls to the original LittleJWT instance.
-     *
-     * @param string $name Method name
-     * @param array $parameters Method parameters
-     * @return mixed
-     */
-    public function __call($name, $parameters)
-    {
-        return $this->forwardCallTo($this->littleJWT, $name, $parameters);
     }
 }

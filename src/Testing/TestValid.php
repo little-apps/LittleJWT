@@ -5,20 +5,17 @@ namespace LittleApps\LittleJWT\Testing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 
+use Jose\Component\Core\JWK;
 
+use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Validation\Valid;
+use LittleApps\LittleJWT\JWT\JWT;
 
-class TestValid
+class TestValid extends Valid
 {
-    use ForwardsCalls;
-
-    protected $app;
-    protected $valid;
-
-    public function __construct(Application $app, Valid $valid)
+    public function __construct(Application $app, JWT $jwt, JWK $jwk)
     {
-        $this->app = $app;
-        $this->valid = $valid;
+        parent::__construct($app, $jwt, $jwk);
     }
 
     /**
@@ -28,20 +25,8 @@ class TestValid
      */
     protected function buildValidator()
     {
-        $validator = $this->valid->buildValidator();
+        $blacklistManager = $this->app->make(BlacklistManager::class);
 
-        return new TestValidator($this->app, $validator);
-    }
-
-    /**
-     * Handle dynamic calls into macros or pass missing methods to the base valid instance.
-     *
-     * @param  string  $method
-     * @param  array  $args
-     * @return mixed
-     */
-    public function __call($method, $args)
-    {
-        return $this->forwardCallTo($this->valid, $method, $args);
+        return new TestValidator($this->app, $blacklistManager, $this->jwk);
     }
 }

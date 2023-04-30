@@ -19,9 +19,9 @@ use PHPUnit\Framework\Assert as PHPUnit;
 /**
  * @mixin LittleApps\LittleJWT\Validator
  */
-class TestValidator
+class TestValidator extends Validator
 {
-    use JWTHelpers, Macroable, ForwardsCalls {
+    use JWTHelpers, Macroable {
         __call as macroCall;
     }
 
@@ -31,13 +31,6 @@ class TestValidator
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
-
-    /**
-     * Validator to apply asserts to
-     *
-     * @var Validator
-     */
-    protected $validator;
 
     /**
      * Holds value of whether to assert that the JWT passes all rules.
@@ -87,10 +80,11 @@ class TestValidator
      * @param Application $app
      * @param Validator $validator
      */
-    public function __construct(Application $app, Validator $validator)
+    public function __construct(Application $app, BlacklistManager $blacklistManager, JWK $jwk)
     {
+        parent::__construct($blacklistManager, $jwk);
+
         $this->app = $app;
-        $this->validator = $validator;
 
         $this->assertPasses = false;
         $this->assertFails = false;
@@ -99,7 +93,7 @@ class TestValidator
         $this->expectedErrorKeys = collect();
         $this->unexpectedErrorKeys = collect();
 
-        $this->validator->afterValidate($this->getAfterValidationCallback());
+        $this->afterValidate($this->getAfterValidationCallback());
     }
 
     /**
@@ -189,7 +183,7 @@ class TestValidator
      */
     public function assertRulePasses(Rule $rule, $message = '')
     {
-        $this->validator->addRule(new TestRule($rule, true, $message));
+        $this->addRule(new TestRule($rule, true, $message));
 
         return $this;
     }
@@ -203,7 +197,7 @@ class TestValidator
      */
     public function assertRuleFails(Rule $rule, $message = '')
     {
-        $this->validator->addRule(new TestRule($rule, false, $message));
+        $this->addRule(new TestRule($rule, false, $message));
 
         return $this;
     }
@@ -367,7 +361,7 @@ class TestValidator
     public function assertValidSignature(JWK $jwk = null)
     {
         return $this->assertRulePasses(
-            new Rules\ValidSignature($jwk ?? $this->validator->getJwk()),
+            new Rules\ValidSignature($jwk ?? $this->getJwk()),
             'Failed asserting that the JWT has a valid signature.'
         );
     }
@@ -381,7 +375,7 @@ class TestValidator
     public function assertInvalidSignature(JWK $jwk = null)
     {
         return $this->assertRuleFails(
-            new Rules\ValidSignature($jwk ?? $this->validator->getJwk()),
+            new Rules\ValidSignature($jwk ?? $this->getJwk()),
             'Failed asserting that the JWT has a invalid signature.'
         );
     }
@@ -510,21 +504,5 @@ class TestValidator
                 }
             }
         };
-    }
-
-    /**
-     * Handle dynamic calls into macros or pass missing methods to the base validator.
-     *
-     * @param  string  $method
-     * @param  array  $args
-     * @return mixed
-     */
-    public function __call($method, $args)
-    {
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $args);
-        }
-
-        return $this->forwardCallTo($this->validator, $method, $args);
     }
 }
