@@ -5,8 +5,8 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 
-use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\Mutators;
 use LittleApps\LittleJWT\Testing\Models\User;

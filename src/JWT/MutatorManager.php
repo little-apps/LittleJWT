@@ -3,14 +3,14 @@
 namespace LittleApps\LittleJWT\JWT;
 
 use DateTimeInterface;
-use Throwable;
-
 use Illuminate\Contracts\Foundation\Application;
 
 use Illuminate\Support\Carbon;
+
 use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
+use Throwable;
 
 /**
  * Allows for claims to be serialized and deserialized.
