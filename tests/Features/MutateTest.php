@@ -620,7 +620,6 @@ class MutateTest extends TestCase
             ],
         ];
 
-
         $buildable = new TestBuildable(function (Builder $builder) use ($user) {
             $builder
                 ->sub($user);
@@ -630,7 +629,9 @@ class MutateTest extends TestCase
 
         $jwt = LittleJWT::parseToken($token, $mutators);
 
-        $this->assertEquals(User::class, get_class($jwt->getPayload()->get('sub')));
-        $this->assertTrue($user->is($jwt->getPayload()->get('sub')));
+        $sub = $jwt->getPayload()->get('sub');
+
+        $this->assertEquals(User::class, get_class($sub));
+        $this->assertTrue($user->is($sub));
     }
 }
