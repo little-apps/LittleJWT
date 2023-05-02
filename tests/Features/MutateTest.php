@@ -12,6 +12,7 @@ use LittleApps\LittleJWT\JWT\Mutators;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
 use LittleApps\LittleJWT\Testing\TestMutator;
+use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\TestCase;
 
@@ -633,5 +634,43 @@ class MutateTest extends TestCase
 
         $this->assertEquals(User::class, get_class($sub));
         $this->assertTrue($user->is($sub));
+    }
+
+    /**
+     * Tests that an invokable validatable class is mutated.
+     *
+     * @return void
+     */
+    public function test_invoke_mutates_validatable()
+    {
+        LittleJWT::fake();
+
+        $jwt = LittleJWT::createJWT(new TestBuildable(function (Builder $builder) {
+            $builder
+                ->foo('abcd');
+        }, []));
+
+        $validatable = new class () {
+            public function getMutators()
+            {
+                return [
+                    'payload' => [
+                        'foo' => new TestMutator(
+                            fn ($value) => strrev($value),
+                            fn ($value) => strrev($value),
+                        )
+                    ]
+                ];
+            }
+
+            public function __invoke(TestValidator $validator)
+            {
+                $validator
+                    ->assertPasses()
+                    ->assertClaimMatches('foo', 'dcba');
+            }
+        };
+
+        LittleJWT::validateToken((string) $jwt, $validatable);
     }
 }

@@ -8,6 +8,7 @@ use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
+use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
@@ -23,6 +24,8 @@ use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
  */
 class LittleJWT
 {
+    use ExtractsMutators;
+
     /**
      * Application container
      *
@@ -179,9 +182,29 @@ class LittleJWT
      */
     public function validateToken(string $token, $callback = null, $applyDefault = true)
     {
-        $jwt = $this->parseToken($token);
+        // Get callbacks to extract mutators from
+        if ($applyDefault) {
+            $callbacks = [
+                $this->getDefaultValidatableCallback(),
+                $callback
+            ];
+        } else {
+            $callbacks = [$callback];
+        }
 
-        return ! is_null($jwt) ? $this->validateJWT($jwt, $callback, $applyDefault) : false;
+        // Extract mutators from callback and default validatable.
+        $mutators = [];
+
+        foreach ($callbacks as $cb) {
+            if (!is_null($cb) && $this->hasMutators($cb)) {
+                $mutators = array_merge_recursive($mutators, $this->extractMutators($cb));
+            }
+        }
+
+        $jwt = $this->parseToken($token, $mutators);
+
+        // Reuse default validitable instance (rather than creating another object)
+        return ! is_null($jwt) ? $this->validateJWT($jwt, $applyDefault ? new StackValidatable($callbacks) : $callback, false) : false;
     }
 
     /**

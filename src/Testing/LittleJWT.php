@@ -58,19 +58,4 @@ class LittleJWT extends RealLittleJWT
 
         return parent::validateJWT($jwt, $validatable, $applyDefault);
     }
-
-    /**
-     * Parses a token as a JSON Web Token (JWT) and validates it.
-     *
-     * @param string $token The token to parse as a JWT and validate.
-     * @param callable $callback Callable that receives TestValidator to set assertions for JWT.
-     * @param bool $applyDefault If true, the default validatable is used first. (default: false)
-     * @return bool True if token is valid.
-     */
-    public function validateToken(string $token, $callback = null, $applyDefault = false)
-    {
-        $jwt = $this->parseToken($token);
-
-        return ! is_null($jwt) ? $this->validateJWT($jwt, $callback, $applyDefault) : false;
-    }
 }
