@@ -2,11 +2,14 @@
 
 namespace LittleApps\LittleJWT\Build\Buildables;
 
+use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Buildable;
 
 class StackBuildable
 {
+    use ExtractsMutators;
+
     /**
      * Buildables to call.
      *
@@ -32,8 +35,8 @@ class StackBuildable
         $mutators = [];
 
         foreach ($this->stack as $callback) {
-            if (method_exists($callback, 'getMutators')) {
-                $mutators = array_merge_recursive($mutators, $callback->getMutators());
+            if ($this->hasMutators($callback)) {
+                $mutators = array_merge_recursive($mutators, $this->extractMutators($callback));
             }
         }
 
