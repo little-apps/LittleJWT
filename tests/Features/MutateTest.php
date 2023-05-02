@@ -641,7 +641,7 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_invoke_mutates_validatable()
+    public function test_invoke_mutates_validatable_custom()
     {
         LittleJWT::fake();
 
@@ -668,6 +668,50 @@ class MutateTest extends TestCase
                 $validator
                     ->assertPasses()
                     ->assertClaimMatches('foo', 'dcba');
+            }
+        };
+
+        LittleJWT::validateToken((string) $jwt, $validatable);
+    }
+
+    /**
+     * Tests that an invokable validatable class is mutated.
+     *
+     * @return void
+     */
+    public function test_invoke_mutates_validatable_double()
+    {
+        LittleJWT::fake();
+
+        $mutators = [
+            'payload' => [
+                'foo' => 'double'
+            ],
+        ];
+
+        $jwt = LittleJWT::createJWT(new TestBuildable(function (Builder $builder) {
+            $builder
+                ->foo(NAN);
+        }, $mutators));
+
+        $validatable = new class ($mutators) {
+            private $mutators;
+
+            public function __construct(array $mutators)
+            {
+                $this->mutators = $mutators;
+            }
+
+            public function getMutators()
+            {
+                return $this->mutators;
+            }
+
+            public function __invoke(TestValidator $validator)
+            {
+                $validator
+                    ->assertPasses()
+                    ->assertCustomPasses(fn ($jwt) => is_nan($jwt->getPayload()->foo));
             }
         };
 
