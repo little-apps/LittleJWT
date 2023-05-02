@@ -685,7 +685,7 @@ class MutateTest extends TestCase
 
         $mutators = [
             'payload' => [
-                'foo' => 'double'
+                'foo' => 'double',
             ],
         ];
 
