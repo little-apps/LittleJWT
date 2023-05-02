@@ -186,7 +186,7 @@ class LittleJWT
         if ($applyDefault) {
             $callbacks = [
                 $this->getDefaultValidatableCallback(),
-                $callback
+                $callback,
             ];
         } else {
             $callbacks = [$callback];
@@ -196,7 +196,7 @@ class LittleJWT
         $mutators = [];
 
         foreach ($callbacks as $cb) {
-            if (!is_null($cb) && $this->hasMutators($cb)) {
+            if (! is_null($cb) && $this->hasMutators($cb)) {
                 $mutators = array_merge_recursive($mutators, $this->extractMutators($cb));
             }
         }

@@ -658,8 +658,8 @@ class MutateTest extends TestCase
                         'foo' => new TestMutator(
                             fn ($value) => strrev($value),
                             fn ($value) => strrev($value),
-                        )
-                    ]
+                        ),
+                    ],
                 ];
             }
 
