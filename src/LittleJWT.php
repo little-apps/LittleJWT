@@ -14,7 +14,6 @@ use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\JWT\JWT;
-use LittleApps\LittleJWT\JWT\MutatorManager;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
@@ -225,7 +224,8 @@ class LittleJWT
      * @param class-string<\LittleApps\LittleJWT\Contracts\Mutator> $class Fully qualified class name
      * @return void
      */
-    public function customMutator(string $key, string $class) {
+    public function customMutator(string $key, string $class)
+    {
         $this->customMutatorsMapping[$key] = $class;
     }
 
@@ -234,7 +234,8 @@ class LittleJWT
      *
      * @return array
      */
-    public function getCustomMutators() {
+    public function getCustomMutators()
+    {
         return $this->customMutatorsMapping;
     }
 
