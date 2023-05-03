@@ -6,20 +6,11 @@ use BadMethodCallException;
 
 use Illuminate\Support\Traits\Macroable;
 
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
-
 class Builder
 {
     use Macroable {
         __call as macroCall;
     }
-
-    /**
-     * Claim Manager Builder
-     *
-     * @var \LittleApps\LittleJWT\Factories\ClaimManagerBuilder
-     */
-    protected $claimManagerBuilder;
 
     /**
      * Header claims
@@ -52,13 +43,11 @@ class Builder
     /**
      * Initializes Builder instance.
      *
-     * @param ClaimManagerBuilder $claimManagerBuilder
      * @param array $headerClaims
      * @param array $payloadClaims
      */
-    public function __construct(ClaimManagerBuilder $claimManagerBuilder, array $headerClaims, array $payloadClaims)
+    public function __construct(array $headerClaims, array $payloadClaims)
     {
-        $this->claimManagerBuilder = $claimManagerBuilder;
         $this->headerClaims = $headerClaims;
         $this->payloadClaims = $payloadClaims;
 
@@ -149,25 +138,23 @@ class Builder
     }
 
     /**
-     * Gets the header claims inside a ClaimManager.
+     * Gets the header claims.
      *
-     * @param array $mutators Header mutators to use (overrides config mutators)
-     * @return \LittleApps\LittleJWT\JWT\ClaimManager
+     * @return array
      */
-    public function getHeaders(array $mutators)
+    public function getHeaders()
     {
-        return $this->claimManagerBuilder->buildClaimManagerForHeader($this->headers->all(), $mutators);
+        return $this->headers->all();
     }
 
     /**
-     * Gets the payload claims inside a ClaimManager.
+     * Gets the payload claims.
      *
-     * @param array $mutators Payload mutators to use (overrides config mutators)
-     * @return \LittleApps\LittleJWT\JWT\ClaimManager
+     * @return array
      */
-    public function getPayload(array $mutators)
+    public function getPayload()
     {
-        return $this->claimManagerBuilder->buildClaimManagerForPayload($this->payload->all(), $mutators);
+        return $this->payload->all();
     }
 
     /**

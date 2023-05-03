@@ -21,6 +21,7 @@ use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
 use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\MutatorManager;
 use LittleApps\LittleJWT\Laravel\Middleware\ValidToken as ValidTokenMiddleware;
 use LittleApps\LittleJWT\Laravel\Rules\ValidToken as ValidTokenRule;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
@@ -116,18 +117,6 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerFactories()
     {
-        $this->app->bind(ClaimManagerBuilder::class, function ($app) {
-            $config = $app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
-
-            return new ClaimManagerBuilder($app, $config);
-        });
-
-        $this->app->singleton(JWTBuilder::class, function ($app) {
-            $claimManagerBuilder = $app->make(ClaimManagerBuilder::class);
-
-            return new JWTBuilder($claimManagerBuilder);
-        });
-
         $this->app->singleton(Keyable::class, function ($app) {
             $config = $app->config->get('littlejwt.key', []);
 

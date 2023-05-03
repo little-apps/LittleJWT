@@ -40,6 +40,13 @@ class Build
     protected $builder;
 
     /**
+     * Claim manager builder.
+     *
+     * @var ClaimManagerBuilder
+     */
+    protected $claimManagerBuilder;
+
+    /**
      * Mutators to use for serializing.
      * Populated when build() is called.
      *
@@ -53,10 +60,12 @@ class Build
      * @param Application $app Application container.
      * @param JWK $jwk JWK to sign JWTs with.
      */
-    public function __construct(Application $app, JWK $jwk)
+    public function __construct(Application $app, JWK $jwk, ClaimManagerBuilder $claimManagerBuilder)
     {
         $this->app = $app;
         $this->jwk = $jwk;
+        $this->claimManagerBuilder = $claimManagerBuilder;
+
         $this->builder = $this->buildBuilder();
     }
 
@@ -89,12 +98,15 @@ class Build
 
         $this->runThru($this->builder);
 
-        $headers = $this->builder->getHeaders($this->mutators['header']);
-        $payload = $this->builder->getPayload($this->mutators['payload']);
+        $headers = $this->builder->getHeaders();
+        $headersClaimManager = $this->claimManagerBuilder->buildClaimManagerForHeader($headers, $this->mutators['header']);
 
-        $signature = $this->createJWTHasher()->hash($this->jwk, $headers, $payload);
+        $payload = $this->builder->getPayload();
+        $payloadClaimManager = $this->claimManagerBuilder->buildClaimManagerForPayload($payload, $this->mutators['payload']);
 
-        return $this->createJWTBuilder()->buildFromParts($headers, $payload, $signature);
+        $signature = $this->createJWTHasher()->hash($this->jwk, $headersClaimManager, $payloadClaimManager);
+
+        return $this->createJWTBuilder()->buildFromParts($headersClaimManager, $payloadClaimManager, $signature);
     }
 
     /**
@@ -104,11 +116,10 @@ class Build
      */
     protected function buildBuilder()
     {
-        $claimManagerBuilder = $this->app->make(ClaimManagerBuilder::class);
         $headerClaims = $this->app->config->get('littlejwt.builder.claims.header', []);
         $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
 
-        return new Builder($claimManagerBuilder, $headerClaims, $payloadClaims);
+        return new Builder($headerClaims, $payloadClaims);
     }
 
     /**
@@ -118,7 +129,7 @@ class Build
      */
     protected function createJWTBuilder()
     {
-        return $this->app->make(JWTBuilder::class);
+        return new JWTBuilder($this->claimManagerBuilder);
     }
 
     /**

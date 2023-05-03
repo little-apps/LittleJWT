@@ -10,9 +10,11 @@ use LittleApps\LittleJWT\Build\Build;
 use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
+use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\MutatorManager;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
@@ -41,6 +43,13 @@ class LittleJWT
     protected $jwk;
 
     /**
+     * Custom mutator mappings
+     *
+     * @var array<string, \LittleApps\LittleJWT\Contracts\Mutator>
+     */
+    protected $customMutatorsMapping;
+
+    /**
      * Intializes LittleJWT instance.
      *
      * @param Application $app Application container
@@ -50,6 +59,7 @@ class LittleJWT
     {
         $this->app = $app;
         $this->jwk = $jwk;
+        $this->customMutatorsMapping = [];
     }
 
     /**
@@ -97,7 +107,7 @@ class LittleJWT
      */
     public function buildJWT()
     {
-        $build = new Build($this->app, $this->jwk);
+        $build = new Build($this->app, $this->jwk, $this->createClaimManagerBuilder());
 
         return $build;
     }
@@ -114,7 +124,8 @@ class LittleJWT
     public function parseToken(string $token, array $mutators = [], bool $throw = false)
     {
         try {
-            $builder = $this->app->make(JWTBuilder::class);
+            //$builder = $this->app->make(JWTBuilder::class);
+            $builder = new JWTBuilder($this->createClaimManagerBuilder());
 
             return $builder->buildFromExisting($token, array_merge_recursive(['header' => [], 'payload' => []], $mutators));
         } catch (CantParseJWTException $ex) {
@@ -205,6 +216,38 @@ class LittleJWT
 
         // Reuse default validitable instance (rather than creating another object)
         return ! is_null($jwt) ? $this->validateJWT($jwt, $applyDefault ? new StackValidatable($callbacks) : $callback, false) : false;
+    }
+
+    /**
+     * Sets custom mutator mapping
+     *
+     * @param string $key Key
+     * @param class-string<\LittleApps\LittleJWT\Contracts\Mutator> $class Fully qualified class name
+     * @return void
+     */
+    public function customMutator(string $key, string $class) {
+        $this->customMutatorsMapping[$key] = $class;
+    }
+
+    /**
+     * Gets custom mutator mappings
+     *
+     * @return array
+     */
+    public function getCustomMutators() {
+        return $this->customMutatorsMapping;
+    }
+
+    /**
+     * Creates ClaimManagerBuilder instance.
+     *
+     * @return ClaimManagerBuilder
+     */
+    protected function createClaimManagerBuilder()
+    {
+        $config = $this->app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
+
+        return new ClaimManagerBuilder($this->app, $config, $this->customMutatorsMapping);
     }
 
     /**

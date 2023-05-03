@@ -21,7 +21,7 @@ class MutatorManager
     /**
      * Built-in mutator types.
      *
-     * @var array
+     * @var array<string, class-string<\LittleApps\LittleJWT\Contracts\Mutator>>
      */
     protected static $primitiveMutatorsMapping = [
         'array' => Mutators\ArrayMutator::class,
@@ -42,6 +42,15 @@ class MutatorManager
     ];
 
     /**
+     * Custom mutator mappings
+     *
+     * @var array<string, class-string<\LittleApps\LittleJWT\Contracts\Mutator>>
+     */
+    protected $customMutatorsMapping = [
+
+    ];
+
+    /**
      * Application container
      *
      * @var Application
@@ -55,10 +64,11 @@ class MutatorManager
      */
     protected $mutators = [];
 
-    public function __construct(Application $app, array $mutators)
+    public function __construct(Application $app, array $mutators, array $customMapping)
     {
         $this->app = $app;
         $this->mutators = $mutators;
+        $this->customMutatorsMapping = $customMapping;
     }
 
     /**
@@ -94,7 +104,7 @@ class MutatorManager
                 $value = $this->unserializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
             }
         } catch (Throwable $ex) {
-            throw new CantParseJWTException();
+            throw new CantParseJWTException($ex);
         }
 
         return $value;
@@ -133,14 +143,25 @@ class MutatorManager
     }
 
     /**
-     * Checks if mutator has mapping to class.
+     * Checks if primitive mutator has mapping to class.
      *
      * @param string $mutator
      * @return bool
      */
-    protected function hasMutatorMapping($mutator)
+    protected function hasPrimitiveMutatorMapping($mutator)
     {
         return array_key_exists($mutator, static::$primitiveMutatorsMapping);
+    }
+
+    /**
+     * Checks if custom mutator has mapping to class.
+     *
+     * @param string $mutator
+     * @return bool
+     */
+    protected function hasCustomMutatorMapping($mutator)
+    {
+        return array_key_exists($mutator, $this->customMutatorsMapping);
     }
 
     /**
@@ -183,8 +204,10 @@ class MutatorManager
 
             if (method_exists($this, 'serializeAs' . Str::studly($mutator))) {
                 return $this->{'serializeAs' . Str::studly($mutator)}($value, $key, $args);
-            } elseif ($this->hasMutatorMapping($mutator)) {
-                return $this->serializeAsMapping($mutator, $value, $key, $args, $claims);
+            } elseif ($this->hasCustomMutatorMapping($mutator)) {
+                return $this->serializeAsCustomMapping($mutator, $value, $key, $args, $claims);
+            } elseif ($this->hasPrimitiveMutatorMapping($mutator)) {
+                return $this->serializeAsPrimitiveMapping($mutator, $value, $key, $args, $claims);
             }
         }
 
@@ -200,9 +223,25 @@ class MutatorManager
      * @param array $args
      * @return mixed
      */
-    protected function serializeAsMapping(string $mutator, $value, string $key, array $args, array $claims)
+    protected function serializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, array $claims)
     {
         $instance = $this->app->make(static::$primitiveMutatorsMapping[$mutator]);
+
+        return $this->serializeThruMutator($instance, $value, $key, $args, $claims);
+    }
+
+    /**
+     * Serialize claim using mapped mutator.
+     *
+     * @param string $mutator
+     * @param mixed $value
+     * @param string $key
+     * @param array $args
+     * @return mixed
+     */
+    protected function serializeAsCustomMapping(string $mutator, $value, string $key, array $args, array $claims)
+    {
+        $instance = $this->app->make($this->customMutatorsMapping[$mutator]);
 
         return $this->serializeThruMutator($instance, $value, $key, $args, $claims);
     }
@@ -240,8 +279,10 @@ class MutatorManager
 
             if (method_exists($this, 'unserializeAs' . Str::studly($mutator))) {
                 return $this->{'unserializeAs' . Str::studly($mutator)}($value, $key, $args);
-            } elseif ($this->hasMutatorMapping($mutator)) {
-                return $this->unserializeAsMapping($mutator, $value, $key, $args, $claims);
+            } elseif ($this->hasCustomMutatorMapping($mutator)) {
+                return $this->unserializeAsCustomMapping($mutator, $value, $key, $args, $claims);
+            } elseif ($this->hasPrimitiveMutatorMapping($mutator)) {
+                return $this->unserializeAsPrimitiveMapping($mutator, $value, $key, $args, $claims);
             }
 
         }
@@ -250,7 +291,7 @@ class MutatorManager
     }
 
     /**
-     * Unserialize claim using mapped mutator.
+     * Unserialize claim using mapped primitive mutator.
      *
      * @param string $mutator
      * @param mixed $value
@@ -259,9 +300,26 @@ class MutatorManager
      * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeAsMapping(string $mutator, $value, string $key, array $args, array $claims)
+    protected function unserializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, array $claims)
     {
         $instance = $this->app->make(static::$primitiveMutatorsMapping[$mutator]);
+
+        return $this->unserializeThruMutator($instance, $value, $key, $args, $claims);
+    }
+
+    /**
+     * Unserialize claim using mapped custom mutator.
+     *
+     * @param string $mutator
+     * @param mixed $value
+     * @param string $key
+     * @param array $args
+     * @param array $claims All other claims
+     * @return mixed
+     */
+    protected function unserializeAsCustomMapping(string $mutator, $value, string $key, array $args, array $claims)
+    {
+        $instance = $this->app->make($this->customMutatorsMapping[$mutator]);
 
         return $this->unserializeThruMutator($instance, $value, $key, $args, $claims);
     }

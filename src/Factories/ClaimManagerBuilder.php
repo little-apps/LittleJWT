@@ -28,14 +28,22 @@ class ClaimManagerBuilder
     protected $mutators;
 
     /**
+     * Custom mutator mappings
+     *
+     * @var array<string, \LittleApps\LittleJWT\Contracts\Mutator>
+     */
+    protected $mutatorMappings;
+
+    /**
      * Initializes a ClaimManagerBuilder
      *
      * @param array $mutators Configuration options for mutators
      */
-    public function __construct(Application $app, array $mutators)
+    public function __construct(Application $app, array $mutators, array $mutatorMappings)
     {
         $this->app = $app;
         $this->mutators = $mutators;
+        $this->mutatorMappings = $mutatorMappings;
     }
 
     /**
@@ -87,7 +95,7 @@ class ClaimManagerBuilder
      */
     public function buildMutatorManager(array $mutators)
     {
-        return new MutatorManager($this->app, $mutators);
+        return new MutatorManager($this->app, $mutators, $this->mutatorMappings);
     }
 
     /**
