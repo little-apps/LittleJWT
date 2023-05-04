@@ -15,21 +15,12 @@ class CantParseJWTException extends Exception
      *
      * @var \Throwable|null
      */
-    protected $inner;
+    public $inner;
 
     public function __construct(Throwable $inner = null)
     {
         parent::__construct('Cannot parse JWT.');
 
         $this->inner = $inner;
-    }
-
-    /**
-     * Gets the inner exception.
-     *
-     * @return \Throwable|null
-     */
-    public function getInner() {
-        return $this->inner;
     }
 }
