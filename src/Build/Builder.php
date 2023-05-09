@@ -242,7 +242,7 @@ class Builder
      *
      * @param string $name
      * @param array $parameters
-     * @return $this
+     * @return $this|mixed
      */
     public function __call($name, $parameters)
     {
