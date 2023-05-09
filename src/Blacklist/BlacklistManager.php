@@ -64,7 +64,7 @@ class BlacklistManager extends Manager
      */
     public function setDefaultDriver($name)
     {
-        $this->app['config']['littlejwt.blacklist.driver'] = $name;
+        $this->container['config']['littlejwt.blacklist.driver'] = $name;
 
         return $this;
     }
