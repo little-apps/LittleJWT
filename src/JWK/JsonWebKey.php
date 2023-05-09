@@ -9,7 +9,8 @@ use Jose\Component\Signature\Algorithm as JoseAlgorithms;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 
-class JsonWebKey extends JWK {
+class JsonWebKey extends JWK
+{
     protected $algorithms = [
         'HS256' => JoseAlgorithms\HS256::class,
         'HS384' => JoseAlgorithms\HS384::class,
@@ -43,20 +44,21 @@ class JsonWebKey extends JWK {
      * @throws HashAlgorithmNotFoundException Thrown if algorithm could not be determined.
      * @return \Jose\Component\Core\Algorithm
      */
-    public function algorithm() {
+    public function algorithm()
+    {
         $alg = $this->has('alg') ? strtoupper($this->get('alg')) : null;
 
         if (is_null($alg)) {
             throw new HashAlgorithmNotFoundException('Json Web Key doesn\'t have algorithm set.');
         }
 
-        if (!isset($this->algorithms[$alg])) {
+        if (! isset($this->algorithms[$alg])) {
             throw new InvalidHashAlgorithmException(sprintf('Json Web Key algorithm "%s" is invalid.', $alg));
         }
 
         $class = $this->algorithms[$alg];
 
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             throw new HashAlgorithmNotFoundException(
                 sprintf(
                     'Class for Json Web Key algorithm "%s" is missing. ' .
@@ -66,10 +68,11 @@ class JsonWebKey extends JWK {
             );
         }
 
-        return new $class;
+        return new $class();
     }
 
-    public static function createFromBase(JWK $jwk) {
+    public static function createFromBase(JWK $jwk)
+    {
         return new static($jwk->all());
     }
 }

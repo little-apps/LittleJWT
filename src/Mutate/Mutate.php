@@ -2,15 +2,10 @@
 
 namespace LittleApps\LittleJWT\Mutate;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
-use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Concerns\PassableThru;
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
-use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\MutatedJsonWebToken;
 
@@ -50,7 +45,7 @@ class Mutate
      */
     public function serialize(JsonWebToken $jwt)
     {
-        $this->runThru($mutators = new Mutators);
+        $this->runThru($mutators = new Mutators());
 
         $headers = $this->serializeHeaders($mutators, $jwt);
         $payload = $this->serializePayload($mutators, $jwt);
@@ -68,7 +63,7 @@ class Mutate
      */
     public function unserialize(JsonWebToken $jwt)
     {
-        $this->runThru($mutators = new Mutators);
+        $this->runThru($mutators = new Mutators());
 
         $headers = $this->unserializeHeaders($mutators, $jwt);
         $payload = $this->unserializePayload($mutators, $jwt);
@@ -76,7 +71,8 @@ class Mutate
         return new MutatedJsonWebToken($jwt, $headers, $payload);
     }
 
-    protected function serializeHeaders(Mutators $mutators, JsonWebToken $jwt) {
+    protected function serializeHeaders(Mutators $mutators, JsonWebToken $jwt)
+    {
         $headers = [];
 
         foreach ($jwt->getHeaders()->toArray() as $key => $value) {
@@ -84,7 +80,7 @@ class Mutate
                 $definition = $mutators->getHeaders($key);
 
                 $headers[$key] = $this->mutatorManager->serialize($key, $definition, $value, $jwt);
-            } else if ($mutators->hasGlobal($key)) {
+            } elseif ($mutators->hasGlobal($key)) {
                 $definition = $mutators->getGlobal($key);
 
                 $headers[$key] = $this->mutatorManager->serialize($key, $definition, $value, $jwt);
@@ -96,7 +92,8 @@ class Mutate
         return $headers;
     }
 
-    protected function serializePayload(Mutators $mutators, JsonWebToken $jwt) {
+    protected function serializePayload(Mutators $mutators, JsonWebToken $jwt)
+    {
         $payload = [];
 
         foreach ($jwt->getPayload()->toArray() as $key => $value) {
@@ -104,7 +101,7 @@ class Mutate
                 $definition = $mutators->getPayload($key);
 
                 $payload[$key] = $this->mutatorManager->serialize($key, $definition, $value, $jwt);
-            } else if ($mutators->hasGlobal($key)) {
+            } elseif ($mutators->hasGlobal($key)) {
                 $definition = $mutators->getGlobal($key);
 
                 $payload[$key] = $this->mutatorManager->serialize($key, $definition, $value, $jwt);
@@ -116,7 +113,8 @@ class Mutate
         return $payload;
     }
 
-    protected function unserializeHeaders(Mutators $mutators, JsonWebToken $jwt) {
+    protected function unserializeHeaders(Mutators $mutators, JsonWebToken $jwt)
+    {
         $headers = [];
 
         foreach ($jwt->getHeaders()->toArray() as $key => $value) {
@@ -124,7 +122,7 @@ class Mutate
                 $definition = $mutators->getHeaders($key);
 
                 $headers[$key] = $this->mutatorManager->unserialize($key, $definition, $value, $jwt);
-            } else if ($mutators->hasGlobal($key)) {
+            } elseif ($mutators->hasGlobal($key)) {
                 $definition = $mutators->getGlobal($key);
 
                 $headers[$key] = $this->mutatorManager->unserialize($key, $definition, $value, $jwt);
@@ -134,7 +132,8 @@ class Mutate
         return $headers;
     }
 
-    protected function unserializePayload(Mutators $mutators, JsonWebToken $jwt) {
+    protected function unserializePayload(Mutators $mutators, JsonWebToken $jwt)
+    {
         $payload = [];
 
         foreach ($jwt->getPayload()->toArray() as $key => $value) {
@@ -142,7 +141,7 @@ class Mutate
                 $definition = $mutators->getPayload($key);
 
                 $payload[$key] = $this->mutatorManager->unserialize($key, $definition, $value, $jwt);
-            } else if ($mutators->hasGlobal($key)) {
+            } elseif ($mutators->hasGlobal($key)) {
                 $definition = $mutators->getGlobal($key);
 
                 $payload[$key] = $this->mutatorManager->unserialize($key, $definition, $value, $jwt);

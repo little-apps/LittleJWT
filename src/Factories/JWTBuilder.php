@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
-use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -94,7 +93,8 @@ class JWTBuilder
      * @param string $signature
      * @return string
      */
-    protected function decodeSignature($signature) {
+    protected function decodeSignature($signature)
+    {
         // Returns bytes if signature isn't already base64 encoded.
         $decoded = Base64Encoder::decode($signature);
 

@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Mutate\Mutators;
 
 use DateTimeInterface;
 use LittleApps\LittleJWT\Contracts\Mutator;
-use LittleApps\LittleJWT\JWT\Mutators\Concerns\MutatesDateTime;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class DateTimeMutator implements Mutator

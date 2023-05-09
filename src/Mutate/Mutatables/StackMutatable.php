@@ -23,10 +23,10 @@ class StackMutatable
         $this->stack = $stack;
     }
 
-    public function __invoke(Mutators $mutators) {
+    public function __invoke(Mutators $mutators)
+    {
         foreach ($this->stack as $callback) {
             $callback($mutators);
         }
     }
-
 }

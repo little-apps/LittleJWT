@@ -115,7 +115,8 @@ class KeyBuilder implements Keyable
      *
      * @return JsonWebKey
      */
-    public function createNoneJwk(array $extra = []) {
+    public function createNoneJwk(array $extra = [])
+    {
         return $this->createJwkFromBase(JWKFactory::createNoneKey(array_merge($this->extra, $extra)));
     }
 
@@ -191,7 +192,8 @@ class KeyBuilder implements Keyable
      * @param JWK $jwk
      * @return JsonWebKey
      */
-    public function createJwkFromBase(JWK $jwk) {
+    public function createJwkFromBase(JWK $jwk)
+    {
         return JsonWebKey::createFromBase($jwk);
     }
 

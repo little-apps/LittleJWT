@@ -13,7 +13,8 @@ class DefaultMutatable
         $this->config = array_merge_recursive(['header' => [], 'payload' => []], $config);
     }
 
-    public function __invoke(Mutators $mutators) {
+    public function __invoke(Mutators $mutators)
+    {
         foreach ($this->config['header'] as $key => $value) {
             $mutators->addHeader($key, $value);
         }
@@ -22,6 +23,4 @@ class DefaultMutatable
             $mutators->addPayload($key, $value);
         }
     }
-
-
 }

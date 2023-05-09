@@ -148,7 +148,8 @@ class Builder
      *
      * @return list<ClaimBuildOptions>
      */
-    public function getHeadersOptions() {
+    public function getHeadersOptions()
+    {
         return $this->headers->all();
     }
 
@@ -167,7 +168,8 @@ class Builder
      *
      * @return list<ClaimBuildOptions>
      */
-    public function getPayloadOptions() {
+    public function getPayloadOptions()
+    {
         return $this->payload->all();
     }
 

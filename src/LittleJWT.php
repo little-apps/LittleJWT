@@ -7,21 +7,19 @@ use Illuminate\Contracts\Foundation\Application;
 use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Build\Build;
-use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Concerns\ExtractsMutators;
+use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
-use LittleApps\LittleJWT\JWK\JsonWebKey;
-use LittleApps\LittleJWT\Mutate\Mutate;
-use LittleApps\LittleJWT\Mutate\MutatorManager;
 use LittleApps\LittleJWT\Mutate\Mutatables\DefaultMutatable;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
+use LittleApps\LittleJWT\Mutate\Mutate;
+use LittleApps\LittleJWT\Mutate\MutatorManager;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
@@ -142,7 +140,8 @@ class LittleJWT
      *
      * @return Sign
      */
-    public function sign() {
+    public function sign()
+    {
         return new Sign($this->app, $this->jwk);
     }
 
@@ -182,14 +181,15 @@ class LittleJWT
         }
     }
 
-    public function mutateJWT(JsonWebToken $jwt, callable $callback = null, $applyDefault = true) {
+    public function mutateJWT(JsonWebToken $jwt, callable $callback = null, $applyDefault = true)
+    {
         $stack = [];
 
         if ($applyDefault) {
             array_push($stack, $this->getDefaultMutatableCallback());
         }
 
-        if (!is_null($callback)) {
+        if (! is_null($callback)) {
             array_push($stack, $callback);
         }
 
@@ -289,7 +289,8 @@ class LittleJWT
         return $this->app->make($alias);
     }
 
-    protected function getDefaultMutatableCallback() {
+    protected function getDefaultMutatableCallback()
+    {
         $config = $this->app->config->get('littlejwt.builder.mutators');
 
         return new DefaultMutatable($config);

@@ -132,15 +132,19 @@ class Mutators
      * @param string $key
      * @return $this
      */
-    public function remove($key) {
-        if ($this->hasGlobal($key))
+    public function remove($key)
+    {
+        if ($this->hasGlobal($key)) {
             $this->removeGlobal($key);
+        }
 
-        if ($this->hasHeader($key))
+        if ($this->hasHeader($key)) {
             $this->removeHeader($key);
+        }
 
-        if ($this->hasPayload($key))
+        if ($this->hasPayload($key)) {
             $this->removePayload($key);
+        }
 
         return $this;
     }
@@ -192,7 +196,7 @@ class Mutators
      */
     public function getGlobal(?string $key = null)
     {
-        return !is_null($key) ? $this->global[$key] : $this->global->all();
+        return ! is_null($key) ? $this->global[$key] : $this->global->all();
     }
 
     /**
@@ -203,7 +207,7 @@ class Mutators
      */
     public function getHeaders(?string $key = null)
     {
-        return !is_null($key) ? $this->headers[$key] : $this->headers->all();
+        return ! is_null($key) ? $this->headers[$key] : $this->headers->all();
     }
 
     /**
@@ -214,7 +218,7 @@ class Mutators
      */
     public function getPayload(?string $key = null)
     {
-        return !is_null($key) ? $this->payload[$key] : $this->payload->all();
+        return ! is_null($key) ? $this->payload[$key] : $this->payload->all();
     }
 
     /**
@@ -235,7 +239,8 @@ class Mutators
      * @param self $mutators
      * @return $this
      */
-    public function merge(self $mutators) {
+    public function merge(self $mutators)
+    {
         $this->global = $this->global->merge($mutators->getGlobal());
         $this->headers = $this->headers->merge($mutators->getHeaders());
         $this->payload = $this->payload->merge($mutators->getPayload());
@@ -291,14 +296,17 @@ class Mutators
      */
     public function __get($key)
     {
-        if ($this->hasHeader($key))
+        if ($this->hasHeader($key)) {
             return $this->headers[$key];
+        }
 
-        if ($this->hasPayload($key))
+        if ($this->hasPayload($key)) {
             return $this->payload[$key];
+        }
 
-        if ($this->hasGlobal($key))
+        if ($this->hasGlobal($key)) {
             return $this->global[$key];
+        }
 
         return null;
     }
@@ -331,7 +339,7 @@ class Mutators
         if ($argCount === 2) {
             if ($arguments[1] === 'header') {
                 return $this->addHeader($name, $mutator);
-            } else if ($arguments[1] === 'payload') {
+            } elseif ($arguments[1] === 'payload') {
                 return $this->addPayload($name, $mutator);
             }
         }

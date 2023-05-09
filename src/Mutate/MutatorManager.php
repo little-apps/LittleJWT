@@ -3,15 +3,15 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use DateTimeInterface;
-use Throwable;
-
 use Illuminate\Contracts\Foundation\Application;
+
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-
 use LittleApps\LittleJWT\Contracts\Mutator;
+
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
+use Throwable;
 
 /**
  * Allows for claims to be serialized and deserialized.
@@ -98,7 +98,6 @@ class MutatorManager
 
         return $value;
     }
-
 
     /**
      * Checks if primitive mutator has mapping to class.

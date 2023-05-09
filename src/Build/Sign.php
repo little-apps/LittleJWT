@@ -3,10 +3,10 @@
 namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
+use LittleApps\LittleJWT\Factories\JWTHasher;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
-use LittleApps\LittleJWT\JWK\JsonWebKey;
-use LittleApps\LittleJWT\Factories\JWTHasher;
 
 class Sign
 {
@@ -39,7 +39,8 @@ class Sign
      * @param JsonWebToken $jwt
      * @return SignedJsonWebToken
      */
-    public function sign(JsonWebToken $jwt) {
+    public function sign(JsonWebToken $jwt)
+    {
         $algorithm = $this->jwk->algorithm();
         $signature = JWTHasher::hash($algorithm, $this->jwk, $jwt->getHeaders(), $jwt->getPayload());
 

@@ -2,11 +2,9 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 
 use LittleApps\LittleJWT\JWT\ClaimManager;
-use LittleApps\LittleJWT\JWT\MutatorManager;
 
 class ClaimManagerBuilder
 {

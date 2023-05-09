@@ -62,8 +62,9 @@ class JsonWebToken
      *
      * @return ClaimManagerBuilder
      */
-    protected function builder() {
-        return new ClaimManagerBuilder;
+    protected function builder()
+    {
+        return new ClaimManagerBuilder();
     }
 
     /**

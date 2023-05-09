@@ -12,7 +12,6 @@ use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
-use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Tests\TestCase;
 
 class CreateTest extends TestCase

@@ -8,8 +8,8 @@ use Illuminate\Support\Traits\Macroable;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Rule;
-use LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
+use LittleApps\LittleJWT\JWT\Rules;
 
 class Validator
 {

@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Mutate\Mutators;
 
 use LittleApps\LittleJWT\Contracts\Mutator;
-use LittleApps\LittleJWT\JWT\Mutators\Concerns\MutatesDateTime;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class TimestampMutator implements Mutator

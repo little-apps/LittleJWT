@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Build\Buildables;
 
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Mutate\Mutators;
 

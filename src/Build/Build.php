@@ -4,13 +4,9 @@ namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
-use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Concerns\PassableThru;
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
-use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\Mutate\Mutate;
 use LittleApps\LittleJWT\Mutate\Mutators;
 
@@ -73,7 +69,7 @@ class Build
      */
     public function build(Mutate $mutate = null)
     {
-        $this->mutators = new Mutators;
+        $this->mutators = new Mutators();
 
         $this->runThru($this->builder, $this->mutators);
 

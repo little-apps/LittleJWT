@@ -10,8 +10,8 @@ class ClaimBuildOptions
         __call as macroCall;
     }
 
-    const PART_HEADERS = 'headers';
-    const PART_PAYLOAD = 'payload';
+    public const PART_HEADERS = 'headers';
+    public const PART_PAYLOAD = 'payload';
 
     /**
      * Builder used for this claim.
@@ -69,7 +69,8 @@ class ClaimBuildOptions
      *
      * @return Builder
      */
-    public function getBuilder() {
+    public function getBuilder()
+    {
         return $this->builder;
     }
 
@@ -78,7 +79,8 @@ class ClaimBuildOptions
      *
      * @return string
      */
-    public function getPart() {
+    public function getPart()
+    {
         return $this->part;
     }
 
@@ -87,7 +89,8 @@ class ClaimBuildOptions
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
@@ -96,17 +99,19 @@ class ClaimBuildOptions
      *
      * @return mixed
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
     /**
      * Check if mutatable exists for this claim.
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasMutatable() {
-        return !is_null($this->mutatable);
+    public function hasMutatable()
+    {
+        return ! is_null($this->mutatable);
     }
 
     /**
@@ -114,7 +119,8 @@ class ClaimBuildOptions
      *
      * @return string|\LittleApps\LittleJWT\Contracts\Mutator
      */
-    public function getMutatable() {
+    public function getMutatable()
+    {
         return $this->mutatable;
     }
 
@@ -124,7 +130,8 @@ class ClaimBuildOptions
      * @param string|\LittleApps\LittleJWT\Contracts\Mutator|null $definition
      * @return $this
      */
-    public function as($definition) {
+    public function as($definition)
+    {
         $this->mutatable = $definition;
 
         return $this;
@@ -137,7 +144,8 @@ class ClaimBuildOptions
      * @param array $arguments Method arguments
      * @return mixed
      */
-    public function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         if (static::hasMacro($name)) {
             return $this->macroCall($name, $arguments);
         }

@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 /**
@@ -65,7 +64,8 @@ class SignedJsonWebToken extends JsonWebToken
      * @param string $signature
      * @return static
      */
-    public static function createFromJsonWebtoken(JsonWebToken $jwt, string $signature) {
+    public static function createFromJsonWebtoken(JsonWebToken $jwt, string $signature)
+    {
         return new static($jwt->headers, $jwt->payload, $signature);
     }
 }
