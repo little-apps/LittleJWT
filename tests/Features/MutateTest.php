@@ -9,7 +9,6 @@ use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
@@ -625,7 +624,6 @@ class MutateTest extends TestCase
         $this->assertEquals('dcba', $jwt->getPayload()->get('foo'));
     }
 
-
     /**
      * Tests mutator is set from being set with Mutators in previous buildable call.
      *
@@ -647,7 +645,7 @@ class MutateTest extends TestCase
 
                 $this->assertTrue($mutators->has('foo'));
                 $this->assertFalse($mutators->has('bar'));
-            })
+            }),
         ]);
 
         LittleJWT::createToken($buildable);
@@ -672,7 +670,7 @@ class MutateTest extends TestCase
 
                 $this->assertTrue($mutators->has('foo'));
                 $this->assertFalse($mutators->has('bar'));
-            })
+            }),
         ]);
 
         LittleJWT::createToken($buildable);
@@ -699,7 +697,7 @@ class MutateTest extends TestCase
 
                 $this->assertTrue($mutators->has('foo'));
                 $this->assertFalse($mutators->has('bar'));
-            })
+            }),
         ]);
 
         LittleJWT::createToken($buildable);
