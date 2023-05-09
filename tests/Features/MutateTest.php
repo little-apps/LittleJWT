@@ -204,7 +204,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('custom_datetime:Y');
         });
@@ -247,7 +246,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('date');
         });
@@ -290,7 +288,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('datetime');
         });
@@ -357,7 +354,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) use ($mutator) {
             $mutators->foo($mutator);
         });
@@ -379,7 +375,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('array');
         });
@@ -401,7 +396,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('bool');
         });
@@ -423,7 +417,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('double');
         });
@@ -446,7 +439,7 @@ class MutateTest extends TestCase
         $token = LittleJWT::createToken($buildable);
 
         $jwtEncrypted = LittleJWT::parseToken($token);
-        //$jwt = LittleJWT::parseToken($token, $mutators);
+
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('encrypted');
         });
@@ -496,7 +489,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('int');
         });
@@ -539,7 +531,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->foo('object');
         });
@@ -564,7 +555,6 @@ class MutateTest extends TestCase
 
         $token = LittleJWT::createToken($buildable);
 
-        //$jwt = LittleJWT::parseToken($token, $mutators);
         $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function (Mutators $mutators) {
             $mutators->sub(sprintf('model:%s', User::class));
         });
