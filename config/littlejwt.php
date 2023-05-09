@@ -56,6 +56,7 @@ return [
          * @see https://web-token.spomky-labs.com/the-components/signed-tokens-jws/signature-algorithms List of supported algorithms
          */
         'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
+        'alg' => 'HS256',
     ],
 
     'builder' => [

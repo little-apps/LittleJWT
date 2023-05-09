@@ -57,6 +57,7 @@ return [
          */
         'algorithm' => \Jose\Component\Signature\Algorithm\HS256::class,
         //'algorithm' => \Jose\Component\Signature\Algorithm\PS256::class,
+        'alg' => 'HS256',
     ],
 
     'builder' => [
@@ -69,7 +70,7 @@ return [
                 'iat' => 'timestamp',
                 'nbf' => 'timestamp',
                 'exp' => 'timestamp',
-                
+
             ]
         ],
 
