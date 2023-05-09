@@ -237,4 +237,21 @@ class CreateTest extends TestCase
 
         LittleJWT::parseToken($token, true);
     }
+
+    /**
+     * Tests a claim in the builder is set.
+     *
+     * @return void
+     */
+    public function test_builder_claim_isset()
+    {
+        $sub = $this->faker->uuid;
+
+        LittleJWT::createToken(function (Builder $builder) use ($sub) {
+            $builder->sub($sub);
+
+            $this->assertTrue(isset($builder->sub));
+            $this->assertFalse(isset($builder->foo));
+        });
+    }
 }

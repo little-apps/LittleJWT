@@ -60,7 +60,7 @@ class Builder
      *
      * @param string $key Claim key
      * @param mixed $value Claim value
-     * @return $this
+     * @return ClaimBuildOptions
      */
     public function addClaim($key, $value)
     {
@@ -195,7 +195,7 @@ class Builder
      */
     public function __isset($key)
     {
-        return $this->has($key);
+        return $this->hasHeaderClaim($key) || $this->hasPayloadClaim($key);
     }
 
     /**
