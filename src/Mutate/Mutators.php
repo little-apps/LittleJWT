@@ -90,7 +90,7 @@ class Mutators
      */
     public function has($key)
     {
-        return $this->hasGlobalMutator($key) || $this->hasHeaderMutator($key) || $this->hasPayloadMutator($key);
+        return $this->hasGlobal($key) || $this->hasHeader($key) || $this->hasPayload($key);
     }
 
     /**

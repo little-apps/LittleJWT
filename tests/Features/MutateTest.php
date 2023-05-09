@@ -5,10 +5,11 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
-
+use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
+use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
@@ -622,5 +623,58 @@ class MutateTest extends TestCase
         }));
 
         $this->assertEquals('dcba', $jwt->getPayload()->get('foo'));
+    }
+
+
+    /**
+     * Tests mutator is set from being set with Mutators in previous buildable call.
+     *
+     * @return void
+     */
+    public function test_mutator_isset_mutators()
+    {
+        $time = time();
+
+        $buildable = new StackBuildable([
+            new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
+                $builder->foo($time);
+
+                $mutators->foo('date');
+            }),
+            new TestBuildable(function (Builder $builder, Mutators $mutators) {
+                $this->assertTrue(isset($mutators->foo));
+                $this->assertFalse(isset($mutators->bar));
+
+                $this->assertTrue($mutators->has('foo'));
+                $this->assertFalse($mutators->has('bar'));
+            })
+        ]);
+
+        LittleJWT::createToken($buildable);
+    }
+
+    /**
+     * Tests mutator is set from being set with Builder in previous buildable call.
+     *
+     * @return void
+     */
+    public function test_mutator_isset_builder()
+    {
+        $time = time();
+
+        $buildable = new StackBuildable([
+            new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
+                $builder->foo($time)->as('date');
+            }),
+            new TestBuildable(function (Builder $builder, Mutators $mutators) {
+                $this->assertTrue(isset($mutators->foo));
+                $this->assertFalse(isset($mutators->bar));
+
+                $this->assertTrue($mutators->has('foo'));
+                $this->assertFalse($mutators->has('bar'));
+            })
+        ]);
+
+        LittleJWT::createToken($buildable);
     }
 }
