@@ -15,6 +15,7 @@ use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
+use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
@@ -390,6 +391,33 @@ class KeyTest extends TestCase
         LittleJWT::fake($jwk);
 
         LittleJWT::createToken();
+    }
+
+    /**
+     * Tests that a unverified JWT with the none algorithm is not allowed.
+     * See https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/ for more information.
+     *
+     * @return void
+     */
+    public function test_none_algorithm_vulnerability() {
+        LittleJWT::fake();
+
+        $jwt = LittleJWT::createJWT();
+
+        $headers = $jwt->getHeaders()->toArray();
+        $payload = $jwt->getPayload()->toArray();
+
+        $headers['alg'] = 'none';
+
+        $bad = new SignedJsonWebToken($headers, $payload, $jwt->getSignature());
+
+        $valid = LittleJWT::validateJWT($bad, function (TestValidator $validator) {
+            $validator
+                ->assertFails()
+                ->assertInvalidSignature();
+        });
+
+        $this->assertFalse($valid);
     }
 
     /**
