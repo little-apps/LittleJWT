@@ -395,7 +395,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_none_algorithm_vulnerability() {
+    public function test_none_algorithm_vulnerability()
+    {
         LittleJWT::fake();
 
         $jwt = LittleJWT::createJWT();
