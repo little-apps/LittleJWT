@@ -79,6 +79,9 @@ class Build
             return $jwt;
         }
 
+        // TODO: Move mutation to outside this class:
+        //  * Builder and Mutators instances will need to be shared.
+
         $mutate
             ->passMutatorsThru(function (Mutators $mutators) {
                 foreach ($this->builder->getHeadersOptions() as $claimBuildOptions) {
