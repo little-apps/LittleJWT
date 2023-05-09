@@ -2,19 +2,21 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\JWT\Mutators;
+use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
 use LittleApps\LittleJWT\Testing\TestMutator;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\TestCase;
+use Throwable;
 
 class MutateTest extends TestCase
 {
@@ -26,19 +28,14 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_date_claim_mutated()
+    public function test_date_claim_builder_mutated()
     {
-        $mutators = [
-            'payload' => [
-                'tim' => 'date',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->tim($time);
-        }, $mutators);
+            $builder
+                ->tim($time)->as('date');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -48,20 +45,61 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests date claim is mutated
+     *
+     * @return void
+     */
+    public function test_date_claim_mutators_mutated()
+    {
+
+        $time = time();
+
+        $buildable = new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
+            $builder->tim($time);
+            $mutators->tim('date');
+        });
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token);
+
+        $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('tim'));
+    }
+
+    /**
+     * Tests date claim is mutated
+     *
+     * @return void
+     */
+    public function test_claim_builder_mutator_overrides_mutators()
+    {
+        $time = time();
+
+        $buildable = new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
+            $builder->tim($time)->as('timestamp');
+            $mutators->tim('date');
+        });
+
+        $token = LittleJWT::createToken($buildable);
+
+        $jwt = LittleJWT::parseToken($token);
+
+        $this->assertEquals(Carbon::parse($time)->format('U'), $jwt->getPayload()->get('tim'));
+        $this->assertNotEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('tim'));
+    }
+
+    /**
      * Tests date claim isnt mutated
      *
      * @return void
      */
     public function test_date_claim_not_mutated()
     {
-        $mutators = [
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
             $builder->tim($time);
-        }, $mutators);
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -78,15 +116,9 @@ class MutateTest extends TestCase
      */
     public function test_float_claim_mutated()
     {
-        $mutators = [
-            'payload' => [
-                'num' => 'float',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->num(NAN);
-        }, $mutators);
+            $builder->num(NAN)->as('float');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -96,52 +128,43 @@ class MutateTest extends TestCase
     }
 
     /**
-     * Tests buildable mutator overrides default mutator in config file.
+     * Tests mutator overrides default mutator in config file when built.
      *
      * @return void
      */
     public function test_buildable_mutator_override_config()
     {
-        $mutators = [
-            'payload' => [
-                'iat' => 'date',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->iat($time);
-        }, $mutators);
+            $builder->iat($time)->as('date');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, ['payload' => ['iat' => 'none']]);
+        $jwt = LittleJWT::parseToken($token);
 
         $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('iat'));
     }
 
     /**
-     * Tests buildable mutator doesn't override default mutator in config file.
+     * Tests mutator override default mutator in config file after build.
      *
      * @return void
      */
     public function test_buildable_mutator_doesnt_override_config()
     {
-        $mutators = [
-            'payload' => [
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
             $builder->iat($time);
-        }, $mutators);
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->iat('int');
+        });
 
         $this->assertEquals(Carbon::parse($time), $jwt->getPayload()->get('iat'));
     }
@@ -153,17 +176,11 @@ class MutateTest extends TestCase
      */
     public function test_mutates_custom_datetime()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'custom_datetime:Y',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->foo($time);
-        }, $mutators);
+            $builder->foo($time)->as('custom_datetime:Y');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -179,21 +196,18 @@ class MutateTest extends TestCase
      */
     public function test_mutates_custom_datetime_parse()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'custom_datetime:Y',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->foo($time);
-        }, $mutators);
+            $builder->foo($time)->as('custom_datetime:Y');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('custom_datetime:Y');
+        });
 
         $this->assertTrue(Carbon::parse($time)->eq($jwt->getPayload()->get('foo')));
     }
@@ -205,17 +219,11 @@ class MutateTest extends TestCase
      */
     public function test_mutates_date()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'date',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->foo($time);
-        }, $mutators);
+            $builder->foo($time)->as('date');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -231,21 +239,18 @@ class MutateTest extends TestCase
      */
     public function test_mutates_date_parse()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'date',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->foo($time);
-        }, $mutators);
+            $builder->foo($time)->as('date');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('date');
+        });
 
         $this->assertTrue($jwt->getPayload()->get('foo')->isSameAs(Mutators\DateMutator::$format, Carbon::parse($time)));
     }
@@ -257,17 +262,11 @@ class MutateTest extends TestCase
      */
     public function test_mutates_datetime()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'datetime',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->foo($time);
-        }, $mutators);
+            $builder->foo($time)->as('datetime');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -283,21 +282,18 @@ class MutateTest extends TestCase
      */
     public function test_mutates_datetime_parse()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'datetime',
-            ],
-        ];
-
         $time = time();
 
         $buildable = new TestBuildable(function (Builder $builder) use ($time) {
-            $builder->foo($time);
-        }, $mutators);
+            $builder->foo($time)->as('datetime');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('datetime');
+        });
 
         $this->assertTrue($jwt->getPayload()->get('foo')->isSameAs(Mutators\DateTimeMutator::$format, Carbon::parse($time)));
     }
@@ -309,15 +305,9 @@ class MutateTest extends TestCase
      */
     public function test_mutates_decimal()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'decimal:2',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo('1234.1234');
-        }, $mutators);
+            $builder->foo('1234.1234')->as('decimal:2');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -333,18 +323,14 @@ class MutateTest extends TestCase
      */
     public function test_mutates_custom()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => new TestMutator(
-                    fn ($value) => strrev($value),
-                    fn ($value) => strrev($value),
-                ),
-            ],
-        ];
+        $mutator = new TestMutator(
+            fn ($value) => strrev($value),
+            fn ($value) => strrev($value),
+        );
 
-        $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo('abcd');
-        }, $mutators);
+        $buildable = new TestBuildable(function (Builder $builder) use ($mutator) {
+            $builder->foo('abcd')->as($mutator);
+        });
 
         $token = LittleJWT::createToken($buildable);
 
@@ -360,22 +346,21 @@ class MutateTest extends TestCase
      */
     public function test_mutates_custom_reverse()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => new TestMutator(
-                    fn ($value) => strrev($value),
-                    fn ($value) => strrev($value),
-                ),
-            ],
-        ];
+        $mutator = new TestMutator(
+            fn ($value) => strrev($value),
+            fn ($value) => strrev($value),
+        );
 
-        $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo('abcd');
-        }, $mutators);
+        $buildable = new TestBuildable(function (Builder $builder) use ($mutator) {
+            $builder->foo('abcd')->as($mutator);
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) use ($mutator) {
+            $mutators->foo($mutator);
+        });
 
         $this->assertEquals('abcd', $jwt->getPayload()->get('foo'));
     }
@@ -387,19 +372,17 @@ class MutateTest extends TestCase
      */
     public function test_mutates_array()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'array',
-            ],
-        ];
 
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo(['a', 'b', 'c', 'd']);
-        }, $mutators);
+            $builder->foo(['a', 'b', 'c', 'd'])->as('array');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('array');
+        });
 
         $this->assertEquals('array', gettype($jwt->getPayload()->get('foo')));
         $this->assertEquals(['a', 'b', 'c', 'd'], $jwt->getPayload()->get('foo'));
@@ -412,19 +395,16 @@ class MutateTest extends TestCase
      */
     public function test_mutates_bool()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'bool',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo(true);
-        }, $mutators);
+            $builder->foo(true)->as('bool');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('bool');
+        });
 
         $this->assertEquals(true, $jwt->getPayload()->get('foo'));
         $this->assertEquals('boolean', gettype($jwt->getPayload()->get('foo')));
@@ -437,19 +417,16 @@ class MutateTest extends TestCase
      */
     public function test_mutates_double()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'double',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo(1234.1234);
-        }, $mutators);
+            $builder->foo(1234.1234)->as('double');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('double');
+        });
 
         $this->assertEquals(1234.1234, $jwt->getPayload()->get('foo'));
         $this->assertEquals('double', gettype($jwt->getPayload()->get('foo')));
@@ -462,48 +439,20 @@ class MutateTest extends TestCase
      */
     public function test_mutates_encrypted()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'encrypted',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo('secret');
-        }, $mutators);
+            $builder->foo('secret')->as('encrypted');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
         $jwtEncrypted = LittleJWT::parseToken($token);
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('encrypted');
+        });
 
         $this->assertNotEquals('secret', $jwtEncrypted->getPayload()->get('foo'));
         $this->assertEquals('secret', $jwt->getPayload()->get('foo'));
-    }
-
-    /**
-     * Tests the JWT is null because a claim cannot be decrypted.
-     *
-     * @return void
-     */
-    public function test_cant_mutate_decrypted_null()
-    {
-        $mutators = [
-            'payload' => [
-                'foo' => 'encrypted',
-            ],
-        ];
-
-        $buildable = new TestBuildable(function (Builder $builder) {
-            $builder
-                ->foo('secret');
-        }, []);
-
-        $token = LittleJWT::createToken($buildable);
-
-        $jwt = LittleJWT::parseToken($token, $mutators);
-
-        $this->assertNull($jwt);
     }
 
     /**
@@ -513,22 +462,25 @@ class MutateTest extends TestCase
      */
     public function test_cant_mutate_decrypted_throws()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'encrypted',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
             $builder
                 ->foo('secret');
-        }, []);
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $this->expectException(CantParseJWTException::class);
+        try {
+            LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+                $mutators->foo('encrypted');
+            });
 
-        LittleJWT::parseToken($token, $mutators, true);
+            $this->fail('Exception was not thrown.');
+        } catch (Throwable $ex) {
+            $this->assertInstanceOf(CantParseJWTException::class, $ex);
+            $this->assertInstanceOf(DecryptException::class, $ex->inner);
+        }
+
+
     }
 
     /**
@@ -538,19 +490,16 @@ class MutateTest extends TestCase
      */
     public function test_mutates_integer()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'int',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo('1234');
-        }, $mutators);
+            $builder->foo('1234')->as('int');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('int');
+        });
 
         $this->assertEquals('integer', gettype($jwt->getPayload()->get('foo')));
         $this->assertEquals(1234, $jwt->getPayload()->get('foo'));
@@ -563,19 +512,15 @@ class MutateTest extends TestCase
      */
     public function test_mutates_json()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'json',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo(['a' => 'b', 'c' => 'd']);
-        }, $mutators);
+            $builder->foo(['a' => 'b', 'c' => 'd'])->as('json');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('json');
+        });
 
         $this->assertEquals('array', gettype($jwt->getPayload()->get('foo')));
         $this->assertEquals(['a' => 'b', 'c' => 'd'], $jwt->getPayload()->get('foo'));
@@ -588,19 +533,16 @@ class MutateTest extends TestCase
      */
     public function test_mutates_object()
     {
-        $mutators = [
-            'payload' => [
-                'foo' => 'object',
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) {
-            $builder->foo(['a' => 'b', 'c' => 'd']);
-        }, $mutators);
+            $builder->foo(['a' => 'b', 'c' => 'd'])->as('object');
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->foo('object');
+        });
 
         $this->assertEquals('object', gettype($jwt->getPayload()->get('foo')));
         $this->assertEquals((object) ['a' => 'b', 'c' => 'd'], $jwt->getPayload()->get('foo'));
@@ -615,20 +557,17 @@ class MutateTest extends TestCase
     {
         $user = $this->user;
 
-        $mutators = [
-            'payload' => [
-                'sub' => sprintf('model:%s', User::class),
-            ],
-        ];
-
         $buildable = new TestBuildable(function (Builder $builder) use ($user) {
             $builder
-                ->sub($user);
-        }, $mutators);
+                ->sub($user)->as(sprintf('model:%s', User::class));
+        });
 
         $token = LittleJWT::createToken($buildable);
 
-        $jwt = LittleJWT::parseToken($token, $mutators);
+        //$jwt = LittleJWT::parseToken($token, $mutators);
+        $jwt = LittleJWT::mutateJWT(LittleJWT::parseToken($token), function(Mutators $mutators) {
+            $mutators->sub(sprintf('model:%s', User::class));
+        });
 
         $sub = $jwt->getPayload()->get('sub');
 
@@ -637,7 +576,7 @@ class MutateTest extends TestCase
     }
 
     /**
-     * Tests that an invokable validatable class is mutated.
+     * Tests that a JWT is mutated.
      *
      * @return void
      */
@@ -648,21 +587,9 @@ class MutateTest extends TestCase
         $jwt = LittleJWT::createJWT(new TestBuildable(function (Builder $builder) {
             $builder
                 ->foo('abcd');
-        }, []));
+        }));
 
         $validatable = new class () {
-            public function getMutators()
-            {
-                return [
-                    'payload' => [
-                        'foo' => new TestMutator(
-                            fn ($value) => strrev($value),
-                            fn ($value) => strrev($value),
-                        ),
-                    ],
-                ];
-            }
-
             public function __invoke(TestValidator $validator)
             {
                 $validator
@@ -671,7 +598,14 @@ class MutateTest extends TestCase
             }
         };
 
-        LittleJWT::validateToken((string) $jwt, $validatable);
+        $mutated = LittleJWT::mutateJWT($jwt, function (Mutators $mutators) {
+            $mutators->foo(new TestMutator(
+                fn ($value) => strrev($value),
+                fn ($value) => strrev($value),
+            ));
+        });
+
+        LittleJWT::validateToken((string) $mutated, $validatable, false);
     }
 
     /**
@@ -679,42 +613,24 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_invoke_mutates_validatable_double()
+    public function test_invoke_mutates_custom_mapping()
     {
         LittleJWT::fake();
 
-        $mutators = [
-            'payload' => [
-                'foo' => 'double',
-            ],
-        ];
+        $this->app->bind(TestMutator::class, function ($app) {
+            return new TestMutator(
+                fn ($value) => strrev($value),
+                fn ($value) => strrev($value),
+            );
+        });
+
+        LittleJWT::customMutator('test', TestMutator::class);
 
         $jwt = LittleJWT::createJWT(new TestBuildable(function (Builder $builder) {
             $builder
-                ->foo(NAN);
-        }, $mutators));
+                ->foo('abcd')->as('test');
+        }));
 
-        $validatable = new class ($mutators) {
-            private $mutators;
-
-            public function __construct(array $mutators)
-            {
-                $this->mutators = $mutators;
-            }
-
-            public function getMutators()
-            {
-                return $this->mutators;
-            }
-
-            public function __invoke(TestValidator $validator)
-            {
-                $validator
-                    ->assertPasses()
-                    ->assertCustomPasses(fn ($jwt) => is_nan($jwt->getPayload()->foo));
-            }
-        };
-
-        LittleJWT::validateToken((string) $jwt, $validatable);
+        $this->assertEquals('dcba', $jwt->getPayload()->get('foo'));
     }
 }

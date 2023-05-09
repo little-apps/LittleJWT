@@ -3,53 +3,37 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Mutate\Mutators;
 
 class TestBuildable
 {
     /**
      * Buildable callback.
      *
-     * @var callable(Builder): void
+     * @var callable(Builder, Mutators): void
      */
     protected $callback;
 
     /**
-     * Mutators to use
-     *
-     * @var array
-     */
-    protected $mutators;
-
-    /**
      * Initializes test buidable
      *
-     * @param callable(Builder): void $callback Buildable callback.
+     * @param callable(Builder, Mutators): void $callback Buildable callback.
      * @param array $mutators
      */
-    public function __construct(callable $callback, array $mutators)
+    public function __construct(callable $callback)
     {
         $this->callback = $callback;
-        $this->mutators = $mutators;
-    }
-
-    /**
-     * Gets mutators
-     *
-     * @return array
-     */
-    public function getMutators()
-    {
-        return $this->mutators;
     }
 
     /**
      * Performs the test buildable
      *
      * @param Builder $builder
+     * @param Mutators $mutators
      * @return void
      */
-    public function __invoke(Builder $builder)
+    public function __invoke(Builder $builder, Mutators $mutators)
     {
-        call_user_func($this->callback, $builder);
+        call_user_func($this->callback, $builder, $mutators);
     }
 }

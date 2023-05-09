@@ -10,7 +10,9 @@ use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
+use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
+use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Tests\TestCase;
 
 class CreateTest extends TestCase
@@ -32,7 +34,7 @@ class CreateTest extends TestCase
     }
 
     /**
-     * Tests creating a signed JWT
+     * Tests creating a JWT
      *
      * @return void
      */
@@ -48,7 +50,20 @@ class CreateTest extends TestCase
             $this->assertArrayHasKey($key, $jwt->getPayload());
         }
 
-        $this->assertInstanceOf(JWT::class, $jwt);
+        $this->assertInstanceOf(JsonWebToken::class, $jwt);
+    }
+
+    /**
+     * Tests creating a signed JWT
+     *
+     * @return void
+     */
+    public function test_create_default_signed_jwt()
+    {
+        $jwt = LittleJWT::createJWT();
+
+        $this->assertInstanceOf(SignedJsonWebToken::class, $jwt);
+        $this->assertNotEmpty($jwt->getSignature());
     }
 
     /**
@@ -58,7 +73,7 @@ class CreateTest extends TestCase
      */
     public function test_build_empty_jwt()
     {
-        $build = LittleJWT::buildJWT();
+        $build = LittleJWT::build();
 
         $jwt = $build->build();
 
@@ -66,7 +81,7 @@ class CreateTest extends TestCase
         $this->assertCount(0, $jwt->getPayload());
 
         $this->assertInstanceOf(Build::class, $build);
-        $this->assertInstanceOf(JWT::class, $jwt);
+        $this->assertInstanceOf(JsonWebToken::class, $jwt);
     }
 
     /**
@@ -76,16 +91,17 @@ class CreateTest extends TestCase
      */
     public function test_build_custom_jwt()
     {
-        $build = LittleJWT::buildJWT();
+        $builder = new Builder();
+        $build = LittleJWT::build($builder);
 
         $header = [$this->faker->word, $this->faker->uuid];
         $payload = [$this->faker->word, $this->faker->uuid];
 
-        $jwt =
-            $build
-                ->addHeaderClaim($header[0], $header[1])
-                ->addPayloadClaim($payload[0], $payload[1])
-                ->build();
+        $builder
+            ->addHeaderClaim($header[0], $header[1])
+            ->addPayloadClaim($payload[0], $payload[1]);
+
+        $jwt = $build->build();
 
         $this->assertCount(1, $jwt->getHeaders());
         $this->assertEquals($header[1], $jwt->getHeaders()->get($header[0]));
@@ -94,7 +110,7 @@ class CreateTest extends TestCase
         $this->assertEquals($payload[1], $jwt->getPayload()->get($payload[0]));
 
         $this->assertInstanceOf(Build::class, $build);
-        $this->assertInstanceOf(JWT::class, $jwt);
+        $this->assertInstanceOf(JsonWebToken::class, $jwt);
     }
 
     /**
@@ -149,7 +165,7 @@ class CreateTest extends TestCase
             $builder->exp($expectedDateTime);
         });
 
-        $jwt = LittleJWT::parseToken($token, ['payload' => ['exp' => 'none']]);
+        $jwt = LittleJWT::parseToken($token);
 
         $this->assertTrue(Carbon::createFromFormat('U', $jwt->getPayload()->get('exp')) !== false);
 
@@ -190,7 +206,7 @@ class CreateTest extends TestCase
 
         $this->expectException(CantParseJWTException::class);
 
-        $jwt = LittleJWT::parseToken($token, [], true);
+        LittleJWT::parseToken($token, true);
     }
 
     /**
@@ -205,7 +221,7 @@ class CreateTest extends TestCase
 
         $this->expectException(CantParseJWTException::class);
 
-        $jwt = LittleJWT::parseToken($token, [], true);
+        LittleJWT::parseToken($token, true);
     }
 
     /**
@@ -220,6 +236,6 @@ class CreateTest extends TestCase
 
         $this->expectException(CantParseJWTException::class);
 
-        $jwt = LittleJWT::parseToken($token, [], true);
+        LittleJWT::parseToken($token, true);
     }
 }

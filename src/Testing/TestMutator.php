@@ -3,28 +3,29 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use LittleApps\LittleJWT\Contracts\Mutator;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class TestMutator implements Mutator
 {
     /**
      * Serialize callback to use.
      *
-     * @var callable(mixed, string, array, array): mixed
+     * @var callable(mixed, string, array, JsonWebToken): mixed
      */
     protected $serializeCallback;
 
     /**
      * Unserialize callback to use.
      *
-     * @var callable(mixed, string, array, array): mixed
+     * @var callable(mixed, string, array, JsonWebToken): mixed
      */
     protected $unserializeCallback;
 
     /**
      * Initalizes test mutator.
      *
-     * @param callable(mixed $value, string $key, array $args, array $claims): mixed $serializeCallback Serialize callback
-     * @param callable(mixed $value, string $key, array $args, array $claims): mixed $unserializeCallback Unserialize callback
+     * @param callable(mixed $value, string $key, array $args, JsonWebToken $jwt): mixed $serializeCallback Serialize callback
+     * @param callable(mixed $value, string $key, array $args, JsonWebToken $jwt): mixed $unserializeCallback Unserialize callback
      */
     public function __construct(callable $serializeCallback, callable $unserializeCallback)
     {
@@ -33,30 +34,18 @@ class TestMutator implements Mutator
     }
 
     /**
-     * Serializes claim value
-     *
-     * @param mixed $value Unserialized claim value
-     * @param string $key Claim key
-     * @param array $args Any arguments to use for mutation
-     * @param array $claims All claims
-     * @return string|array|int
+     * @inheritDoc
      */
-    public function serialize($value, string $key, array $args, array $claims)
+    public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
-        return call_user_func($this->serializeCallback, $value, $key, $args, $claims);
+        return call_user_func($this->serializeCallback, $value, $key, $args, $jwt);
     }
 
     /**
-     * Unserializes claim value
-     *
-     * @param string|array|int $value Serialized claim value
-     * @param string $key Claim key
-     * @param array $args Any arguments to use for mutation
-     * @param array $claims All claims
-     * @return mixed
+     * @inheritDoc
      */
-    public function unserialize($value, string $key, array $args, array $claims)
+    public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {
-        return call_user_func($this->unserializeCallback, $value, $key, $args, $claims);
+        return call_user_func($this->unserializeCallback, $value, $key, $args, $jwt);
     }
 }

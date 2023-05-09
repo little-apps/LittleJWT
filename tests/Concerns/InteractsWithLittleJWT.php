@@ -81,12 +81,12 @@ trait InteractsWithLittleJWT
      * @param string $algorithm Fully qualified class name
      * @return $this
      */
-    protected function useAlgorithm(string $algorithm)
+    /*protected function useAlgorithm(string $algorithm)
     {
         $this->app->singleton(JWTHasher::class, function ($app) use ($algorithm) {
             return new JWTHasher($app->make($algorithm));
         });
 
         return $this;
-    }
+    }*/
 }

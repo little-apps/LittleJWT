@@ -71,8 +71,8 @@ class ValidTokenMiddlewareTest extends TestCase
         $mutators = $this->app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
 
         $invalidJwt =
-            (new JWTBuilder(new ClaimManagerBuilder($this->app, $mutators, [])))
-                ->buildFromParts($validJwt->getHeaders(), $validJwt->getPayload(), $signature);
+            (new JWTBuilder())
+                ->buildFromParts($validJwt->getHeaders()->toArray(), $validJwt->getPayload()->toArray(), $signature);
 
         $response = $this
             ->withJwt($invalidJwt)
