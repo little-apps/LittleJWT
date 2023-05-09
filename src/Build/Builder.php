@@ -74,13 +74,11 @@ class Builder
      *
      * @param string $key Claim key
      * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
-     * @return $this
+     * @return ClaimBuildOptions
      */
     public function addHeaderClaim($key, $value)
     {
-        $this->headers[$key] = $value;
-
-        return $this;
+        return $this->headers[$key] = new ClaimBuildOptions($this, ClaimBuildOptions::PART_HEADERS, $key, $value);
     }
 
     /**
@@ -88,13 +86,11 @@ class Builder
      *
      * @param string $key Claim key
      * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
-     * @return $this
+     * @return ClaimBuildOptions
      */
     public function addPayloadClaim($key, $value)
     {
-        $this->payload[$key] = $value;
-
-        return $this;
+        return $this->payload[$key] = new ClaimBuildOptions($this, ClaimBuildOptions::PART_PAYLOAD, $key, $value);
     }
 
     /**
@@ -144,6 +140,15 @@ class Builder
      */
     public function getHeaders()
     {
+        return $this->headers->map(fn ($options) => $options->getValue())->all();
+    }
+
+    /**
+     * Gets the headers claim options.
+     *
+     * @return list<ClaimBuildOptions>
+     */
+    public function getHeadersOptions() {
         return $this->headers->all();
     }
 
@@ -154,6 +159,15 @@ class Builder
      */
     public function getPayload()
     {
+        return $this->payload->map(fn ($options) => $options->getValue())->all();
+    }
+
+    /**
+     * Gets the payload claim options.
+     *
+     * @return list<ClaimBuildOptions>
+     */
+    public function getPayloadOptions() {
         return $this->payload->all();
     }
 
