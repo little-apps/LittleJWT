@@ -175,11 +175,11 @@ class Builder
      * Gets the header and payload claims as one array.
      * This is not recommended if a claim key exists in both the header and payload claims.
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function all()
     {
-        return $this->headers->merge($this->payload);
+        return array_merge($this->getHeaders(), $this->getPayload());
     }
 
     /**
