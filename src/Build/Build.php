@@ -53,7 +53,7 @@ class Build
     /**
      * Passes a Builder instance through a callback.
      *
-     * @param callable(Builder $builder) $callback
+     * @param callable(Builder): void $callback
 
      * @return $this
      */
