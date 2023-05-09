@@ -11,7 +11,7 @@ class StackBuildable
     /**
      * Buildables to call.
      *
-     * @var list<object|callable(Builder): void>
+     * @var list<object|callable(Builder, Mutators): void>
      */
     protected $stack;
 
