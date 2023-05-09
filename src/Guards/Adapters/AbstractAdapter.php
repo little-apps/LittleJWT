@@ -46,7 +46,7 @@ abstract class AbstractAdapter implements GuardAdapter
      * This does NOT check if the JWT is valid.
      *
      * @param string $token
-     * @return JsonWebToken JWT instance or null if unable to be parsed.
+     * @return JsonWebToken|null JWT instance or null if unable to be parsed.
      */
     public function parseToken(string $token)
     {
