@@ -631,7 +631,7 @@ class MutateTest extends TestCase
      *
      * @return void
      */
-    public function test_mutator_isset_mutators()
+    public function test_mutator_isset_mutators_method()
     {
         $time = time();
 
@@ -665,6 +665,33 @@ class MutateTest extends TestCase
         $buildable = new StackBuildable([
             new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
                 $builder->foo($time)->as('date');
+            }),
+            new TestBuildable(function (Builder $builder, Mutators $mutators) {
+                $this->assertTrue(isset($mutators->foo));
+                $this->assertFalse(isset($mutators->bar));
+
+                $this->assertTrue($mutators->has('foo'));
+                $this->assertFalse($mutators->has('bar'));
+            })
+        ]);
+
+        LittleJWT::createToken($buildable);
+    }
+
+    /**
+     * Tests mutator is set from being set with Mutators magic property in previous buildable call.
+     *
+     * @return void
+     */
+    public function test_mutator_isset_mutators_property()
+    {
+        $time = time();
+
+        $buildable = new StackBuildable([
+            new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
+                $builder->foo($time);
+
+                $mutators->foo = 'date';
             }),
             new TestBuildable(function (Builder $builder, Mutators $mutators) {
                 $this->assertTrue(isset($mutators->foo));

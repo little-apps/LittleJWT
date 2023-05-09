@@ -284,7 +284,7 @@ class Mutators
      */
     public function __set($key, $value)
     {
-        $this->addClaim($key, $value);
+        $this->add($key, $value);
     }
 
     /**
