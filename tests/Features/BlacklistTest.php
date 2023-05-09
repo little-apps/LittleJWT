@@ -16,6 +16,24 @@ class BlacklistTest extends TestCase
     use WithFaker;
 
     /**
+     * Tests setting the default blacklist driver.
+     *
+     * @return void
+     */
+    public function test_set_default_blacklist_driver()
+    {
+        LittleJWT::fake();
+
+        Blacklist::setDefaultDriver('cache');
+
+        $jwt = LittleJWT::createJWT();
+
+        Blacklist::blacklist($jwt);
+
+        $this->assertTrue(Blacklist::driver('cache')->isBlacklisted($jwt));
+    }
+
+    /**
      * Tests that the JTI for a JWT is blacklisted.
      *
      * @return void
