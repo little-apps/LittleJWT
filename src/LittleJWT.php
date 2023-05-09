@@ -20,6 +20,7 @@ use LittleApps\LittleJWT\Mutate\Mutatables\DefaultMutatable;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\Mutate;
 use LittleApps\LittleJWT\Mutate\MutatorManager;
+use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
@@ -68,7 +69,7 @@ class LittleJWT
     /**
      * Creates a signed JWT
      *
-     * @param callable(\LittleApps\LittleJWT\Build\Build\Builder): void $callback Callback that receives LittleApps\LittleJWT\Builder instance.
+     * @param callable(Builder, Mutators): void $callback Callback that receives Builder instance.
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return string
      */
@@ -80,7 +81,7 @@ class LittleJWT
     /**
      * Creates a signed JWT instance.
      *
-     * @param callable(\LittleApps\LittleJWT\Build\Build\Builder): void $callback Callback that receives LittleApps\LittleJWT\Builder instance.
+     * @param callable(Builder, Mutators): void $callback Callback that receives Builder instance.
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return SignedJsonWebToken
      */

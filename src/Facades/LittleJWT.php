@@ -20,7 +20,7 @@ class LittleJWT extends Facade
      * Replace the bound instance with a fake.
      *
      * @param JsonWebKey $jwk
-     * @return \Illuminate\Support\Testing\Fakes\EventFake
+     * @return LittleJWTFake
      */
     public static function fake(JsonWebKey $jwk = null)
     {
@@ -38,7 +38,6 @@ class LittleJWT extends Facade
      * Creates a new instance of LittleJWT to use to build/validate with a different JWK.
      *
      * @param JsonWebKey $jwk
-     * @param Closure|null $callback If not null, called with new LittleJWT instance as parameter.
      * @return LittleJWTInstance New LittleJWT instance
      */
     public static function withJwk(JsonWebKey $jwk)

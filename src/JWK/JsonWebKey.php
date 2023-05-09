@@ -71,8 +71,14 @@ class JsonWebKey extends JWK
         return new $class();
     }
 
+    /**
+     * Creates JsonWebKey instance from base JWK instance.
+     *
+     * @param JWK $jwk
+     * @return self
+     */
     public static function createFromBase(JWK $jwk)
     {
-        return new static($jwk->all());
+        return new self($jwk->all());
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Traits\Macroable;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\Rules;
 
 class Validator
@@ -197,7 +198,7 @@ class Validator
     /**
      * Adds callback that is called with JWT and returns true/false.
      *
-     * @param callable(JWT $jwt):boolean $callback
+     * @param callable(JsonWebToken):boolean $callback
      * @return $this
      */
     public function callback(callable $callback)
@@ -209,7 +210,7 @@ class Validator
      * Adds callback that is called with claim value and returns true/false.
      *
      * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JWT $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JsonWebToken $jwt):boolean $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */

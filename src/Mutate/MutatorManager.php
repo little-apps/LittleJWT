@@ -256,7 +256,7 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
-     * @param array $claims All other claims
+     * @param JsonWebToken $jwt
      * @return mixed
      */
     protected function unserializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, JsonWebToken $jwt)
@@ -273,7 +273,7 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
-     * @param array $claims All other claims
+     * @param JsonWebToken $jwt
      * @return mixed
      */
     protected function unserializeAsCustomMapping(string $mutator, $value, string $key, array $args, JsonWebToken $jwt)
@@ -290,7 +290,7 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
-     * @param array $claims All other claims
+     * @param JsonWebToken $jwt
      * @return mixed
      */
     protected function unserializeThruMutator(Mutator $mutator, $value, $key, array $args, JsonWebToken $jwt)

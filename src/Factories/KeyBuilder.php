@@ -203,7 +203,7 @@ class KeyBuilder implements Keyable
      * @param string $name Method name
      * @param array $params Method parameters
      * @return mixed
-     * @throws BadMethodCallException Thrown if method doesn't exist in JWKFactory
+     * @throws \BadMethodCallException Thrown if method doesn't exist in JWKFactory
      */
     public function __call($name, $params)
     {

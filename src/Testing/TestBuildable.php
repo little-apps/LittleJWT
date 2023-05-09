@@ -18,7 +18,6 @@ class TestBuildable
      * Initializes test buidable
      *
      * @param callable(Builder, Mutators): void $callback Buildable callback.
-     * @param array $mutators
      */
     public function __construct(callable $callback)
     {

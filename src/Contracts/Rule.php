@@ -24,7 +24,7 @@ interface Rule
     /**
      * Gets the key to be used for the error messages.
      *
-     * @return string
+     * @return string|null
      */
     public function getKey();
 }

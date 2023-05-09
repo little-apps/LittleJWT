@@ -24,7 +24,7 @@ class JWTBuilder
      * Builds a JWT instance from an existing JWT string.
      *
      * @param string $token
-     * @return JWT
+     * @return JsonWebToken
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
     public function buildFromExisting(string $token)

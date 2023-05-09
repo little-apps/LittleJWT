@@ -13,14 +13,14 @@ class StackValidatable
     /**
      * Validatables to call
      *
-     * @var list<callable(Validator): void>
+     * @var list<Validatable|callable(Validator): void>
      */
     protected $stack;
 
     /**
      * Initializes stack validatable.
      *
-     * @param list<callable(Validator): void> $stack Validatables to call
+     * @param list<Validatable|callable(Validator): void> $stack Validatables to call
      */
     public function __construct(array $stack)
     {

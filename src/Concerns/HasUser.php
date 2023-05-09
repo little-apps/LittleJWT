@@ -29,7 +29,7 @@ trait HasUser
     /**
      * Gets the user
      *
-     * @return void
+     * @return Authenticatable|null
      */
     public function getUser()
     {

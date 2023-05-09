@@ -72,7 +72,7 @@ class Valid
     /**
      * Passes a Validator instance through a callback.
      *
-     * @param callable(Validator $validator) $callback
+     * @param callable(Validator $validator): void $callback
      * @return $this
      */
     public function passValidatorThru(callable $callback)
@@ -175,6 +175,7 @@ class Valid
 
     /**
      * Gets unique identifier for Rule (to be used in error message bag)
+     * If rule key is null, the fully qualified class name will be used.
      *
      * @param Rule $rule
      * @return string

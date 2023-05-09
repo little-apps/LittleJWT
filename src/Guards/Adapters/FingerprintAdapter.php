@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\LittleJWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\Validatables;
 
 class FingerprintAdapter extends AbstractAdapter
@@ -42,7 +43,7 @@ class FingerprintAdapter extends AbstractAdapter
      *
      * @param Authenticatable $user
      * @param string $fingerprintHash
-     * @return JWT
+     * @return JsonWebToken
      */
     public function createJwtWithFingerprint(Authenticatable $user, string $fingerprintHash)
     {
@@ -54,7 +55,7 @@ class FingerprintAdapter extends AbstractAdapter
     /**
      * Creates a JWT response for an Authenticatable instance.
      *
-     * @param Authenticatable|null $user The user to generate the JWT for.
+     * @param Authenticatable $user The user to generate the JWT for.
      * @return \Illuminate\Http\JsonResponse Returns response with JWT
      */
     public function createJwtResponse(Authenticatable $user)

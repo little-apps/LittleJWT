@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Build\Buildables\GuardBuildable;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 trait BuildsJwt
 {
@@ -15,7 +16,7 @@ trait BuildsJwt
      * @param Authenticatable $user
      * @param array $payloadClaims Any extra claims to add to JWT.
      * @param array $headerClaims Any extra claims to add to JWT.
-     * @return JWT
+     * @return JsonWebToken
      */
     public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
     {
@@ -27,7 +28,7 @@ trait BuildsJwt
     /**
      * Creates a JWT response for an Authenticatable instance.
      *
-     * @param Authenticatable|null $user The user to generate the JWT for.
+     * @param Authenticatable $user The user to generate the JWT for.
      * @return \Illuminate\Http\JsonResponse Returns response with JWT
      */
     public function createJwtResponse(Authenticatable $user)

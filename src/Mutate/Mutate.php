@@ -29,7 +29,7 @@ class Mutate
     /**
      * Passes a Mutators instance through a callback.
      *
-     * @param callable(Mutators $mutators) $callback
+     * @param callable(Mutators): void $callback
      * @return $this
      */
     public function passMutatorsThru(callable $callback)

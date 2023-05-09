@@ -18,7 +18,7 @@ class ValidSignature extends Rule
     /**
      * Initializes valid signature rule.
      *
-     * @param JWK $jwk JWK to verify against.
+     * @param JsonWebKey $jwk JWK to verify against.
      */
     public function __construct(JsonWebKey $jwk)
     {

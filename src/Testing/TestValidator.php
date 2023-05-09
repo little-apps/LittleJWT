@@ -5,18 +5,18 @@ namespace LittleApps\LittleJWT\Testing;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
 
-use Jose\Component\Core\JWK;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Contracts\Rule;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\Validation\Validator;
 
 use PHPUnit\Framework\Assert as PHPUnit;
 
 /**
- * @mixin LittleApps\LittleJWT\Validator
+ * @mixin Validator
  */
 class TestValidator extends Validator
 {
@@ -77,9 +77,10 @@ class TestValidator extends Validator
      * Constructor for TestValidator
      *
      * @param Application $app
-     * @param Validator $validator
+     * @param BlacklistManager $blacklistManager
+     * @param JsonWebKey $jwk
      */
-    public function __construct(Application $app, BlacklistManager $blacklistManager, JWK $jwk)
+    public function __construct(Application $app, BlacklistManager $blacklistManager, JsonWebKey $jwk)
     {
         parent::__construct($blacklistManager, $jwk);
 
@@ -354,10 +355,10 @@ class TestValidator extends Validator
     /**
      * Asserts a claim has a valid signature.
      *
-     * @param JWK|null $jwk
+     * @param JsonWebKey|null $jwk
      * @return $this
      */
-    public function assertValidSignature(JWK $jwk = null)
+    public function assertValidSignature(JsonWebKey $jwk = null)
     {
         return $this->assertRulePasses(
             new Rules\ValidSignature($jwk ?? $this->getJwk()),
@@ -368,10 +369,10 @@ class TestValidator extends Validator
     /**
      * Asserts a JWT has a invalid signature.
      *
-     * @param JWK|null $jwk
+     * @param JsonWebKey|null $jwk
      * @return $this
      */
-    public function assertInvalidSignature(JWK $jwk = null)
+    public function assertInvalidSignature(JsonWebKey $jwk = null)
     {
         return $this->assertRuleFails(
             new Rules\ValidSignature($jwk ?? $this->getJwk()),
@@ -410,7 +411,7 @@ class TestValidator extends Validator
     /**
      * Asserts a custom check passes.
      *
-     * @param callable(JWT $jwt):boolean $callback
+     * @param callable(JsonWebToken $jwt):boolean $callback
      * @return $this
      */
     public function assertCustomPasses(callable $callback)
@@ -424,7 +425,7 @@ class TestValidator extends Validator
     /**
      * Asserts a custom check fails.
      *
-     * @param callable(JWT $jwt):boolean $callback
+     * @param callable(JsonWebToken $jwt):boolean $callback
      * @return $this
      */
     public function assertCustomFails(callable $callback)
@@ -439,7 +440,7 @@ class TestValidator extends Validator
      * Asserts a custom claim check passes.
      *
      * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JWT $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JsonWebToken $jwt):boolean $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
@@ -455,7 +456,7 @@ class TestValidator extends Validator
      * Asserts a custom claim check fails.
      *
      * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JWT $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JsonWebToken $jwt):boolean $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */

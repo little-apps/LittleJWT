@@ -29,7 +29,6 @@ class JsonWebToken
      *
      * @param array $headers Headers
      * @param array $payload Payload
-     * @param string $signature Signature (as raw bytes)
      */
     public function __construct(array $headers, array $payload)
     {

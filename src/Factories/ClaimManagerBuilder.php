@@ -23,7 +23,6 @@ class ClaimManagerBuilder
      * Builds a ClaimManager for the header claims.
      *
      * @param array $claims Header claims
-     * @param array $mutators Additional header mutators to use
      * @return ClaimManager
      */
     public function buildClaimManagerForHeader(array $claims)

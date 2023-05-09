@@ -63,9 +63,7 @@ abstract class Rule implements RuleContract
     }
 
     /**
-     * Gets the claim key
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getKey()
     {

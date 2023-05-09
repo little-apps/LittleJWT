@@ -27,7 +27,7 @@ class TestValid extends Valid
     /**
      * Builds a Validator
      *
-     * @return Validator
+     * @return TestValidator
      */
     protected function buildValidator()
     {

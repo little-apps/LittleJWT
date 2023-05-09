@@ -62,10 +62,10 @@ class SignedJsonWebToken extends JsonWebToken
      *
      * @param JsonWebToken $jwt
      * @param string $signature
-     * @return static
+     * @return self
      */
     public static function createFromJsonWebtoken(JsonWebToken $jwt, string $signature)
     {
-        return new static($jwt->headers, $jwt->payload, $signature);
+        return new self($jwt->headers, $jwt->payload, $signature);
     }
 }

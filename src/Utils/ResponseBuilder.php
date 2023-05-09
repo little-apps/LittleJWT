@@ -13,7 +13,7 @@ class ResponseBuilder
     /**
      * Builds the JWT array from a JWT instance.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return array
      */
     public static function buildFromJwt(JsonWebToken $jwt)

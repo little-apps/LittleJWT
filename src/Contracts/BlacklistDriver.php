@@ -9,7 +9,7 @@ interface BlacklistDriver
     /**
      * Checks if JWT is blacklisted.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return bool True if blacklisted.
      */
     public function isBlacklisted(JsonWebToken $jwt);
@@ -17,7 +17,7 @@ interface BlacklistDriver
     /**
      * Blacklists a JWT.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */

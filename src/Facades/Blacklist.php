@@ -15,7 +15,7 @@ class Blacklist extends Facade
     /**
      * Replace the bound instance with a fake.
      *
-     * @return \Illuminate\Support\Testing\Fakes\EventFake
+     * @return \Mockery\ExpectationInterface
      */
     public static function fake()
     {
