@@ -56,8 +56,6 @@ class JWTHasher
                 return $algorithm->sign($jwk, $input);
             }
         } catch (InvalidArgumentException $e) {
-            dd($e);
-
             throw new IncompatibleHashAlgorithmJWK($e);
         }
     }
