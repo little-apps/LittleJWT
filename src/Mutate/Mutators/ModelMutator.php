@@ -1,23 +1,18 @@
 <?php
 
-namespace LittleApps\LittleJWT\JWT\Mutators;
+namespace LittleApps\LittleJWT\Mutate\Mutators;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LittleApps\LittleJWT\Contracts\Mutator;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class ModelMutator implements Mutator
 {
     /**
-     * Serializes claim value
-     *
-     * @param mixed $value Unserialized claim value
-     * @param string $key Claim key
-     * @param array $args Any arguments to use for mutation
-     * @param array $claims All claims
-     * @return string|array|int
+     * @inheritDoc
      */
-    public function serialize($value, string $key, array $args, array $claims)
+    public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
         if (\is_subclass_of($value, Model::class)) {
             return $value->getKey();
@@ -27,15 +22,9 @@ class ModelMutator implements Mutator
     }
 
     /**
-     * Unserializes claim value
-     *
-     * @param string|array|int $value Serialized claim value
-     * @param string $key Claim key
-     * @param array $args Any arguments to use for mutation
-     * @param array $claims All claims
-     * @return mixed
+     * @inheritDoc
      */
-    public function unserialize($value, string $key, array $args, array $claims)
+    public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {
         if (isset($args[0])) {
             [$table] = $args;

@@ -4,7 +4,7 @@ namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
 use LittleApps\LittleJWT\Contracts\Rule as RuleContract;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 abstract class Rule implements RuleContract
 {
@@ -37,7 +37,7 @@ abstract class Rule implements RuleContract
     /**
      * @inheritDoc
      */
-    public function passes(JWT $jwt)
+    public function passes(JsonWebToken $jwt)
     {
         // Checks that claim exists before continuing.
         // Returns true if claim doesn't exist so verification continues.
@@ -85,11 +85,11 @@ abstract class Rule implements RuleContract
     /**
      * Checks that a claim is valid, if it exists.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @param mixed $value
      * @return bool
      */
-    abstract protected function checkClaim(JWT $jwt, $value);
+    abstract protected function checkClaim(JsonWebToken $jwt, $value);
 
     /**
      * Formats a message for a claim check.
@@ -104,10 +104,10 @@ abstract class Rule implements RuleContract
     /**
      * Gets the claims from either headers or payload.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
-    protected function getClaims(JWT $jwt)
+    protected function getClaims(JsonWebToken $jwt)
     {
         return $this->inHeader ? $jwt->getHeaders() : $jwt->getPayload();
     }
@@ -115,10 +115,10 @@ abstract class Rule implements RuleContract
     /**
      * Checks if JWT has claim.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return bool
      */
-    protected function hasClaim(JWT $jwt)
+    protected function hasClaim(JsonWebToken $jwt)
     {
         return $this->getClaims($jwt)->has($this->getKey());
     }
@@ -126,10 +126,10 @@ abstract class Rule implements RuleContract
     /**
      * Gets the claim value from JWT
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return mixed
      */
-    protected function getValue(JWT $jwt)
+    protected function getValue(JsonWebToken $jwt)
     {
         return $this->getClaims($jwt)->get($this->getKey());
     }

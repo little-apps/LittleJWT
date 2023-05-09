@@ -2,43 +2,39 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
-use LittleApps\LittleJWT\Utils\Base64Encoder;
+use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 
-class JWT
+/**
+ * Represents a JSON Web Token (JWT).
+ * This is an immutable class (headers, payload, and signature cannot be modified after instance is created).
+ */
+class JsonWebToken
 {
     /**
      * Header claim manager.
      *
-     * @var ClaimManager
+     * @var array
      */
     protected $headers;
 
     /**
      * Payload claim manager.
      *
-     * @var ClaimManager
+     * @var array
      */
     protected $payload;
 
     /**
-     * Signature
-     *
-     * @var string
-     */
-    protected $signature;
-
-    /**
      * Creates an instance that represents a JWT.
      *
-     * @param ClaimManager $headers Headers
-     * @param ClaimManager $payload Payload
+     * @param array $headers Headers
+     * @param array $payload Payload
      * @param string $signature Signature (as raw bytes)
      */
-    public function __construct(ClaimManager $headers, ClaimManager $payload, $signature)
+    public function __construct(array $headers, array $payload)
     {
         $this->headers = $headers;
         $this->payload = $payload;
-        $this->signature = $signature;
     }
 
     /**
@@ -48,7 +44,7 @@ class JWT
      */
     public function getHeaders()
     {
-        return $this->headers;
+        return $this->builder()->buildClaimManagerForHeader($this->headers);
     }
 
     /**
@@ -58,25 +54,28 @@ class JWT
      */
     public function getPayload()
     {
-        return $this->payload;
+        return $this->builder()->buildClaimManagerForPayload($this->payload);
     }
 
     /**
-     * Gets the signature for the JWT (as raw bytes).
+     * Gets the Claim Manager Builder
      *
-     * @return string
+     * @return ClaimManagerBuilder
      */
-    public function getSignature()
-    {
-        return $this->signature;
+    protected function builder() {
+        return new ClaimManagerBuilder;
     }
 
+    /**
+     * Translates JWT to string form
+     *
+     * @return string [header].[payload]
+     */
     public function __toString()
     {
         $parts = [
             (string) $this->getHeaders(),
             (string) $this->getPayload(),
-            Base64Encoder::encode($this->getSignature()),
         ];
 
         return implode('.', $parts);

@@ -5,11 +5,10 @@ namespace LittleApps\LittleJWT\Build\Buildables;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Concerns\ExtractsMutators;
 use LittleApps\LittleJWT\Contracts\Buildable;
+use LittleApps\LittleJWT\Mutate\Mutators;
 
 class StackBuildable
 {
-    use ExtractsMutators;
-
     /**
      * Buildables to call.
      *
@@ -23,39 +22,18 @@ class StackBuildable
     }
 
     /**
-     * Gets the mutators for all buildables in stack.
-     *
-     * @return array{'header': array, 'payload': array} [
-     *      'header' => [],
-     *      'payload' => []
-     * ]
-     */
-    public function getMutators()
-    {
-        $mutators = [];
-
-        foreach ($this->stack as $callback) {
-            if ($this->hasMutators($callback)) {
-                $mutators = array_merge_recursive($mutators, $this->extractMutators($callback));
-            }
-        }
-
-        return $mutators;
-    }
-
-    /**
      * Calls buildables in stack.
      *
      * @param Builder $builder
      * @return void
      */
-    public function __invoke(Builder $builder)
+    public function __invoke(Builder $builder, Mutators $mutators)
     {
         foreach ($this->stack as $callback) {
             if (is_callable($callback)) {
-                $callback($builder);
+                $callback($builder, $mutators);
             } elseif (is_object($callback) && $callback instanceof Buildable) {
-                $callback->build($builder);
+                $callback->build($builder, $mutators);
             }
         }
     }

@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\JWT;
 
 use ArrayAccess;
 use Countable;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -14,18 +13,11 @@ use RuntimeException;
 class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
     /**
-     * Application container
+     * Part claim manager is for
      *
-     * @var Application
+     * @var string One of ClaimManagerBuilder::PART_* constants
      */
-    protected $app;
-
-    /**
-     * Mutator manager
-     *
-     * @var MutatorManager
-     */
-    protected $mutatorManager;
+    protected $part;
 
     /**
      * Claims
@@ -34,26 +26,10 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     protected $claims;
 
-    public function __construct(Application $app, MutatorManager $mutatorManager, array $claims)
+    public function __construct(string $part, array $claims)
     {
-        $this->app = $app;
-        $this->mutatorManager = $mutatorManager;
-
+        $this->part = $part;
         $this->claims = collect($claims);
-    }
-
-    /**
-     * Unserialize claims
-     *
-     * @return $this
-     */
-    public function unserialized()
-    {
-        $claims = $this->claims->all();
-
-        $this->claims->transform(fn ($value, $key) => $this->mutatorManager->unserialize($key, $value, $claims));
-
-        return $this;
     }
 
     /**
@@ -159,27 +135,13 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     }
 
     /**
-     * Gets the claims as key/value array with values serialized.
-     *
-     * @return array
-     */
-    public function toSerialized()
-    {
-        $claims = $this->claims->all();
-
-        return $this->claims->map(function ($value, $key) use ($claims) {
-            return $this->mutatorManager->serialize($key, $value, $claims);
-        })->all();
-    }
-
-    /**
      * Get the instance as an array.
      *
      * @return array
      */
     public function toArray()
     {
-        return $this->claims->toArray();
+        return $this->claims->all();
     }
 
     /**
@@ -189,9 +151,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     public function toJson($options = 0)
     {
-        $serialized = $this->toSerialized();
-
-        return JsonEncoder::encode($serialized);
+        // TODO: Pass JSON options
+        return JsonEncoder::encode($this->toArray());
     }
 
     /**

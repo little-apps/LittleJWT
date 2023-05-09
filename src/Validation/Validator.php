@@ -6,11 +6,10 @@ use Closure;
 
 use Illuminate\Support\Traits\Macroable;
 
-use Jose\Component\Core\JWK;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWT\Rules;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
 
 class Validator
 {
@@ -26,7 +25,7 @@ class Validator
     /**
      * Default JWK to use for validating signatures.
      *
-     * @var \Jose\Component\Core\JWK
+     * @var JsonWebKey
      */
     protected $jwk;
 
@@ -58,7 +57,7 @@ class Validator
      */
     protected $stopOnFailure;
 
-    public function __construct(BlacklistManager $blacklistManager, JWK $jwk)
+    public function __construct(BlacklistManager $blacklistManager, JsonWebKey $jwk)
     {
         $this->blacklistManager = $blacklistManager;
         $this->jwk = $jwk;
@@ -73,11 +72,11 @@ class Validator
     /**
      * Checks if the JWT has a valid signature.
      *
-     * @param JWK|null $jwk JWK instance. If null, default JWK is used. (default: null)
+     * @param JsonWebKey|null $jwk JWK instance. If null, default JWK is used. (default: null)
      * @param bool $before If true, runs rule before others. (default: true)
      * @return $this
      */
-    public function valid(JWK $jwk = null, $before = true)
+    public function valid(JsonWebKey $jwk = null, $before = true)
     {
         $jwk = $jwk ?? $this->jwk;
 

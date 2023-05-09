@@ -1,16 +1,17 @@
 <?php
 
-namespace LittleApps\LittleJWT\JWT;
+namespace LittleApps\LittleJWT\Mutate;
 
 use DateTimeInterface;
+use Throwable;
+
 use Illuminate\Contracts\Foundation\Application;
-
 use Illuminate\Support\Carbon;
-
 use Illuminate\Support\Str;
+
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
-use Throwable;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 /**
  * Allows for claims to be serialized and deserialized.
@@ -57,17 +58,9 @@ class MutatorManager
      */
     protected $app;
 
-    /**
-     * Claim keys to mutate.
-     *
-     * @var list<string>
-     */
-    protected $mutators = [];
-
-    public function __construct(Application $app, array $mutators, array $customMapping)
+    public function __construct(Application $app, array $customMapping)
     {
         $this->app = $app;
-        $this->mutators = $mutators;
         $this->customMutatorsMapping = $customMapping;
     }
 
@@ -75,17 +68,14 @@ class MutatorManager
      * Serializes claim value for JWT.
      *
      * @param string $key
-     * @param mixed $value The claim value before it's processed through json_encode.
-     * @param array $claims All of the claims.
+     * @param mixed $definition Mutator definition
+     * @param mixed $value The claim value.
+     * @param JsonWebToken $jwt Original JWT.
      * @return mixed
      */
-    public function serialize($key, $value, array $claims)
+    public function serialize($key, $definition, $value, JsonWebToken $jwt)
     {
-        if ($this->hasMutator($key)) {
-            $value = $this->serializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
-        }
-
-        return $value;
+        return $this->serializeAs($key, $value, $definition, $jwt);
     }
 
     /**
@@ -93,16 +83,15 @@ class MutatorManager
      * The claim value will still be sent through json_decode after.
      *
      * @param string $key
-     * @param mixed $value The claim value after it's sent through json_decode.
-     * @param array $claims All other claims
+     * @param mixed $definition Mutator definition
+     * @param mixed $value The claim value.
+     * @param JsonWebToken $jwt Original JWT.
      * @return mixed
      */
-    public function unserialize($key, $value, array $claims)
+    public function unserialize($key, $definition, $value, JsonWebToken $jwt)
     {
         try {
-            if ($this->hasMutator($key)) {
-                $value = $this->unserializeAs($key, $value, $this->getMutatorDefinition($key), $claims);
-            }
+            $value = $this->unserializeAs($key, $value, $definition, $jwt);
         } catch (Throwable $ex) {
             throw new CantParseJWTException($ex);
         }
@@ -110,37 +99,6 @@ class MutatorManager
         return $value;
     }
 
-    /**
-     * Gets the mutator definitions.
-     *
-     * @return array
-     */
-    protected function getMutatorDefinitions()
-    {
-        return $this->mutators;
-    }
-
-    /**
-     * Gets the mutator definition for key.
-     *
-     * @param string $key
-     * @return string
-     */
-    protected function getMutatorDefinition($key)
-    {
-        return $this->mutators[$key];
-    }
-
-    /**
-     * Checks if mutator exists for key.
-     *
-     * @param string $key
-     * @return bool
-     */
-    protected function hasMutator($key)
-    {
-        return isset($this->mutators[$key]);
-    }
 
     /**
      * Checks if primitive mutator has mapping to class.
@@ -192,22 +150,22 @@ class MutatorManager
      * @param string $key
      * @param mixed $value
      * @param string|Mutator $definition
-     * @param array $claims All claims
+     * @param JsonWebToken $jwt Original JWT.
      * @return string
      */
-    protected function serializeAs($key, $value, $definition, array $claims)
+    protected function serializeAs($key, $value, $definition, JsonWebToken $jwt)
     {
         if ($this->isMutatorInstance($definition)) {
-            return $this->serializeThruMutator($definition, $value, $key, [], $claims);
+            return $this->serializeThruMutator($definition, $value, $key, [], $jwt);
         } elseif ($this->isMutatorDefinition($definition)) {
             [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
             if (method_exists($this, 'serializeAs' . Str::studly($mutator))) {
-                return $this->{'serializeAs' . Str::studly($mutator)}($value, $key, $args);
+                return $this->{'serializeAs' . Str::studly($mutator)}($value, $key, $args, $jwt);
             } elseif ($this->hasCustomMutatorMapping($mutator)) {
-                return $this->serializeAsCustomMapping($mutator, $value, $key, $args, $claims);
+                return $this->serializeAsCustomMapping($mutator, $value, $key, $args, $jwt);
             } elseif ($this->hasPrimitiveMutatorMapping($mutator)) {
-                return $this->serializeAsPrimitiveMapping($mutator, $value, $key, $args, $claims);
+                return $this->serializeAsPrimitiveMapping($mutator, $value, $key, $args, $jwt);
             }
         }
 
@@ -215,35 +173,37 @@ class MutatorManager
     }
 
     /**
-     * Serialize claim using mapped mutator.
+     * Serialize claim using primitive mutator.
      *
      * @param string $mutator
      * @param mixed $value
      * @param string $key
      * @param array $args
+     * @param JsonWebToken $jwt
      * @return mixed
      */
-    protected function serializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, array $claims)
+    protected function serializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, JsonWebToken $jwt)
     {
         $instance = $this->app->make(static::$primitiveMutatorsMapping[$mutator]);
 
-        return $this->serializeThruMutator($instance, $value, $key, $args, $claims);
+        return $this->serializeThruMutator($instance, $value, $key, $args, $jwt);
     }
 
     /**
-     * Serialize claim using mapped mutator.
+     * Serialize claim using custom mapped mutator.
      *
      * @param string $mutator
      * @param mixed $value
      * @param string $key
      * @param array $args
+     * @param JsonWebToken $jwt
      * @return mixed
      */
-    protected function serializeAsCustomMapping(string $mutator, $value, string $key, array $args, array $claims)
+    protected function serializeAsCustomMapping(string $mutator, $value, string $key, array $args, JsonWebToken $jwt)
     {
         $instance = $this->app->make($this->customMutatorsMapping[$mutator]);
 
-        return $this->serializeThruMutator($instance, $value, $key, $args, $claims);
+        return $this->serializeThruMutator($instance, $value, $key, $args, $jwt);
     }
 
     /**
@@ -253,12 +213,12 @@ class MutatorManager
      * @param mixed $value
      * @param string $key
      * @param array $args
-     * @param array $claims
+     * @param JsonWebToken $jwt
      * @return mixed
      */
-    protected function serializeThruMutator(Mutator $mutator, $value, $key, array $args, array $claims)
+    protected function serializeThruMutator(Mutator $mutator, $value, $key, array $args, JsonWebToken $jwt)
     {
-        return $mutator->serialize($value, $key, $args, $claims);
+        return $mutator->serialize($value, $key, $args, $jwt);
     }
 
     /**
@@ -267,22 +227,22 @@ class MutatorManager
      * @param string $key Claim key
      * @param mixed $value Claim value
      * @param string|Mutator $definition Type definition
-     * @param array $claims All other claims
+     * @param JsonWebToken $jwt Original JWT
      * @return mixed
      */
-    protected function unserializeAs($key, $value, $definition, array $claims)
+    protected function unserializeAs($key, $value, $definition, JsonWebToken $jwt)
     {
         if ($this->isMutatorInstance($definition)) {
-            return $this->unserializeThruMutator($definition, $value, $key, [], $claims);
+            return $this->unserializeThruMutator($definition, $value, $key, [], $jwt);
         } elseif ($this->isMutatorDefinition($definition)) {
             [$mutator, $args] = $this->parseMutatorDefinition($definition);
 
             if (method_exists($this, 'unserializeAs' . Str::studly($mutator))) {
-                return $this->{'unserializeAs' . Str::studly($mutator)}($value, $key, $args);
+                return $this->{'unserializeAs' . Str::studly($mutator)}($value, $key, $args, $jwt);
             } elseif ($this->hasCustomMutatorMapping($mutator)) {
-                return $this->unserializeAsCustomMapping($mutator, $value, $key, $args, $claims);
+                return $this->unserializeAsCustomMapping($mutator, $value, $key, $args, $jwt);
             } elseif ($this->hasPrimitiveMutatorMapping($mutator)) {
-                return $this->unserializeAsPrimitiveMapping($mutator, $value, $key, $args, $claims);
+                return $this->unserializeAsPrimitiveMapping($mutator, $value, $key, $args, $jwt);
             }
 
         }
@@ -300,11 +260,11 @@ class MutatorManager
      * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, array $claims)
+    protected function unserializeAsPrimitiveMapping(string $mutator, $value, string $key, array $args, JsonWebToken $jwt)
     {
         $instance = $this->app->make(static::$primitiveMutatorsMapping[$mutator]);
 
-        return $this->unserializeThruMutator($instance, $value, $key, $args, $claims);
+        return $this->unserializeThruMutator($instance, $value, $key, $args, $jwt);
     }
 
     /**
@@ -317,11 +277,11 @@ class MutatorManager
      * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeAsCustomMapping(string $mutator, $value, string $key, array $args, array $claims)
+    protected function unserializeAsCustomMapping(string $mutator, $value, string $key, array $args, JsonWebToken $jwt)
     {
         $instance = $this->app->make($this->customMutatorsMapping[$mutator]);
 
-        return $this->unserializeThruMutator($instance, $value, $key, $args, $claims);
+        return $this->unserializeThruMutator($instance, $value, $key, $args, $jwt);
     }
 
     /**
@@ -334,9 +294,9 @@ class MutatorManager
      * @param array $claims All other claims
      * @return mixed
      */
-    protected function unserializeThruMutator(Mutator $mutator, $value, $key, array $args, array $claims)
+    protected function unserializeThruMutator(Mutator $mutator, $value, $key, array $args, JsonWebToken $jwt)
     {
-        return $mutator->unserialize($value, $key, $args, $claims);
+        return $mutator->unserialize($value, $key, $args, $jwt);
     }
 
     /**

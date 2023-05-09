@@ -18,7 +18,7 @@ use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Laravel\Middleware\ValidToken as ValidTokenMiddleware;
 use LittleApps\LittleJWT\Laravel\Rules\ValidToken as ValidTokenRule;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
@@ -118,16 +118,6 @@ class ServiceProvider extends PackageServiceProvider
             $config = $app->config->get('littlejwt.key', []);
 
             return new KeyBuilder($app, $config);
-        });
-
-        $this->app->singleton(JWTHasher::class, function ($app) {
-            $algorithm = $app->config->get('littlejwt.key.algorithm');
-
-            if (is_null($algorithm)) {
-                throw new InvalidHashAlgorithmException('No hash algorithm is set.');
-            }
-
-            return new JWTHasher($app->make($algorithm));
         });
 
         $this->app->singleton(OpenSSLBuilder::class, function ($app) {
@@ -319,7 +309,7 @@ class ServiceProvider extends PackageServiceProvider
             return ! is_null($token) ? $littleJwt->parseToken($token) : null;
         });
 
-        ResponseFactory::macro('withJwt', function (JWT $jwt) {
+        ResponseFactory::macro('withJwt', function (JsonWebToken $jwt) {
             return ResponseFactory::json(ResponseBuilder::buildFromJwt($jwt));
         });
 

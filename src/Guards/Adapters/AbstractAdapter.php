@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\LittleJWT;
 
 abstract class AbstractAdapter implements GuardAdapter
@@ -56,10 +56,10 @@ abstract class AbstractAdapter implements GuardAdapter
     /**
      * Runs JWT through Validator.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return bool True if JWT is validated.
      */
-    public function validateJwt(JWT $jwt)
+    public function validateJwt(JsonWebToken $jwt)
     {
         $callback = $this->getValidatorCallback();
 
@@ -70,10 +70,10 @@ abstract class AbstractAdapter implements GuardAdapter
      * Gets a user from the JWT
      *
      * @param UserProvider $provider
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return Authenticatable
      */
-    public function getUserFromJwt(UserProvider $provider, JWT $jwt)
+    public function getUserFromJwt(UserProvider $provider, JsonWebToken $jwt)
     {
         return $provider->retrieveById($jwt->getPayload()->sub);
     }

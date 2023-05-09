@@ -7,27 +7,18 @@ use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
 use LittleApps\LittleJWT\JWT\ClaimManager;
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
+use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 
 class JWTBuilder
 {
     /**
-     * Claim Manager Builder
-     *
-     * @var ClaimManagerBuilder
-     */
-    protected $claimManagerBuilder;
-
-    /**
      * Initializes JWT Builder
-     *
-     * @param ClaimManagerBuilder $claimManagerBuilder
      */
-    public function __construct(ClaimManagerBuilder $claimManagerBuilder)
+    public function __construct()
     {
-        $this->claimManagerBuilder = $claimManagerBuilder;
     }
 
     /**
@@ -37,50 +28,40 @@ class JWTBuilder
      * @return JWT
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
-    public function buildFromExisting(string $token, array $mutators)
+    public function buildFromExisting(string $token)
     {
         $parts = Str::of($token)->explode('.');
 
-        if ($parts->count() !== 3) {
+        if ($parts->count() < 2 || $parts->count() > 3) {
             throw new CantParseJWTException();
         }
 
-        // Create claim managers for header and payload.
-        $headers = $this->claimManagerBuilder->buildClaimManagerForHeader(
-            $this->decodeClaims($parts[0]),
-            $mutators['header']
-        )->unserialized();
-
-        $payload = $this->claimManagerBuilder->buildClaimManagerForPayload(
-            $this->decodeClaims($parts[1]),
-            $mutators['payload']
-        )->unserialized();
-
-        $signature = Base64Encoder::decode($parts[2]);
-
-        return $this->buildFromParts($headers, $payload, $signature);
+        return
+            $this->buildFromParts(
+                $this->decodeClaims($parts[0]),
+                $this->decodeClaims($parts[1]),
+                $parts->count() === 3 ? $parts[2] : null
+            );
     }
 
     /**
      * Builds a JWT instance using the different parts.
      *
-     * @param ClaimManager $headers
-     * @param ClaimManager $payload
-     * @param string $signature
-     * @return JWT
+     * @param array $headers
+     * @param array $payload
+     * @param string|null $signature
+     * @return JsonWebToken|SignedJsonWebToken Returns SignedJsonWebToken if signature is passed, otherwise JsonWebToken.
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
-    public function buildFromParts(ClaimManager $headers, ClaimManager $payload, $signature)
+    public function buildFromParts(array $headers, array $payload, ?string $signature = null)
     {
-        // Returns bytes if signature isn't already base64 encoded.
-        $decoded = Base64Encoder::decode($signature);
+        if (is_null($signature)) {
+            return new JsonWebToken($headers, $payload);
+        } else {
+            $signature = $this->decodeSignature($signature);
 
-        // If decoded, set signature to decoded.
-        if ($decoded !== false) {
-            $signature = $decoded;
+            return new SignedJsonWebToken($headers, $payload, $signature);
         }
-
-        return new JWT($headers, $payload, $signature);
     }
 
     /**
@@ -105,5 +86,23 @@ class JWTBuilder
         }
 
         return $array;
+    }
+
+    /**
+     * Decodes signature (if needed) to raw bytes.
+     *
+     * @param string $signature
+     * @return string
+     */
+    protected function decodeSignature($signature) {
+        // Returns bytes if signature isn't already base64 encoded.
+        $decoded = Base64Encoder::decode($signature);
+
+        // If decoded, set signature to decoded.
+        if ($decoded !== false) {
+            $signature = $decoded;
+        }
+
+        return $signature;
     }
 }

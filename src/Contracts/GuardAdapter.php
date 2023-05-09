@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Contracts;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 interface GuardAdapter
 {
@@ -21,17 +21,17 @@ interface GuardAdapter
     /**
      * Validate the JWT.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return bool True if JWT is validated.
      */
-    public function validateJwt(JWT $jwt);
+    public function validateJwt(JsonWebToken $jwt);
 
     /**
      * Gets a user from the JWT
      *
      * @param UserProvider $provider
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return Authenticatable
      */
-    public function getUserFromJwt(UserProvider $provider, JWT $jwt);
+    public function getUserFromJwt(UserProvider $provider, JsonWebToken $jwt);
 }

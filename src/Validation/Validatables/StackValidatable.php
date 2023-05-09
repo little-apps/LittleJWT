@@ -11,8 +11,6 @@ use LittleApps\LittleJWT\Validation\Validator;
  */
 class StackValidatable
 {
-    use ExtractsMutators;
-
     /**
      * Validatables to call
      *
@@ -28,27 +26,6 @@ class StackValidatable
     public function __construct(array $stack)
     {
         $this->stack = $stack;
-    }
-
-    /**
-     * Gets the mutators for all validatables in stack.
-     *
-     * @return array{'header': array, 'payload': array} [
-     *      'header' => [],
-     *      'payload' => []
-     * ]
-     */
-    public function getMutators()
-    {
-        $mutators = [];
-
-        foreach ($this->stack as $callback) {
-            if ($this->hasMutators($callback)) {
-                $mutators = array_merge_recursive($mutators, $this->extractMutators($callback));
-            }
-        }
-
-        return $mutators;
     }
 
     /**

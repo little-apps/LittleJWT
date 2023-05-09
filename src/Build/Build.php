@@ -11,10 +11,11 @@ use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\JWTHasher;
+use LittleApps\LittleJWT\Mutate\Mutate;
+use LittleApps\LittleJWT\Mutate\Mutators;
 
 class Build
 {
-    use ExtractsMutators;
     use ForwardsCalls;
     use PassableThru;
 
@@ -26,13 +27,6 @@ class Build
     protected $app;
 
     /**
-     * The JWK to sign JWTs.
-     *
-     * @var JWK
-     */
-    protected $jwk;
-
-    /**
      * Builder to build JWTs.
      *
      * @var Builder
@@ -40,17 +34,10 @@ class Build
     protected $builder;
 
     /**
-     * Claim manager builder.
-     *
-     * @var ClaimManagerBuilder
-     */
-    protected $claimManagerBuilder;
-
-    /**
      * Mutators to use for serializing.
      * Populated when build() is called.
      *
-     * @var array<\LittleApps\LittleJWT\Contracts\Mutator>
+     * @var Mutators
      */
     protected $mutators;
 
@@ -58,15 +45,13 @@ class Build
      * Initializes Build instance.
      *
      * @param Application $app Application container.
-     * @param JWK $jwk JWK to sign JWTs with.
+     * @param Builder $builder Builder to use (optional).
      */
-    public function __construct(Application $app, JWK $jwk, ClaimManagerBuilder $claimManagerBuilder)
+    public function __construct(Application $app, Builder $builder = null)
     {
         $this->app = $app;
-        $this->jwk = $jwk;
-        $this->claimManagerBuilder = $claimManagerBuilder;
 
-        $this->builder = $this->buildBuilder();
+        $this->builder = $builder ?? $this->buildBuilder();
     }
 
     /**
@@ -78,35 +63,44 @@ class Build
      */
     public function passBuilderThru(callable $callback)
     {
-        return $this->passThru(function (...$args) use ($callback) {
-            if ($this->hasMutators($callback)) {
-                $this->mutators = array_merge_recursive($this->mutators, $this->extractMutators($callback));
-            }
-
-            $callback(...$args);
-        });
+        return $this->passThru($callback);
     }
 
     /**
      * Builds a JWT
      *
-     * @return JWT
+     * @return \LittleApps\LittleJWT\JWT\JsonWebToken
      */
-    public function build()
+    public function build(Mutate $mutate = null)
     {
-        $this->mutators = ['header' => [], 'payload' => []];
+        $this->mutators = new Mutators;
 
-        $this->runThru($this->builder);
+        $this->runThru($this->builder, $this->mutators);
 
-        $headers = $this->builder->getHeaders();
-        $headersClaimManager = $this->claimManagerBuilder->buildClaimManagerForHeader($headers, $this->mutators['header']);
+        $jwt = $this->createJWTBuilder()->buildFromParts($this->builder->getHeaders(), $this->builder->getPayload());
 
-        $payload = $this->builder->getPayload();
-        $payloadClaimManager = $this->claimManagerBuilder->buildClaimManagerForPayload($payload, $this->mutators['payload']);
+        if (is_null($mutate)) {
+            return $jwt;
+        }
 
-        $signature = $this->createJWTHasher()->hash($this->jwk, $headersClaimManager, $payloadClaimManager);
+        $mutate
+            ->passMutatorsThru(function (Mutators $mutators) {
+                foreach ($this->builder->getHeadersOptions() as $claimBuildOptions) {
+                    if ($claimBuildOptions->hasMutatable()) {
+                        $mutators->addHeader($claimBuildOptions->getKey(), $claimBuildOptions->getMutatable());
+                    }
+                }
 
-        return $this->createJWTBuilder()->buildFromParts($headersClaimManager, $payloadClaimManager, $signature);
+                foreach ($this->builder->getPayloadOptions() as $claimBuildOptions) {
+                    if ($claimBuildOptions->hasMutatable()) {
+                        $mutators->addPayload($claimBuildOptions->getKey(), $claimBuildOptions->getMutatable());
+                    }
+                }
+            })->passMutatorsThru(function (Mutators $mutators) {
+                $mutators->merge($this->mutators);
+            });
+
+        return $mutate->serialize($jwt);
     }
 
     /**
@@ -129,17 +123,7 @@ class Build
      */
     protected function createJWTBuilder()
     {
-        return new JWTBuilder($this->claimManagerBuilder);
-    }
-
-    /**
-     * Creates the JWTHasher
-     *
-     * @return JWTHasher
-     */
-    protected function createJWTHasher()
-    {
-        return $this->app->make(JWTHasher::class);
+        return new JWTBuilder();
     }
 
     /**

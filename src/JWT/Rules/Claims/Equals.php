@@ -2,7 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Equals extends Rule
 {
@@ -39,7 +39,7 @@ class Equals extends Rule
     /**
      * @inheritDoc
      */
-    protected function checkClaim(JWT $jwt, $value)
+    protected function checkClaim(JsonWebToken $jwt, $value)
     {
         return $this->strict ? $value === $this->expected : $value == $this->expected;
     }

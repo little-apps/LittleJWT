@@ -2,7 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Callback extends Rule
 {
@@ -34,7 +34,7 @@ class Callback extends Rule
      * @param mixed $value Claim value.
      * @return bool
      */
-    protected function checkClaim(JWT $jwt, $value)
+    protected function checkClaim(JsonWebToken $jwt, $value)
     {
         return (bool) call_user_func($this->callback, $value, $this->key, $jwt);
     }

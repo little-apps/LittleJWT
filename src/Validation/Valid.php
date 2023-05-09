@@ -11,7 +11,7 @@ use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Valid
 {
@@ -27,7 +27,7 @@ class Valid
     /**
      * JWT to validate
      *
-     * @var JWT
+     * @var JsonWebToken
      */
     protected $jwt;
 
@@ -56,10 +56,10 @@ class Valid
      * Initializes a Valid instance
      *
      * @param Application $app Application container
-     * @param JWT $jwt JWT to run through Validator
+     * @param JsonWebToken $jwt JWT to run through Validator
      * @param JWK $jwk JWK to use for validation.
      */
-    public function __construct(Application $app, JWT $jwt, JWK $jwk)
+    public function __construct(Application $app, JsonWebToken $jwt, JWK $jwk)
     {
         $this->app = $app;
         $this->jwt = $jwt;

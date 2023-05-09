@@ -14,36 +14,11 @@ class ClaimManagerBuilder
     public const PART_PAYLOAD = 'payload';
 
     /**
-     * Application container
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * Global mutators
-     *
-     * @var array{'header': array, 'payload': array} ['header' => [], 'payload' => []]
-     */
-    protected $mutators;
-
-    /**
-     * Custom mutator mappings
-     *
-     * @var array<string, \LittleApps\LittleJWT\Contracts\Mutator>
-     */
-    protected $mutatorMappings;
-
-    /**
      * Initializes a ClaimManagerBuilder
      *
-     * @param array $mutators Configuration options for mutators
      */
-    public function __construct(Application $app, array $mutators, array $mutatorMappings)
+    public function __construct()
     {
-        $this->app = $app;
-        $this->mutators = $mutators;
-        $this->mutatorMappings = $mutatorMappings;
     }
 
     /**
@@ -53,59 +28,32 @@ class ClaimManagerBuilder
      * @param array $mutators Additional header mutators to use
      * @return ClaimManager
      */
-    public function buildClaimManagerForHeader(array $claims, array $mutators)
+    public function buildClaimManagerForHeader(array $claims)
     {
-        return $this->buildClaimManagerFor(static::PART_HEADER, $claims, $mutators);
+        return $this->buildClaimManagerFor(static::PART_HEADER, $claims);
     }
 
     /**
      * Builds a ClaimManager for the payload claims.
      *
      * @param array $claims
-     * @param array $mutators Additional payload mutators to use
      * @return ClaimManager
      */
-    public function buildClaimManagerForPayload(array $claims, array $mutators)
+    public function buildClaimManagerForPayload(array $claims)
     {
-        return $this->buildClaimManagerFor(static::PART_PAYLOAD, $claims, $mutators);
+        return $this->buildClaimManagerFor(static::PART_PAYLOAD, $claims);
     }
 
     /**
      * Builds a ClaimManager for a part.
      *
-     * @param string $part One of PART_* constants. The part name is used to lookup available mutators.
      * @param array $claims Associative array of claims
-     * @param array $mutators Additional mutators to use.
      * @return ClaimManager
      */
-    public function buildClaimManagerFor(string $part, array $claims, array $mutators)
+    public function buildClaimManagerFor(string $part, array $claims)
     {
         $sorted = Arr::sortRecursive($claims);
 
-        $mutatorManager = $this->buildMutatorManager(array_merge($this->getMutatorsFor($part), $mutators));
-
-        return new ClaimManager($this->app, $mutatorManager, $sorted);
-    }
-
-    /**
-     * Builds MutatorManager
-     *
-     * @param array $mutators
-     * @return MutatorManager
-     */
-    public function buildMutatorManager(array $mutators)
-    {
-        return new MutatorManager($this->app, $mutators, $this->mutatorMappings);
-    }
-
-    /**
-     * Gets the mutator options for a part.
-     *
-     * @param string $part One of PART_* constants.
-     * @return array
-     */
-    public function getMutatorsFor(string $part)
-    {
-        return Arr::get($this->mutators, $part, []);
+        return new ClaimManager($part, $sorted);
     }
 }

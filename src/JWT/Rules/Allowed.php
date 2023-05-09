@@ -3,7 +3,7 @@
 namespace LittleApps\LittleJWT\JWT\Rules;
 
 use LittleApps\LittleJWT\Contracts\BlacklistDriver;
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Allowed extends Rule
 {
@@ -22,7 +22,7 @@ class Allowed extends Rule
     /**
      * @inheritDoc
      */
-    public function passes(JWT $jwt)
+    public function passes(JsonWebToken $jwt)
     {
         return ! $this->driver->isBlacklisted($jwt);
     }

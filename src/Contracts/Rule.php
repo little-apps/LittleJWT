@@ -2,17 +2,17 @@
 
 namespace LittleApps\LittleJWT\Contracts;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 interface Rule
 {
     /**
      * Checks if JWT passes rule.
      *
-     * @param \LittleApps\LittleJWT\JWT\JWT $jwt
+     * @param \LittleApps\LittleJWT\JWT\JsonWebToken $jwt
      * @return bool True if JWT passes rule check.
      */
-    public function passes(JWT $jwt);
+    public function passes(JsonWebToken $jwt);
 
     /**
      * Gets the error message for when the rule fails.

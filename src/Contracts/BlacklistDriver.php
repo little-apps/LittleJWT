@@ -2,7 +2,7 @@
 
 namespace LittleApps\LittleJWT\Contracts;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 interface BlacklistDriver
 {
@@ -12,7 +12,7 @@ interface BlacklistDriver
      * @param JWT $jwt
      * @return bool True if blacklisted.
      */
-    public function isBlacklisted(JWT $jwt);
+    public function isBlacklisted(JsonWebToken $jwt);
 
     /**
      * Blacklists a JWT.
@@ -21,7 +21,7 @@ interface BlacklistDriver
      * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */
-    public function blacklist(JWT $jwt, $ttl = -1);
+    public function blacklist(JsonWebToken $jwt, $ttl = -1);
 
     /**
      * Cleanup blacklist.

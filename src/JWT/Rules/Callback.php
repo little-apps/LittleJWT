@@ -4,7 +4,7 @@ namespace LittleApps\LittleJWT\JWT\Rules;
 
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Callback extends Rule
 {
@@ -35,7 +35,7 @@ class Callback extends Rule
     /**
      * @inheritDoc
      */
-    public function passes(JWT $jwt)
+    public function passes(JsonWebToken $jwt)
     {
         $this->lastMessage = null;
 

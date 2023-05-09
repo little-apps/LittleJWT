@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleApps\LittleJWT\JWT\Mutators\Concerns;
+namespace LittleApps\LittleJWT\Mutate\Mutators\Concerns;
 
 use DateTimeInterface;
 

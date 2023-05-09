@@ -6,7 +6,7 @@ use DateTimeInterface;
 
 use Illuminate\Support\Carbon;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class ResponseBuilder
 {
@@ -16,9 +16,14 @@ class ResponseBuilder
      * @param JWT $jwt
      * @return array
      */
-    public static function buildFromJwt(JWT $jwt)
+    public static function buildFromJwt(JsonWebToken $jwt)
     {
         $expires = $jwt->getPayload()->get('exp');
+
+        // Transform to Carbon if not DateTimeInterface
+        if (! ($expires instanceof DateTimeInterface)) {
+            $expires = Carbon::parse($expires); // $expires maybe a number as a string
+        }
 
         return static::buildFromToken((string) $jwt, $expires);
     }

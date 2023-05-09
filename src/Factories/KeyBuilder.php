@@ -11,6 +11,7 @@ use Jose\Component\KeyManagement\JWKFactory;
 
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyBuilder implements Keyable
@@ -66,16 +67,15 @@ class KeyBuilder implements Keyable
     {
         $this->app = $app;
         $this->config = $config;
-        $this->extra = [
-            'use' => 'sig',
-        ];
+
+        $this->extra = ['use' => 'sig', 'alg' => $config['alg']];
     }
 
     /**
      * Builds a JWK to use to sign/verify JWTs
      *
      * @param array $config These configuration options override the options specified in the littlejwt.key config options. (default: empty array)
-     * @return JWK
+     * @return JsonWebKey
      */
     public function build(array $config = [])
     {
@@ -85,55 +85,61 @@ class KeyBuilder implements Keyable
 
         switch ($keyType) {
             case static::KEY_NONE: {
-                return JWKFactory::createNoneKey();
+                return $this->createNoneJwk($this->extra);
             }
 
             case static::KEY_FILE: {
-                return $this->buildFromFile($config[static::KEY_FILE]);
+                return $this->buildFromFile($config[static::KEY_FILE], $this->extra);
             }
 
             case static::KEY_SECRET: {
-                return $this->buildFromSecret($config[static::KEY_SECRET]);
+                return $this->buildFromSecret($config[static::KEY_SECRET], $this->extra);
             }
 
             case static::KEY_RANDOM: {
                 $size = $config[static::KEY_RANDOM]['size'] ?? 1024;
 
-                return $this->generateRandomJwk($size);
+                return $this->generateRandomJwk($size, $this->extra);
             }
 
             default: {
                 Log::warning('LittleJWT is reverting to use no key. This is NOT recommended.');
 
-                return JWKFactory::createNoneKey();
+                return $this->createNoneJwk($this->extra);
             }
         }
+    }
+
+    /**
+     * Creates a none key.
+     *
+     * @return JsonWebKey
+     */
+    public function createNoneJwk(array $extra = []) {
+        return $this->createJwkFromBase(JWKFactory::createNoneKey(array_merge($this->extra, $extra)));
     }
 
     /**
      * Generates a random JWK
      *
      * @param int $size # of bits for key size (must be multiple of 8)
-     * @return JWK
+     * @return JsonWebKey
      */
-    public function generateRandomJwk($size = 1024)
+    public function generateRandomJwk($size = 1024, array $extra = [])
     {
-        return JWKFactory::createOctKey(
+        return $this->createJwkFromBase(JWKFactory::createOctKey(
             $size, // Size in bits of the key. We recommend at least 128 bits.
-            [
-                'alg' => 'HS256', // This key must only be used with the HS256 algorithm
-                'use' => 'sig',    // This key is used for signature/verification operations only
-            ]
-        );
+            array_merge($this->extra, $extra)
+        ));
     }
 
     /**
      * Builds JWK from secret phrase.
      *
      * @param array $config
-     * @return JWK
+     * @return JsonWebKey
      */
-    public function buildFromSecret(array $config)
+    public function buildFromSecret(array $config, array $extra = [])
     {
         if (! isset($config['allow_unsecure']) || ! $config['allow_unsecure']) {
             if (! isset($config['phrase'])) {
@@ -145,34 +151,48 @@ class KeyBuilder implements Keyable
 
         $phrase = Base64Encoder::decode($config['phrase']);
 
-        return JWKFactory::createFromSecret($phrase, $this->extra);
+        return $this->createJwkFromBase(JWKFactory::createFromSecret($phrase, array_merge($this->extra, $extra)));
     }
 
     /**
      * Builds JWK from key file.
      *
      * @param array $config
-     * @return JWK
+     * @return JsonWebKey
      */
-    public function buildFromFile($config)
+    public function buildFromFile(array $config, array $extra = [])
     {
         if (! is_file($config['path'])) {
             throw new MissingKeyException();
         }
 
+        $extra = array_merge($this->extra, $extra);
+
         switch ($config['type']) {
             case static::KEY_FILES_CRT: {
-                return JWKFactory::createFromCertificateFile($config['path'], $this->extra);
+                $jwk = JWKFactory::createFromCertificateFile($config['path'], $extra);
             }
 
             case static::KEY_FILES_P12: {
-                return JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $this->extra);
+                $jwk = JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $extra);
             }
 
             default: {
-                return JWKFactory::createFromKeyFile($config['path'], $config['secret'], $this->extra);
+                $jwk = JWKFactory::createFromKeyFile($config['path'], $config['secret'], $extra);
             }
         }
+
+        return $this->createJwkFromBase($jwk);
+    }
+
+    /**
+     * Creates JSON Web Key from existing JWK
+     *
+     * @param JWK $jwk
+     * @return JsonWebKey
+     */
+    public function createJwkFromBase(JWK $jwk) {
+        return JsonWebKey::createFromBase($jwk);
     }
 
     /**

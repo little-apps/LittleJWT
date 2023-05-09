@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Blacklist\Drivers;
 use Illuminate\Cache\CacheManager;
 
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class CacheDriver extends AbstractDriver
 {
@@ -34,10 +34,10 @@ class CacheDriver extends AbstractDriver
     /**
      * Checks if JWT is blacklisted.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return bool True if blacklisted.
      */
-    public function isBlacklisted(JWT $jwt)
+    public function isBlacklisted(JsonWebToken $jwt)
     {
         return $this->manager->has($this->getUniqueId($jwt));
     }
@@ -45,11 +45,11 @@ class CacheDriver extends AbstractDriver
     /**
      * Blacklists a JWT.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */
-    public function blacklist(JWT $jwt, $ttl = -1)
+    public function blacklist(JsonWebToken $jwt, $ttl = -1)
     {
         $ttl = $ttl >= 0 ? $ttl : $this->getDefaultTtl();
 

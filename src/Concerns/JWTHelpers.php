@@ -2,7 +2,7 @@
 
 namespace LittleApps\LittleJWT\Concerns;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 trait JWTHelpers
 {
@@ -24,10 +24,10 @@ trait JWTHelpers
     /**
      * Gets a unique identifier for the JWT
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return string
      */
-    protected function getUniqueId(JWT $jwt)
+    protected function getUniqueId(JsonWebToken $jwt)
     {
         // Use jti claim (if it exists)
         if ($jwt->getPayload()->has('jti')) {

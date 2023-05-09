@@ -2,7 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 /**
  * This rule uses hash_equals to perform a comparison on claim value.
@@ -33,7 +33,7 @@ class SecureEquals extends Rule
     /**
      * @inheritDoc
      */
-    protected function checkClaim(JWT $jwt, $value)
+    protected function checkClaim(JsonWebToken $jwt, $value)
     {
         return hash_equals($this->expected, $value);
     }

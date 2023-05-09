@@ -4,7 +4,7 @@ namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
 use Illuminate\Support\Carbon;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Past extends Rule
 {
@@ -32,7 +32,7 @@ class Past extends Rule
     /**
      * @inheritDoc
      */
-    protected function checkClaim(JWT $jwt, $value)
+    protected function checkClaim(JsonWebToken $jwt, $value)
     {
         $now = Carbon::now()->addSeconds($this->leeway);
         $dateTime = Carbon::parse($value);

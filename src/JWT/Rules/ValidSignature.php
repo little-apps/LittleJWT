@@ -4,17 +4,16 @@ namespace LittleApps\LittleJWT\JWT\Rules;
 
 use Illuminate\Support\Facades\App;
 
-use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Factories\JWTHasher;
-
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class ValidSignature extends Rule
 {
     /**
-     * JWK to verify against.
+     * JsonWebKey to use for verification.
      *
-     * @var JWK
+     * @var JsonWebKey
      */
     protected $jwk;
 
@@ -23,7 +22,7 @@ class ValidSignature extends Rule
      *
      * @param JWK $jwk JWK to verify against.
      */
-    public function __construct(JWK $jwk)
+    public function __construct(JsonWebKey $jwk)
     {
         $this->jwk = $jwk;
     }
@@ -31,11 +30,9 @@ class ValidSignature extends Rule
     /**
      * @inheritDoc
      */
-    public function passes(JWT $jwt)
+    public function passes(JsonWebToken $jwt)
     {
-        $hasher = App::make(JWTHasher::class);
-
-        return $hasher->verify($this->jwk, $jwt);
+        return JWTHasher::verify($this->jwk->algorithm(), $this->jwk, $jwt);
     }
 
     /**

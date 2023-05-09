@@ -2,7 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class ContainsClaims extends Rule
 {
@@ -37,7 +37,7 @@ class ContainsClaims extends Rule
     /**
      * @inheritDoc
      */
-    public function passes(JWT $jwt)
+    public function passes(JsonWebToken $jwt)
     {
         $claims = $this->inHeader ? $jwt->getHeaders() : $jwt->getPayload();
 
