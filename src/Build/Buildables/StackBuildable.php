@@ -32,7 +32,7 @@ class StackBuildable
             if (is_callable($callback)) {
                 $callback($builder, $mutators);
             } elseif (is_object($callback) && $callback instanceof Buildable) {
-                $callback->build($builder, $mutators);
+                $callback->build($builder);
             }
         }
     }
