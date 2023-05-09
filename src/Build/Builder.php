@@ -43,10 +43,10 @@ class Builder
     /**
      * Initializes Builder instance.
      *
-     * @param array $headerClaims
-     * @param array $payloadClaims
+     * @param array $headerClaims Claim keys that go in header.
+     * @param array $payloadClaims Claim keys that go in payload.
      */
-    public function __construct(array $headerClaims, array $payloadClaims)
+    public function __construct(array $headerClaims = [], array $payloadClaims = [])
     {
         $this->headerClaims = $headerClaims;
         $this->payloadClaims = $payloadClaims;
