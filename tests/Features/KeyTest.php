@@ -339,8 +339,6 @@ class KeyTest extends TestCase
      */
     public function test_create_validate_jwk_prv()
     {
-        //$this->useAlgorithm(\Jose\Component\Signature\Algorithm\RS256::class);
-
         Storage::fake();
 
         $openssl = $this->app[OpenSSLBuilder::class];
@@ -360,8 +358,6 @@ class KeyTest extends TestCase
      */
     public function test_create_validate_jwk_p12()
     {
-        //$this->useAlgorithm(\Jose\Component\Signature\Algorithm\RS256::class);
-
         Storage::fake();
 
         $openssl = $this->app[OpenSSLBuilder::class];
