@@ -45,7 +45,7 @@ class DefaultValidatable
             ->future('exp', $this->config['leeway'])
             ->past('nbf', $this->config['leeway'])
             ->past('iat')
-            ->equals('aud', $this->config['aud'])
+            ->arrayEquals('aud', (array) $this->config['aud'])
             ->equals('iss', $this->config['iss']);
     }
 }
