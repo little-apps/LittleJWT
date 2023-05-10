@@ -260,4 +260,115 @@ class ValidateTest extends TestCase
                 ]);
         });
     }
+
+    /**
+     * Tests a claim value has some of expected values in array.
+     *
+     * @return void
+     */
+    public function test_jwt_arrayequals_loose()
+    {
+        LittleJWT::fake();
+
+        $actual = $this->faker->uuid;
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+            $builder->foo([$actual, $this->faker->uuid]);
+        });
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($actual) {
+            $validator
+                ->assertPasses()
+                ->arrayEquals('foo', [
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                    $actual
+                ]);
+        });
+    }
+
+    /**
+     * Tests a claim value has all expected values in array.
+     *
+     * @return void
+     */
+    public function test_jwt_arrayequals_strict()
+    {
+        LittleJWT::fake();
+
+        $actual = [
+            $this->faker->uuid,
+            $this->faker->uuid,
+            $this->faker->uuid,
+        ];
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+            $builder->foo($actual);
+        });
+
+        $expected = $actual;
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($expected) {
+            shuffle($expected);
+
+            $validator
+                ->assertPasses()
+                ->arrayEquals('foo', $expected, true);
+        });
+    }
+
+    /**
+     * Tests a claim value doesn't have some of expected values in array.
+     *
+     * @return void
+     */
+    public function test_jwt_not_arrayequals_loose()
+    {
+        LittleJWT::fake();
+
+        $actual = $this->faker->uuid;
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+            $builder->foo([$actual, $this->faker->uuid]);
+        });
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+            $validator
+                ->assertFails()
+                ->arrayEquals('foo', [
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                ]);
+        });
+    }
+
+    /**
+     * Tests a claim value doesn't have all expected values in array.
+     *
+     * @return void
+     */
+    public function test_jwt_not_arrayequals_strict()
+    {
+        LittleJWT::fake();
+
+        $actual = [
+            $this->faker->uuid,
+            $this->faker->uuid,
+            $this->faker->uuid,
+        ];
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+            $builder->foo($actual);
+        });
+
+        $expected = [...$actual, $this->faker->uuid];
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($expected) {
+            $validator
+                ->assertFails()
+                ->arrayEquals('foo', $expected, true);
+        });
+    }
 }

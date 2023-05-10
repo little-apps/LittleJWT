@@ -155,6 +155,20 @@ class Validator
     }
 
     /**
+     * Checks claim value is an array and has either at least one or all of expected values.
+     *
+     * @param string $key Claim key
+     * @param array $expected Expected value.
+     * @param bool $strict If true, the actual array must be the exact same as the expected array. (default: false)
+     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @return $this
+     */
+    public function arrayEquals(string $key, array $expected, $strict = false, $inHeader = false)
+    {
+        return $this->addRule(new Rules\Claims\ArrayEquals($key, $expected, $strict, $inHeader));
+    }
+
+    /**
      * Securely checks value of claim with key equals expected.
      *
      * @param string $key Claim key
