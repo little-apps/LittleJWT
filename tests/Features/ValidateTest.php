@@ -230,7 +230,7 @@ class ValidateTest extends TestCase
                     $this->faker->uuid,
                     $this->faker->uuid,
                     $this->faker->uuid,
-                    $actual
+                    $actual,
                 ]);
         });
     }
@@ -256,7 +256,7 @@ class ValidateTest extends TestCase
                 ->oneOf('foo', [
                     $this->faker->uuid,
                     $this->faker->uuid,
-                    $this->faker->uuid
+                    $this->faker->uuid,
                 ]);
         });
     }
