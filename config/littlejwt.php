@@ -120,7 +120,7 @@ return [
             'iss' => env('APP_URL', 'http://localhost'),
 
             /**
-             * Value to user for the 'aud' claim.
+             * Value to use for the 'aud' claim.
              */
             'aud' => env('APP_NAME', 'Laravel'),
         ]
