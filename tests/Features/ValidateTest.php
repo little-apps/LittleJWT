@@ -207,4 +207,57 @@ class ValidateTest extends TestCase
                 ->assertErrorKeyExists(Rules\Allowed::class);
         });
     }
+
+    /**
+     * Tests a claim value is one of expected values.
+     *
+     * @return void
+     */
+    public function test_jwt_oneof()
+    {
+        LittleJWT::fake();
+
+        $actual = $this->faker->uuid;
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+            $builder->foo($actual);
+        });
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($actual) {
+            $validator
+                ->assertPasses()
+                ->oneOf('foo', [
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                    $actual
+                ]);
+        });
+    }
+
+    /**
+     * Tests a claim value is one of expected values.
+     *
+     * @return void
+     */
+    public function test_jwt_not_oneof()
+    {
+        LittleJWT::fake();
+
+        $actual = $this->faker->uuid;
+
+        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+            $builder->foo($actual);
+        });
+
+        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+            $validator
+                ->assertFails()
+                ->oneOf('foo', [
+                    $this->faker->uuid,
+                    $this->faker->uuid,
+                    $this->faker->uuid
+                ]);
+        });
+    }
 }
