@@ -11,13 +11,11 @@ use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
-use LittleApps\LittleJWT\Factories\JWTBuilder;
-use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Factories\DefaultCallbackBuilder;
+use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
-use LittleApps\LittleJWT\Mutate\Mutatables\DefaultMutatable;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\Mutate;
 use LittleApps\LittleJWT\Mutate\MutatorManager;
@@ -284,7 +282,8 @@ class LittleJWT
      *
      * @return DefaultCallbackBuilder
      */
-    protected function getDefaultCallbackBuilder() {
+    protected function getDefaultCallbackBuilder()
+    {
         return $this->app->make(DefaultCallbackBuilder::class);
     }
 }
