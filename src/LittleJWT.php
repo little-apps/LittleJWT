@@ -13,6 +13,7 @@ use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
+use LittleApps\LittleJWT\Factories\DefaultCallbackBuilder;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
@@ -90,7 +91,7 @@ class LittleJWT
         $callbacks = [];
 
         if ($applyDefault) {
-            array_push($callbacks, $this->getDefaultBuildableCallback());
+            array_push($callbacks, $this->getDefaultCallbackBuilder()->createBuildableCallback());
         }
 
         if (is_callable($callback)) {
@@ -104,7 +105,7 @@ class LittleJWT
                 ->passBuilderThru($buildable)
                 ->build(
                     $this->mutate()
-                        ->passMutatorsThru($this->getDefaultMutatableCallback())
+                        ->passMutatorsThru($this->getDefaultCallbackBuilder()->createMutatableCallback())
                 );
 
         return $this->sign()->sign($jwt);
@@ -187,7 +188,7 @@ class LittleJWT
         $stack = [];
 
         if ($applyDefault) {
-            array_push($stack, $this->getDefaultMutatableCallback());
+            array_push($stack, $this->getDefaultCallbackBuilder()->createMutatableCallback());
         }
 
         if (! is_null($callback)) {
@@ -208,7 +209,7 @@ class LittleJWT
     public function validateJWT(JsonWebToken $jwt, callable $callback = null, $applyDefault = true)
     {
         if ($applyDefault) {
-            $callbacks = [$this->getDefaultValidatableCallback()];
+            $callbacks = [$this->getDefaultCallbackBuilder()->createValidatableCallback()];
 
             if (is_callable($callback)) {
                 array_push($callbacks, $callback);
@@ -243,7 +244,7 @@ class LittleJWT
         // Get callbacks to extract mutators from
         if ($applyDefault) {
             $callbacks = [
-                $this->getDefaultValidatableCallback(),
+                $this->getDefaultCallbackBuilder()->createValidatableCallback(),
                 $callback,
             ];
         } else {
@@ -279,33 +280,11 @@ class LittleJWT
     }
 
     /**
-     * Gets the default buildable callback.
+     * Gets the default callback builder.
      *
-     * @return callable(Builder): void
+     * @return DefaultCallbackBuilder
      */
-    protected function getDefaultBuildableCallback()
-    {
-        $alias = sprintf('littlejwt.buildables.%s', $this->app->config->get('littlejwt.defaults.buildable'));
-
-        return $this->app->make($alias);
-    }
-
-    protected function getDefaultMutatableCallback()
-    {
-        $config = $this->app->config->get('littlejwt.builder.mutators');
-
-        return new DefaultMutatable($config);
-    }
-
-    /**
-     * Gets the default Validatable callback.
-     *
-     * @return callable(Validator): void
-     */
-    protected function getDefaultValidatableCallback()
-    {
-        $validatable = ValidatableBuilder::resolve($this->app->config->get('littlejwt.defaults.validatable'));
-
-        return $validatable;
+    protected function getDefaultCallbackBuilder() {
+        return $this->app->make(DefaultCallbackBuilder::class);
     }
 }
