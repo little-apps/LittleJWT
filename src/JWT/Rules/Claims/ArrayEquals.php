@@ -41,7 +41,7 @@ class ArrayEquals extends Rule
      */
     protected function checkClaim(JsonWebToken $jwt, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             return false;
         }
 
