@@ -47,10 +47,11 @@ trait HandlesValidate
      *
      * @param string $token
      * @param callable|null $callback
-     * @param boolean $applyDefault
-     * @return boolean True if valid, false if not valid or token cannot be parsed.
+     * @param bool $applyDefault
+     * @return bool True if valid, false if not valid or token cannot be parsed.
      */
-    public function validateToken(string $token, callable $callback = null, $applyDefault = true) {
+    public function validateToken(string $token, callable $callback = null, $applyDefault = true)
+    {
         $jwt = $this->parse($token);
 
         if (is_null($jwt)) {
