@@ -39,6 +39,23 @@ class ValidateTest extends TestCase
     }
 
     /**
+     * Tests that a default JWT is valid.
+     *
+     * @return void
+     */
+    public function test_empty_jwt_validate_token()
+    {
+        LittleJWT::fake();
+
+        $token = (string) LittleJWT::createSigned();
+
+        LittleJWT::validateToken($token, function (TestValidator $validator) {
+            $validator
+                ->assertPasses();
+        });
+    }
+
+    /**
      * Tests that a default token is valid.
      *
      * @return void
