@@ -16,7 +16,7 @@ interface GuardAdapter
      * @param string $token
      * @return JsonWebToken|null JWT instance or null if unable to be parsed.
      */
-    public function parseToken(string $token);
+    public function parse(string $token);
 
     /**
      * Validate the JWT.
@@ -24,7 +24,7 @@ interface GuardAdapter
      * @param JsonWebToken $jwt
      * @return bool True if JWT is validated.
      */
-    public function validateJwt(JsonWebToken $jwt);
+    public function validate(JsonWebToken $jwt);
 
     /**
      * Gets a user from the JWT

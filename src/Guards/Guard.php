@@ -172,9 +172,9 @@ class Guard implements GuardContract
     public function getUserFromToken(string $token)
     {
         // First check if token is actually a JWT
-        $jwt = $this->getAdapter()->parseToken($token);
+        $jwt = $this->getAdapter()->parse($token);
 
-        if (! is_null($jwt) && $this->getAdapter()->validateJwt($jwt)) {
+        if (! is_null($jwt) && $this->getAdapter()->validate($jwt)) {
             return $this->getAdapter()->getUserFromJwt($this->provider, $jwt);
         }
 

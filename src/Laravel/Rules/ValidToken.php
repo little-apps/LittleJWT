@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Laravel\Rules;
 
 use Illuminate\Contracts\Validation\ImplicitRule;
 
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 
 class ValidToken implements ImplicitRule
@@ -49,16 +50,21 @@ class ValidToken implements ImplicitRule
     /**
      * Performs the validation.
      *
-     * @param mixed $token
-     * @return bool
+     * @param string|JsonWebToken $token If string, it's parsed.
+     * @return bool True if validated. False if token couldn't be parsed or validation failed.
      */
     protected function validate($token)
     {
-        return LittleJWT::validateToken(
+        $token = is_string($token) ? LittleJWT::parse($token) : $token;
+
+        if (!($token instanceof JsonWebToken))
+            return false;
+
+        return LittleJWT::validate(
             $token,
             $this->callback,
             $this->applyDefault
-        );
+        )->passes();
     }
 
     /**

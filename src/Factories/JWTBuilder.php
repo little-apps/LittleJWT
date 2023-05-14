@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
+use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -14,10 +15,19 @@ use LittleApps\LittleJWT\Utils\JsonEncoder;
 class JWTBuilder
 {
     /**
-     * Initializes JWT Builder
+     * Sign instance to use for signing JWTs later.
+     *
+     * @var Sign
      */
-    public function __construct()
+    protected $sign;
+
+    /**
+     * Initializes JWT Builder
+     * @param Sign $sign Passed to JsonWebToken to be used by sign() method.
+     */
+    public function __construct(Sign $sign)
     {
+        $this->sign = $sign;
     }
 
     /**
@@ -55,11 +65,11 @@ class JWTBuilder
     public function buildFromParts(array $headers, array $payload, ?string $signature = null)
     {
         if (is_null($signature)) {
-            return new JsonWebToken($headers, $payload);
+            return new JsonWebToken($this->sign, $headers, $payload);
         } else {
             $signature = $this->decodeSignature($signature);
 
-            return new SignedJsonWebToken($headers, $payload, $signature);
+            return new SignedJsonWebToken($this->sign, $headers, $payload, $signature);
         }
     }
 

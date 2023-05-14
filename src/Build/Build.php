@@ -23,9 +23,9 @@ class Build
     protected $app;
 
     /**
-     * Builder to build JWTs.
+     * Builder to build JWTs
      *
-     * @var Builder
+     * @var JWTBuilder
      */
     protected $builder;
 
@@ -41,13 +41,13 @@ class Build
      * Initializes Build instance.
      *
      * @param Application $app Application container.
-     * @param Builder $builder Builder to use (optional).
+     * @param JWTBuilder $jwtBuilder Builder to use (optional).
      */
-    public function __construct(Application $app, Builder $builder = null)
+    public function __construct(Application $app, JWTBuilder $jwtBuilder)
     {
         $this->app = $app;
 
-        $this->builder = $builder ?? $this->buildBuilder();
+        $this->builder = $jwtBuilder;
     }
 
     /**
@@ -67,39 +67,13 @@ class Build
      *
      * @return \LittleApps\LittleJWT\JWT\JsonWebToken
      */
-    public function build(Mutate $mutate = null)
+    public function build()
     {
-        $this->mutators = new Mutators();
+        $builder = $this->createBuilder();
 
-        $this->runThru($this->builder, $this->mutators);
+        $this->runThru($builder);
 
-        $jwt = $this->createJWTBuilder()->buildFromParts($this->builder->getHeaders(), $this->builder->getPayload());
-
-        if (is_null($mutate)) {
-            return $jwt;
-        }
-
-        // TODO: Move mutation to outside this class:
-        //  * Builder and Mutators instances will need to be shared.
-
-        $mutate
-            ->passMutatorsThru(function (Mutators $mutators) {
-                foreach ($this->builder->getHeadersOptions() as $claimBuildOptions) {
-                    if ($claimBuildOptions->hasMutatable()) {
-                        $mutators->addHeader($claimBuildOptions->getKey(), $claimBuildOptions->getMutatable());
-                    }
-                }
-
-                foreach ($this->builder->getPayloadOptions() as $claimBuildOptions) {
-                    if ($claimBuildOptions->hasMutatable()) {
-                        $mutators->addPayload($claimBuildOptions->getKey(), $claimBuildOptions->getMutatable());
-                    }
-                }
-            })->passMutatorsThru(function (Mutators $mutators) {
-                $mutators->merge($this->mutators);
-            });
-
-        return $mutate->serialize($jwt);
+        return $this->builder->buildFromParts($builder->getHeaders(), $builder->getPayload());
     }
 
     /**
@@ -107,22 +81,12 @@ class Build
      *
      * @return Builder
      */
-    protected function buildBuilder()
+    protected function createBuilder()
     {
         $headerClaims = $this->app->config->get('littlejwt.builder.claims.header', []);
         $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
 
         return new Builder($headerClaims, $payloadClaims);
-    }
-
-    /**
-     * Creates the JWTBuilder instance
-     *
-     * @return JWTBuilder
-     */
-    protected function createJWTBuilder()
-    {
-        return new JWTBuilder();
     }
 
     /**

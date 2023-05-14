@@ -23,7 +23,7 @@ class MutatedJsonWebToken extends JsonWebToken
      */
     public function __construct(JsonWebToken $original, array $headers, array $payload)
     {
-        parent::__construct($headers, $payload);
+        parent::__construct($original->sign, $headers, $payload);
 
         $this->original = $original;
     }

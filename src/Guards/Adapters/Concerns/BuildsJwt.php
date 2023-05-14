@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Build\Buildables\GuardBuildable;
-use LittleApps\LittleJWT\JWT\JsonWebToken;
+use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 
 trait BuildsJwt
 {
@@ -16,13 +16,13 @@ trait BuildsJwt
      * @param Authenticatable $user
      * @param array $payloadClaims Any extra claims to add to JWT.
      * @param array $headerClaims Any extra claims to add to JWT.
-     * @return JsonWebToken
+     * @return SignedJsonWebToken
      */
     public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
     {
         $buildable = new GuardBuildable($user, $payloadClaims, $headerClaims);
 
-        return $this->jwt->createJWT($buildable);
+        return $this->jwt->createSigned($buildable);
     }
 
     /**

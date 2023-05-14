@@ -39,15 +39,17 @@ class ValidToken
      */
     protected function validate($token, iterable $validatables)
     {
+        $jwt = LittleJWT::parse($token);
+
         if (empty($validatables)) {
-            return LittleJWT::validateToken($token);
+            return LittleJWT::validate($jwt)->passes();
         }
 
         $stack = array_map(fn ($key) => ValidatableBuilder::resolve($key), (array) $validatables);
 
         $stackValidator = new StackValidatable($stack);
 
-        return LittleJWT::validateToken($token, $stackValidator, false);
+        return LittleJWT::validate($jwt, $stackValidator, false)->passes();
     }
 
     /**

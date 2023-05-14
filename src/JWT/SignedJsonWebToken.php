@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
+use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 /**
@@ -24,9 +25,9 @@ class SignedJsonWebToken extends JsonWebToken
      * @param array $payload Payload
      * @param string $signature Signature (as raw bytes)
      */
-    public function __construct(array $headers, array $payload, string $signature)
+    public function __construct(Sign $sign, array $headers, array $payload, string $signature)
     {
-        parent::__construct($headers, $payload);
+        parent::__construct($sign, $headers, $payload);
 
         $this->signature = $signature;
     }
@@ -62,10 +63,10 @@ class SignedJsonWebToken extends JsonWebToken
      *
      * @param JsonWebToken $jwt
      * @param string $signature
-     * @return self
+     * @return SignedJsonWebToken
      */
-    public static function createFromJsonWebtoken(JsonWebToken $jwt, string $signature)
+    public static function instance(JsonWebToken $jwt, string $signature)
     {
-        return new self($jwt->headers, $jwt->payload, $signature);
+        return new self($jwt->sign, $jwt->headers, $jwt->payload, $signature);
     }
 }

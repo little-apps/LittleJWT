@@ -3,13 +3,15 @@
 namespace LittleApps\LittleJWT;
 
 use Illuminate\Contracts\Foundation\Application;
-
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
 use Jose\Component\Core\JWK;
 
-use LittleApps\LittleJWT\Build\Build;
-use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
+
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Build\Sign;
+use LittleApps\LittleJWT\Mutate\Concerns\HasCustomMutators;
+use LittleApps\LittleJWT\Core\Handler;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Factories\DefaultCallbackBuilder;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
@@ -19,8 +21,10 @@ use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\Mutate;
 use LittleApps\LittleJWT\Mutate\MutatorManager;
+use LittleApps\LittleJWT\Mutate\MutatedLittleJWT;
+use LittleApps\LittleJWT\Mutate\MutateHandler;
 use LittleApps\LittleJWT\Mutate\Mutators;
-use LittleApps\LittleJWT\Validation\Valid;
+
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
 /**
@@ -28,9 +32,18 @@ use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
  * @author Nick H <nick@little-apps.com>
  * @license https://github.com/little-apps/LittleJWT/blob/main/LICENSE.md
  * @see https://www.getlittlejwt.com
+ * @mixin \LittleApps\LittleJWT\Mutate\MutateHandler
+ * @mixin \LittleApps\LittleJWT\Core\Handler
  */
 class LittleJWT
 {
+    use Macroable {
+        __call as macroCall;
+    }
+    use ForwardsCalls;
+    use HasCustomMutators;
+
+
     /**
      * Application container
      *
@@ -46,11 +59,11 @@ class LittleJWT
     protected $jwk;
 
     /**
-     * Custom mutator mappings
+     * Whether to use mutations or not
      *
-     * @var array<string, \LittleApps\LittleJWT\Contracts\Mutator>
+     * @var boolean
      */
-    protected $customMutatorsMapping;
+    protected $mutate;
 
     /**
      * Intializes LittleJWT instance.
@@ -62,228 +75,63 @@ class LittleJWT
     {
         $this->app = $app;
         $this->jwk = $jwk;
-        $this->customMutatorsMapping = [];
+        $this->mutate = true;
     }
 
     /**
-     * Creates a signed JWT
+     * Gets handler for JWTs
      *
-     * @param callable(Builder, Mutators): void $callback Callback that receives Builder instance.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
-     * @return string
+     * @return Handler|MutateHandler
      */
-    public function createToken(callable $callback = null, $applyDefault = true)
-    {
-        return (string) $this->createJWT($callback, $applyDefault);
+    public function handler() {
+        return $this->mutate ? $this->withMutate() : $this->withoutMutate();
     }
 
     /**
-     * Creates a signed JWT instance.
+     * Handles JWTs with mutations
      *
-     * @param callable(Builder, Mutators): void $callback Callback that receives Builder instance.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
-     * @return SignedJsonWebToken
+     * @return MutateHandler
      */
-    public function createJWT(callable $callback = null, $applyDefault = true)
-    {
-        $callbacks = [];
+    public function withMutate() {
+        return new MutateHandler($this->app, $this->jwk, $this->customMutatorsMapping, true);
+    }
 
-        if ($applyDefault) {
-            array_push($callbacks, $this->getDefaultCallbackBuilder()->createBuildableCallback());
+    /**
+     * Handles JWTs without mutations
+     *
+     * @return Handler
+     */
+    public function withoutMutate() {
+        return new Handler($this->app, $this->jwk);
+    }
+
+    /**
+     * Whether to always use mutations.
+     * If enabled, all operations will be handled with the MutateHandler.
+     *
+     * @param boolean $enabled
+     * @return $this
+     */
+    public function alwaysMutate(bool $enabled) {
+        $this->mutate = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Forwards method calls to handler.
+     *
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if ($this->hasMacro($name)) {
+            return $this->macroCall($name, $arguments);
         }
 
-        if (is_callable($callback)) {
-            array_push($callbacks, $callback);
-        }
-
-        $buildable = new StackBuildable($callbacks);
-
-        $jwt =
-            $this->build()
-                ->passBuilderThru($buildable)
-                ->build(
-                    $this->mutate()
-                        ->passMutatorsThru($this->getDefaultCallbackBuilder()->createMutatableCallback())
-                );
-
-        return $this->sign()->sign($jwt);
+        return $this->forwardCallTo($this->handler(), $name, $arguments);
     }
 
-    /**
-     * Creates a Build instance.
-     *
-     * @param Builder $builder Builder to use (optional)
-     * @return Build
-     */
-    public function build(Builder $builder = null)
-    {
-        $build = new Build($this->app, $builder);
-
-        return $build;
-    }
-
-    /**
-     * Creates a Mutate instance.
-     *
-     * @return Mutate
-     */
-    public function mutate()
-    {
-        $manager = new MutatorManager($this->app, $this->getCustomMutators());
-        $mutate = new Mutate($manager);
-
-        return $mutate;
-    }
-
-    /**
-     * Creates a Sign instance.
-     *
-     * @return Sign
-     */
-    public function sign()
-    {
-        return new Sign($this->app, $this->jwk);
-    }
-
-    /**
-     * Creates a Valid instance for validating a JWT.
-     *
-     * @param JsonWebToken $jwt JWT instance to validate (generated by parseToken() method)
-     * @return Valid Valid instance (before validation is done)
-     */
-    public function valid(JsonWebToken $jwt)
-    {
-        $valid = new Valid($this->app, $jwt, $this->jwk);
-
-        return $valid;
-    }
-
-    /**
-     * Builds a JWT instance from a string.
-     * This does NOT check that the JWT is valid.
-     *
-     * @param string $token Token to parse
-     * @param bool $throw If true, CantParseJWTException is thrown instead of returning null. (default: false)
-     * @return \LittleApps\LittleJWT\JWT\JsonWebToken|null Returns JWT or null if token cannot be parsed.
-     */
-    public function parseToken(string $token, bool $throw = false)
-    {
-        try {
-            $builder = new JWTBuilder();
-
-            return $builder->buildFromExisting($token);
-        } catch (CantParseJWTException $ex) {
-            if ($throw) {
-                throw $ex;
-            }
-
-            return null;
-        }
-    }
-
-    public function mutateJWT(JsonWebToken $jwt, callable $callback = null, $applyDefault = true)
-    {
-        $stack = [];
-
-        if ($applyDefault) {
-            array_push($stack, $this->getDefaultCallbackBuilder()->createMutatableCallback());
-        }
-
-        if (! is_null($callback)) {
-            array_push($stack, $callback);
-        }
-
-        return $this->mutate()->passMutatorsThru(new StackMutatable($stack))->unserialize($jwt);
-    }
-
-    /**
-     * Validates a JSON Web Token (JWT).
-     *
-     * @param JsonWebToken $jwt JWT instance to validate (generated by parseToken() method)
-     * @param callable(\LittleApps\LittleJWT\Validation\Validator): void $callback Callable that receives Validator to set rules for JWT.
-     * @param bool $applyDefault If true, the default validatable is used first. (default: true)
-     * @return bool True if token is valid.
-     */
-    public function validateJWT(JsonWebToken $jwt, callable $callback = null, $applyDefault = true)
-    {
-        if ($applyDefault) {
-            $callbacks = [$this->getDefaultCallbackBuilder()->createValidatableCallback()];
-
-            if (is_callable($callback)) {
-                array_push($callbacks, $callback);
-            }
-
-            $passthrough = new StackValidatable($callbacks);
-        } else {
-            // No need to create a StackValidatable instance for just 1 validatable
-            $passthrough = $callback;
-        }
-
-        $valid = $this->valid($jwt);
-
-        if (is_callable($passthrough)) {
-            $valid->passValidatorThru($passthrough);
-        }
-
-        // Run the JWT through a Valid instance and return the result.
-        return $valid->passes();
-    }
-
-    /**
-     * Parses a token as a JSON Web Token (JWT) and validates it.
-     *
-     * @param string $token The token to parse as a JWT and validate.
-     * @param callable(\LittleApps\LittleJWT\Validation\Validator): void $callback Callable that receives Validator to set rules for JWT.
-     * @param bool $applyDefault If true, the default validatable is used first. (default: true)
-     * @return bool True if token is valid.
-     */
-    public function validateToken(string $token, $callback = null, $applyDefault = true)
-    {
-        // Get callbacks to extract mutators from
-        if ($applyDefault) {
-            $callbacks = [
-                $this->getDefaultCallbackBuilder()->createValidatableCallback(),
-                $callback,
-            ];
-        } else {
-            $callbacks = [$callback];
-        }
-
-        $jwt = $this->parseToken($token);
-
-        // Reuse default validitable instance (rather than creating another object)
-        return ! is_null($jwt) ? $this->validateJWT($jwt, $applyDefault ? new StackValidatable($callbacks) : $callback, false) : false;
-    }
-
-    /**
-     * Sets custom mutator mapping
-     *
-     * @param string $key Key
-     * @param class-string<\LittleApps\LittleJWT\Contracts\Mutator> $class Fully qualified class name
-     * @return void
-     */
-    public function customMutator(string $key, string $class)
-    {
-        $this->customMutatorsMapping[$key] = $class;
-    }
-
-    /**
-     * Gets custom mutator mappings
-     *
-     * @return array
-     */
-    public function getCustomMutators()
-    {
-        return $this->customMutatorsMapping;
-    }
-
-    /**
-     * Gets the default callback builder.
-     *
-     * @return DefaultCallbackBuilder
-     */
-    protected function getDefaultCallbackBuilder()
-    {
-        return $this->app->make(DefaultCallbackBuilder::class);
-    }
 }

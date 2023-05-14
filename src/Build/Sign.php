@@ -11,13 +11,6 @@ use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 class Sign
 {
     /**
-     * Application container
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
      * Json Web Key to sign with.
      *
      * @var JsonWebKey
@@ -25,11 +18,11 @@ class Sign
     protected $jwk;
 
     /**
-     * Initializes Builder instance.
+     * Initializes Sign instance.
+     * @param JsonWebKey $jwk
      */
-    public function __construct(Application $app, JsonWebKey $jwk)
+    public function __construct(JsonWebKey $jwk)
     {
-        $this->app = $app;
         $this->jwk = $jwk;
     }
 
@@ -44,6 +37,6 @@ class Sign
         $algorithm = $this->jwk->algorithm();
         $signature = JWTHasher::hash($algorithm, $this->jwk, $jwt->getHeaders(), $jwt->getPayload());
 
-        return SignedJsonWebToken::createFromJsonWebtoken($jwt, $signature);
+        return SignedJsonWebToken::instance($jwt, $signature);
     }
 }

@@ -4,45 +4,39 @@ namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
-
-
 use LittleApps\LittleJWT\Core\Handler;
-use LittleApps\LittleJWT\Mutate\MutateHandler;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
+use LittleApps\LittleJWT\Mutate\Concerns\HasCustomMutators;
+use LittleApps\LittleJWT\Mutate\Concerns\HasDefaultMutators;
+use LittleApps\LittleJWT\Mutate\MutateHandler;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 use LittleApps\LittleJWT\Validation\Validator;
 
-/**
- * @mixin \LittleApps\LittleJWT\LittleJWT
- */
-class LittleJWT extends RealLittleJWT
+class TestMutateHandler extends MutateHandler
 {
-    use ForwardsCalls;
-
-    public function __construct(Application $app, JsonWebKey $jwk)
-    {
-        parent::__construct($app, $jwk);
-    }
+    use HasCustomMutators;
+    use HasDefaultMutators;
 
     /**
-     * Handle JWTs with mutating.
+     * Attachs mutators callback.
      *
-     * @return TestMutateHandler
+     * @param callable $callback
+     * @return static
      */
-    public function withMutate() {
-        return new TestMutateHandler($this->app, $this->jwk, $this->customMutatorsMapping, true);
-    }
+    public function mutate(callable $callback) {
+        $instance = new self($this->app, $this->jwk, $this->customMutatorsMapping, $this->defaultMutators);
 
-    /**
-     * Handle JWTs without mutating.
-     *
-     * @return TestHandler
-     */
-    public function withoutMutate() {
-        return new TestHandler($this->app, $this->jwk);
+        // Add mutators from this instance
+        foreach ($this->passThruStack as $cb) {
+            $instance->passMutatorsThru($cb);
+        }
+
+        $instance->passMutatorsThru($callback);
+
+        return $instance;
     }
 
     /**

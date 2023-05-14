@@ -42,13 +42,6 @@ class ClaimBuildOptions
     protected $value;
 
     /**
-     * Mutatable definition (if any)
-     *
-     * @var string|string|\LittleApps\LittleJWT\Contracts\Mutator|null
-     */
-    protected $mutatable;
-
-    /**
      * Initializes ClaimBuildOptions
      *
      * @param Builder $builder
@@ -102,39 +95,6 @@ class ClaimBuildOptions
     public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * Check if mutatable exists for this claim.
-     *
-     * @return bool
-     */
-    public function hasMutatable()
-    {
-        return ! is_null($this->mutatable);
-    }
-
-    /**
-     * Gets the mutatable definition for this claim.
-     *
-     * @return string|\LittleApps\LittleJWT\Contracts\Mutator
-     */
-    public function getMutatable()
-    {
-        return $this->mutatable;
-    }
-
-    /**
-     * Specifies the mutator for this claim.
-     *
-     * @param string|\LittleApps\LittleJWT\Contracts\Mutator|null $definition
-     * @return $this
-     */
-    public function as($definition)
-    {
-        $this->mutatable = $definition;
-
-        return $this;
     }
 
     /**

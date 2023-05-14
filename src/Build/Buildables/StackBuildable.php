@@ -26,11 +26,11 @@ class StackBuildable
      * @param Builder $builder
      * @return void
      */
-    public function __invoke(Builder $builder, Mutators $mutators)
+    public function __invoke(Builder $builder)
     {
         foreach ($this->stack as $callback) {
             if (is_callable($callback)) {
-                $callback($builder, $mutators);
+                $callback($builder);
             } elseif (is_object($callback) && $callback instanceof Buildable) {
                 $callback->build($builder);
             }

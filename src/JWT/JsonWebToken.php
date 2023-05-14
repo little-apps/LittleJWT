@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
+use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 
 /**
@@ -10,6 +11,13 @@ use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
  */
 class JsonWebToken
 {
+    /**
+     * Sign instance to use to sign this JWT.
+     *
+     * @var Sign
+     */
+    protected $sign;
+
     /**
      * Header claim manager.
      *
@@ -27,11 +35,13 @@ class JsonWebToken
     /**
      * Creates an instance that represents a JWT.
      *
+     * @param Sign $sign
      * @param array $headers Headers
      * @param array $payload Payload
      */
-    public function __construct(array $headers, array $payload)
+    public function __construct(Sign $sign, array $headers, array $payload)
     {
+        $this->sign = $sign;
         $this->headers = $headers;
         $this->payload = $payload;
     }
@@ -54,6 +64,15 @@ class JsonWebToken
     public function getPayload()
     {
         return $this->builder()->buildClaimManagerForPayload($this->payload);
+    }
+
+    /**
+     * Signs this JWT.
+     *
+     * @return SignedJsonWebToken
+     */
+    public function sign() {
+        return $this->sign->sign($this);
     }
 
     /**

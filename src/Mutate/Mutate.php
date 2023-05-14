@@ -12,7 +12,13 @@ use LittleApps\LittleJWT\JWT\MutatedJsonWebToken;
 class Mutate
 {
     use ForwardsCalls;
-    use PassableThru;
+
+    /**
+     * Builder for JWTs.
+     *
+     * @var JWTBuilder
+     */
+    protected $builder;
 
     /**
      * Mutator Manager
@@ -21,56 +27,55 @@ class Mutate
      */
     protected $mutatorManager;
 
-    public function __construct(MutatorManager $mutatorManager)
-    {
-        $this->mutatorManager = $mutatorManager;
-    }
-
     /**
-     * Passes a Mutators instance through a callback.
+     * Initializes Mutate instance.
      *
-     * @param callable(Mutators): void $callback
-     * @return $this
+     * @param JWTBuilder $builder
+     * @param MutatorManager $mutatorManager
      */
-    public function passMutatorsThru(callable $callback)
+    public function __construct(JWTBuilder $builder, MutatorManager $mutatorManager)
     {
-        return $this->passThru($callback);
+        $this->builder = $builder;
+        $this->mutatorManager = $mutatorManager;
     }
 
     /**
      * Serializes claims in a JWT
      *
+     * @param Mutators $mutators
      * @param JsonWebToken $jwt
      * @return JsonWebToken Unsigned JWT
      */
-    public function serialize(JsonWebToken $jwt)
+    public function serialize(Mutators $mutators, JsonWebToken $jwt)
     {
-        $this->runThru($mutators = new Mutators());
-
         $headers = $this->serializeHeaders($mutators, $jwt);
         $payload = $this->serializePayload($mutators, $jwt);
 
-        $builder = new JWTBuilder();
-
-        return $builder->buildFromParts($headers, $payload);
+        return $this->builder->buildFromParts($headers, $payload);
     }
 
     /**
      * Unserializes claims in a JWT
      *
+     * @param Mutators $mutators
      * @param JsonWebToken $jwt
      * @return MutatedJsonWebToken Unserialized JWT
      */
-    public function unserialize(JsonWebToken $jwt)
+    public function unserialize(Mutators $mutators, JsonWebToken $jwt)
     {
-        $this->runThru($mutators = new Mutators());
-
         $headers = $this->unserializeHeaders($mutators, $jwt);
         $payload = $this->unserializePayload($mutators, $jwt);
 
         return new MutatedJsonWebToken($jwt, $headers, $payload);
     }
 
+    /**
+     * Serializes header claims.
+     *
+     * @param Mutators $mutators
+     * @param JsonWebToken $jwt
+     * @return array
+     */
     protected function serializeHeaders(Mutators $mutators, JsonWebToken $jwt)
     {
         $headers = [];
@@ -92,6 +97,13 @@ class Mutate
         return $headers;
     }
 
+    /**
+     * Serializes payload claims.
+     *
+     * @param Mutators $mutators
+     * @param JsonWebToken $jwt
+     * @return array
+     */
     protected function serializePayload(Mutators $mutators, JsonWebToken $jwt)
     {
         $payload = [];
@@ -113,6 +125,13 @@ class Mutate
         return $payload;
     }
 
+    /**
+     * Unserializes header claims.
+     *
+     * @param Mutators $mutators
+     * @param JsonWebToken $jwt
+     * @return array
+     */
     protected function unserializeHeaders(Mutators $mutators, JsonWebToken $jwt)
     {
         $headers = [];
@@ -132,6 +151,13 @@ class Mutate
         return $headers;
     }
 
+    /**
+     * Unserializes payload claims.
+     *
+     * @param Mutators $mutators
+     * @param JsonWebToken $jwt
+     * @return array
+     */
     protected function unserializePayload(Mutators $mutators, JsonWebToken $jwt)
     {
         $payload = [];
