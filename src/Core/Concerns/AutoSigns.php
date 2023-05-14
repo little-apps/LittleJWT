@@ -2,21 +2,23 @@
 
 namespace LittleApps\LittleJWT\Core\Concerns;
 
-trait AutoSigns {
+trait AutoSigns
+{
     /**
      * Whether to auto-sign created JWTs.
      *
-     * @var boolean
+     * @var bool
      */
     protected $autoSign = true;
 
     /**
      * Specifies if JWTs are auto-signed.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      * @return $this
      */
-    public function autoSign($enabled = true) {
+    public function autoSign($enabled = true)
+    {
         $this->autoSign = $enabled;
 
         return $this;

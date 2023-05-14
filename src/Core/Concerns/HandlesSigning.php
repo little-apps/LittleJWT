@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Core\Concerns;
 
 use LittleApps\LittleJWT\Build\Sign;
 
-trait HandlesSigning {
+trait HandlesSigning
+{
     /**
      * Creates a Sign instance.
      *

@@ -7,17 +7,18 @@ trait HasDefaultMutators
     /**
      * Whether to apply default mutators.
      *
-     * @var boolean
+     * @var bool
      */
     protected $defaultMutators;
 
     /**
      * Sets whether to apply default mutators or not
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      * @return $this
      */
-    public function applyDefaultMutators(bool $enabled = true) {
+    public function applyDefaultMutators(bool $enabled = true)
+    {
         $this->defaultMutators = $enabled;
 
         return $this;

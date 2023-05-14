@@ -15,7 +15,6 @@ use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
-use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;

@@ -6,14 +6,10 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 
-use LittleApps\LittleJWT\Core\Handler;
-use LittleApps\LittleJWT\Mutate\MutateHandler;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
-use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
-use LittleApps\LittleJWT\Validation\Validator;
 
 /**
  * @mixin \LittleApps\LittleJWT\LittleJWT
@@ -32,7 +28,8 @@ class LittleJWT extends RealLittleJWT
      *
      * @return TestMutateHandler
      */
-    public function withMutate() {
+    public function withMutate()
+    {
         return new TestMutateHandler($this->app, $this->jwk, $this->customMutatorsMapping, true);
     }
 
@@ -41,7 +38,8 @@ class LittleJWT extends RealLittleJWT
      *
      * @return TestHandler
      */
-    public function withoutMutate() {
+    public function withoutMutate()
+    {
         return new TestHandler($this->app, $this->jwk);
     }
 

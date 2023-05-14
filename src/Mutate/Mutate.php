@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Support\Traits\ForwardsCalls;
 
-use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\MutatedJsonWebToken;

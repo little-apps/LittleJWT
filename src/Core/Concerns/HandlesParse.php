@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Core\Concerns;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 
-trait HandlesParse {
+trait HandlesParse
+{
     /**
      * Parses and builds a JWT instance from a string.
      * This does NOT check that the JWT is valid.

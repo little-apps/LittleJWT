@@ -22,7 +22,7 @@ class ValidatedJsonWebToken
     /**
      * The result of the validation.
      *
-     * @var boolean
+     * @var bool
      */
     protected $result;
 
@@ -30,7 +30,7 @@ class ValidatedJsonWebToken
      * Initializes instance.
      *
      * @param JsonWebToken $jwt
-     * @param boolean $result
+     * @param bool $result
      */
     public function __construct(JsonWebToken $jwt, bool $result)
     {
@@ -43,26 +43,29 @@ class ValidatedJsonWebToken
      *
      * @return JsonWebToken
      */
-    public function getJWT() {
+    public function getJWT()
+    {
         return $this->jwt;
     }
 
     /**
      * Checks if validation passed.
      *
-     * @return boolean
+     * @return bool
      */
-    public function passes() {
+    public function passes()
+    {
         return $this->result;
     }
 
     /**
      * Checks if validation failed.
      *
-     * @return boolean
+     * @return bool
      */
-    public function fails() {
-        return !$this->result;
+    public function fails()
+    {
+        return ! $this->result;
     }
 
     /**

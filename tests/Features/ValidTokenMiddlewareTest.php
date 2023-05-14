@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;

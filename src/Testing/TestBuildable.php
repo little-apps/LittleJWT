@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Mutate\Mutators;
 
 class TestBuildable
 {

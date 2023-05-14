@@ -6,7 +6,8 @@ use Illuminate\Contracts\Foundation\Application;
 
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 
-class Handler {
+class Handler
+{
     use Concerns\CreatesCallbackBuilder;
     use Concerns\CreatesJWTBuilder;
     use Concerns\HandlesCreate;
@@ -39,6 +40,4 @@ class Handler {
         $this->app = $app;
         $this->jwk = $jwk;
     }
-
-
 }

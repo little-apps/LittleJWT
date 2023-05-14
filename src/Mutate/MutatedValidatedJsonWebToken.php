@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Support\Traits\ForwardsCalls;
-use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
 
 class MutatedValidatedJsonWebToken
@@ -41,7 +40,8 @@ class MutatedValidatedJsonWebToken
      *
      * @return ValidatedJsonWebToken
      */
-    public function getValidatedJWT() {
+    public function getValidatedJWT()
+    {
         return $this->validated;
     }
 
@@ -51,7 +51,8 @@ class MutatedValidatedJsonWebToken
      * @param Mutators|null $mutators
      * @return static
      */
-    public function unserialize(Mutators $mutators = null) {
+    public function unserialize(Mutators $mutators = null)
+    {
         // TODO: Test this method.
         $mutators = $mutators ?? new Mutators();
 

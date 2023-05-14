@@ -71,7 +71,8 @@ class JsonWebToken
      *
      * @return SignedJsonWebToken
      */
-    public function sign() {
+    public function sign()
+    {
         return $this->sign->sign($this);
     }
 

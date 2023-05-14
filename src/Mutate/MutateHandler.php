@@ -3,13 +3,12 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\ForwardsCalls;
 
-use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Concerns\PassableThru;
+use LittleApps\LittleJWT\Core\Handler;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
-use LittleApps\LittleJWT\Core\Handler;
+use LittleApps\LittleJWT\LittleJWT;
 
 class MutateHandler extends Handler
 {
@@ -25,7 +24,7 @@ class MutateHandler extends Handler
      * @param Application $app Application container
      * @param JsonWebKey $jwk JWK to sign and verify JWTs with.
      * @param array<string, \LittleApps\LittleJWT\Contracts\Mutator> $customMutators Custom mutators.
-     * @param boolean $applyDefault Whether to apply default mutators.
+     * @param bool $applyDefault Whether to apply default mutators.
      */
     public function __construct(Application $app, JsonWebKey $jwk, array $customMutators, bool $applyDefault)
     {
@@ -41,7 +40,8 @@ class MutateHandler extends Handler
      * @param callable(Mutators): void $callback
      * @return self New instance with callback (and any callbacks from this handler)
      */
-    public function mutate(callable $callback) {
+    public function mutate(callable $callback)
+    {
         $instance = new self($this->app, $this->jwk, $this->customMutatorsMapping, $this->defaultMutators);
 
         // Add mutators from this instance
@@ -72,7 +72,8 @@ class MutateHandler extends Handler
      * @param Mutators|null $mutators An existing Mutators instance (optional)
      * @return JsonWebToken
      */
-    public function serialize(JsonWebToken $jwt, Mutators $mutators = null) {
+    public function serialize(JsonWebToken $jwt, Mutators $mutators = null)
+    {
         $mutators = $mutators ?? new Mutators();
 
         $this->runThru($mutators);
@@ -87,7 +88,8 @@ class MutateHandler extends Handler
      * @param Mutators|null $mutators An existing Mutators instance (optional)
      * @return MutatedJsonWebToken
      */
-    public function unserialize(JsonWebToken $jwt, Mutators $mutators = null) {
+    public function unserialize(JsonWebToken $jwt, Mutators $mutators = null)
+    {
         $mutators = $mutators ?? new Mutators();
 
         $this->runThru($mutators);
@@ -102,7 +104,8 @@ class MutateHandler extends Handler
      * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return SignedJsonWebToken|JsonWebToken
      */
-    public function create(callable $callback = null, $applyDefault = true) {
+    public function create(callable $callback = null, $applyDefault = true)
+    {
         // Don't sign it yet, because this will try to JSON encode the claims (which may need to be serialized before that can happen)
         $unsigned = parent::createUnsigned($callback, $applyDefault);
 
@@ -146,9 +149,10 @@ class MutateHandler extends Handler
      *
      * @return Mutate
      */
-    protected function createMutate() {
+    protected function createMutate()
+    {
         $manager = new MutatorManager($this->app, $this->getCustomMutators());
+
         return new Mutate($this->createJWTBuilder(), $manager);
     }
-
 }

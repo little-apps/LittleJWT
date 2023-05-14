@@ -2,18 +2,11 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\ForwardsCalls;
-use LittleApps\LittleJWT\Core\Handler;
-use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
-use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Mutate\Concerns\HasCustomMutators;
 use LittleApps\LittleJWT\Mutate\Concerns\HasDefaultMutators;
 use LittleApps\LittleJWT\Mutate\MutateHandler;
 use LittleApps\LittleJWT\Validation\Valid;
-use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
-use LittleApps\LittleJWT\Validation\Validator;
 
 class TestMutateHandler extends MutateHandler
 {
@@ -26,7 +19,8 @@ class TestMutateHandler extends MutateHandler
      * @param callable $callback
      * @return static
      */
-    public function mutate(callable $callback) {
+    public function mutate(callable $callback)
+    {
         $instance = new self($this->app, $this->jwk, $this->customMutatorsMapping, $this->defaultMutators);
 
         // Add mutators from this instance

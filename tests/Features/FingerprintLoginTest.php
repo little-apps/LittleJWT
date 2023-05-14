@@ -78,7 +78,7 @@ class FingerprintLoginTest extends TestCase
             ->withCredentials()
             ->withUnencryptedCookie(Auth::getFingerprintCookieName(), $fingerprint)
             ->getJson('/api/user');
-            //dd($this->unencryptedCookies);
+        //dd($this->unencryptedCookies);
 
         $response
             ->assertUnauthorized();

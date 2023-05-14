@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Build;
 
-use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;

@@ -4,7 +4,8 @@ namespace LittleApps\LittleJWT\Core\Concerns;
 
 use LittleApps\LittleJWT\Factories\DefaultCallbackBuilder;
 
-trait CreatesCallbackBuilder {
+trait CreatesCallbackBuilder
+{
     /**
      * Gets the default callback builder.
      *

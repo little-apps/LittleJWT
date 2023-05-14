@@ -4,10 +4,11 @@ namespace LittleApps\LittleJWT\Core\Concerns;
 
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\Valid;
-use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
+use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
 
-trait HandlesValidate {
+trait HandlesValidate
+{
     /**
      * Validates a JSON Web Token (JWT).
      *

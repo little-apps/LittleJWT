@@ -8,24 +8,11 @@ use Illuminate\Support\Traits\Macroable;
 use Jose\Component\Core\JWK;
 
 
-use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Build\Sign;
-use LittleApps\LittleJWT\Mutate\Concerns\HasCustomMutators;
 use LittleApps\LittleJWT\Core\Handler;
-use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
-use LittleApps\LittleJWT\Factories\DefaultCallbackBuilder;
-use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
-use LittleApps\LittleJWT\JWT\JsonWebToken;
-use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
-use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
-use LittleApps\LittleJWT\Mutate\Mutate;
-use LittleApps\LittleJWT\Mutate\MutatorManager;
-use LittleApps\LittleJWT\Mutate\MutatedLittleJWT;
+use LittleApps\LittleJWT\Mutate\Concerns\HasCustomMutators;
 use LittleApps\LittleJWT\Mutate\MutateHandler;
-use LittleApps\LittleJWT\Mutate\Mutators;
-
-use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
 
 /**
  * This class is responsible for generating and validating JSON Web Tokens.
@@ -61,7 +48,7 @@ class LittleJWT
     /**
      * Whether to use mutations or not
      *
-     * @var boolean
+     * @var bool
      */
     protected $mutate;
 
@@ -83,7 +70,8 @@ class LittleJWT
      *
      * @return Handler|MutateHandler
      */
-    public function handler() {
+    public function handler()
+    {
         return $this->mutate ? $this->withMutate() : $this->withoutMutate();
     }
 
@@ -92,7 +80,8 @@ class LittleJWT
      *
      * @return MutateHandler
      */
-    public function withMutate() {
+    public function withMutate()
+    {
         return new MutateHandler($this->app, $this->jwk, $this->customMutatorsMapping, true);
     }
 
@@ -101,7 +90,8 @@ class LittleJWT
      *
      * @return Handler
      */
-    public function withoutMutate() {
+    public function withoutMutate()
+    {
         return new Handler($this->app, $this->jwk);
     }
 
@@ -109,10 +99,11 @@ class LittleJWT
      * Whether to always use mutations.
      * If enabled, all operations will be handled with the MutateHandler.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      * @return $this
      */
-    public function alwaysMutate(bool $enabled) {
+    public function alwaysMutate(bool $enabled)
+    {
         $this->mutate = $enabled;
 
         return $this;
@@ -133,5 +124,4 @@ class LittleJWT
 
         return $this->forwardCallTo($this->handler(), $name, $arguments);
     }
-
 }
