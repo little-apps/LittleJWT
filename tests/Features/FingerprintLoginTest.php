@@ -75,8 +75,10 @@ class FingerprintLoginTest extends TestCase
 
         $response = $this
             ->withJwt($invalidJwt)
+            ->withCredentials()
             ->withUnencryptedCookie(Auth::getFingerprintCookieName(), $fingerprint)
             ->getJson('/api/user');
+            //dd($this->unencryptedCookies);
 
         $response
             ->assertUnauthorized();

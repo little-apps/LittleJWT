@@ -28,7 +28,7 @@ class ValidateRuleTest extends TestCase
      */
     public function test_validtoken_passes()
     {
-        $token = LittleJWT::createToken();
+        $token = (string) LittleJWT::create()->sign();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -48,7 +48,7 @@ class ValidateRuleTest extends TestCase
      */
     public function test_implicit_validtoken_passes()
     {
-        $token = LittleJWT::createToken();
+        $token = (string) LittleJWT::create()->sign();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -68,9 +68,9 @@ class ValidateRuleTest extends TestCase
      */
     public function test_validtoken_fails_expired()
     {
-        $token = LittleJWT::createToken(function (Builder $builder) {
+        $token = (string) LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        });
+        })->sign();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -90,9 +90,9 @@ class ValidateRuleTest extends TestCase
      */
     public function test_implicit_validtoken_fails_expired()
     {
-        $token = LittleJWT::createToken(function (Builder $builder) {
+        $token = (string) LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        });
+        })->sign();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -114,7 +114,7 @@ class ValidateRuleTest extends TestCase
     {
         $buildable = new GuardBuildable($this->user);
 
-        $token = LittleJWT::createToken($buildable);
+        $token = (string) LittleJWT::create($buildable)->sign();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -147,7 +147,7 @@ class ValidateRuleTest extends TestCase
 
         $buildable = new StackBuildable($stack);
 
-        $token = LittleJWT::createToken($buildable);
+        $token = (string) LittleJWT::create($buildable)->sign();
 
         $validator = Validator::make(compact('token'), [
             'token' => [

@@ -25,9 +25,9 @@ class CreateTest extends TestCase
      */
     public function test_create_default_token()
     {
-        $token = LittleJWT::createToken();
+        $token = LittleJWT::create();
 
-        $jwt = LittleJWT::parseToken($token);
+        $jwt = LittleJWT::parse((string) $token);
 
         $this->assertEquals($token, (string) $jwt);
     }
@@ -39,7 +39,7 @@ class CreateTest extends TestCase
      */
     public function test_create_default_jwt()
     {
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create();
 
         foreach (['alg'] as $key) {
             $this->assertArrayHasKey($key, $jwt->getHeaders());
@@ -59,7 +59,33 @@ class CreateTest extends TestCase
      */
     public function test_create_default_signed_jwt()
     {
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create();
+
+        $this->assertInstanceOf(SignedJsonWebToken::class, $jwt);
+        $this->assertNotEmpty($jwt->getSignature());
+    }
+
+    /**
+     * Tests creating a signed JWT
+     *
+     * @return void
+     */
+    public function test_create_default_auto_unsigned_jwt()
+    {
+        $jwt = LittleJWT::autoSign(false)->create();
+
+        $this->assertInstanceOf(JsonWebToken::class, $jwt);
+        $this->assertNotInstanceOf(SignedJsonWebToken::class, $jwt);
+    }
+
+    /**
+     * Tests creating a signed JWT
+     *
+     * @return void
+     */
+    public function test_create_default_auto_signed_jwt()
+    {
+        $jwt = LittleJWT::autoSign(false)->create()->sign();
 
         $this->assertInstanceOf(SignedJsonWebToken::class, $jwt);
         $this->assertNotEmpty($jwt->getSignature());
@@ -90,15 +116,16 @@ class CreateTest extends TestCase
      */
     public function test_build_custom_jwt()
     {
-        $builder = new Builder();
-        $build = LittleJWT::build($builder);
+        $build = LittleJWT::build();
 
         $header = [$this->faker->word, $this->faker->uuid];
         $payload = [$this->faker->word, $this->faker->uuid];
 
-        $builder
-            ->addHeaderClaim($header[0], $header[1])
-            ->addPayloadClaim($payload[0], $payload[1]);
+        $build->passBuilderThru(function (Builder $builder) use ($header, $payload) {
+            $builder
+                ->addHeaderClaim($header[0], $header[1])
+                ->addPayloadClaim($payload[0], $payload[1]);
+        });
 
         $jwt = $build->build();
 
@@ -119,9 +146,9 @@ class CreateTest extends TestCase
      */
     public function test_parse_default_claims()
     {
-        $token = LittleJWT::createToken();
+        $token = LittleJWT::create();
 
-        $jwt = LittleJWT::parseToken($token);
+        $jwt = LittleJWT::parse((string) $token);
 
         foreach (['alg'] as $key) {
             $this->assertArrayHasKey($key, $jwt->getHeaders());
@@ -141,11 +168,11 @@ class CreateTest extends TestCase
     {
         $sub = $this->faker->uuid;
 
-        $token = LittleJWT::createToken(function (Builder $builder) use ($sub) {
+        $token = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
         });
 
-        $jwt = LittleJWT::parseToken($token);
+        $jwt = LittleJWT::parse((string) $token);
 
         $this->assertNotNull($jwt->getPayload()->get('sub'));
         $this->assertEquals($sub, $jwt->getPayload()->get('sub'));
@@ -160,13 +187,13 @@ class CreateTest extends TestCase
     {
         $expectedDateTime = Carbon::now()->addDay();
 
-        $token = LittleJWT::createToken(function (Builder $builder) use ($expectedDateTime) {
+        $token = LittleJWT::create(function (Builder $builder) use ($expectedDateTime) {
             $builder->exp($expectedDateTime);
         });
 
-        $jwt = LittleJWT::parseToken($token);
+        $jwt = LittleJWT::parse((string) $token);
 
-        $this->assertTrue(Carbon::createFromFormat('U', $jwt->getPayload()->get('exp')) !== false);
+        $this->assertTrue(Carbon::createFromTimestamp($jwt->getPayload()->get('exp')) !== false);
 
         $this->assertTrue(is_numeric($jwt->getPayload()->get('exp')));
     }
@@ -189,9 +216,9 @@ class CreateTest extends TestCase
 
         $this->expectException(InvalidClaimValueException::class);
 
-        LittleJWT::createToken(function (Builder $builder) use ($binary) {
+        LittleJWT::create(function (Builder $builder) use ($binary) {
             $builder->bin($binary);
-        });
+        })->sign();
     }
 
     /**
@@ -201,11 +228,12 @@ class CreateTest extends TestCase
      */
     public function test_parse_missing_part()
     {
-        $token = implode('.', array_slice(explode('.', LittleJWT::createToken()), 0, 1));
+        $jwt = LittleJWT::create()->sign();
+        $token = implode('.', array_slice(explode('.', (string) $jwt), 0, 1));
 
         $this->expectException(CantParseJWTException::class);
 
-        LittleJWT::parseToken($token, true);
+        LittleJWT::parse((string) $token, true);
     }
 
     /**
@@ -215,12 +243,13 @@ class CreateTest extends TestCase
      */
     public function test_parse_invalid_header()
     {
-        $parts = explode('.', LittleJWT::createToken());
+        $jwt = LittleJWT::create()->sign();
+        $parts = explode('.', (string) $jwt);
         $token = implode('.', ['foo', $parts[1], $parts[2]]);
 
         $this->expectException(CantParseJWTException::class);
 
-        LittleJWT::parseToken($token, true);
+        LittleJWT::parse((string) $token, true);
     }
 
     /**
@@ -230,12 +259,13 @@ class CreateTest extends TestCase
      */
     public function test_parse_invalid_payload()
     {
-        $parts = explode('.', LittleJWT::createToken());
+        $jwt = LittleJWT::create()->sign();
+        $parts = explode('.', (string) $jwt);
         $token = implode('.', [$parts[0], 'foo', $parts[2]]);
 
         $this->expectException(CantParseJWTException::class);
 
-        LittleJWT::parseToken($token, true);
+        LittleJWT::parse((string) $token, true);
     }
 
     /**
@@ -247,7 +277,7 @@ class CreateTest extends TestCase
     {
         $sub = $this->faker->uuid;
 
-        LittleJWT::createToken(function (Builder $builder) use ($sub) {
+        LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
 
             $this->assertTrue(isset($builder->sub));

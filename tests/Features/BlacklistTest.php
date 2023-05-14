@@ -26,7 +26,7 @@ class BlacklistTest extends TestCase
 
         Blacklist::setDefaultDriver('cache');
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create();
 
         Blacklist::blacklist($jwt);
 
@@ -43,7 +43,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
 
         $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
-            $jwt = LittleJWT::createJWT();
+            $jwt = LittleJWT::create();
 
             $driver->blacklist($jwt);
 
@@ -61,7 +61,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
 
         $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
-            $jwt = LittleJWT::createJWT();
+            $jwt = LittleJWT::create();
 
             $driver->blacklist($jwt, 0);
 
@@ -79,7 +79,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
 
         $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
-            $jwt = LittleJWT::createJWT(function (Builder $builder) {
+            $jwt = LittleJWT::create(function (Builder $builder) {
                 $builder->remove('jti');
             });
 
@@ -99,7 +99,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
 
         $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
-            $jwt = LittleJWT::createJWT();
+            $jwt = LittleJWT::create();
 
             $this->assertFalse($driver->isBlacklisted($jwt));
         });
@@ -115,7 +115,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
 
         $this->withBlacklistDrivers(['database', 'cache'], function ($driver) {
-            $jwt = LittleJWT::createJWT();
+            $jwt = LittleJWT::create();
 
             $driver->blacklist($jwt, 60);
 
@@ -139,7 +139,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
         Blacklist::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create();
 
         Blacklist::blacklist($jwt, 60);
 
@@ -167,7 +167,7 @@ class BlacklistTest extends TestCase
         LittleJWT::fake();
         Blacklist::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create();
 
         Blacklist::blacklist($jwt, 60);
 

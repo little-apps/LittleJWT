@@ -275,9 +275,9 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        $token = LittleJWT::createToken(function (Builder $builder) {
+        $token = (string) LittleJWT::create(function (Builder $builder) {
             $builder->foo('bar');
-        }, false);
+        }, false)->sign();
 
         $this->assertTrue(strpos($token, '-') !== false || strpos($token, '_') !== false);
         $this->assertTrue(strpos($token, '+') === false || strpos($token, '/') === false);
@@ -296,7 +296,7 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        $token = LittleJWT::createToken();
+        $token = (string) LittleJWT::create();
         $uuid = $this->faker->uuid();
 
         // Creates query with sprintf, because http_build_query escapes special characters (like + and =)
@@ -386,7 +386,7 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        LittleJWT::createToken();
+        LittleJWT::create()->sign();
     }
 
     /**
@@ -399,22 +399,22 @@ class KeyTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
         $headers = $jwt->getHeaders()->toArray();
         $payload = $jwt->getPayload()->toArray();
 
         $headers['alg'] = 'none';
 
-        $bad = new SignedJsonWebToken($headers, $payload, $jwt->getSignature());
+        $bad = LittleJWT::createJWTBuilder()->buildFromParts($headers, $payload, $jwt->getSignature());
 
-        $valid = LittleJWT::validateJWT($bad, function (TestValidator $validator) {
+        $valid = LittleJWT::validate($bad, function (TestValidator $validator) {
             $validator
                 ->assertFails()
                 ->assertInvalidSignature();
         });
 
-        $this->assertFalse($valid);
+        $this->assertFalse($valid->passes());
     }
 
     /**
@@ -429,14 +429,14 @@ class KeyTest extends TestCase
 
         $canary = $this->faker->uuid();
 
-        $jwt = LittleJWT::createJwt(function (Builder $builder) use ($canary) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($canary) {
             $builder->can($canary);
-        });
+        })->sign();
 
-        return LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($canary) {
+        return LittleJWT::validate($jwt, function (TestValidator $validator) use ($canary) {
             $validator
                 ->assertPasses()
                 ->assertClaimMatches('can', $canary);
-        });
+        })->passes();
     }
 }

@@ -30,9 +30,9 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertPasses();
         });
@@ -47,9 +47,9 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createToken();
+        $jwt = LittleJWT::create()->sign();
 
-        LittleJWT::validateToken($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertPasses();
         });
@@ -66,11 +66,11 @@ class ValidateTest extends TestCase
 
         $sub = $this->faker->uuid;
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($sub) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        });
+        })->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($sub) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) use ($sub) {
             $validator
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
@@ -88,11 +88,11 @@ class ValidateTest extends TestCase
 
         $sub = $this->faker->uuid;
 
-        $jwt = LittleJWT::createToken(function (Builder $builder) use ($sub) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        });
+        })->sign();
 
-        LittleJWT::validateToken($jwt, function (TestValidator $validator) use ($sub) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) use ($sub) {
             $validator
                 ->assertPasses()
                 ->assertClaimMatches('sub', $sub);
@@ -108,11 +108,11 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) {
+        $jwt = LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        });
+        })->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertFails()
                 ->assertFutureFails('exp')
@@ -130,9 +130,9 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertPasses()
                 ->assertCustomClaimPasses('abc', function ($value) {
@@ -151,9 +151,11 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $token = LittleJWT::createToken();
+        $token = (string) LittleJWT::create()->sign();
 
-        LittleJWT::validateToken($token, function (TestValidator $validator) {
+        $jwt = LittleJWT::parse($token);
+
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertFails()
                 ->assertClaimsDoesntExist(['abc']);
@@ -175,9 +177,9 @@ class ValidateTest extends TestCase
             ],
         ]);
 
-        $jwt = LittleJWT::withJwk($otherJWk)->createJWT();
+        $jwt = LittleJWT::withJwk($otherJWk)->create();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertInvalidSignature()
                 ->assertFails()
@@ -195,11 +197,11 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
         Blacklist::blacklist($jwt);
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertNotAllowed()
                 ->assertFails()
@@ -219,11 +221,11 @@ class ValidateTest extends TestCase
 
         $actual = $this->faker->uuid;
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        });
+        })->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($actual) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) use ($actual) {
             $validator
                 ->assertPasses()
                 ->oneOf('foo', [
@@ -246,11 +248,11 @@ class ValidateTest extends TestCase
 
         $actual = $this->faker->uuid;
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        });
+        })->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertFails()
                 ->oneOf('foo', [
@@ -272,11 +274,11 @@ class ValidateTest extends TestCase
 
         $actual = $this->faker->uuid;
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo([$actual, $this->faker->uuid]);
-        });
+        })->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($actual) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) use ($actual) {
             $validator
                 ->assertPasses()
                 ->arrayEquals('foo', [
@@ -303,13 +305,13 @@ class ValidateTest extends TestCase
             $this->faker->uuid,
         ];
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        });
+        })->sign();
 
         $expected = $actual;
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($expected) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) use ($expected) {
             shuffle($expected);
 
             $validator
@@ -329,11 +331,11 @@ class ValidateTest extends TestCase
 
         $actual = $this->faker->uuid;
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo([$actual, $this->faker->uuid]);
-        });
+        })->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertFails()
                 ->arrayEquals('foo', [
@@ -359,13 +361,13 @@ class ValidateTest extends TestCase
             $this->faker->uuid,
         ];
 
-        $jwt = LittleJWT::createJWT(function (Builder $builder) use ($actual) {
+        $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        });
+        })->sign();
 
         $expected = [...$actual, $this->faker->uuid];
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) use ($expected) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) use ($expected) {
             $validator
                 ->assertFails()
                 ->arrayEquals('foo', $expected, true);

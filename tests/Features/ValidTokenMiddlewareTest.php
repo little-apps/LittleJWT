@@ -44,9 +44,9 @@ class ValidTokenMiddlewareTest extends TestCase
      */
     public function test_valid_token_default_expired()
     {
-        $jwt = LittleJWT::createJWT(function (Builder $builder) {
+        $jwt = LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        });
+        })->sign();
 
         $response = $this
             ->withJwt($jwt)
@@ -63,14 +63,14 @@ class ValidTokenMiddlewareTest extends TestCase
      */
     public function test_valid_token_default_invalid()
     {
-        $validJwt = LittleJWT::createJWT();
+        $validJwt = LittleJWT::create()->sign();
 
         $signature = random_bytes(10);
 
         $mutators = $this->app->config->get('littlejwt.builder.mutators', ['header' => [], 'payload' => []]);
 
         $invalidJwt =
-            (new JWTBuilder())
+            LittleJWT::createJWTBuilder()
                 ->buildFromParts($validJwt->getHeaders()->toArray(), $validJwt->getPayload()->toArray(), $signature);
 
         $response = $this
@@ -138,13 +138,13 @@ class ValidTokenMiddlewareTest extends TestCase
      */
     public function test_valid_token_guard_missing_claim()
     {
-        $jwt = LittleJWT::createJWT(function (Builder $builder) {
+        $jwt = LittleJWT::create(function (Builder $builder) {
             if ($this->faker->boolean) {
                 $builder->sub($this->user->getAuthIdentifier());
             } else {
                 $builder->prv($this->hashSubjectModel($this->user));
             }
-        });
+        })->sign();
 
         $response = $this
             ->withJwt($jwt)
@@ -161,7 +161,7 @@ class ValidTokenMiddlewareTest extends TestCase
      */
     public function test_valid_token_guard_missing_claims()
     {
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
         $response = $this
             ->withJwt($jwt)

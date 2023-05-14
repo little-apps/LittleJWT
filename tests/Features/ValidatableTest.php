@@ -24,9 +24,9 @@ class ValidatableTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
-        LittleJWT::validateJWT($jwt, function (TestValidator $validator) {
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
                 ->assertPasses();
         });
@@ -41,7 +41,7 @@ class ValidatableTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
         $validatable = new class () implements TestValidatable {
             public function validate(TestValidator $validator)
@@ -50,7 +50,7 @@ class ValidatableTest extends TestCase
             }
         };
 
-        LittleJWT::validateJWT($jwt, [$validatable, 'validate']);
+        LittleJWT::validate($jwt, [$validatable, 'validate']);
     }
 
     /**
@@ -62,7 +62,7 @@ class ValidatableTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::createJWT();
+        $jwt = LittleJWT::create()->sign();
 
         $validatable = new class () {
             public function __invoke(TestValidator $validator)
@@ -71,6 +71,6 @@ class ValidatableTest extends TestCase
             }
         };
 
-        LittleJWT::validateJWT($jwt, $validatable);
+        LittleJWT::validate($jwt, $validatable);
     }
 }
