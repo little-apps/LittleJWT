@@ -38,7 +38,7 @@ class LittleJWT extends Facade
      * Creates a new instance of LittleJWT to use to build/validate with a different JWK.
      *
      * @param JsonWebKey $jwk
-     * @return LittleJWTInstance New LittleJWT instance
+     * @return \LittleApps\LittleJWT\LittleJWT New LittleJWT instance
      */
     public static function withJwk(JsonWebKey $jwk)
     {

@@ -41,7 +41,7 @@ class Build
      * Initializes Build instance.
      *
      * @param Application $app Application container.
-     * @param JWTBuilder $jwtBuilder Builder to use (optional).
+     * @param JWTBuilder $jwtBuilder JWTBuilder for creating JWTs.
      */
     public function __construct(Application $app, JWTBuilder $jwtBuilder)
     {
