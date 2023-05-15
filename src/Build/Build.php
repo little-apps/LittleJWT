@@ -11,7 +11,6 @@ use LittleApps\LittleJWT\Mutate\Mutators;
 
 class Build
 {
-    use ForwardsCalls;
     use PassableThru;
 
     /**
@@ -86,20 +85,5 @@ class Build
         $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
 
         return new Builder($headerClaims, $payloadClaims);
-    }
-
-    /**
-     * Forwards method calls to the Builder instance.
-     *
-     * @param string $name Method name
-     * @param array $parameters Method parameters
-     * @return mixed Returns $this if Builder instance is returned from forwarded method call.
-     */
-    public function __call($name, $parameters)
-    {
-        // Use forwardCallTo since Laravel 7.x doesn't support forwardDecoratedCallTo
-        $ret = $this->forwardCallTo($this->builder, $name, $parameters);
-
-        return $ret === $this->builder ? $this : $ret;
     }
 }
