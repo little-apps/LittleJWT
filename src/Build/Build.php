@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\ForwardsCalls;
 
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
