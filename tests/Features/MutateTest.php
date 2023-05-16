@@ -877,4 +877,53 @@ class MutateTest extends TestCase
 
         $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('foo'));
     }
+
+    /**
+     * Tests default mutators are enabled.
+     *
+     * @return void
+     */
+    public function test_mutator_defaults_enabled()
+    {
+        $jwt = LittleJWT::create();
+
+        $this->assertEquals('integer', gettype($jwt->getPayload()->get('iat')));
+        $this->assertEquals('integer', gettype($jwt->getPayload()->get('nbf')));
+        $this->assertEquals('integer', gettype($jwt->getPayload()->get('exp')));
+
+        $this->assertGreaterThan(time(), $jwt->getPayload()->get('exp'));
+    }
+
+    /**
+     * Tests default mutators are disabled.
+     *
+     * @return void
+     */
+    public function test_mutator_defaults_disabled()
+    {
+        $jwt = LittleJWT::applyDefaultMutators(false)->create();
+
+        $this->assertNotEquals('integer', gettype($jwt->getPayload()->get('iat')));
+        $this->assertNotEquals('integer', gettype($jwt->getPayload()->get('nbf')));
+        $this->assertNotEquals('integer', gettype($jwt->getPayload()->get('exp')));
+    }
+
+    /**
+     * Tests default mutators are disabled and additional mutators are used instead.
+     *
+     * @return void
+     */
+    public function test_mutator_defaults_disabled_additional()
+    {
+        $time = time();
+
+        $jwt = LittleJWT::applyDefaultMutators(false)->mutate(function (Mutators $mutators) {
+            $mutators->iat('date');
+        })->create(function (Builder $builder) use ($time) {
+            $builder->iat($time);
+        });
+
+        $this->assertEquals('string', gettype($jwt->getPayload()->get('iat')));
+        $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('iat'));
+    }
 }
