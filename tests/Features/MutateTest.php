@@ -819,23 +819,7 @@ class MutateTest extends TestCase
     {
         $time = time();
 
-        /*$buildable = new StackBuildable([
-            new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
-                $builder->foo($time);
-
-                $mutators->foo('date');
-            }),
-            new TestBuildable(function (Builder $builder, Mutators $mutators) {
-                $this->assertTrue(isset($mutators->foo));
-                $this->assertFalse(isset($mutators->bar));
-
-                $this->assertTrue($mutators->has('foo'));
-                $this->assertFalse($mutators->has('bar'));
-            }),
-        ]);*/
-
         LittleJWT::handler()
-
             ->mutate(function (Mutators $mutators) {
                 $mutators->foo('date');
             })->mutate(function (Mutators $mutators) {
@@ -847,8 +831,6 @@ class MutateTest extends TestCase
             })->create(new TestBuildable(function (Builder $builder) use ($time) {
                 $builder->foo($time);
             }));
-
-        //LittleJWT::createToken($buildable);
     }
 
     /**
@@ -860,21 +842,6 @@ class MutateTest extends TestCase
     {
         $time = time();
 
-        /*$buildable = new StackBuildable([
-            new TestBuildable(function (Builder $builder, Mutators $mutators) use ($time) {
-                $builder->foo($time);
-
-                $mutators->foo = 'date';
-            }),
-            new TestBuildable(function (Builder $builder, Mutators $mutators) {
-                $this->assertTrue(isset($mutators->foo));
-                $this->assertFalse(isset($mutators->bar));
-
-                $this->assertTrue($mutators->has('foo'));
-                $this->assertFalse($mutators->has('bar'));
-            }),
-        ]);*/
-
         LittleJWT::handler()
             ->mutate(function (Mutators $mutators) {
                 $mutators->foo = 'date';
@@ -887,7 +854,6 @@ class MutateTest extends TestCase
             })->create(new TestBuildable(function (Builder $builder) use ($time) {
                 $builder->foo($time);
             }));
-
-        //LittleJWT::createToken($buildable);
     }
+
 }
