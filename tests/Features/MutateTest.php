@@ -5,7 +5,6 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
-use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
@@ -855,5 +854,4 @@ class MutateTest extends TestCase
                 $builder->foo($time);
             }));
     }
-
 }
