@@ -909,7 +909,7 @@ class MutateTest extends TestCase
     }
 
     /**
-     * Tests default mutators are disabled and additional mutators are used instead.
+     * Tests default mutators are disabled and additional mutators are used.
      *
      * @return void
      */
@@ -917,7 +917,9 @@ class MutateTest extends TestCase
     {
         $time = time();
 
-        $jwt = LittleJWT::applyDefaultMutators(false)->mutate(function (Mutators $mutators) {
+        LittleJWT::applyDefaultMutators(false);
+
+        $jwt = LittleJWT::mutate(function (Mutators $mutators) {
             $mutators->iat('date');
         })->create(function (Builder $builder) use ($time) {
             $builder->iat($time);
