@@ -53,6 +53,20 @@ class LittleJWT
     protected $mutate;
 
     /**
+     * Holds single Handler instance.
+     *
+     * @var Handler|null
+     */
+    protected $handler;
+
+    /**
+     * Holds single MutateHandler instance.
+     *
+     * @var MutateHandler|null
+     */
+    protected $mutateHandler;
+
+    /**
      * Intializes LittleJWT instance.
      *
      * @param Application $app Application container
@@ -82,7 +96,11 @@ class LittleJWT
      */
     public function withMutate()
     {
-        return new MutateHandler($this->app, $this->jwk, $this->customMutatorsMapping, true);
+        if (is_null($this->mutateHandler)) {
+            $this->mutateHandler = new MutateHandler($this->app, $this->jwk, $this->customMutatorsMapping, true);
+        }
+
+        return $this->mutateHandler;
     }
 
     /**
@@ -92,7 +110,11 @@ class LittleJWT
      */
     public function withoutMutate()
     {
-        return new Handler($this->app, $this->jwk);
+        if (is_null($this->handler)) {
+            $this->handler = new Handler($this->app, $this->jwk);
+        }
+
+        return $this->handler;
     }
 
     /**
