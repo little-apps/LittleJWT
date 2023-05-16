@@ -928,4 +928,45 @@ class MutateTest extends TestCase
         $this->assertEquals('string', gettype($jwt->getPayload()->get('iat')));
         $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('iat'));
     }
+
+    /**
+     * Tests mutators are enabled.
+     *
+     * @return void
+     */
+    public function test_mutator_always_mutate_enabled()
+    {
+        $time = time();
+
+        LittleJWT::alwaysMutate(true);
+
+        $jwt = LittleJWT::mutate(function (Mutators $mutators) {
+            $mutators->foo('date');
+        })->create(function (Builder $builder) use ($time) {
+            $builder->foo($time);
+        });
+
+        $this->assertEquals('string', gettype($jwt->getPayload()->get('foo')));
+        $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests mutators are disabled.
+     *
+     * @return void
+     */
+    public function test_mutator_always_mutate_disabled()
+    {
+        $time = time();
+
+        LittleJWT::alwaysMutate(false);
+
+        $this->expectException(\BadMethodCallException::class);
+
+        LittleJWT::mutate(function (Mutators $mutators) {
+            $mutators->foo('date');
+        })->create(function (Builder $builder) use ($time) {
+            $builder->foo($time);
+        });
+    }
 }
