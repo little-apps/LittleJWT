@@ -856,4 +856,26 @@ class MutateTest extends TestCase
             }));
     }
 
+    /**
+     * Tests mutators for same claim is merged correctly.
+     *
+     * @return void
+     */
+    public function test_mutator_merged_correctly()
+    {
+        $time = time();
+
+        $jwt = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) {
+                $mutators->foo('datetime');
+            })->mutate(function (Mutators $mutators) {
+                $mutators->foo('date');
+            })->mutate(function (Mutators $mutators) {
+                $this->assertEquals('date', $mutators->foo);
+            })->create(new TestBuildable(function (Builder $builder) use ($time) {
+                $builder->foo($time);
+            }));
+
+        $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('foo'));
+    }
 }
