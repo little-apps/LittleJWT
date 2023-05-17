@@ -130,7 +130,7 @@ class MutateHandler extends Handler
     {
         $result = parent::validate($jwt, $callback, $applyDefault);
 
-        return new MutatedValidatedJsonWebToken($result, $this);
+        return new MutatedValidatedJsonWebToken($result, fn () => $this->unserialize($result->getJWT()));
     }
 
     /**

@@ -3,82 +3,64 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Support\Traits\ForwardsCalls;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
 
-class MutatedValidatedJsonWebToken
+class MutatedValidatedJsonWebToken extends ValidatedJsonWebToken
 {
-    use ForwardsCalls;
+    /**
+     * Holds callback to unserialize JWT
+     *
+     * @var callable(JsonWebToken): JsonWebToken
+     */
+    protected $unserializeCallback;
 
     /**
-     * Holds the validated JWT
+     * Unserialized/mutated JWT
      *
-     * @var ValidatedJsonWebToken
+     * @var JsonWebToken|null
      */
-    protected $validated;
-
-    /**
-     * Mutate Handler
-     *
-     * @var MutateHandler
-     */
-    protected $handler;
+    protected $unserialized;
 
     /**
      * Initializes instance
      *
      * @param ValidatedJsonWebToken $validated Existing validated JWT
-     * @param MutateHandler $handler Mutate handler
+     * @param callable(JsonWebToken): JsonWebToken $unserialized Unserialized JWT
      */
-    public function __construct(ValidatedJsonWebToken $validated, MutateHandler $handler)
+    public function __construct(ValidatedJsonWebToken $validated, callable $unserializeCallback)
     {
-        $this->validated = $validated;
-        $this->handler = $handler;
+        parent::__construct($validated->getJWT(), $validated->passes());
+
+        /*
+         * The factory callback to unserialize is sent because
+         * there maybe an error unserializing the JWT and we'll
+         * wait for a call to unserialized() to throw that exception.
+         */
+        $this->unserializeCallback = $unserializeCallback;
+        $this->unserialized = null;
     }
 
     /**
-     * Gets the validated JWT
+     * Gets the unserialized JWT
      *
-     * @return ValidatedJsonWebToken
+     * @return JsonWebToken
      */
-    public function getValidatedJWT()
-    {
-        return $this->validated;
+    public function getUnserializedJWT() {
+        return $this->unserialized();
     }
 
     /**
-     * Unserializes the existing JWT.
+     * Gets the unserialized JWT
      *
-     * @param Mutators|null $mutators
-     * @return static
+     * @return JsonWebToken
      */
-    public function unserialize(Mutators $mutators = null)
+    public function unserialized()
     {
-        // TODO: Test this method.
-        $mutators = $mutators ?? new Mutators();
+        if (is_null($this->unserialized)) {
+            $this->unserialized = call_user_func($this->unserializeCallback);
+        }
 
-        return $this->handler->unserialize($this->getValidatedJWT()->getJWT(), $mutators);
-    }
-
-    /**
-     * Forwards calls to validated JWT.
-     *
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        return $this->forwardCallTo($this->getValidatedJWT(), $name, $arguments);
-    }
-
-    /**
-     * Encodes validated JWT to string.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        // This magic method needs to implemented, cause __call doesn't forward it.
-        return (string) $this->getValidatedJWT();
+        return $this->unserialized;
     }
 }

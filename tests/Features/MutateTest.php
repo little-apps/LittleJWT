@@ -838,7 +838,7 @@ class MutateTest extends TestCase
             })->validate($serialized);
 
         $this->assertTrue($validated->passes());
-        $this->assertNull($validated->getJWT()->getPayload()->get('foo'));
+        $this->assertNull($validated->unserialized()->getPayload()->get('foo'));
     }
 
     /**
