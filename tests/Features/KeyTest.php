@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 use Jose\Component\Core\JWK;
+use Jose\Component\KeyManagement\JWKFactory;
+
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
+use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
@@ -373,15 +376,31 @@ class KeyTest extends TestCase
     }
 
     /**
-     * Tests the InvalidHashAlgorithmException is thrown when invaldi algorithm is set.
+     * Tests the InvalidHashAlgorithmException is thrown when an invalid algorithm is set.
      *
      * @return void
      */
     public function test_invalid_hash_algorithm_thrown()
     {
+        $jwk = $this->app[Keyable::class]->generateRandomJwk(1024, ['alg' => 'FOO']);
+
         $this->expectException(InvalidHashAlgorithmException::class);
 
-        $jwk = $this->app[Keyable::class]->generateRandomJwk(1024, ['alg' => 'FOO']);
+        LittleJWT::fake($jwk);
+
+        LittleJWT::create()->sign();
+    }
+
+    /**
+     * Tests the InvalidHashAlgorithmException is thrown when no 'alg' is set.
+     *
+     * @return void
+     */
+    public function test_no_alg_throws_exception() {
+
+        $jwk = $this->app[Keyable::class]->createJwkFromBase(JWKFactory::createOctKey(1024));
+
+        $this->expectException(HashAlgorithmNotFoundException::class);
 
         LittleJWT::fake($jwk);
 
@@ -415,6 +434,8 @@ class KeyTest extends TestCase
 
         $this->assertFalse($valid->passes());
     }
+
+
 
     /**
      * Creates and validates a JWT with the same JWK
