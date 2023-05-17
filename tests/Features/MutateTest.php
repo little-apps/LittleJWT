@@ -9,6 +9,7 @@ use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Mutate\Mutators;
+use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
 use LittleApps\LittleJWT\Testing\TestMutator;
@@ -908,6 +909,46 @@ class MutateTest extends TestCase
             }));
 
         $this->assertEquals(Carbon::parse($time)->format('Y-m-d'), $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests stack of mutatables
+     *
+     * @return void
+     */
+    public function test_mutator_stack_mutatables()
+    {
+        $reverse = new TestMutator(
+            fn ($value) => strrev($value),
+            fn ($value) => strrev($value),
+        );
+
+        $stack =
+            (new StackMutatable())
+                ->mutate(function (Mutators $mutators) {
+                    $mutators->foo('datetime');
+                })->mutate(function (Mutators $mutators) use ($reverse) {
+                    $mutators
+                        ->foo($reverse)
+                        ->bar($reverse);
+                });
+
+        $serialized = LittleJWT::handler()
+            ->mutate($stack)->create(new TestBuildable(function (Builder $builder) {
+                $builder
+                    ->foo('abcd')
+                    ->bar('lmno');
+            }));
+
+        $this->assertEquals('dcba', $serialized->getPayload()->get('foo'));
+        $this->assertEquals('onml', $serialized->getPayload()->get('bar'));
+
+        $validated = LittleJWT::handler()->mutate($stack)->validate($serialized);
+
+        $this->assertEquals('abcd', $validated->unserialized()->getPayload()->get('foo'));
+        $this->assertEquals('lmno', $validated->unserialized()->getPayload()->get('bar'));
+
+
     }
 
     /**
