@@ -155,7 +155,8 @@ class MutateHandler extends Handler
      */
     protected function createMutate()
     {
-        $manager = new MutatorManager($this->app, $this->getCustomMutators());
+        $resolver = new MutatorResolver($this->app, $this->getCustomMutators());
+        $manager = new MutatorManager($resolver);
 
         return new Mutate($this->createJWTBuilder(), $manager);
     }
