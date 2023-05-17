@@ -3,30 +3,43 @@
 namespace LittleApps\LittleJWT\Mutate\Mutatables;
 
 use LittleApps\LittleJWT\Mutate\Mutators;
+use LittleApps\LittleJWT\Concerns\PassableThru;
 
+// TODO: Test me!
 class StackMutatable
 {
-    /**
-     * Stack of callables
-     *
-     * @var list<callable(Mutators): void>
-     */
-    protected $stack;
+    use PassableThru;
 
     /**
      * Initializes Stack Mutatable
      *
      * @param list<callable(Mutators): void> $stack
      */
-    public function __construct(array $stack)
+    public function __construct(array $stack = [])
     {
-        $this->stack = $stack;
+        $this->passThruStack = $stack;
     }
 
+    /**
+     * Adds mutator callback to stack.
+     *
+     * @param callable $callback
+     * @return $this
+     */
+    public function mutate(callable $callback) {
+        return $this->passThru($callback);
+    }
+
+    /**
+     * Runs Mutators through stack
+     *
+     * @param Mutators $mutators
+     * @return $this
+     */
     public function __invoke(Mutators $mutators)
     {
-        foreach ($this->stack as $callback) {
-            $callback($mutators);
-        }
+        $this->runThru($mutators);
+
+        return $this;
     }
 }
