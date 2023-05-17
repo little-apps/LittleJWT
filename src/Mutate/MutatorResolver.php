@@ -3,8 +3,8 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
 
@@ -98,9 +98,10 @@ class MutatorResolver
      * Checks if custom resolve method exists for key.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
-    protected function hasResolveMethod(string $key) {
+    protected function hasResolveMethod(string $key)
+    {
         return method_exists($this, 'resolve' . Str::studly($key));
     }
 
