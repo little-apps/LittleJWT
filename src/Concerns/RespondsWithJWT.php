@@ -6,7 +6,7 @@ use DateTimeInterface;
 
 use Illuminate\Http\Response;
 
-use LittleApps\LittleJWT\JWT\JWT;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 
@@ -15,10 +15,10 @@ trait RespondsWithJWT
     /**
      * Builds the JWT array using a JWT instance.
      *
-     * @param JWT $jwt
+     * @param JsonWebToken $jwt
      * @return array
      */
-    protected function buildJsonResponseWithJwt(JWT $jwt)
+    protected function buildJsonResponseWithJwt(JsonWebToken $jwt)
     {
         return ResponseBuilder::buildFromJwt($jwt);
     }
