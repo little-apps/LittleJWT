@@ -16,7 +16,8 @@ class CantResolveMutator extends Exception
      */
     public $definition;
 
-    public function __construct($definition) {
+    public function __construct($definition)
+    {
         parent::__construct('Unable to resolve mutator from definition.');
 
         $this->definition = $definition;

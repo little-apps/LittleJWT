@@ -2,10 +2,8 @@
 
 namespace LittleApps\LittleJWT\Mutate;
 
-use DateTimeInterface;
 use Illuminate\Contracts\Foundation\Application;
 
-use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Contracts\Mutator;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
