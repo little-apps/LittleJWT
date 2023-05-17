@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Response;
 use LittleApps\LittleJWT\ServiceProvider;
 use LittleApps\LittleJWT\Testing\Models\User;
 
-use Orchestra\Testbench\TestCase as Orchestra;
 use LittleApps\LittleJWT\Testing\TestController;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {

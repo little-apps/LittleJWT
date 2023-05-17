@@ -2,17 +2,18 @@
 
 namespace LittleApps\LittleJWT\Testing;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use LittleApps\LittleJWT\Concerns\RespondsWithJWT;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use LittleApps\LittleJWT\Concerns\RespondsWithJWT;
 
 class TestController extends Controller
 {
     use RespondsWithJWT;
 
-    public function testResponseTrait(Request $request) {
+    public function testResponseTrait(Request $request)
+    {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -23,7 +24,7 @@ class TestController extends Controller
 
             if ($request->build === 'jwt') {
                 $response = $this->buildJsonResponseWithJwt($jwt);
-            } else if ($request->build === 'token') {
+            } elseif ($request->build === 'token') {
                 $response = $this->buildJsonResponseWithToken((string) $jwt, $jwt->getPayload()->get('exp'));
             } else {
                 $response = response('');
