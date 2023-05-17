@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Mutate;
 
-use Illuminate\Support\Traits\ForwardsCalls;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
 
@@ -46,7 +45,8 @@ class MutatedValidatedJsonWebToken extends ValidatedJsonWebToken
      *
      * @return JsonWebToken
      */
-    public function getUnserializedJWT() {
+    public function getUnserializedJWT()
+    {
         return $this->unserialized();
     }
 

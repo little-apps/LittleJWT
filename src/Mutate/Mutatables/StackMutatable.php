@@ -2,8 +2,8 @@
 
 namespace LittleApps\LittleJWT\Mutate\Mutatables;
 
-use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Concerns\PassableThru;
+use LittleApps\LittleJWT\Mutate\Mutators;
 
 // TODO: Test me!
 class StackMutatable
@@ -26,7 +26,8 @@ class StackMutatable
      * @param callable $callback
      * @return $this
      */
-    public function mutate(callable $callback) {
+    public function mutate(callable $callback)
+    {
         return $this->passThru($callback);
     }
 
