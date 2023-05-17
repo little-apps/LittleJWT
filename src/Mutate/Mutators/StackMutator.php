@@ -2,9 +2,9 @@
 
 namespace LittleApps\LittleJWT\Mutate\Mutators;
 
+use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
-use LittleApps\LittleJWT\Concerns\PassableThru;
 
 class StackMutator implements Mutator
 {
