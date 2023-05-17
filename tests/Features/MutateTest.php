@@ -810,6 +810,38 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests that a mutator with no return has the correct output value.
+     *
+     * @return void
+     */
+    public function test_invoke_mutates_custom_mutator_no_return()
+    {
+        LittleJWT::fake();
+
+        $mutator = new TestMutator(
+            function () { },
+            function () { },
+        );
+
+        $serialized = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) use ($mutator) {
+                $mutators->foo($mutator);
+            })->create(new TestBuildable(function (Builder $builder) {
+                $builder->foo('abcd');
+            }));
+
+        $this->assertNull($serialized->getPayload()->get('foo'));
+
+        $validated = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) use ($mutator) {
+                $mutators->foo($mutator);
+            })->validate($serialized);
+
+        $this->assertTrue($validated->passes());
+        $this->assertNull($validated->getJWT()->getPayload()->get('foo'));
+    }
+
+    /**
      * Tests mutator is set from being set with Mutators in previous buildable call.
      *
      * @return void
