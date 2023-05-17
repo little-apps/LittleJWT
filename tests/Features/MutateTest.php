@@ -857,7 +857,7 @@ class MutateTest extends TestCase
         });
 
         $resolver = new MutatorResolver($this->app, [
-            'test' => TestMutator::class
+            'test' => TestMutator::class,
         ]);
 
         $this->expectException(CantResolveMutator::class);
