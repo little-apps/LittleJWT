@@ -6,7 +6,6 @@ use DateTimeInterface;
 use Illuminate\Contracts\Foundation\Application;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Contracts\Mutator;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
