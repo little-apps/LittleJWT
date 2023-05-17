@@ -4,15 +4,15 @@ namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Contracts\Foundation\Application;
 
-use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Core\Handler;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\MutatedJsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
-use LittleApps\LittleJWT\Validation\Validator;
 use LittleApps\LittleJWT\LittleJWT;
+use LittleApps\LittleJWT\Validation\Validator;
 
 class MutateHandler extends Handler
 {
