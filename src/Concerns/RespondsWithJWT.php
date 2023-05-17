@@ -32,14 +32,14 @@ trait RespondsWithJWT
      */
     protected function buildJsonResponseWithToken(string $token, DateTimeInterface $expires)
     {
-        return Response::buildFromToken($token, $expires);
+        return ResponseBuilder::buildFromToken($token, $expires);
     }
 
     /**
      * Attaches JWT to Authorization response header.
      *
      * @param Response $response
-     * @param JWT|string $token
+     * @param JsonWebToken|string $token
      * @return Response
      */
     protected function attachJwtToResponseHeader(Response $response, $token)

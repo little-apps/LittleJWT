@@ -60,4 +60,58 @@ class ResponseMacrosTest extends TestCase
             ->assertJson(['status' => 'error'])
             ->assertHeaderMissing('Authorization');
     }
+
+    /**
+     * Tests that a response includes the JWT.
+     *
+     * @return void
+     */
+    public function test_login_response_trait_jwt()
+    {
+        $response = $this->postJson('/api/login/response/trait', [
+            'email' => $this->user->email,
+            'password' => $this->getCurrentPassword(),
+            'build' => 'jwt',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertHasJWT();
+    }
+
+    /**
+     * Tests that a response includes the token.
+     *
+     * @return void
+     */
+    public function test_login_response_trait_token()
+    {
+        $response = $this->postJson('/api/login/response/trait', [
+            'email' => $this->user->email,
+            'password' => $this->getCurrentPassword(),
+            'build' => 'token',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertHasJWT();
+    }
+
+    /**
+     * Tests that a JWT is attached to response as Authorization header.
+     *
+     * @return void
+     */
+    public function test_login_response_trait_header()
+    {
+        $response = $this->postJson('/api/login/response/trait', [
+            'email' => $this->user->email,
+            'password' => $this->getCurrentPassword(),
+            'attach' => 'header',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertHeader('Authorization');
+    }
 }

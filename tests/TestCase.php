@@ -10,6 +10,7 @@ use LittleApps\LittleJWT\ServiceProvider;
 use LittleApps\LittleJWT\Testing\Models\User;
 
 use Orchestra\Testbench\TestCase as Orchestra;
+use LittleApps\LittleJWT\Testing\TestController;
 
 class TestCase extends Orchestra
 {
@@ -108,6 +109,8 @@ class TestCase extends Orchestra
                         'message' => 'The provided credentials do not match our records.',
                     ], 401);
                 });
+
+                $router->post('/login/response/trait', [TestController::class, 'testResponseTrait']);
 
                 $router->middleware('auth:jwt')->get('/user', function (Request $request) {
                     return $request->user();
