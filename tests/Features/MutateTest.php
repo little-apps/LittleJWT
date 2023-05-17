@@ -7,8 +7,10 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
+use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
+use LittleApps\LittleJWT\Mutate\MutatorResolver;
 use LittleApps\LittleJWT\Mutate\Mutators;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
@@ -783,7 +785,7 @@ class MutateTest extends TestCase
     }
 
     /**
-     * Tests that an invokable validatable class is mutated.
+     * Tests that a custom mutator is mapped and resolved.
      *
      * @return void
      */
@@ -808,6 +810,59 @@ class MutateTest extends TestCase
             }));
 
         $this->assertEquals('dcba', $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests that a custom mutator is mapped and not resolved.
+     *
+     * @return void
+     */
+    public function test_mutate_custom_mapping_not_resolved()
+    {
+        LittleJWT::fake();
+
+        $this->app->bind(TestMutator::class, function ($app) {
+            return new TestMutator(
+                fn ($value) => strrev($value),
+                fn ($value) => strrev($value),
+            );
+        });
+
+        LittleJWT::customMutator('test', TestMutator::class);
+
+        $jwt = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) {
+                $mutators->foo('tes');
+            })->create(new TestBuildable(function (Builder $builder) {
+                $builder->foo('abcd');
+            }));
+
+        $this->assertEquals('abcd', $jwt->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests that a custom mutator is mapped and an exception is thrown when resolved.
+     *
+     * @return void
+     */
+    public function test_mutate_custom_mapping_not_resolved_exception()
+    {
+        LittleJWT::fake();
+
+        $this->app->bind(TestMutator::class, function ($app) {
+            return new TestMutator(
+                fn ($value) => strrev($value),
+                fn ($value) => strrev($value),
+            );
+        });
+
+        $resolver = new MutatorResolver($this->app, [
+            'test' => TestMutator::class
+        ]);
+
+        $this->expectException(CantResolveMutator::class);
+
+        $resolver->resolve('tes');
     }
 
     /**
