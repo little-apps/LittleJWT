@@ -11,9 +11,9 @@ use Jose\Component\KeyManagement\JWKFactory;
 
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
-use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
@@ -396,7 +396,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_no_alg_throws_exception() {
+    public function test_no_alg_throws_exception()
+    {
 
         $jwk = $this->app[Keyable::class]->createJwkFromBase(JWKFactory::createOctKey(1024));
 
@@ -434,8 +435,6 @@ class KeyTest extends TestCase
 
         $this->assertFalse($valid->passes());
     }
-
-
 
     /**
      * Creates and validates a JWT with the same JWK
