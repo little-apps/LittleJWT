@@ -3,6 +3,8 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
 
@@ -11,6 +13,8 @@ use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
  */
 class MutatorResolver
 {
+    use Macroable;
+
     /**
      * Built-in mutator types.
      *
@@ -78,7 +82,9 @@ class MutatorResolver
         } elseif ($this->isMutatorDefinition($definition)) {
             [$key, $args] = $this->parseMutatorDefinition($definition);
 
-            if ($this->hasCustomMutatorMapping($key)) {
+            if ($this->hasResolveMethod($key)) {
+                return [$this->resolveFromMethod($key), $args];
+            } elseif ($this->hasCustomMutatorMapping($key)) {
                 return [$this->resolveFromCustomMapping($key), $args];
             } elseif ($this->hasPrimitiveMutatorMapping($key)) {
                 return [$this->resolveFromPrimitiveMapping($key), $args];
@@ -86,6 +92,16 @@ class MutatorResolver
         }
 
         throw new CantResolveMutator($definition);
+    }
+
+    /**
+     * Checks if custom resolve method exists for key.
+     *
+     * @param string $key
+     * @return boolean
+     */
+    protected function hasResolveMethod(string $key) {
+        return method_exists($this, 'resolve' . Str::studly($key));
     }
 
     /**
@@ -146,6 +162,17 @@ class MutatorResolver
     protected function hasCustomMutatorMapping($mutator)
     {
         return array_key_exists($mutator, $this->customMutatorsMapping);
+    }
+
+    /**
+     * Resolves mutator from method.
+     *
+     * @param string $key
+     * @return Mutator
+     */
+    protected function resolveFromMethod(string $key)
+    {
+        return $this->{'resolve' . Str::studly($key)}();
     }
 
     /**
