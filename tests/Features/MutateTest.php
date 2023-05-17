@@ -12,6 +12,7 @@ use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\MutatorResolver;
 use LittleApps\LittleJWT\Mutate\Mutators;
+use LittleApps\LittleJWT\Mutate\Mutators\StackMutator;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
 use LittleApps\LittleJWT\Testing\TestMutator;
@@ -1004,6 +1005,76 @@ class MutateTest extends TestCase
         $this->assertEquals('lmno', $validated->unserialized()->getPayload()->get('bar'));
 
 
+    }
+
+    /**
+     * Tests stack of mutators
+     *
+     * @return void
+     */
+    public function test_mutator_stack_mutators_reverse()
+    {
+        $stack =
+            (new StackMutator())
+                ->mutator(new TestMutator(
+                    fn ($value) => strrev($value),
+                    fn ($value) => strrev($value),
+                ))->mutator(new TestMutator(
+                    fn ($value) => strtoupper($value),
+                    fn ($value) => strtolower($value),
+                ));
+
+        $handler = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) use ($stack) {
+                $mutators->foo($stack);
+            });
+
+        $serialized =
+            $handler->create(new TestBuildable(function (Builder $builder) {
+                $builder
+                    ->foo('abcd');
+            }));
+
+        $this->assertEquals('DCBA', $serialized->getPayload()->get('foo'));
+
+        $validated = $handler->validate($serialized);
+
+        $this->assertEquals('abcd', $validated->unserialized()->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests stack of mutators is ran in correct order.
+     *
+     * @return void
+     */
+    public function test_mutator_stack_mutators_order()
+    {
+        $stack =
+            (new StackMutator())
+                ->mutator(new TestMutator(
+                    fn ($value) => $value . 'b',
+                    fn ($value) => 'b',
+                ))->mutator(new TestMutator(
+                    fn ($value) => $value . 'c',
+                    fn ($value) => 'c',
+                ));
+
+        $handler = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) use ($stack) {
+                $mutators->foo($stack);
+            });
+
+        $serialized =
+            $handler->create(new TestBuildable(function (Builder $builder) {
+                $builder
+                    ->foo('a');
+            }));
+
+        $this->assertEquals('abc', $serialized->getPayload()->get('foo'));
+
+        $validated = $handler->validate($serialized);
+
+        $this->assertEquals('c', $validated->unserialized()->getPayload()->get('foo'));
     }
 
     /**
