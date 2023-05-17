@@ -9,7 +9,8 @@ use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
 /**
  * Resolves definitions to Mutator instances
  */
-class MutatorResolver {
+class MutatorResolver
+{
     /**
      * Built-in mutator types.
      *
@@ -68,7 +69,8 @@ class MutatorResolver {
      * @return array{0: Mutator, 1: array} Returns array with resolved Mutator and any arguments to pass to instance method.
      * @throws CantResolveMutator Thrown if definition couldn't be resolved.
      */
-    public function resolve($definition) {
+    public function resolve($definition)
+    {
         if ($this->isMutatorInstance($definition)) {
             $mutator = $definition;
 
@@ -152,7 +154,8 @@ class MutatorResolver {
      * @param string $key
      * @return Mutator
      */
-    protected function resolveFromCustomMapping(string $key) {
+    protected function resolveFromCustomMapping(string $key)
+    {
         return $this->app->make($this->customMutatorsMapping[$key]);
     }
 
