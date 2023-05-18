@@ -2,9 +2,7 @@
 
 namespace LittleApps\LittleJWT\Tests;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 
 use LittleApps\LittleJWT\ServiceProvider;
 use LittleApps\LittleJWT\Testing\Models\User;
