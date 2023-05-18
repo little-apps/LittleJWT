@@ -1088,8 +1088,8 @@ class MutateTest extends TestCase
     {
         $stack =
             (new StackMutator())
-                ->mutator(new DoubleMutator)
-                ->mutator(new EncryptMutator);
+                ->mutator(new DoubleMutator())
+                ->mutator(new EncryptMutator());
 
         $handler = LittleJWT::handler()
             ->mutate(function (Mutators $mutators) use ($stack) {
