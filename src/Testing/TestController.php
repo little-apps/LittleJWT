@@ -39,8 +39,8 @@ class TestController extends Controller
     public function testLogin(Request $request)
     {
         $credentials = $request->validate([
-                'email' => ['required', 'email'],
-                'password' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
         if (Auth::validate($credentials)) {
@@ -62,8 +62,8 @@ class TestController extends Controller
     public function testLoginResponse(Request $request)
     {
         $credentials = $request->validate([
-                'email' => ['required', 'email'],
-                'password' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
         if (Auth::validate($credentials)) {
@@ -86,12 +86,10 @@ class TestController extends Controller
      */
     public function testResponseTrait(Request $request)
     {
-        $credentials = $request->validate(
-            [
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            ]
-        );
+        ]);
 
         if (Auth::validate($credentials)) {
             $jwt = Auth::buildJwtForUser(Auth::user());
