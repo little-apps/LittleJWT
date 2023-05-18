@@ -65,64 +65,17 @@ class TestCase extends Orchestra
         $router
             ->prefix('api')
             ->group(function ($router) {
-                $router->any('/io', function (Request $request) {
-                    return [
-                        'method' => $request->method(),
-                        'url' => $request->url(),
-                        'fullUrl' => $request->fullUrl(),
-                        'headers' => $request->header(),
-                        'server' => $request->server(),
-                        'body' => $request->all(),
-                    ];
-                });
+                $router->any('/io', [TestController::class, 'testIo']);
 
-                $router->post('/login', function (Request $request) {
-                    $credentials = $request->validate([
-                        'email' => ['required', 'email'],
-                        'password' => ['required'],
-                    ]);
-
-                    if (Auth::validate($credentials)) {
-                        return Auth::createJwtResponse(Auth::user());
-                    }
-
-                    return Response::json([
-                        'status' => 'error',
-                        'message' => 'The provided credentials do not match our records.',
-                    ], 401);
-                });
-
-                $router->post('/login/response', function (Request $request) {
-                    $credentials = $request->validate([
-                        'email' => ['required', 'email'],
-                        'password' => ['required'],
-                    ]);
-
-                    if (Auth::validate($credentials)) {
-                        $jwt = Auth::buildJwtForUser(Auth::user());
-
-                        return Response::withJwt($jwt)->attachJwt($jwt);
-                    }
-
-                    return Response::json([
-                        'status' => 'error',
-                        'message' => 'The provided credentials do not match our records.',
-                    ], 401);
-                });
-
+                $router->post('/login', [TestController::class, 'testLogin']);
+                $router->post('/login/response', [TestController::class, 'testLoginResponse']);
                 $router->post('/login/response/trait', [TestController::class, 'testResponseTrait']);
 
-                $router->middleware('auth:jwt')->get('/user', function (Request $request) {
-                    return $request->user();
-                });
+                $router->middleware('auth:jwt')->get('/user', [TestController::class, 'testUser']);
 
-                $router->middleware(\LittleApps\LittleJWT\Laravel\Middleware\ValidToken::class)->get('/middleware', function (Request $request) {
-                    return ['status' => true];
-                });
+                $router->middleware(\LittleApps\LittleJWT\Laravel\Middleware\ValidToken::class)->get('/middleware', [TestController::class, 'testMiddleware']);
 
-                $router->middleware('validtoken:guard')->get('/middleware/guard', function (Request $request) {
-                    return ['status' => true];
-                });
+                $router->middleware('validtoken:guard')->get('/middleware/guard', [TestController::class, 'testMiddleware']);
             });
     }
 
