@@ -12,6 +12,8 @@ use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\MutatorResolver;
 use LittleApps\LittleJWT\Mutate\Mutators;
+use LittleApps\LittleJWT\Mutate\Mutators\DoubleMutator;
+use LittleApps\LittleJWT\Mutate\Mutators\EncryptMutator;
 use LittleApps\LittleJWT\Mutate\Mutators\StackMutator;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestBuildable;
@@ -1074,7 +1076,37 @@ class MutateTest extends TestCase
 
         $validated = $handler->validate($serialized);
 
-        $this->assertEquals('c', $validated->unserialized()->getPayload()->get('foo'));
+        $this->assertEquals('b', $validated->unserialized()->getPayload()->get('foo'));
+    }
+
+    /**
+     * Tests stack of mutators is ran in correct order.
+     *
+     * @return void
+     */
+    public function test_mutator_stack_mutators_order_encrypt()
+    {
+        $stack =
+            (new StackMutator())
+                ->mutator(new DoubleMutator)
+                ->mutator(new EncryptMutator);
+
+        $handler = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) use ($stack) {
+                $mutators->foo($stack);
+            });
+
+        $serialized =
+            $handler->create(new TestBuildable(function (Builder $builder) {
+                $builder
+                    ->foo(1234.1234);
+            }));
+
+        $this->assertNotEquals(1234.1234, $serialized->getPayload()->get('foo'));
+
+        $validated = $handler->validate($serialized);
+
+        $this->assertEquals(1234.1234, $validated->unserialized()->getPayload()->get('foo'));
     }
 
     /**

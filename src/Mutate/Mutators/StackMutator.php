@@ -40,7 +40,11 @@ class StackMutator implements Mutator
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {
-        foreach ($this->passThruStack as $callback) {
+        /**
+         * Stack is reversed when unserializing so values go through
+        * first -> last when serializing and last -> first when unserializing.
+         */
+        foreach (array_reverse($this->passThruStack) as $callback) {
             $value = $callback('unserialize', $value, $key, $args, $jwt);
         }
 
