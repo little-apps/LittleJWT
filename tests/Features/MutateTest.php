@@ -844,6 +844,35 @@ class MutateTest extends TestCase
     }
 
     /**
+     * Tests that a custom mutator key doesn't override a primitive key.
+     *
+     * @return void
+     */
+    public function test_invoke_mutates_custom_mapping_override()
+    {
+        LittleJWT::fake();
+
+        $this->app->bind(TestMutator::class, function ($app) {
+            return new TestMutator(
+                fn ($value) => strrev($value),
+                fn ($value) => strrev($value),
+            );
+        });
+
+        LittleJWT::customMutator('int', TestMutator::class);
+
+        $jwt = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) {
+                $mutators->foo('int');
+            })->create(new TestBuildable(function (Builder $builder) {
+                $builder->foo('1234');
+            }));
+
+        $this->assertNotEquals('4321', $jwt->getPayload()->get('foo'));
+        $this->assertEquals('1234', $jwt->getPayload()->get('foo'));
+    }
+
+    /**
      * Tests that a custom mutator is mapped and an exception is thrown when resolved.
      *
      * @return void

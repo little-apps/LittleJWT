@@ -82,12 +82,12 @@ class MutatorResolver
         } elseif ($this->isMutatorDefinition($definition)) {
             [$key, $args] = $this->parseMutatorDefinition($definition);
 
-            if ($this->hasResolveMethod($key)) {
+            if ($this->hasPrimitiveMutatorMapping($key)) {
+                return [$this->resolveFromPrimitiveMapping($key), $args];
+            } elseif ($this->hasResolveMethod($key)) {
                 return [$this->resolveFromMethod($key), $args];
             } elseif ($this->hasCustomMutatorMapping($key)) {
                 return [$this->resolveFromCustomMapping($key), $args];
-            } elseif ($this->hasPrimitiveMutatorMapping($key)) {
-                return [$this->resolveFromPrimitiveMapping($key), $args];
             }
         }
 
