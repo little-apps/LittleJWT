@@ -103,6 +103,7 @@ class MutatorResolver
     protected function hasResolveMethod(string $key)
     {
         $method = 'resolve' . Str::studly($key);
+
         return method_exists($this, $method) || $this->hasMacro($method);
     }
 
