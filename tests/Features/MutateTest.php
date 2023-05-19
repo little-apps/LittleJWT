@@ -872,6 +872,33 @@ class MutateTest extends TestCase
         $this->assertEquals('1234', $jwt->getPayload()->get('foo'));
     }
 
+     /**
+     * Tests that a custom mutator is added as a resolve method.
+     *
+     * @return void
+     */
+    public function test_invoke_mutates_custom_mapping_resolve()
+    {
+        LittleJWT::fake();
+
+        MutatorResolver::macro('resolveTesting', function () {
+            return new TestMutator(
+                fn ($value) => strrev($value),
+                fn ($value) => strrev($value),
+            );
+        });
+
+        $jwt = LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) {
+                $mutators->foo('testing');
+            })->create(new TestBuildable(function (Builder $builder) {
+                $builder->foo('1234');
+            }));
+
+        $this->assertNotEquals('1234', $jwt->getPayload()->get('foo'));
+        $this->assertEquals('4321', $jwt->getPayload()->get('foo'));
+    }
+
     /**
      * Tests that a custom mutator is mapped and an exception is thrown when resolved.
      *
