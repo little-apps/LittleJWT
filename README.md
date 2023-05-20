@@ -39,6 +39,30 @@ php artisan littlejwt:phrase
 
 > Information on generating different types of keys can be found in [the documentation](https://docs.getlittlejwt.com/json-web-keys#key-types).
 
+## Upgrading
+
+**IMPORTANT:** Before continuing, please note v2.0 is still in beta and is not recommended.
+
+Create a backup of the config file:
+
+```bash
+cp config/littlejwt.php config/littlejwt.php.old
+```
+
+Upgrade the package via composer:
+
+```bash
+composer require little-apps/littlejwt:"^2.0.0@beta"
+```
+
+Publish the new config file (overwriting the existing config file):
+
+```bash
+php artisan vendor:publish --tag="littlejwt-config" --existing
+```
+
+ > You will need to manually set the config file to match the old config file.
+
 ## Usage
 
 ### Building JWTs
