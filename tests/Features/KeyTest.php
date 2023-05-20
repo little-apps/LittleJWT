@@ -437,6 +437,30 @@ class KeyTest extends TestCase
     }
 
     /**
+     * Tests there's no 'alg' set in the config file.
+     *
+     * @return void
+     */
+    public function test_config_file_missing_alg()
+    {
+        $config = config('littlejwt.key', []);
+
+        unset($config['alg']);
+
+        $keyBuilder = new KeyBuilder($this->app, $config);
+
+        $jwk = $keyBuilder->build();
+
+        $this->assertNotNull($jwk);
+
+        LittleJWT::fake($jwk);
+
+        $signed = LittleJWT::create()->sign();
+
+        $this->assertNotNull($signed);
+    }
+
+    /**
      * Creates and validates a JWT with the same JWK
      *
      * @param JsonWebKey $jwk JWK to use to create and validate token.

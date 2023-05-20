@@ -43,6 +43,11 @@ class KeyBuilder implements Keyable
     public const KEY_FILES_CRT = 'crt';
 
     /**
+     * The default hashing algorithm to use when no algorithm is set.
+     */
+    public const DEFAULT_ALGORITHM = 'HS256';
+
+    /**
      * Application container.
      *
      * @var Application
@@ -68,7 +73,7 @@ class KeyBuilder implements Keyable
         $this->app = $app;
         $this->config = $config;
 
-        $this->extra = ['use' => 'sig', 'alg' => $config['alg']];
+        $this->extra = ['use' => 'sig', 'alg' => $config['alg'] ?? static::DEFAULT_ALGORITHM];
     }
 
     /**
