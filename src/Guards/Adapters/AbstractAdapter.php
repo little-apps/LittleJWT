@@ -20,24 +20,15 @@ abstract class AbstractAdapter implements GuardAdapter
     protected $container;
 
     /**
-     * The instance for building and validating JWTs
-     *
-     * @var LittleJWT
-     */
-    protected $jwt;
-
-    /**
      * The options to use for the adapter.
      *
      * @var array
      */
     protected $config;
 
-    public function __construct(Container $container, LittleJWT $jwt, array $config)
+    public function __construct(Container $container, array $config)
     {
         $this->container = $container;
-        $this->jwt = $jwt;
-
         $this->config = $config;
     }
 
@@ -50,7 +41,7 @@ abstract class AbstractAdapter implements GuardAdapter
      */
     public function parse(string $token)
     {
-        return $this->jwt->parse($token);
+        return $this->getHandler()->parse($token);
     }
 
     /**
@@ -63,7 +54,7 @@ abstract class AbstractAdapter implements GuardAdapter
     {
         $callback = $this->getValidatorCallback();
 
-        return $this->jwt->validate($jwt, $callback)->passes();
+        return $this->getHandler()->validate($jwt, $callback)->passes();
     }
 
     /**
@@ -76,6 +67,15 @@ abstract class AbstractAdapter implements GuardAdapter
     public function getUserFromJwt(UserProvider $provider, JsonWebToken $jwt)
     {
         return $provider->retrieveById($jwt->getPayload()->sub);
+    }
+
+    /**
+     * Gets the LittleJWT handler
+     *
+     * @return \LittleApps\LittleJWT\Core\Handler
+     */
+    protected function getHandler() {
+        return $this->container->make(LittleJWT::class)->handler();
     }
 
     /**

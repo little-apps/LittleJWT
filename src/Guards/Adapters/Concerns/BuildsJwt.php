@@ -22,7 +22,7 @@ trait BuildsJwt
     {
         $buildable = new GuardBuildable($user, $payloadClaims, $headerClaims);
 
-        return $this->jwt->createSigned($buildable);
+        return $this->getHandler()->createSigned($buildable);
     }
 
     /**

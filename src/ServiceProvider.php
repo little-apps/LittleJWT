@@ -182,17 +182,15 @@ class ServiceProvider extends PackageServiceProvider
     {
         $this->app->bind(Adapters\GenericAdapter::class, function ($app) {
             $config = $this->getAdapterConfig('generic');
-            $jwt = $app[LittleJWT::class];
 
-            return new Adapters\GenericAdapter($app, $jwt, $config);
+            return new Adapters\GenericAdapter($app, $config);
         });
 
         $this->app->bind(Adapters\FingerprintAdapter::class, function ($app) {
             $config = $this->getAdapterConfig('fingerprint');
-            $jwt = $app[LittleJWT::class];
             $generic = $app[Adapters\GenericAdapter::class];
 
-            return new Adapters\FingerprintAdapter($app, $jwt, $generic, $config);
+            return new Adapters\FingerprintAdapter($app, $generic, $config);
         });
     }
 
