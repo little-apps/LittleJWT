@@ -47,7 +47,7 @@ php artisan littlejwt:phrase
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Build\Builder;
 
-$token = LittleJWT::createToken(function (Builder $builder) {
+$jwt = LittleJWT::create(function (Builder $builder) {
     $builder
         // Adds claim 'abc' with value 'def' to header claims.
         ->abc('def', true)
@@ -57,6 +57,7 @@ $token = LittleJWT::createToken(function (Builder $builder) {
         ->nop('qrs', false);
 });
 
+$token = (string) $jwt;
 // $token = "ey...";
 ```
 
