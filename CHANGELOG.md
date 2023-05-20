@@ -2,6 +2,31 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## v2.0.0-beta - 2023-05-20
+
+## What's Changed
+
+### High Level
+ * Major updates to functionality and design.
+ * Implemented claim mutating (serializing and unserializing).
+ * Various fixes and updates to both the code and documentation.
+ * The [LittleJWT documentation](https://docs.getlittlejwt.com) has been updated to reflect the changes.
+
+### Low Level
+ * The `createJWT` method has been renamed to `create`.
+ * The `parseToken` method has been renamed to `parse`.
+ * The `validateJWT` method has been renamed to `validate`.
+ * Removed the `createToken` method.
+ * The `validate` method returns an `ValidatedJsonWebToken` object, not a boolean.
+ * The `LittleApps\LittleJWT\JWT\JWT` class has been renamed to `JsonWebToken`.
+ * The `LittleApps\LittleJWT\JWK\JsonWebKey` class extends `Jose\Component\Core\JWK`.
+ * The `createUnsigned` method always creates an unsigned JWT.
+ * The `createSigned` method always creates and signs a JWT.
+ * The `create` method creates and signs a JWT depending if auto sign is enabled.
+ * LittleJWT forwards calls to the mutate/non-mutate handler.
+ * Creating, parsing, signing, validating, etc. are in separate traits.
+ * Added option to enable/disable auto signing JWTs.
+
 ## v1.5.1 - 2023-04-17
 
 ### What's Changed
