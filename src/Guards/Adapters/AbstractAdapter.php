@@ -74,7 +74,8 @@ abstract class AbstractAdapter implements GuardAdapter
      *
      * @return \LittleApps\LittleJWT\Core\Handler
      */
-    protected function getHandler() {
+    protected function getHandler()
+    {
         return $this->container->make(LittleJWT::class)->handler();
     }
 

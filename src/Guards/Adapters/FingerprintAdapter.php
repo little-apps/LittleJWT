@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
 
 use LittleApps\LittleJWT\JWT\JsonWebToken;
-use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\Validation\Validatables;
 
 class FingerprintAdapter extends AbstractAdapter
