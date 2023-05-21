@@ -16,6 +16,13 @@ class FingerprintAdapter extends AbstractAdapter
     use Concerns\HasRequest;
 
     /**
+     * The hash algorithm to use for the fingerprint.
+     *
+     * @var string
+     */
+    const HASH_ALGORITHM = 'sha256';
+
+    /**
      * Base adapter to add fingerprint for.
      *
      * @var AbstractAdapter
@@ -125,7 +132,7 @@ class FingerprintAdapter extends AbstractAdapter
      */
     public function hashFingerprint(string $fingerprint)
     {
-        return hash('sha256', $fingerprint);
+        return hash(static::HASH_ALGORITHM, $fingerprint);
     }
 
     /**
