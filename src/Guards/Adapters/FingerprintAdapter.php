@@ -20,7 +20,7 @@ class FingerprintAdapter extends AbstractAdapter
      *
      * @var string
      */
-    const HASH_ALGORITHM = 'sha256';
+    public const HASH_ALGORITHM = 'sha256';
 
     /**
      * Base adapter to add fingerprint for.
