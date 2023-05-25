@@ -64,6 +64,7 @@ class TestCase extends Orchestra
             ->prefix('api')
             ->group(function ($router) {
                 $router->any('/io', [TestController::class, 'testIo']);
+                $router->get('/io/jwt', [TestController::class, 'testGetJwt']);
 
                 $router->post('/login', [TestController::class, 'testLogin']);
                 $router->post('/login/response', [TestController::class, 'testLoginResponse']);

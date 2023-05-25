@@ -31,6 +31,16 @@ class TestController extends Controller
     }
 
     /**
+     * Gets the JWT using the getJwt macro
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function testGetJwt(Request $request) {
+        return $this->buildJsonResponseWithJwt($request->getJwt());
+    }
+
+    /**
      * Authenticates a user and sends back JWT
      *
      * @param Request $request

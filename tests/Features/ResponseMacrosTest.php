@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 
+use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Guards\Adapters\GenericAdapter;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
@@ -23,6 +24,24 @@ class ResponseMacrosTest extends TestCase
         parent::setUp();
 
         Auth::setAdapter($this->app[GenericAdapter::class]);
+    }
+
+    /**
+     * Tests request 'getJwt' macro is functioning.
+     *
+     * @return void
+     */
+    public function test_get_jwt() {
+        $jwt = LittleJWT::create();
+
+        $response =
+            $this
+                ->withJwt($jwt)
+                ->getJson('/api/io/jwt');
+
+        $response
+            ->assertOk()
+            ->assertHasJWT();
     }
 
     /**
