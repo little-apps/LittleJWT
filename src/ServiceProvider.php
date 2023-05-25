@@ -302,7 +302,7 @@ class ServiceProvider extends PackageServiceProvider
         Request::macro('getJwt', function ($inputKey = 'token') use ($littleJwt) {
             $token = $this->getToken($inputKey);
 
-            return ! is_null($token) ? $littleJwt->parseToken($token) : null;
+            return ! is_null($token) ? $littleJwt->parse($token) : null;
         });
 
         ResponseFactory::macro('withJwt', function (JsonWebToken $jwt) {
