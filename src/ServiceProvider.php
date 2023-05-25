@@ -268,7 +268,7 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function bootMacros()
     {
-        $littleJwt = $this->app->make(LittleJWT::class);
+        $handler = $this->app->make(LittleJWT::class)->handler();
 
         /**
          * Get the token for the request.
@@ -299,10 +299,10 @@ class ServiceProvider extends PackageServiceProvider
             return null;
         });
 
-        Request::macro('getJwt', function ($inputKey = 'token') use ($littleJwt) {
+        Request::macro('getJwt', function ($inputKey = 'token') use ($handler) {
             $token = $this->getToken($inputKey);
 
-            return ! is_null($token) ? $littleJwt->parse($token) : null;
+            return ! is_null($token) ? $handler->parse($token) : null;
         });
 
         ResponseFactory::macro('withJwt', function (JsonWebToken $jwt) {
