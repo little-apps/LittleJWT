@@ -31,7 +31,8 @@ class ResponseMacrosTest extends TestCase
      *
      * @return void
      */
-    public function test_get_jwt() {
+    public function test_get_jwt()
+    {
         $jwt = LittleJWT::create();
 
         $response =

@@ -36,7 +36,8 @@ class TestController extends Controller
      * @param Request $request
      * @return array
      */
-    public function testGetJwt(Request $request) {
+    public function testGetJwt(Request $request)
+    {
         return $this->buildJsonResponseWithJwt($request->getJwt());
     }
 
