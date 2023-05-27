@@ -41,7 +41,7 @@ php artisan littlejwt:phrase
 
 ## Upgrading
 
-**IMPORTANT:** Before continuing, please note v2.0 is still in beta and is not recommended.
+**IMPORTANT:** Before continuing, please note v2.0 is still in beta and is not recommended for production systems.
 
 Create a backup of the config file:
 
