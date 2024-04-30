@@ -9,9 +9,14 @@ use LittleApps\LittleJWT\Testing\Models\User;
 
 use LittleApps\LittleJWT\Testing\TestController;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Orchestra\Testbench\Concerns\WithWorkbench;
+use Orchestra\Testbench\Concerns\WithLaravelMigrations;
 
 class TestCase extends Orchestra
 {
+    use WithWorkbench;
+    use WithLaravelMigrations;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,8 +51,6 @@ class TestCase extends Orchestra
      */
     protected function defineDatabaseMigrations()
     {
-        $this->loadLaravelMigrations();
-
         $this->withFactories(__DIR__.'/../database/factories/legacy');
     }
 
