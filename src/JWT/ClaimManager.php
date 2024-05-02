@@ -12,10 +12,13 @@ use RuntimeException;
 
 class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
+    public const PART_HEADER = 'header';
+    public const PART_PAYLOAD = 'payload';
+
     /**
      * Part claim manager is for
      *
-     * @var string One of ClaimManagerBuilder::PART_* constants
+     * @var string One of ClaimManager::PART_* constants
      */
     protected $part;
 

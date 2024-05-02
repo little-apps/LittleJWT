@@ -8,9 +8,6 @@ use LittleApps\LittleJWT\JWT\ClaimManager;
 
 class ClaimManagerBuilder
 {
-    public const PART_HEADER = 'header';
-    public const PART_PAYLOAD = 'payload';
-
     /**
      * Initializes a ClaimManagerBuilder
      *
@@ -27,7 +24,7 @@ class ClaimManagerBuilder
      */
     public function buildClaimManagerForHeader(array $claims)
     {
-        return $this->buildClaimManagerFor(static::PART_HEADER, $claims);
+        return $this->buildClaimManagerFor(ClaimManager::PART_HEADER, $claims);
     }
 
     /**
@@ -38,7 +35,7 @@ class ClaimManagerBuilder
      */
     public function buildClaimManagerForPayload(array $claims)
     {
-        return $this->buildClaimManagerFor(static::PART_PAYLOAD, $claims);
+        return $this->buildClaimManagerFor(ClaimManager::PART_PAYLOAD, $claims);
     }
 
     /**
