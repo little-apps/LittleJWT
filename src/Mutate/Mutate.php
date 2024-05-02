@@ -3,8 +3,8 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Support\Traits\ForwardsCalls;
-
 use LittleApps\LittleJWT\Factories\JWTBuilder;
+use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\MutatedJsonWebToken;
 
@@ -62,8 +62,8 @@ class Mutate
      */
     public function unserialize(Mutators $mutators, JsonWebToken $jwt)
     {
-        $headers = $this->unserializeHeaders($mutators, $jwt);
-        $payload = $this->unserializePayload($mutators, $jwt);
+        $headers = new ClaimManager(ClaimManager::PART_HEADER, $this->unserializeHeaders($mutators, $jwt));
+        $payload = new ClaimManager(ClaimManager::PART_PAYLOAD, $this->unserializePayload($mutators, $jwt));
 
         return new MutatedJsonWebToken($jwt, $headers, $payload);
     }

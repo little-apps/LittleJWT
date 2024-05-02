@@ -3,11 +3,11 @@
 namespace LittleApps\LittleJWT\JWT;
 
 use LittleApps\LittleJWT\Build\Sign;
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
 
 /**
  * Represents a JSON Web Token (JWT).
- * This is an immutable class (headers, payload, and signature cannot be modified after instance is created).
+ * This is (and isn't) an immutable class (headers, payload, and signature cannot be modified after instance is created).
+ * TODO: Make class final
  */
 class JsonWebToken
 {
@@ -21,14 +21,14 @@ class JsonWebToken
     /**
      * Header claim manager.
      *
-     * @var array
+     * @var ClaimManager
      */
     protected $headers;
 
     /**
      * Payload claim manager.
      *
-     * @var array
+     * @var ClaimManager
      */
     protected $payload;
 
@@ -36,10 +36,10 @@ class JsonWebToken
      * Creates an instance that represents a JWT.
      *
      * @param Sign $sign
-     * @param array $headers Headers
-     * @param array $payload Payload
+     * @param ClaimManager $headers Headers
+     * @param ClaimManager $payload Payload
      */
-    public function __construct(Sign $sign, array $headers, array $payload)
+    public function __construct(Sign $sign, ClaimManager $headers, ClaimManager $payload)
     {
         $this->sign = $sign;
         $this->headers = $headers;
@@ -53,7 +53,7 @@ class JsonWebToken
      */
     public function getHeaders()
     {
-        return $this->builder()->buildClaimManagerForHeader($this->headers);
+        return $this->headers;
     }
 
     /**
@@ -63,7 +63,7 @@ class JsonWebToken
      */
     public function getPayload()
     {
-        return $this->builder()->buildClaimManagerForPayload($this->payload);
+        return $this->payload;
     }
 
     /**
@@ -74,16 +74,6 @@ class JsonWebToken
     public function sign()
     {
         return $this->sign->sign($this);
-    }
-
-    /**
-     * Gets the Claim Manager Builder
-     *
-     * @return ClaimManagerBuilder
-     */
-    protected function builder()
-    {
-        return new ClaimManagerBuilder();
     }
 
     /**

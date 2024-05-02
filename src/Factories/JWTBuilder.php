@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Sign;
 
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
+use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -63,6 +64,24 @@ class JWTBuilder
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
     public function buildFromParts(array $headers, array $payload, ?string $signature = null)
+    {
+        return $this->buildFromClaimManagers(
+            new ClaimManager(ClaimManager::PART_HEADER, $headers),
+            new ClaimManager(ClaimManager::PART_PAYLOAD, $payload),
+            $signature
+        );
+    }
+
+    /**
+     * Builds a JWT instance for claim managers and signature.
+     *
+     * @param ClaimManager $headers
+     * @param ClaimManager $payload
+     * @param string|null $signature
+     * @return JsonWebToken|SignedJsonWebToken
+     * @throws CantParseJWTException Thrown if token cannot be parsed.
+     */
+    public function buildFromClaimManagers(ClaimManager $headers, ClaimManager $payload, ?string $signature = null)
     {
         if (is_null($signature)) {
             return new JsonWebToken($this->sign, $headers, $payload);
