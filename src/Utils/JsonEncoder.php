@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Utils;
 use Exception;
 use Jose\Component\Core\Util\JsonConverter as JoseJsonConverter;
 use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
-use RuntimeException;
+use InvalidArgumentException;
 
 class JsonEncoder
 {
@@ -19,7 +19,7 @@ class JsonEncoder
     {
         try {
             return JoseJsonConverter::encode($data);
-        } catch (RuntimeException $ex) {
+        } catch (InvalidArgumentException $ex) {
             throw new InvalidClaimValueException($data, $ex);
         }
     }
