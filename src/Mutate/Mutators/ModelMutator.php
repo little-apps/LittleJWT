@@ -3,8 +3,9 @@
 namespace LittleApps\LittleJWT\Mutate\Mutators;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException as LaravelModelNotFoundException;
 use LittleApps\LittleJWT\Contracts\Mutator;
+use LittleApps\LittleJWT\Exceptions\ModelNotFoundException;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class ModelMutator implements Mutator
@@ -38,8 +39,8 @@ class ModelMutator implements Mutator
                     $model = new $table();
 
                     return $model->findOrFail($value);
-                } catch (ModelNotFoundException $ex) {
-
+                } catch (LaravelModelNotFoundException $ex) {
+                    throw new ModelNotFoundException($table, $key, $value, $jwt);
                 }
 
             }
