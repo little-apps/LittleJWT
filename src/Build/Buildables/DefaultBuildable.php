@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Build\Buildables;
 use Illuminate\Support\Carbon;
 
 use Illuminate\Support\Str;
-use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Build\Options;
 
 class DefaultBuildable
 {
@@ -24,12 +24,12 @@ class DefaultBuildable
     /**
      * Builds JWT with default claims.
      *
-     * @param Builder $builder
+     * @param Options $options
      * @return void
      */
-    public function __invoke(Builder $builder)
+    public function __invoke(Options $options)
     {
-        $builder
+        $options
             ->alg($this->config['alg'])
             ->iat(Carbon::now())
             ->nbf(Carbon::now())

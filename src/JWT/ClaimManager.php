@@ -6,6 +6,9 @@ use ArrayAccess;
 use Countable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use LittleApps\LittleJWT\Build\ClaimBuildOptions;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 use RuntimeException;
@@ -25,14 +28,14 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Claims
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Support\Collection<string, ClaimBuildOptions>
      */
     protected $claims;
 
-    public function __construct(string $part, array $claims)
+    public function __construct(string $part, $claims)
     {
         $this->part = $part;
-        $this->claims = collect($claims);
+        $this->claims = $this->mapToClaimBuildOptions(collect($claims));
     }
 
     /**
@@ -55,7 +58,51 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     public function get($key = null, $default = null)
     {
-        return ! is_null($key) ? $this->claims->get($key, $default) : collect($this->claims);
+        if (is_null($key)) {
+            return collect($this->claims);
+        }
+
+        $claim = $this->getClaim($key);
+
+        return !is_null($claim) ? $claim->getValue() : $default;
+    }
+
+    /**
+     * Gets a claim for key.
+     *
+     * @param string $key Claim key.
+     * @param mixed $default Returned if claim key doesn't exist. (default: null)
+     * @return ClaimBuildOptions|mixed
+     */
+    public function getClaim(string $key, $default = null) {
+        return $this->claims->get($key, $default);
+    }
+
+    /**
+     * Sets a claim value
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return ClaimBuildOptions
+     */
+    public function set(string $key, $value) {
+        $claimBuildOptions = new ClaimBuildOptions($this->part, $key, $value);
+
+        $this->claims[$key] = $claimBuildOptions;
+
+        return $claimBuildOptions;
+    }
+
+    /**
+     * Unsets a claim
+     *
+     * @param string $key
+     * @return static
+     */
+    public function unset(string $key): static {
+        unset($this->claims[$key]);
+
+        return $this;
     }
 
     /**
@@ -66,6 +113,27 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     public function count(): int
     {
         return $this->claims->count();
+    }
+
+    /**
+     * Maps claims to ClaimBuildOptions
+     *
+     * @param mixed $claims
+     * @return Collection<string, ClaimBuildOptions>
+     */
+    protected function mapToClaimBuildOptions($claims) {
+        return collect($claims)->map(
+            fn ($value, $key) => $value instanceof ClaimBuildOptions ? $value : new ClaimBuildOptions($this->part, $key, $value)
+        );
+    }
+
+    /**
+     * Maps ClaimBuildOptions to values.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function mapToValues() {
+        return $this->claims->map(fn ($options) => $options->getValue());
     }
 
     /**
@@ -123,7 +191,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        throw new RuntimeException('Attempt to mutate immutable ' . static::class . ' object.');
+        $this->set($offset, $value);
     }
 
     /**
@@ -135,7 +203,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      */
     public function offsetUnset($offset): void
     {
-        throw new RuntimeException('Attempt to mutate immutable ' . static::class . ' object.');
+        $this->unset($offset);
     }
 
     /**
@@ -156,7 +224,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     public function toJson($options = 0)
     {
         // TODO: Pass JSON options
-        return JsonEncoder::encode($this->toArray());
+        return JsonEncoder::encode($this->mapToValues()->toArray());
     }
 
     /**
@@ -169,5 +237,23 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
         $json = $this->toJson();
 
         return Base64Encoder::encode($json);
+    }
+
+    /**
+     * Merges multiple ClaimManager instances together.
+     * If multiple claim managers have the same key, the latter value is used.
+     *
+     * @param string $part Part claims are for
+     * @param ClaimManager ...$claimManagers Claim managers to merge
+     * @return self
+     */
+    public static function merge(string $part, ClaimManager ...$claimManagers) {
+        $claims = [];
+
+        foreach ($claimManagers as $claimManager) {
+            $claims = array_merge($claims, $claimManager->toArray());
+        }
+
+        return new self($part, $claims);
     }
 }

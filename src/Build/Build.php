@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
 
+use LittleApps\LittleJWT\Contracts\BuildsJWTClaims;
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Mutate\Mutators;
@@ -66,11 +67,14 @@ class Build
      */
     public function build()
     {
+        // Create builder to pass to callbacks.
         $builder = $this->createBuilder();
 
         $this->runThru($builder);
 
-        return $this->builder->buildFromParts($builder->getHeaders(), $builder->getPayload());
+        $claimManagers = $builder->getClaimManagers();
+
+        return $this->builder->buildFromClaimManagers($claimManagers->header, $claimManagers->payload);
     }
 
     /**
@@ -80,9 +84,6 @@ class Build
      */
     protected function createBuilder()
     {
-        $headerClaims = $this->app->config->get('littlejwt.builder.claims.header', []);
-        $payloadClaims = $this->app->config->get('littlejwt.builder.claims.payload', []);
-
-        return new Builder($headerClaims, $payloadClaims);
+        return new Builder($this->app);
     }
 }

@@ -105,13 +105,12 @@ class MutateHandler extends Handler
      * Creates an unsigned serialized JWT instance.
      *
      * @param callable(Builder): void $callback Callback that receives Builder instance.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return SignedJsonWebToken|JsonWebToken
      */
-    public function create(callable $callback = null, $applyDefault = true)
+    public function create(callable $callback = null)
     {
         // Don't sign it yet, because this will try to JSON encode the claims (which may need to be serialized before that can happen)
-        $unsigned = parent::createUnsigned($callback, $applyDefault);
+        $unsigned = parent::createUnsigned($callback);
 
         $serialized = $this->serialize($unsigned);
 

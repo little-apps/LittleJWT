@@ -16,26 +16,13 @@ trait HandlesCreate
      * Creates an unsigned JWT instance.
      *
      * @param callable(Builder): void $callback Callback that receives Builder instance.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return JsonWebToken
      */
-    public function createUnsigned(callable $callback = null, $applyDefault = true)
+    public function createUnsigned(callable $callback = null)
     {
-        $callbacks = [];
-
-        if ($applyDefault) {
-            array_push($callbacks, $this->createCallbackBuilder()->createBuildableCallback());
-        }
-
-        if (is_callable($callback)) {
-            array_push($callbacks, $callback);
-        }
-
-        $buildable = new StackBuildable($callbacks);
-
         return
             $this->build()
-                ->passBuilderThru($buildable)
+                ->passBuilderThru($callback ?? fn () => null)
                 ->build();
     }
 
@@ -43,12 +30,11 @@ trait HandlesCreate
      * Creates a signed JWT instance.
      *
      * @param callable(Builder): void $callback Callback that receives Builder instance.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return SignedJsonWebToken
      */
-    public function createSigned(callable $callback = null, $applyDefault = true)
+    public function createSigned(callable $callback = null)
     {
-        $unsigned = $this->createUnsigned($callback, $applyDefault);
+        $unsigned = $this->createUnsigned($callback);
 
         return $unsigned->sign();
     }
@@ -57,12 +43,11 @@ trait HandlesCreate
      * Creates an signed or unsigned (depending if auto sign is enabled) JWT instance.
      *
      * @param callable(Builder): void $callback Callback that receives Builder instance.
-     * @param bool $applyDefault If true, the default claims are applied to the JWT. (default is true)
      * @return JsonWebToken|SignedJsonWebToken
      */
-    public function create(callable $callback = null, $applyDefault = true)
+    public function create(callable $callback = null)
     {
-        return $this->autoSign ? $this->createSigned($callback, $applyDefault) : $this->createUnsigned($callback, $applyDefault);
+        return $this->autoSign ? $this->createSigned($callback) : $this->createUnsigned($callback);
     }
 
     /**

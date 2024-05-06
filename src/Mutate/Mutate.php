@@ -79,7 +79,7 @@ class Mutate
     {
         $headers = [];
 
-        foreach ($jwt->getHeaders()->toArray() as $key => $value) {
+        foreach ($jwt->getHeaders()->mapToValues()->toArray() as $key => $value) {
             if ($mutators->hasHeader($key)) {
                 $definition = $mutators->getHeaders($key);
 
@@ -107,7 +107,7 @@ class Mutate
     {
         $payload = [];
 
-        foreach ($jwt->getPayload()->toArray() as $key => $value) {
+        foreach ($jwt->getPayload()->mapToValues()->toArray() as $key => $value) {
             if ($mutators->hasPayload($key)) {
                 $definition = $mutators->getPayload($key);
 
@@ -135,7 +135,7 @@ class Mutate
     {
         $headers = [];
 
-        foreach ($jwt->getHeaders()->toArray() as $key => $value) {
+        foreach ($jwt->getHeaders()->mapToValues()->toArray() as $key => $value) {
             if ($mutators->hasHeader($key)) {
                 $definition = $mutators->getHeaders($key);
 
@@ -161,7 +161,7 @@ class Mutate
     {
         $payload = [];
 
-        foreach ($jwt->getPayload()->toArray() as $key => $value) {
+        foreach ($jwt->getPayload()->mapToValues()->toArray() as $key => $value) {
             if ($mutators->hasPayload($key)) {
                 $definition = $mutators->getPayload($key);
 

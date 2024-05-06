@@ -5,7 +5,7 @@ namespace LittleApps\LittleJWT\Build\Buildables;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 use LittleApps\LittleJWT\Build\Builder;
-
+use LittleApps\LittleJWT\Build\Options;
 use LittleApps\LittleJWT\Concerns\HasUser;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
@@ -45,21 +45,21 @@ class GuardBuildable
     /**
      * Builds JWT for use with guard.
      *
-     * @param Builder $builder
+     * @param Options $options
      * @return void
      */
-    public function __invoke(Builder $builder)
+    public function __invoke(Options $options)
     {
-        $builder
+        $options
             ->sub($this->user->getAuthIdentifier())
             ->prv($this->hashSubjectModel($this->user));
 
         foreach ($this->payloadClaims as $key => $value) {
-            $builder->addPayloadClaim($key, $value);
+            $options->addPayloadClaim($key, $value);
         }
 
         foreach ($this->headerClaims as $key => $value) {
-            $builder->addHeaderClaim($key, $value);
+            $options->addHeaderClaim($key, $value);
         }
     }
 }

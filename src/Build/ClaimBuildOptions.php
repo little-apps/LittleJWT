@@ -4,21 +4,12 @@ namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Support\Traits\Macroable;
 
-class ClaimBuildOptions
+final class ClaimBuildOptions
 {
-    use Macroable {
-        __call as macroCall;
-    }
+    use Macroable;
 
     public const PART_HEADERS = 'headers';
     public const PART_PAYLOAD = 'payload';
-
-    /**
-     * Builder used for this claim.
-     *
-     * @var Builder
-     */
-    protected $builder;
 
     /**
      * Part this claim belongs to
@@ -44,27 +35,15 @@ class ClaimBuildOptions
     /**
      * Initializes ClaimBuildOptions
      *
-     * @param Builder $builder
      * @param string $part
      * @param string $key
      * @param mixed $value
      */
-    public function __construct(Builder $builder, string $part, string $key, $value)
+    public function __construct(string $part, string $key, $value)
     {
-        $this->builder = $builder;
         $this->part = $part;
         $this->key = $key;
         $this->value = $value;
-    }
-
-    /**
-     * Gets the Builder used for this claim.
-     *
-     * @return Builder
-     */
-    public function getBuilder()
-    {
-        return $this->builder;
     }
 
     /**
@@ -94,22 +73,6 @@ class ClaimBuildOptions
      */
     public function getValue()
     {
-        return $this->value;
-    }
-
-    /**
-     * Passes method calls to macro or builder.
-     *
-     * @param string $name Method name
-     * @param array $arguments Method arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        if (static::hasMacro($name)) {
-            return $this->macroCall($name, $arguments);
-        }
-
-        return $this->getBuilder()->$name(...$arguments);
+        return $this->value instanceof static ? $this->value->getValue() : $this->value;
     }
 }

@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Build\Buildables;
 
 use LittleApps\LittleJWT\Build\Builder;
+use LittleApps\LittleJWT\Build\Options;
 use LittleApps\LittleJWT\Contracts\Buildable;
 use LittleApps\LittleJWT\Mutate\Mutators;
 
@@ -23,16 +24,16 @@ class StackBuildable
     /**
      * Calls buildables in stack.
      *
-     * @param Builder $builder
+     * @param Options $options
      * @return void
      */
-    public function __invoke(Builder $builder)
+    public function __invoke(Options $options)
     {
         foreach ($this->stack as $callback) {
             if (is_callable($callback)) {
-                $callback($builder);
+                $callback($options);
             } elseif (is_object($callback) && $callback instanceof Buildable) {
-                $callback->build($builder);
+                $callback->build($options);
             }
         }
     }
