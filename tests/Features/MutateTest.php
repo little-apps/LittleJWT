@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
+use LittleApps\LittleJWT\Exceptions\ModelNotFoundException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Mutate\Mutatables\StackMutatable;
 use LittleApps\LittleJWT\Mutate\MutatorResolver;
@@ -750,6 +751,41 @@ class MutateTest extends TestCase
 
         $this->assertEquals(User::class, get_class($sub));
         $this->assertTrue($user->is($sub));
+    }
+
+    /**
+     * Tests a model claim is mutated that no longer exists.
+     *
+     * @return void
+     */
+    public function test_mutates_model_doesnt_exist()
+    {
+        $user = $this->user;
+
+        $buildable = new TestBuildable(function (Builder $builder) use ($user) {
+            $builder
+                ->sub($user);
+        });
+
+        $token = (string) LittleJWT::handler()
+            ->mutate(function (Mutators $mutators) {
+                $mutators->sub(sprintf('model:%s', User::class));
+            })->create($buildable);
+
+        $user->delete();
+
+        try {
+            LittleJWT::handler()
+                ->mutate(function (Mutators $mutators) {
+                    $mutators->sub(sprintf('model:%s', User::class));
+                })
+                ->unserialize(LittleJWT::parse($token));
+
+            $this->fail("The exception '" . CantParseJWTException::class . "' was not thrown.");
+        } catch (CantParseJWTException $ex) {
+            $this->assertNotNull($ex->inner);
+            $this->assertEquals(ModelNotFoundException::class, get_class($ex->inner));
+        }
     }
 
     /**
