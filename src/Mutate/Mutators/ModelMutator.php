@@ -14,8 +14,12 @@ class ModelMutator implements Mutator
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
-        if (\is_subclass_of($value, Model::class)) {
-            return $value->getKey();
+        if (isset($args[0])) {
+            [$table] = $args;
+
+            if (is_subclass_of($table, Model::class)) {
+                return $value[$this->getPrimaryKeyName($table)];
+            }
         }
 
         return $value;
@@ -43,4 +47,9 @@ class ModelMutator implements Mutator
 
         return $value;
     }
+
+    protected function getPrimaryKeyName(string $table) {
+        return (new $table)->getKeyName();
+    }
+
 }
