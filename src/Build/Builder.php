@@ -25,11 +25,32 @@ final class Builder extends Options implements BuildsJWTClaims
     use ForwardsCalls;
     use CreatesCallbackBuilder;
 
+    /**
+     * If and when to include default buildables.
+     *
+     * @var string|false
+     */
     protected $includeDefaults = Builder::DEFAULTS_BEFORE;
 
+    /**
+     * Buildables to run before options.
+     *
+     * @var list<callable>
+     */
     protected $beforeBuildables = [];
+
+    /**
+     * Buildables to run after options.
+     *
+     * @var list<callable>
+     */
     protected $afterBuildables = [];
 
+    /**
+     * Initializes Builder instance
+     *
+     * @param Container $app
+     */
     public function __construct(
         protected readonly Container $app
     )
