@@ -5,11 +5,13 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use LittleApps\LittleJWT\Tests\Concerns\CreatesEnvFile;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
 
 class CommandTest extends TestCase
 {
+    use CreatesEnvFile;
     use WithFaker;
     use InteractsWithLittleJWT;
 
@@ -26,6 +28,41 @@ class CommandTest extends TestCase
                 ->assertExitCode(0);
     }
 
+    /**
+     * Tests JWT phrase is generated and set for new .env key.
+     *
+     * @return void
+     */
+    public function test_secret_phrase_generated_for_new_key() {
+        $this->createEnvFile();
+
+        $this->artisan('littlejwt:phrase', ['--key' => 'ABC_XYZ', '--yes' => true])
+            ->assertSuccessful();
+
+        $this->reloadEnv()
+            ->assertEnvSet('ABC_XYZ');
+    }
+
+    /**
+     * Tests JWT phrase is generated and set for existing .env key.
+     *
+     * @return void
+     */
+    public function test_secret_phrase_generated_for_existing_key() {
+        $existing = $this->faker()->uuid();
+
+        $this->createEnvFileWithExisting([
+            'ABC_XYZ' => $existing
+        ]);
+
+        $this->reloadEnv()
+            ->artisan('littlejwt:phrase', ['--key' => 'ABC_XYZ'])
+            ->expectsConfirmation('Overwrite existing JWT secret in .env file?', 'yes')
+            ->assertSuccessful();
+
+        $this->reloadEnv()
+            ->assertEnvNotEquals('ABC_XYZ', $existing);
+    }
 
     /**
      * Tests that a PKCS12 key is outputted.
