@@ -19,6 +19,7 @@ class GeneratePhraseCommand extends Command
      * @var string
      */
     protected $signature = 'littlejwt:phrase
+        {--key=LITTLEJWT_KEY_PHRASE : The environment variable key.}
         {--size=1024 : The size of the generated key in bits.}
         {--d|display : Displays the generated key instead of saving to .env file.}
         {--y|yes : Answer yes to any prompts.}';
@@ -47,8 +48,14 @@ class GeneratePhraseCommand extends Command
      */
     public function handle(Keyable $keyable)
     {
+        $key = $this->option('key');
         $size = $this->option('size');
         $yes = $this->option('yes');
+
+        if (!$this->isEnvKeyValid($key)) {
+            $this->error('The environment variable key can only have letters, numbers, and underscores.');
+            return 1;
+        }
 
         $jwk = $keyable->generateRandomJwk($size);
 
@@ -59,12 +66,12 @@ class GeneratePhraseCommand extends Command
             $this->info('Generated secret key:');
             $this->info($secret);
         } else {
-            if ($this->envKeyExists(static::ENV_KEY)) {
             if (!file_exists($this->envPath()) || !is_writable($this->envPath())) {
                 $this->error(sprintf('The environment file "%s" does not exist or is not writable.', $this->envPath()));
                 return 1;
             }
 
+            if ($this->envKeyExists($key)) {
                 $this->info('Secret already exists. Overwriting the secret will cause previous JWTs to be invalidated.');
 
                 if (!$yes && ! $this->confirm('Overwrite existing JWT secret in .env file?')) {
@@ -72,7 +79,7 @@ class GeneratePhraseCommand extends Command
                 }
             }
 
-            if ($this->updateEnvFile($this->envPath(), [static::ENV_KEY => $secret])) {
+            if ($this->updateEnvFile($this->envPath(), [$key => $secret])) {
                 $this->info('Little JWT secret was saved to .env file.');
             } else {
                 $this->error(sprintf('An error occurred updating the "%s" file.', $this->envPath()));

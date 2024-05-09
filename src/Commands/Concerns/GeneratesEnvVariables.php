@@ -140,4 +140,14 @@ trait GeneratesEnvVariables
             return sprintf('%s%s%s', $this->laravel->basePath(), DIRECTORY_SEPARATOR, '.env');
         }
     }
+
+    /**
+     * Checks if key is valid for .env file.
+     *
+     * @param string $key
+     * @return boolean
+     */
+    protected function isEnvKeyValid(string $key): bool {
+        return (bool) preg_match("/^[A-Za-z0-9_]+$/", $key);
+    }
 }
