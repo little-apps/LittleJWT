@@ -60,6 +60,11 @@ class GeneratePhraseCommand extends Command
             $this->info($secret);
         } else {
             if ($this->envKeyExists(static::ENV_KEY)) {
+            if (!file_exists($this->envPath()) || !is_writable($this->envPath())) {
+                $this->error(sprintf('The environment file "%s" does not exist or is not writable.', $this->envPath()));
+                return 1;
+            }
+
                 $this->info('Secret already exists. Overwriting the secret will cause previous JWTs to be invalidated.');
 
                 if (!$yes && ! $this->confirm('Overwrite existing JWT secret in .env file?')) {
