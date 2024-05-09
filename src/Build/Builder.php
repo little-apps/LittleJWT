@@ -16,6 +16,7 @@ use LittleApps\LittleJWT\JWT\ImmutableClaimManager;
 
 final class Builder extends Options implements BuildsJWTClaims
 {
+    const DEFAULTS_NONE = false;
     const DEFAULTS_BEFORE = 'before';
     const DEFAULTS_AFTER = 'after';
 
@@ -76,7 +77,7 @@ final class Builder extends Options implements BuildsJWTClaims
      * @return $this
      */
     public function withoutDefaults() {
-        $this->includeDefaults = false;
+        $this->includeDefaults = static::DEFAULTS_NONE;
 
         return $this;
     }
