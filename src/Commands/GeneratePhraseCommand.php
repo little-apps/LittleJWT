@@ -20,7 +20,8 @@ class GeneratePhraseCommand extends Command
      */
     protected $signature = 'littlejwt:phrase
         {--size=1024 : The size of the generated key in bits.}
-        {--d|display : Displays the generated key instead of saving to .env file.}';
+        {--d|display : Displays the generated key instead of saving to .env file.}
+        {--y|yes : Answer yes to any prompts.}';
 
     /**
      * The console command description.
@@ -47,6 +48,7 @@ class GeneratePhraseCommand extends Command
     public function handle(Keyable $keyable)
     {
         $size = $this->option('size');
+        $yes = $this->option('yes');
 
         $jwk = $keyable->generateRandomJwk($size);
 
@@ -60,7 +62,7 @@ class GeneratePhraseCommand extends Command
             if ($this->envKeyExists(static::ENV_KEY)) {
                 $this->info('Secret already exists. Overwriting the secret will cause previous JWTs to be invalidated.');
 
-                if (! $this->confirm('Overwrite existing JWT secret in .env file?')) {
+                if (!$yes && ! $this->confirm('Overwrite existing JWT secret in .env file?')) {
                     return 1;
                 }
             }
