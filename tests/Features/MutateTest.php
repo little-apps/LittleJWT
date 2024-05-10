@@ -806,6 +806,7 @@ class MutateTest extends TestCase
             public function __invoke(TestValidator $validator)
             {
                 $validator
+                    ->withoutDefaults()
                     ->assertPasses()
                     ->assertClaimMatches('foo', 'dcba');
             }
@@ -820,7 +821,7 @@ class MutateTest extends TestCase
             })
             ->unserialize(LittleJWT::parse((string) $jwt));
 
-        LittleJWT::validate($mutated, $validatable, false);
+        LittleJWT::validate($mutated, $validatable);
     }
 
     /**
