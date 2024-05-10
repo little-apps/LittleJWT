@@ -9,6 +9,7 @@ use Jose\Component\Core\JWK;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\PassableThru;
+use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -99,9 +100,9 @@ class Valid
      */
     public function passes()
     {
-        $this->runThru($validator = $this->buildValidator());
+        $validator = $this->buildValidator();
 
-        $rules = $validator->getRulesBefore()->concat($validator->getRules());
+        $rules = $this->runThru($validator)->collectRules($validator);
 
         $this->errors = new MessageBag();
 
@@ -164,13 +165,43 @@ class Valid
     /**
      * Builds a Validator
      *
-     * @return Validator
+     * @return BuildsValidatorRules
      */
-    protected function buildValidator()
+    protected function buildValidator(): BuildsValidatorRules
     {
         $blacklistManager = $this->app->make(BlacklistManager::class);
 
-        return new Validator($blacklistManager, $this->jwk);
+        return new ExtendedValidator($this->app, $blacklistManager, $this->jwk);
+    }
+
+    /**
+     * Collects rules from validator
+     *
+     * @param BuildsValidatorRules $validator
+     * @return Rule[]
+     */
+    protected function collectRules(BuildsValidatorRules $validator): array {
+        if ($validator instanceof ExtendedValidator) {
+            return $this->collectRulesFromExtendedValidator($validator);
+        }
+
+        return $validator->getRulesBefore()->concat($validator->getRules())->all();
+    }
+
+    /**
+     * Collects rules from ExtendedValidator instance
+     *
+     * @param ExtendedValidator $extendedValidator
+     * @return Rule[]
+     */
+    protected function collectRulesFromExtendedValidator(ExtendedValidator $extendedValidator): array {
+        $validator = Validator::createFrom($extendedValidator);
+
+        foreach ($extendedValidator->getStack() as $callback) {
+            $callback($validator);
+        }
+
+        return $validator->getRulesBefore()->concat($validator->getRules())->all();
     }
 
     /**

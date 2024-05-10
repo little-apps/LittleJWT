@@ -14,28 +14,14 @@ trait HandlesValidate
      *
      * @param JsonWebToken $jwt JWT instance to validate.
      * @param callable(\LittleApps\LittleJWT\Validation\Validator): void $callback Callable that receives Validator to set rules for JWT.
-     * @param bool $applyDefault If true, the default validatable is used first. (default: true)
      * @return ValidatedJsonWebToken Validated JWT
      */
-    public function validate(JsonWebToken $jwt, callable $callback = null, $applyDefault = true)
+    public function validate(JsonWebToken $jwt, callable $callback = null)
     {
-        if ($applyDefault) {
-            $callbacks = [$this->createCallbackBuilder()->createValidatableCallback()];
-
-            if (is_callable($callback)) {
-                array_push($callbacks, $callback);
-            }
-
-            $passthrough = new StackValidatable($callbacks);
-        } else {
-            // No need to create a StackValidatable instance for just 1 validatable
-            $passthrough = $callback;
-        }
-
         $valid = $this->valid($jwt);
 
-        if (is_callable($passthrough)) {
-            $valid->passValidatorThru($passthrough);
+        if (is_callable($callback)) {
+            $valid->passValidatorThru($callback);
         }
 
         // Run the JWT through a Valid instance and return the result.
@@ -47,10 +33,9 @@ trait HandlesValidate
      *
      * @param string $token
      * @param callable|null $callback
-     * @param bool $applyDefault
      * @return bool True if valid, false if not valid or token cannot be parsed.
      */
-    public function validateToken(string $token, callable $callback = null, $applyDefault = true)
+    public function validateToken(string $token, callable $callback = null)
     {
         $jwt = $this->parse($token);
 
@@ -58,7 +43,7 @@ trait HandlesValidate
             return false;
         }
 
-        return $this->validate($jwt, $callback, $applyDefault)->passes();
+        return $this->validate($jwt, $callback)->passes();
     }
 
     /**

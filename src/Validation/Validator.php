@@ -7,28 +7,15 @@ use Closure;
 use Illuminate\Support\Traits\Macroable;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
+use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\Rules;
 
-class Validator
+class Validator implements BuildsValidatorRules
 {
     use Macroable;
-
-    /**
-     * Blacklist Manager
-     *
-     * @var \LittleApps\LittleJWT\Blacklist\BlacklistManager
-     */
-    protected $blacklistManager;
-
-    /**
-     * Default JWK to use for validating signatures.
-     *
-     * @var JsonWebKey
-     */
-    protected $jwk;
 
     /**
      * Rules to run before any other rules.
@@ -58,11 +45,11 @@ class Validator
      */
     protected $stopOnFailure;
 
-    public function __construct(BlacklistManager $blacklistManager, JsonWebKey $jwk)
+    public function __construct(
+        protected readonly BlacklistManager $blacklistManager,
+        protected readonly JsonWebKey $jwk
+    )
     {
-        $this->blacklistManager = $blacklistManager;
-        $this->jwk = $jwk;
-
         $this->rulesBefore = collect();
         $this->rules = collect();
         $this->after = collect();
@@ -204,7 +191,7 @@ class Validator
      */
     public function allowed($driver = null, $before = true)
     {
-        $rule = new Rules\Allowed($this->blacklistManager->driver($driver));
+        $rule = new Rules\Allowed($this->getBlacklistManager()->driver($driver));
 
         return $before ? $this->addRuleBefore($rule) : $this->addRule($rule);
     }
@@ -321,6 +308,28 @@ class Validator
     }
 
     /**
+     * Copies rules to other Validator instance.
+     *
+     * @param self $to
+     * @return $this
+     */
+    public function copyRulesTo(self $to) {
+        foreach ($this->getRulesBefore() as $rule) {
+            $to->addRuleBefore($rule);
+        }
+
+        foreach ($this->getRules() as $rule) {
+            $to->addRule($rule);
+        }
+
+        foreach ($this->getAfterValidation() as $callback) {
+            $to->afterValidate($callback);
+        }
+
+        return $this;
+    }
+
+    /**
      * Gets callbacks to call after validation.
      *
      * @return \Illuminate\Support\Collection
@@ -341,6 +350,15 @@ class Validator
     }
 
     /**
+     * Gets the BlacklistManager used with validating.
+     *
+     * @return BlacklistManager
+     */
+    public function getBlacklistManager(): BlacklistManager {
+        return $this->blacklistManager;
+    }
+
+    /**
      * Gets the JWK associated with this Validator instance.
      *
      * @return \Jose\Component\Core\JWK
@@ -348,5 +366,17 @@ class Validator
     public function getJwk()
     {
         return $this->jwk;
+    }
+
+    /**
+     * Creates new Validator from existing Validator instance.
+     *
+     * @param self $existing
+     * @return self
+     */
+    public static function createFrom(self $existing) {
+        return
+            (new self($existing->getBlacklistManager(), $existing->getJwk()))
+                ->stopOnFailure($existing->getStopOnFailure());
     }
 }

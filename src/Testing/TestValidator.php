@@ -4,32 +4,23 @@ namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
+use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\Rules;
+use LittleApps\LittleJWT\Validation\ExtendedValidator;
 use LittleApps\LittleJWT\Validation\Validator;
-
 use PHPUnit\Framework\Assert as PHPUnit;
 
-/**
- * @mixin Validator
- */
-class TestValidator extends Validator
+class TestValidator extends ExtendedValidator implements BuildsValidatorRules
 {
-    use JWTHelpers, Macroable {
-        __call as macroCall;
-    }
-
-    /**
-     * Application container
-     *
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
+    use JWTHelpers;
+    use Macroable;
 
     /**
      * Holds value of whether to assert that the JWT passes all rules.
@@ -82,9 +73,7 @@ class TestValidator extends Validator
      */
     public function __construct(Application $app, BlacklistManager $blacklistManager, JsonWebKey $jwk)
     {
-        parent::__construct($blacklistManager, $jwk);
-
-        $this->app = $app;
+        parent::__construct($app, $blacklistManager, $jwk);
 
         $this->assertPasses = false;
         $this->assertFails = false;
