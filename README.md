@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/little-apps/littlejwt)](https://packagist.org/packages/little-apps/littlejwt)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/little-apps/littlejwt/run-tests.yml?branch=main)](https://github.com/little-apps/littlejwt/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/little-apps/littlejwt/php-cs-fixer.yml?branch=main)](https://github.com/little-apps/littlejwt/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Format (PHP)](https://github.com/little-apps/LittleJWT/actions/workflows/laravel-pint.yml/badge.svg)](https://github.com/little-apps/LittleJWT/actions/workflows/laravel-pint.yml)
 [![Coverage Status](https://coveralls.io/repos/github/little-apps/LittleJWT/badge.svg?branch=main)](https://coveralls.io/github/little-apps/LittleJWT?branch=main)
 [![Total Downloads](https://img.shields.io/packagist/dt/little-apps/littlejwt.svg?style=flat-square)](https://packagist.org/packages/little-apps/littlejwt)
 
