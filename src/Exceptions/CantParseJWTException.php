@@ -13,7 +13,7 @@ class CantParseJWTException extends Exception
     /**
      * Inner exception
      *
-     * @var \Throwable|null
+     * @var Throwable|null
      */
     public $inner;
 

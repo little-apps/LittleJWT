@@ -3,9 +3,7 @@
 namespace LittleApps\LittleJWT\Validation;
 
 use Closure;
-
 use Illuminate\Support\Traits\Macroable;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
 use LittleApps\LittleJWT\Contracts\Rule;
@@ -48,8 +46,7 @@ class Validator implements BuildsValidatorRules
     public function __construct(
         protected readonly BlacklistManager $blacklistManager,
         protected readonly JsonWebKey $jwk
-    )
-    {
+    ) {
         $this->rulesBefore = collect();
         $this->rules = collect();
         $this->after = collect();
@@ -199,7 +196,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds callback that is called with JWT and returns true/false.
      *
-     * @param callable(JsonWebToken):boolean $callback
+     * @param callable(JsonWebToken):bool $callback
      * @return $this
      */
     public function callback(callable $callback)
@@ -211,7 +208,7 @@ class Validator implements BuildsValidatorRules
      * Adds callback that is called with claim value and returns true/false.
      *
      * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JsonWebToken $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JsonWebToken $jwt):bool $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
@@ -313,7 +310,8 @@ class Validator implements BuildsValidatorRules
      * @param self $to
      * @return $this
      */
-    public function copyRulesTo(self $to) {
+    public function copyRulesTo(self $to)
+    {
         foreach ($this->getRulesBefore() as $rule) {
             $to->addRuleBefore($rule);
         }
@@ -354,7 +352,8 @@ class Validator implements BuildsValidatorRules
      *
      * @return BlacklistManager
      */
-    public function getBlacklistManager(): BlacklistManager {
+    public function getBlacklistManager(): BlacklistManager
+    {
         return $this->blacklistManager;
     }
 
@@ -374,7 +373,8 @@ class Validator implements BuildsValidatorRules
      * @param self $existing
      * @return self
      */
-    public static function createFrom(self $existing) {
+    public static function createFrom(self $existing)
+    {
         return
             (new self($existing->getBlacklistManager(), $existing->getJwk()))
                 ->stopOnFailure($existing->getStopOnFailure());

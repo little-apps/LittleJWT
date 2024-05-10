@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
-
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Testing\TestValidatable;
 use LittleApps\LittleJWT\Testing\TestValidator;
@@ -43,7 +42,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create()->sign();
 
-        $validatable = new class () implements TestValidatable {
+        $validatable = new class() implements TestValidatable {
             public function validate(TestValidator $validator)
             {
                 $validator->assertPasses();
@@ -64,7 +63,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create()->sign();
 
-        $validatable = new class () {
+        $validatable = new class() {
             public function __invoke(TestValidator $validator)
             {
                 $validator->assertPasses();

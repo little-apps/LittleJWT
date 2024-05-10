@@ -3,12 +3,8 @@
 namespace LittleApps\LittleJWT\Build;
 
 use BadMethodCallException;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Collection;
-use LittleApps\LittleJWT\Contracts\BuildsJWTClaims;
 use Illuminate\Support\Traits\Macroable;
-use LittleApps\LittleJWT\Core\Concerns\CreatesCallbackBuilder;
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
+use LittleApps\LittleJWT\Contracts\BuildsJWTClaims;
 use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\ClaimManagers;
 use LittleApps\LittleJWT\JWT\ImmutableClaimManager;
@@ -190,7 +186,8 @@ class Options implements BuildsJWTClaims
      *
      * @return ClaimManagers
      */
-    public function getClaimManagers(): ClaimManagers {
+    public function getClaimManagers(): ClaimManagers
+    {
         return new ClaimManagers(
             new ImmutableClaimManager(ClaimManager::PART_HEADER, $this->getHeaders()),
             new ImmutableClaimManager(ClaimManager::PART_PAYLOAD, $this->getPayload())
@@ -296,7 +293,8 @@ class Options implements BuildsJWTClaims
      *
      * @return list<string>
      */
-    protected function getReservedHeaderKeys(): array {
+    protected function getReservedHeaderKeys(): array
+    {
         return config('littlejwt.builder.claims.header', []);
     }
 
@@ -305,7 +303,8 @@ class Options implements BuildsJWTClaims
      *
      * @return list<string>
      */
-    protected function getReservedPayloadKeys(): array {
+    protected function getReservedPayloadKeys(): array
+    {
         return config('littlejwt.builder.claims.payload', []);
     }
 

@@ -3,9 +3,7 @@
 namespace LittleApps\LittleJWT\Utils;
 
 use DateTimeInterface;
-
 use Illuminate\Support\Carbon;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class ResponseBuilder

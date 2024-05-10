@@ -9,14 +9,14 @@ trait HasRequest
     /**
      * The request instance.
      *
-     * @var \Illuminate\Http\Request
+     * @var Request
      */
     protected $request;
 
     /**
      * Gets the current request instance.
      *
-     * @return \Illuminate\Http\Request
+     * @return Request
      */
     public function getRequest()
     {
@@ -26,7 +26,7 @@ trait HasRequest
     /**
      * Set the current request instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return $this
      */
     public function setRequest(Request $request)

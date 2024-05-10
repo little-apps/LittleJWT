@@ -3,8 +3,6 @@
 namespace LittleApps\LittleJWT\Build\Buildables;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-
-use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Build\Options;
 use LittleApps\LittleJWT\Concerns\HasUser;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;

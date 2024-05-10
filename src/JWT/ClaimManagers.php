@@ -13,8 +13,7 @@ final class ClaimManagers
     public function __construct(
         public readonly ClaimManager $header,
         public readonly ClaimManager $payload,
-    )
-    {
+    ) {
     }
 
     /**
@@ -24,7 +23,8 @@ final class ClaimManagers
      * @param ClaimManagers ...$claimManagers ClaimManagers to merge.
      * @return static
      */
-    public static function merge(ClaimManagers ...$claimManagers) {
+    public static function merge(self ...$claimManagers)
+    {
         $headers = [];
         $payload = [];
 

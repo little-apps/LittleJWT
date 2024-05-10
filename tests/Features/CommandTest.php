@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesEnvFile;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
@@ -33,7 +32,8 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function test_secret_phrase_generated_for_new_key() {
+    public function test_secret_phrase_generated_for_new_key()
+    {
         $this->createEnvFile();
 
         $this->artisan('littlejwt:phrase', ['--key' => 'ABC_XYZ', '--yes' => true])
@@ -48,11 +48,12 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function test_secret_phrase_generated_for_existing_key() {
+    public function test_secret_phrase_generated_for_existing_key()
+    {
         $existing = $this->faker()->uuid();
 
         $this->createEnvFileWithExisting([
-            'ABC_XYZ' => $existing
+            'ABC_XYZ' => $existing,
         ]);
 
         $this->reloadEnv()

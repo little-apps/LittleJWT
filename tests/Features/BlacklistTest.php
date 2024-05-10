@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
-
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;

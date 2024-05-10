@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Blacklist\Drivers;
 
 use Illuminate\Support\Carbon;
-
 use Illuminate\Support\Facades\DB;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\JWT\JsonWebToken;

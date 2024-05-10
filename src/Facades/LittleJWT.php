@@ -3,9 +3,7 @@
 namespace LittleApps\LittleJWT\Facades;
 
 use Illuminate\Support\Facades\Facade;
-
 use Jose\Component\Core\JWK;
-
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
@@ -38,7 +36,7 @@ class LittleJWT extends Facade
      * Creates a new instance of LittleJWT to use to build/validate with a different JWK.
      *
      * @param JsonWebKey $jwk
-     * @return \LittleApps\LittleJWT\LittleJWT New LittleJWT instance
+     * @return LittleJWTInstance New LittleJWT instance
      */
     public static function withJwk(JsonWebKey $jwk)
     {

@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Blacklist\Drivers;
 
 use Illuminate\Cache\CacheManager;
-
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 

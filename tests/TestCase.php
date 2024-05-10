@@ -3,14 +3,12 @@
 namespace LittleApps\LittleJWT\Tests;
 
 use Illuminate\Support\Facades\Auth;
-
 use LittleApps\LittleJWT\ServiceProvider;
 use LittleApps\LittleJWT\Testing\Models\User;
-
 use LittleApps\LittleJWT\Testing\TestController;
-use Orchestra\Testbench\TestCase as Orchestra;
-use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\Concerns\WithLaravelMigrations;
+use Orchestra\Testbench\Concerns\WithWorkbench;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {

@@ -2,9 +2,9 @@
 
 namespace LittleApps\LittleJWT\Database\Factories;
 
-use LittleApps\LittleJWT\Testing\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use LittleApps\LittleJWT\Testing\Models\User;
 
 class UserFactory extends Factory
 {
@@ -29,7 +29,7 @@ class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function unverified()
     {

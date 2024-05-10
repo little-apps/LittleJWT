@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Commands;
 
 use Illuminate\Console\Command;
-
 use LittleApps\LittleJWT\Commands\Concerns\GeneratesEnvVariables;
 use LittleApps\LittleJWT\Contracts\Keyable;
 
@@ -52,8 +51,9 @@ class GeneratePhraseCommand extends Command
         $size = $this->option('size');
         $yes = $this->option('yes');
 
-        if (!$this->isEnvKeyValid($key)) {
+        if (! $this->isEnvKeyValid($key)) {
             $this->error('The environment variable key can only have letters, numbers, and underscores.');
+
             return 1;
         }
 
@@ -66,15 +66,16 @@ class GeneratePhraseCommand extends Command
             $this->info('Generated secret key:');
             $this->info($secret);
         } else {
-            if (!file_exists($this->envPath()) || !is_writable($this->envPath())) {
+            if (! file_exists($this->envPath()) || ! is_writable($this->envPath())) {
                 $this->error(sprintf('The environment file "%s" does not exist or is not writable.', $this->envPath()));
+
                 return 1;
             }
 
             if ($this->envKeyExists($key)) {
                 $this->info('Secret already exists. Overwriting the secret will cause previous JWTs to be invalidated.');
 
-                if (!$yes && ! $this->confirm('Overwrite existing JWT secret in .env file?')) {
+                if (! $yes && ! $this->confirm('Overwrite existing JWT secret in .env file?')) {
                     return 1;
                 }
             }

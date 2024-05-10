@@ -24,7 +24,7 @@ return [
              * Whether to perform checks if phrase is not set or is empty.
              * It's NOT recommended to set this to true.
              */
-            'allow_unsecure' => false
+            'allow_unsecure' => false,
         ],
         /**
          * Configurations options for a file key.
@@ -48,7 +48,7 @@ return [
              * This does not apply to crt files.
              * Leave empty if file is not encrypted.
              */
-            'secret' => env('LITTLEJWT_KEY_FILE_SECRET', '')
+            'secret' => env('LITTLEJWT_KEY_FILE_SECRET', ''),
         ],
 
         /**
@@ -69,7 +69,7 @@ return [
                 'nbf' => 'timestamp',
                 'exp' => 'timestamp',
 
-            ]
+            ],
         ],
 
         /**
@@ -80,12 +80,12 @@ return [
                 'alg',
                 'cty',
                 'typ',
-                'crit'
+                'crit',
             ],
             'payload' => [
 
-            ]
-        ]
+            ],
+        ],
     ],
     'defaults' => [
         /**
@@ -96,7 +96,7 @@ return [
         /**
          * The default validatable to use by validateToken and validateJWT in LittleJWT.
          */
-        'validatable' => 'default'
+        'validatable' => 'default',
     ],
 
     'buildables' => [
@@ -104,7 +104,7 @@ return [
             /**
              * Fully qualified buildable class to use.
              */
-            'buildable' => \LittleApps\LittleJWT\Build\Buildables\DefaultBuildable::class,
+            'buildable' => LittleApps\LittleJWT\Build\Buildables\DefaultBuildable::class,
 
             /**
              * Value to use for the 'alg' claim.
@@ -125,21 +125,21 @@ return [
              * Value to user for the 'aud' claim.
              */
             'aud' => env('APP_NAME', 'Laravel'),
-        ]
+        ],
     ],
     'validatables' => [
         'default' => [
             /**
              * Validatable instance to use for this validator.
              */
-            'validatable' => \LittleApps\LittleJWT\Validation\Validatables\DefaultValidatable::class,
+            'validatable' => LittleApps\LittleJWT\Validation\Validatables\DefaultValidatable::class,
 
             /**
              * Claim keys required in the header and payload.
              */
             'required' => [
                 'header' => ['alg'],
-                'payload' => ['iss', 'iat', 'exp', 'nbf']
+                'payload' => ['iss', 'iat', 'exp', 'nbf'],
             ],
 
             /**
@@ -166,7 +166,7 @@ return [
             /**
              * Validatable instance to use for this validator.
              */
-            'validatable' => \LittleApps\LittleJWT\Validation\Validatables\GuardValidatable::class,
+            'validatable' => LittleApps\LittleJWT\Validation\Validatables\GuardValidatable::class,
 
             /**
              * If true, the guard validator checks that a user exists with the 'sub' claim identifier.
@@ -178,7 +178,7 @@ return [
              * The model used for JWT authentication.
              * NOTE: Setting this to false will cause model classes in JWT to not be validated. This is NOT recommended.
              */
-            'model' => \LittleApps\LittleJWT\Testing\Models\User::class,
+            'model' => LittleApps\LittleJWT\Testing\Models\User::class,
         ],
     ],
     /**
@@ -194,14 +194,14 @@ return [
                  * The class for the adapter.
                  * This should not be changed.
                  */
-                'adapter' => \LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
+                'adapter' => LittleApps\LittleJWT\Guards\Adapters\GenericAdapter::class,
             ],
             'fingerprint' => [
                 /**
                  * The class for the adapter.
                  * This should not be changed.
                  */
-                'adapter' => \LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,
+                'adapter' => LittleApps\LittleJWT\Guards\Adapters\FingerprintAdapter::class,
 
                 /**
                  * Name of the cookie to hold the fingerprint.
@@ -255,9 +255,9 @@ return [
                 /**
                  * The name of the column that holds the expiry date/time for the JWT.
                  */
-                'expiry' => 'expires_at'
-            ]
-        ]
+                'expiry' => 'expires_at',
+            ],
+        ],
     ],
 
     /**
@@ -265,6 +265,6 @@ return [
      * @see https://www.php.net/manual/en/function.openssl-csr-new.php The config parameter contains possible config options.
      */
     'openssl' => [
-        'config' => env('LITTLEJWT_OPENSSL_CNF', '')
+        'config' => env('LITTLEJWT_OPENSSL_CNF', ''),
     ],
 ];

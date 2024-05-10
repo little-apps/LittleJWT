@@ -6,7 +6,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\Validatables;
 

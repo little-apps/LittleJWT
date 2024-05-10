@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Blacklist;
 
 use Illuminate\Cache\CacheManager;
-
 use Illuminate\Support\Manager;
 use LittleApps\LittleJWT\Contracts\BlacklistDriver;
 

@@ -3,11 +3,8 @@
 namespace LittleApps\LittleJWT\Tests\Concerns;
 
 use App\Classes\LittleJWT\JWT\JWT as JWTPayload;
-
 use Illuminate\Contracts\Auth\Authenticatable;
-
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Testing\TestResponse;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 
@@ -61,7 +58,7 @@ trait InteractsWithLittleJWT
     /**
      * Set the currently logged in user for the application.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  Authenticatable  $user
      * @param  string|null  $driver
      * @return $this
      */

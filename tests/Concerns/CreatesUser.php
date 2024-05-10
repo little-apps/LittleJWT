@@ -3,10 +3,8 @@
 namespace LittleApps\LittleJWT\Tests\Concerns;
 
 use Faker\Generator as Faker;
-
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
-
 use LittleApps\LittleJWT\Testing\Models\User;
 
 trait CreatesUser
@@ -41,7 +39,7 @@ trait CreatesUser
     /**
      * Changes the users current password and returns it in plain-text.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user User to get current password for. If null, get's current users password. (Default is null)
+     * @param Authenticatable $user User to get current password for. If null, get's current users password. (Default is null)
      * @return string
      */
     protected function getCurrentPassword(Authenticatable $user = null)

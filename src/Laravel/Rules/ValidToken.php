@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Laravel\Rules;
 
 use Illuminate\Contracts\Validation\ImplicitRule;
-
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 

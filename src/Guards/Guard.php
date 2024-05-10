@@ -10,7 +10,6 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
-
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
 class Guard implements GuardContract
@@ -36,7 +35,7 @@ class Guard implements GuardContract
     /**
      * The request instance.
      *
-     * @var \Illuminate\Http\Request
+     * @var Request
      */
     protected $request;
 
@@ -61,7 +60,7 @@ class Guard implements GuardContract
     /**
      * Get the currently authenticated user.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @return Authenticatable|null
      */
     public function user()
     {
@@ -126,7 +125,7 @@ class Guard implements GuardContract
     /**
      * Gets the current request instance.
      *
-     * @return \Illuminate\Http\Request
+     * @return Request
      */
     public function getRequest()
     {
@@ -149,7 +148,7 @@ class Guard implements GuardContract
     /**
      * Set the current request instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return $this
      */
     public function setRequest(Request $request)

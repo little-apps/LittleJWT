@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Mutate\Mutators;
 
 use Illuminate\Support\Facades\Crypt;
-
 use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 

@@ -5,10 +5,8 @@ namespace LittleApps\LittleJWT\Factories;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Traits\ForwardsCalls;
-
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
-
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
@@ -39,7 +37,9 @@ class KeyBuilder implements Keyable
     public const KEY_NONE = 'none';
 
     public const KEY_FILES_PEM = 'pem';
+
     public const KEY_FILES_P12 = 'p12';
+
     public const KEY_FILES_CRT = 'crt';
 
     /**

@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Commands;
 
 use Illuminate\Console\Command;
-
 use LittleApps\LittleJWT\Commands\Concerns\GeneratesEnvVariables;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 

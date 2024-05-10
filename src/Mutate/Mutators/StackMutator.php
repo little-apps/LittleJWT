@@ -42,7 +42,7 @@ class StackMutator implements Mutator
     {
         /**
          * Stack is reversed when unserializing so values go through
-        * first -> last when serializing and last -> first when unserializing.
+         * first -> last when serializing and last -> first when unserializing.
          */
         foreach (array_reverse($this->passThruStack) as $callback) {
             $value = $callback('unserialize', $value, $key, $args, $jwt);

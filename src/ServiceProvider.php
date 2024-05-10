@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
@@ -21,7 +20,6 @@ use LittleApps\LittleJWT\Laravel\Middleware\ValidToken as ValidTokenMiddleware;
 use LittleApps\LittleJWT\Laravel\Rules\ValidToken as ValidTokenRule;
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 use LittleApps\LittleJWT\Validation\Validatables\StackValidatable;
-
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

@@ -6,7 +6,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\LittleJWT;
 

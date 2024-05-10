@@ -3,11 +3,8 @@
 namespace LittleApps\LittleJWT\Concerns;
 
 use DateTimeInterface;
-
 use Illuminate\Http\Response;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
-
 use LittleApps\LittleJWT\Utils\ResponseBuilder;
 
 trait RespondsWithJWT

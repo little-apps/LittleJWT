@@ -640,8 +640,6 @@ class MutateTest extends TestCase
             $this->assertInstanceOf(CantParseJWTException::class, $ex);
             $this->assertInstanceOf(DecryptException::class, $ex->inner);
         }
-
-
     }
 
     /**
@@ -781,7 +779,7 @@ class MutateTest extends TestCase
                 })
                 ->unserialize(LittleJWT::parse($token));
 
-            $this->fail("The exception '" . CantParseJWTException::class . "' was not thrown.");
+            $this->fail("The exception '".CantParseJWTException::class."' was not thrown.");
         } catch (CantParseJWTException $ex) {
             $this->assertNotNull($ex->inner);
             $this->assertEquals(ModelNotFoundException::class, get_class($ex->inner));
@@ -802,7 +800,7 @@ class MutateTest extends TestCase
                 ->foo('abcd');
         }));
 
-        $validatable = new class () {
+        $validatable = new class() {
             public function __invoke(TestValidator $validator)
             {
                 $validator
@@ -909,7 +907,7 @@ class MutateTest extends TestCase
         $this->assertEquals('1234', $jwt->getPayload()->get('foo'));
     }
 
-     /**
+    /**
      * Tests that a custom mutator is added as a resolve method.
      *
      * @return void
@@ -971,8 +969,10 @@ class MutateTest extends TestCase
         LittleJWT::fake();
 
         $mutator = new TestMutator(
-            function () { },
-            function () { },
+            function () {
+            },
+            function () {
+            },
         );
 
         $serialized = LittleJWT::handler()
@@ -1098,8 +1098,6 @@ class MutateTest extends TestCase
 
         $this->assertEquals('abcd', $validated->unserialized()->getPayload()->get('foo'));
         $this->assertEquals('lmno', $validated->unserialized()->getPayload()->get('bar'));
-
-
     }
 
     /**
@@ -1147,10 +1145,10 @@ class MutateTest extends TestCase
         $stack =
             (new StackMutator())
                 ->mutator(new TestMutator(
-                    fn ($value) => $value . 'b',
+                    fn ($value) => $value.'b',
                     fn ($value) => 'b',
                 ))->mutator(new TestMutator(
-                    fn ($value) => $value . 'c',
+                    fn ($value) => $value.'c',
                     fn ($value) => 'c',
                 ));
 

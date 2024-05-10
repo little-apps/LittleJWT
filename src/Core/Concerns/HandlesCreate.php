@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Core\Concerns;
 
 use LittleApps\LittleJWT\Build\Build;
-use LittleApps\LittleJWT\Build\Buildables\StackBuildable;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;

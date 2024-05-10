@@ -13,7 +13,7 @@ class RuleFailedException extends Exception
     /**
      * Rule that failed.
      *
-     * @var \LittleApps\LittleJWT\Contracts\Rule
+     * @var Rule
      */
     public $rule;
 

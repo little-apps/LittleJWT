@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Build\Buildables;
 
 use Illuminate\Support\Carbon;
-
 use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Options;
 

@@ -3,14 +3,12 @@
 namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Support\Arr;
-
 use LittleApps\LittleJWT\JWT\ClaimManager;
 
 class ClaimManagerBuilder
 {
     /**
      * Initializes a ClaimManagerBuilder
-     *
      */
     public function __construct()
     {

@@ -145,9 +145,10 @@ trait GeneratesEnvVariables
      * Checks if key is valid for .env file.
      *
      * @param string $key
-     * @return boolean
+     * @return bool
      */
-    protected function isEnvKeyValid(string $key): bool {
-        return (bool) preg_match("/^[A-Za-z0-9_]+$/", $key);
+    protected function isEnvKeyValid(string $key): bool
+    {
+        return (bool) preg_match('/^[A-Za-z0-9_]+$/', $key);
     }
 }

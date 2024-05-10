@@ -2,10 +2,9 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
-
 use LittleApps\LittleJWT\Testing\Models\User;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/** @var Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name(),
@@ -17,5 +16,5 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->state(User::class, 'unverified', [
-    'email_verified_at' => null
+    'email_verified_at' => null,
 ]);

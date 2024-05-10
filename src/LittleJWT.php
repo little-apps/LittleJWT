@@ -6,8 +6,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
 use Jose\Component\Core\JWK;
-
-
 use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Core\Handler;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
@@ -29,7 +27,6 @@ class LittleJWT
     }
     use ForwardsCalls;
     use HasCustomMutators;
-
 
     /**
      * Application container

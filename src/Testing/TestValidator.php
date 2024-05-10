@@ -4,8 +4,6 @@ namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Traits\ForwardsCalls;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
@@ -14,7 +12,6 @@ use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\Rules;
 use LittleApps\LittleJWT\Validation\ExtendedValidator;
-use LittleApps\LittleJWT\Validation\Validator;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class TestValidator extends ExtendedValidator implements BuildsValidatorRules
@@ -400,7 +397,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a custom check passes.
      *
-     * @param callable(JsonWebToken $jwt):boolean $callback
+     * @param callable(JsonWebToken $jwt):bool $callback
      * @return $this
      */
     public function assertCustomPasses(callable $callback)
@@ -414,7 +411,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a custom check fails.
      *
-     * @param callable(JsonWebToken $jwt):boolean $callback
+     * @param callable(JsonWebToken $jwt):bool $callback
      * @return $this
      */
     public function assertCustomFails(callable $callback)
@@ -429,7 +426,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
      * Asserts a custom claim check passes.
      *
      * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JsonWebToken $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JsonWebToken $jwt):bool $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */
@@ -445,7 +442,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
      * Asserts a custom claim check fails.
      *
      * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JsonWebToken $jwt):boolean $callback Callback that accepts claim value and returns true/false.
+     * @param callable(mixed $value, string $key, JsonWebToken $jwt):bool $callback Callback that accepts claim value and returns true/false.
      * @param bool $inHeader If true, checks claim in header. (default: false)
      * @return $this
      */

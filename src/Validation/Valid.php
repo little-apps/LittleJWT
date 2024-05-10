@@ -4,9 +4,7 @@ namespace LittleApps\LittleJWT\Validation;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\MessageBag;
-
 use Jose\Component\Core\JWK;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
@@ -145,7 +143,7 @@ class Valid
     /**
      * Gets errors from last validate.
      *
-     * @return \Illuminate\Support\MessageBag
+     * @return MessageBag
      */
     public function getErrors()
     {
@@ -180,7 +178,8 @@ class Valid
      * @param BuildsValidatorRules $validator
      * @return Rule[]
      */
-    protected function collectRules(BuildsValidatorRules $validator): array {
+    protected function collectRules(BuildsValidatorRules $validator): array
+    {
         if ($validator instanceof ExtendedValidator) {
             return $this->collectRulesFromExtendedValidator($validator);
         }
@@ -194,7 +193,8 @@ class Valid
      * @param ExtendedValidator $extendedValidator
      * @return Rule[]
      */
-    protected function collectRulesFromExtendedValidator(ExtendedValidator $extendedValidator): array {
+    protected function collectRulesFromExtendedValidator(ExtendedValidator $extendedValidator): array
+    {
         $validator = Validator::createFrom($extendedValidator);
 
         foreach ($extendedValidator->getStack() as $callback) {
@@ -221,7 +221,7 @@ class Valid
      *
      * @param Rule $rule
      * @return $this
-     * @throws \LittleApps\LittleJWT\Exceptions\RuleFailedException Thrown if rule failed.
+     * @throws RuleFailedException Thrown if rule failed.
      */
     protected function runRule(Rule $rule)
     {

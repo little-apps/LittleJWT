@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Factories;
 
 use LittleApps\LittleJWT\Exceptions\OpenSSLException;
-
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use OpenSSLCertificateSigningRequest;
@@ -11,8 +10,11 @@ use OpenSSLCertificateSigningRequest;
 class OpenSSLBuilder
 {
     public const PRIVATE_KEY_TYPES_RSA = OPENSSL_KEYTYPE_RSA;
+
     public const PRIVATE_KEY_TYPES_DSA = OPENSSL_KEYTYPE_DSA;
+
     public const PRIVATE_KEY_TYPES_DH = OPENSSL_KEYTYPE_DH;
+
     public const PRIVATE_KEY_TYPES_EC = OPENSSL_KEYTYPE_EC;
 
     /**
@@ -46,14 +48,14 @@ class OpenSSLBuilder
      * Generates a private key
      *
      * @param array $config Configuration options to pass to openssl_pkey_new(). (default: ["private_key_type" => static::PRIVATE_KEY_TYPES_RSA, "curve_name" => 'prime256v1'])
-     * @return \OpenSSLAsymmetricKey
+     * @return OpenSSLAsymmetricKey
      * @see https://www.php.net/manual/en/function.openssl-get-curve-names.php Possible curve names
      */
     public function generatePrivateKey(array $config = [])
     {
         $defaultConfig = [
-            "private_key_type" => static::PRIVATE_KEY_TYPES_RSA,
-            "curve_name" => 'prime256v1',
+            'private_key_type' => static::PRIVATE_KEY_TYPES_RSA,
+            'curve_name' => 'prime256v1',
         ];
 
         // Generate a new private (and public) key pair

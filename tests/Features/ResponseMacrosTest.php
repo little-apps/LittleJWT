@@ -5,7 +5,6 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
-
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Guards\Adapters\GenericAdapter;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;

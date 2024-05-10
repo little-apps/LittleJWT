@@ -9,6 +9,7 @@ final class ClaimBuildOptions
     use Macroable;
 
     public const PART_HEADERS = 'headers';
+
     public const PART_PAYLOAD = 'payload';
 
     /**

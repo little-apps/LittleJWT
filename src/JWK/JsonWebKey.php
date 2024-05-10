@@ -3,9 +3,7 @@
 namespace LittleApps\LittleJWT\JWK;
 
 use Jose\Component\Core\JWK;
-
 use Jose\Component\Signature\Algorithm as JoseAlgorithms;
-
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 
@@ -61,7 +59,7 @@ class JsonWebKey extends JWK
         if (! class_exists($class)) {
             throw new HashAlgorithmNotFoundException(
                 sprintf(
-                    'Class for Json Web Key algorithm "%s" is missing. ' .
+                    'Class for Json Web Key algorithm "%s" is missing. '.
                     'Ensure the appropriate package is installed: https://web-token.spomky-labs.com/the-components/signed-tokens-jws/signature-algorithms',
                     $alg
                 )

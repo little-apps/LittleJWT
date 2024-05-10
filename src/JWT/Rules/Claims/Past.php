@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
 use Illuminate\Support\Carbon;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Past extends Rule

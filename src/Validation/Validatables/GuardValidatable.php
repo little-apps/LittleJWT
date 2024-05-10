@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Validation\Validatables;
 
 use Illuminate\Support\Facades\Auth;
-
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Validation\Validator;
 

@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Guards\Adapters\Concerns;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Build\Buildables\GuardBuildable;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;

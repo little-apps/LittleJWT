@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Laravel\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-
 use LittleApps\LittleJWT\Exceptions\InvalidTokenException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
@@ -15,7 +14,7 @@ class ValidToken
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */

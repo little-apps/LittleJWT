@@ -2,22 +2,19 @@
 
 namespace LittleApps\LittleJWT\Build;
 
-use BadMethodCallException;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ForwardsCalls;
-use LittleApps\LittleJWT\Contracts\BuildsJWTClaims;
 use Illuminate\Support\Traits\Macroable;
+use LittleApps\LittleJWT\Contracts\BuildsJWTClaims;
 use LittleApps\LittleJWT\Core\Concerns\CreatesCallbackBuilder;
-use LittleApps\LittleJWT\Factories\ClaimManagerBuilder;
-use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\ClaimManagers;
-use LittleApps\LittleJWT\JWT\ImmutableClaimManager;
 
 final class Builder extends Options implements BuildsJWTClaims
 {
     const DEFAULTS_NONE = false;
+
     const DEFAULTS_BEFORE = 'before';
+
     const DEFAULTS_AFTER = 'after';
 
     use Macroable {
@@ -31,7 +28,7 @@ final class Builder extends Options implements BuildsJWTClaims
      *
      * @var string|false
      */
-    protected $includeDefaults = Builder::DEFAULTS_BEFORE;
+    protected $includeDefaults = self::DEFAULTS_BEFORE;
 
     /**
      * Buildables to run before options.
@@ -54,18 +51,18 @@ final class Builder extends Options implements BuildsJWTClaims
      */
     public function __construct(
         protected readonly Container $app
-    )
-    {
+    ) {
         parent::__construct();
     }
 
     /**
      * Includes default claims
      *
-     * @param boolean $after If true, default claims are added at the end.
+     * @param bool $after If true, default claims are added at the end.
      * @return $this
      */
-    public function withDefaults($after = false) {
+    public function withDefaults($after = false)
+    {
         $this->includeDefaults = (bool) $after ? static::DEFAULTS_AFTER : static::DEFAULTS_BEFORE;
 
         return $this;
@@ -76,7 +73,8 @@ final class Builder extends Options implements BuildsJWTClaims
      *
      * @return $this
      */
-    public function withoutDefaults() {
+    public function withoutDefaults()
+    {
         $this->includeDefaults = static::DEFAULTS_NONE;
 
         return $this;
@@ -87,7 +85,8 @@ final class Builder extends Options implements BuildsJWTClaims
      *
      * @return ClaimManagers
      */
-    public function getClaimManagers(): ClaimManagers {
+    public function getClaimManagers(): ClaimManagers
+    {
         $claimManagers = [
             $this->getClaimManagersFromCallbacks($this->getBeforeCallbacks()),
             parent::getClaimManagers(),
@@ -102,7 +101,8 @@ final class Builder extends Options implements BuildsJWTClaims
      *
      * @return list<callable>
      */
-    protected function getBeforeCallbacks(): array {
+    protected function getBeforeCallbacks(): array
+    {
         return
             $this->includeDefaults === static::DEFAULTS_BEFORE ?
                 [$this->createCallbackBuilder()->createBuildableCallback(), ...$this->beforeBuildables] :
@@ -115,7 +115,8 @@ final class Builder extends Options implements BuildsJWTClaims
      * @param array $callbacks
      * @return ClaimManagers
      */
-    protected function getClaimManagersFromCallbacks(array $callbacks): ClaimManagers {
+    protected function getClaimManagersFromCallbacks(array $callbacks): ClaimManagers
+    {
         $options = new Options();
 
         foreach ($callbacks as $callback) {
@@ -130,7 +131,8 @@ final class Builder extends Options implements BuildsJWTClaims
      *
      * @return list<callable>
      */
-    protected function getAfterCallbacks(): array {
+    protected function getAfterCallbacks(): array
+    {
         return
             $this->includeDefaults === static::DEFAULTS_AFTER ?
                 [...$this->afterBuildables, $this->createCallbackBuilder()->createBuildableCallback()] :
@@ -154,7 +156,8 @@ final class Builder extends Options implements BuildsJWTClaims
         return parent::__call($name, $parameters);
     }
 
-    public static function defaults() {
+    public static function defaults()
+    {
         return function (Builder $builder) {
             $builder->withDefaults();
         };

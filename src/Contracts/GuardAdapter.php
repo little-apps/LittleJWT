@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 interface GuardAdapter

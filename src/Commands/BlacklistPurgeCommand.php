@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 
 class BlacklistPurgeCommand extends Command

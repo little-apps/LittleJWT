@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Mutate\Mutators\Concerns;
 
 use DateTimeInterface;
-
 use Illuminate\Support\Carbon;
 
 trait MutatesDateTime

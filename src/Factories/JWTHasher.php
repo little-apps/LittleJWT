@@ -6,7 +6,6 @@ use InvalidArgumentException;
 use Jose\Component\Core\Algorithm as AlgorithmContract;
 use Jose\Component\Core\JWK;
 use Jose\Component\Signature\Algorithm;
-
 use LittleApps\LittleJWT\Exceptions\IncompatibleHashAlgorithmJWK;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\ClaimManager;

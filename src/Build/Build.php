@@ -3,8 +3,6 @@
 namespace LittleApps\LittleJWT\Build;
 
 use Illuminate\Contracts\Foundation\Application;
-
-use LittleApps\LittleJWT\Contracts\BuildsJWTClaims;
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
 use LittleApps\LittleJWT\Mutate\Mutators;

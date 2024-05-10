@@ -6,7 +6,6 @@ use ArrayAccess;
 use Countable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use LittleApps\LittleJWT\Build\ClaimBuildOptions;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -16,6 +15,7 @@ use RuntimeException;
 class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 {
     public const PART_HEADER = 'header';
+
     public const PART_PAYLOAD = 'payload';
 
     /**
@@ -64,7 +64,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 
         $claim = $this->getClaim($key);
 
-        return !is_null($claim) ? $claim->getValue() : $default;
+        return ! is_null($claim) ? $claim->getValue() : $default;
     }
 
     /**
@@ -74,7 +74,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * @param mixed $default Returned if claim key doesn't exist. (default: null)
      * @return ClaimBuildOptions|mixed
      */
-    public function getClaim(string $key, $default = null) {
+    public function getClaim(string $key, $default = null)
+    {
         return $this->claims->get($key, $default);
     }
 
@@ -85,7 +86,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * @param mixed $value
      * @return ClaimBuildOptions
      */
-    public function set(string $key, $value) {
+    public function set(string $key, $value)
+    {
         $claimBuildOptions = new ClaimBuildOptions($this->part, $key, $value);
 
         $this->claims[$key] = $claimBuildOptions;
@@ -99,7 +101,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * @param string $key
      * @return static
      */
-    public function unset(string $key): static {
+    public function unset(string $key): static
+    {
         unset($this->claims[$key]);
 
         return $this;
@@ -121,7 +124,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * @param mixed $claims
      * @return Collection<string, ClaimBuildOptions>
      */
-    protected function mapToClaimBuildOptions($claims) {
+    protected function mapToClaimBuildOptions($claims)
+    {
         return collect($claims)->map(
             fn ($value, $key) => $value instanceof ClaimBuildOptions ? $value : new ClaimBuildOptions($this->part, $key, $value)
         );
@@ -130,9 +134,10 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Maps ClaimBuildOptions to values.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function mapToValues() {
+    public function mapToValues()
+    {
         return $this->claims->map(fn ($options) => $options->getValue());
     }
 
@@ -247,7 +252,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * @param ClaimManager ...$claimManagers Claim managers to merge
      * @return self
      */
-    public static function merge(string $part, ClaimManager ...$claimManagers) {
+    public static function merge(string $part, self ...$claimManagers)
+    {
         $claims = [];
 
         foreach ($claimManagers as $claimManager) {

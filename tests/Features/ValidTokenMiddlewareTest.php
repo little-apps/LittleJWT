@@ -5,7 +5,6 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\Facades\LittleJWT;

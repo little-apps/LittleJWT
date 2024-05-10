@@ -42,15 +42,14 @@ class ModelMutator implements Mutator
                 } catch (LaravelModelNotFoundException $ex) {
                     throw new ModelNotFoundException($table, $key, $value, $jwt);
                 }
-
             }
         }
 
         return $value;
     }
 
-    protected function getPrimaryKeyName(string $table) {
+    protected function getPrimaryKeyName(string $table)
+    {
         return (new $table)->getKeyName();
     }
-
 }

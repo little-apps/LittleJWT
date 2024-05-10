@@ -5,10 +5,8 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
-
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
@@ -21,7 +19,6 @@ use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
-
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyTest extends TestCase
@@ -223,7 +220,6 @@ class KeyTest extends TestCase
      */
     public function test_no_alg_throws_exception()
     {
-
         $jwk = $this->app[Keyable::class]->createJwkFromBase(JWKFactory::createOctKey(1024));
 
         $this->expectException(HashAlgorithmNotFoundException::class);

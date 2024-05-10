@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use LittleApps\LittleJWT\Contracts\Rule;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use PHPUnit\Framework\Assert as PHPUnit;
 
@@ -47,7 +46,7 @@ class TestRule implements Rule
     /**
      * Checks if JWT passes rule.
      *
-     * @param \LittleApps\LittleJWT\JWT\JsonWebToken $jwt
+     * @param JsonWebToken $jwt
      * @return bool True if JWT passes rule check.
      */
     public function passes(JsonWebToken $jwt)

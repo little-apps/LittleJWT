@@ -11,10 +11,11 @@ trait CreatesEnvFile
      *
      * @return $this
      */
-    protected function createEnvFile(): static {
+    protected function createEnvFile(): static
+    {
         $this->writeEnvFile(
             $this->getEnvFilePath(),
-            "# This file was automatically generated for testing"
+            '# This file was automatically generated for testing'
         );
 
         return $this;
@@ -27,7 +28,8 @@ trait CreatesEnvFile
      * @param bool $useExisting If true, merges with existing .env variables.
      * @return $this
      */
-    protected function createEnvFileWithExisting(array $keyValues, bool $useExisting = false): static {
+    protected function createEnvFileWithExisting(array $keyValues, bool $useExisting = false): static
+    {
         $variables = $useExisting ? array_merge($_ENV, $keyValues) : $keyValues;
 
         $lines = array_map(function ($value, $key) {
@@ -36,7 +38,7 @@ trait CreatesEnvFile
 
         $this->writeEnvFile(
             $this->getEnvFilePath(),
-            "# This file was automatically generated for testing" . PHP_EOL .
+            '# This file was automatically generated for testing'.PHP_EOL.
             implode(PHP_EOL, $lines)
         );
 
@@ -48,7 +50,8 @@ trait CreatesEnvFile
      *
      * @return $this
      */
-    protected function reloadEnv(): static {
+    protected function reloadEnv(): static
+    {
         (new LoadEnvironmentVariables)->bootstrap($this->app);
 
         return $this;
@@ -60,7 +63,8 @@ trait CreatesEnvFile
      * @param string $variable
      * @return $this
      */
-    protected function assertEnvSet(string $variable) {
+    protected function assertEnvSet(string $variable)
+    {
         return $this->assertTrue(isset($_ENV[$variable]), "The environment variable '{$variable}' is not set.");
     }
 
@@ -71,7 +75,8 @@ trait CreatesEnvFile
      * @param mixed $expected
      * @return $this
      */
-    protected function assertEnvEquals(string $variable, $expected) {
+    protected function assertEnvEquals(string $variable, $expected)
+    {
         return $this->assertEquals($expected, $this->getEnv($variable));
     }
 
@@ -82,7 +87,8 @@ trait CreatesEnvFile
      * @param mixed $expected
      * @return $this
      */
-    protected function assertEnvNotEquals(string $variable, $expected) {
+    protected function assertEnvNotEquals(string $variable, $expected)
+    {
         return $this->assertNotEquals($expected, $this->getEnv($variable));
     }
 
@@ -92,7 +98,8 @@ trait CreatesEnvFile
      * @param string $variable
      * @return mixed
      */
-    protected function getEnv(string $variable) {
+    protected function getEnv(string $variable)
+    {
         return $_ENV[$variable];
     }
 
@@ -101,9 +108,10 @@ trait CreatesEnvFile
      *
      * @param string $path
      * @param string $contents
-     * @return boolean
+     * @return bool
      */
-    protected function writeEnvFile(string $path, string $contents): bool {
+    protected function writeEnvFile(string $path, string $contents): bool
+    {
         return (bool) file_put_contents($path, $contents);
     }
 
@@ -112,7 +120,8 @@ trait CreatesEnvFile
      *
      * @return string
      */
-    protected function getEnvFilePath(): string {
+    protected function getEnvFilePath(): string
+    {
         return $this->app->environmentFilePath();
     }
 
@@ -123,7 +132,8 @@ trait CreatesEnvFile
      * @param mixed $value
      * @return string
      */
-    protected function transformEnvKeyValueToLine(string $key, $value): string {
+    protected function transformEnvKeyValueToLine(string $key, $value): string
+    {
         return sprintf('%s=%s', $key, $this->transformEnvValue($value));
     }
 
@@ -146,7 +156,7 @@ trait CreatesEnvFile
                 break;
 
             case 'string':
-                $value = !empty($value) ? sprintf('"%s"', (string) $value) : '(empty)';
+                $value = ! empty($value) ? sprintf('"%s"', (string) $value) : '(empty)';
 
                 break;
 

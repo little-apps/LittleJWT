@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
 use LittleApps\LittleJWT\Contracts\Rule as RuleContract;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 abstract class Rule implements RuleContract

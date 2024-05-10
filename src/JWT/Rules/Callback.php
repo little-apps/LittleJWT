@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\JWT\Rules;
 
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
-
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Callback extends Rule

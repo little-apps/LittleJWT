@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use BadMethodCallException;
-
 use Illuminate\Support\Traits\Macroable;
 
 class Mutators

@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Core;
 
 use Illuminate\Contracts\Foundation\Application;
-
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 
 class Handler

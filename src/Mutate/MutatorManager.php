@@ -3,9 +3,7 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use Illuminate\Contracts\Foundation\Application;
-
 use LittleApps\LittleJWT\Contracts\Mutator;
-
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Exceptions\CantResolveMutator;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -87,7 +85,6 @@ class MutatorManager
 
             return $this->serializeThruMutator($mutator, $value, $key, $args, $jwt);
         } catch (CantResolveMutator $ex) {
-
         }
 
         return $value;
@@ -124,7 +121,6 @@ class MutatorManager
 
             return $this->unserializeThruMutator($mutator, $value, $key, $args, $jwt);
         } catch (CantResolveMutator $ex) {
-
         }
 
         return $value;

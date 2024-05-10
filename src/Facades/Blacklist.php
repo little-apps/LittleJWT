@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Facades;
 
 use Illuminate\Support\Facades\Facade;
-
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Testing\ArrayBlacklistDriver;
 
