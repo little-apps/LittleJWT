@@ -148,6 +148,8 @@ trait CreatesEnvFile
             case 'string':
                 $value = !empty($value) ? sprintf('"%s"', (string) $value) : '(empty)';
 
+                break;
+
             default:
                 $value = sprintf('"%s"', (string) $value);
 
