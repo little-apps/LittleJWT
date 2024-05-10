@@ -26,6 +26,48 @@ class ValidateTest extends TestCase
      *
      * @return void
      */
+    public function test_empty_jwt_defaults()
+    {
+        LittleJWT::fake();
+
+        $jwt = LittleJWT::create()->sign();
+
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
+            $validator
+                ->withDefaults()
+                ->assertPasses();
+        });
+    }
+
+    /**
+     * Tests that a default JWT is invalid.
+     *
+     * @return void
+     */
+    public function test_empty_jwt_defaults_invalid()
+    {
+        LittleJWT::fake();
+
+        $otherJWk = $this->app->make(Keyable::class)->build([
+            KeyBuilder::KEY_SECRET => [
+                'phrase' => Base64Encoder::encode($this->faker->sha256),
+            ],
+        ]);
+
+        $jwt = LittleJWT::withJwk($otherJWk)->create();
+
+        LittleJWT::validate($jwt, function (TestValidator $validator) {
+            $validator
+                ->withDefaults()
+                ->assertFails();
+        });
+    }
+
+    /**
+     * Tests that a default JWT is valid.
+     *
+     * @return void
+     */
     public function test_empty_jwt_valid()
     {
         LittleJWT::fake();
