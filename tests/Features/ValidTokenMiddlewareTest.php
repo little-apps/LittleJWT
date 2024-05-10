@@ -14,10 +14,10 @@ use LittleApps\LittleJWT\Tests\TestCase;
 
 class ValidTokenMiddlewareTest extends TestCase
 {
-    use WithFaker;
-    use InteractsWithLittleJWT;
     use CreatesUser;
+    use InteractsWithLittleJWT;
     use JWTHelpers;
+    use WithFaker;
 
     /**
      * Test the token is validated by default validator

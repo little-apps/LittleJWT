@@ -32,7 +32,7 @@ trait InteractsWithLittleJWT
     /**
      * Includes JWT in HTTP requests
      *
-     * @param string|JWTPayload $token
+     * @param  string|JWTPayload  $token
      * @return $this
      */
     public function withJwt($token)
@@ -43,7 +43,6 @@ trait InteractsWithLittleJWT
     /**
      * Attaches a JWT from an authenticatable.
      *
-     * @param Authenticatable $authenticatable
      * @return $this
      */
     public function withAuthenticatable(Authenticatable $authenticatable)
@@ -58,7 +57,6 @@ trait InteractsWithLittleJWT
     /**
      * Set the currently logged in user for the application.
      *
-     * @param  Authenticatable  $user
      * @param  string|null  $driver
      * @return $this
      */
@@ -75,7 +73,7 @@ trait InteractsWithLittleJWT
     /**
      * Specifies the algorithm to use
      *
-     * @param string $algorithm Fully qualified class name
+     * @param  string  $algorithm  Fully qualified class name
      * @return $this
      */
     /*protected function useAlgorithm(string $algorithm)

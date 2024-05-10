@@ -15,9 +15,9 @@ class TestValid extends Valid
     /**
      * Initializes TestValid instance.
      *
-     * @param Application $app Application container.
-     * @param JsonWebToken $jwt JWT to test.
-     * @param JWK $jwk JWK to verify with.
+     * @param  Application  $app  Application container.
+     * @param  JsonWebToken  $jwt  JWT to test.
+     * @param  JWK  $jwk  JWK to verify with.
      */
     public function __construct(Application $app, JsonWebToken $jwt, JWK $jwk)
     {
@@ -26,8 +26,6 @@ class TestValid extends Valid
 
     /**
      * Builds a Validator
-     *
-     * @return BuildsValidatorRules
      */
     protected function buildValidator(): BuildsValidatorRules
     {

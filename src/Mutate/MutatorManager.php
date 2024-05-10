@@ -37,10 +37,10 @@ class MutatorManager
     /**
      * Serializes claim value for JWT.
      *
-     * @param string $key
-     * @param mixed $definition Mutator definition
-     * @param mixed $value The claim value.
-     * @param JsonWebToken $jwt Original JWT.
+     * @param  string  $key
+     * @param  mixed  $definition  Mutator definition
+     * @param  mixed  $value  The claim value.
+     * @param  JsonWebToken  $jwt  Original JWT.
      * @return mixed
      */
     public function serialize($key, $definition, $value, JsonWebToken $jwt)
@@ -52,10 +52,10 @@ class MutatorManager
      * Unserializes claim value back to original.
      * The claim value will still be sent through json_decode after.
      *
-     * @param string $key
-     * @param mixed $definition Mutator definition
-     * @param mixed $value The claim value.
-     * @param JsonWebToken $jwt Original JWT.
+     * @param  string  $key
+     * @param  mixed  $definition  Mutator definition
+     * @param  mixed  $value  The claim value.
+     * @param  JsonWebToken  $jwt  Original JWT.
      * @return mixed
      */
     public function unserialize($key, $definition, $value, JsonWebToken $jwt)
@@ -72,10 +72,10 @@ class MutatorManager
     /**
      * Serializes claim for storing in JWT.
      *
-     * @param string $key
-     * @param mixed $value
-     * @param string|Mutator $definition
-     * @param JsonWebToken $jwt Original JWT.
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  string|Mutator  $definition
+     * @param  JsonWebToken  $jwt  Original JWT.
      * @return string
      */
     protected function serializeAs($key, $value, $definition, JsonWebToken $jwt)
@@ -93,11 +93,8 @@ class MutatorManager
     /**
      * Performs serialization through Mutator instance.
      *
-     * @param Mutator $mutator
-     * @param mixed $value
-     * @param string $key
-     * @param array $args
-     * @param JsonWebToken $jwt
+     * @param  mixed  $value
+     * @param  string  $key
      * @return mixed
      */
     protected function serializeThruMutator(Mutator $mutator, $value, $key, array $args, JsonWebToken $jwt)
@@ -108,10 +105,10 @@ class MutatorManager
     /**
      * Unserializes a claim to a type definition
      *
-     * @param string $key Claim key
-     * @param mixed $value Claim value
-     * @param string|Mutator $definition Type definition
-     * @param JsonWebToken $jwt Original JWT
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Claim value
+     * @param  string|Mutator  $definition  Type definition
+     * @param  JsonWebToken  $jwt  Original JWT
      * @return mixed
      */
     protected function unserializeAs($key, $value, $definition, JsonWebToken $jwt)
@@ -129,11 +126,8 @@ class MutatorManager
     /**
      * Performs deserialization through Mutator instance.
      *
-     * @param Mutator $mutator
-     * @param mixed $value
-     * @param string $key
-     * @param array $args
-     * @param JsonWebToken $jwt
+     * @param  mixed  $value
+     * @param  string  $key
      * @return mixed
      */
     protected function unserializeThruMutator(Mutator $mutator, $value, $key, array $args, JsonWebToken $jwt)

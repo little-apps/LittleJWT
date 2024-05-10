@@ -7,7 +7,7 @@ class Base64Encoder
     /**
      * Encodes string to base64
      *
-     * @param string $data
+     * @param  string  $data
      * @return string
      */
     public static function encode($data)
@@ -18,7 +18,7 @@ class Base64Encoder
     /**
      * Decodes base64 to string
      *
-     * @param string $encoded
+     * @param  string  $encoded
      * @return string|false Decoded data or false if unable to be decoded.
      */
     public static function decode($encoded)

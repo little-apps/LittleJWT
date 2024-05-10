@@ -17,8 +17,8 @@ use LittleApps\LittleJWT\Tests\TestCase;
 class ValidateRuleTest extends TestCase
 {
     use CreatesUser;
-    use WithFaker;
     use InteractsWithLittleJWT;
+    use WithFaker;
 
     /**
      * Tests that the default token passes the ValidToken rule

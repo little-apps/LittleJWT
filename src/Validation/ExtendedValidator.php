@@ -27,10 +27,6 @@ class ExtendedValidator extends Validator implements BuildsValidatorRules
 
     /**
      * Initializes the ExtendedValidator instance.
-     *
-     * @param Container $app
-     * @param BlacklistManager $blacklistManager
-     * @param JsonWebKey $jwk
      */
     public function __construct(
         protected readonly Container $app,
@@ -43,7 +39,7 @@ class ExtendedValidator extends Validator implements BuildsValidatorRules
     /**
      * Includes default validator rules
      *
-     * @param bool $after If true, default validation rules are added at the end.
+     * @param  bool  $after  If true, default validation rules are added at the end.
      * @return $this
      */
     public function withDefaults($after = false): static

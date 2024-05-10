@@ -35,9 +35,8 @@ class JsonWebToken
     /**
      * Creates an instance that represents a JWT.
      *
-     * @param Sign $sign
-     * @param ClaimManager $headers Headers
-     * @param ClaimManager $payload Payload
+     * @param  ClaimManager  $headers  Headers
+     * @param  ClaimManager  $payload  Payload
      */
     public function __construct(Sign $sign, ClaimManager $headers, ClaimManager $payload)
     {

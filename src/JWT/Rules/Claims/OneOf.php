@@ -29,7 +29,7 @@ class OneOf extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function checkClaim(JsonWebToken $jwt, $value)
     {
@@ -37,7 +37,7 @@ class OneOf extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function formatMessage()
     {

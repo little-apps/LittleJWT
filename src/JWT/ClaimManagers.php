@@ -6,9 +6,6 @@ final class ClaimManagers
 {
     /**
      * Initializes ClaimManagers instance
-     *
-     * @param ClaimManager $header
-     * @param ClaimManager $payload
      */
     public function __construct(
         public readonly ClaimManager $header,
@@ -20,7 +17,7 @@ final class ClaimManagers
      * Merges multiple ClaimManagers together
      * Note: If multiple claim managers have the same key, the latter value is used.
      *
-     * @param ClaimManagers ...$claimManagers ClaimManagers to merge.
+     * @param  ClaimManagers  ...$claimManagers  ClaimManagers to merge.
      * @return static
      */
     public static function merge(self ...$claimManagers)
@@ -33,7 +30,7 @@ final class ClaimManagers
             array_push($payload, $claimManager->payload);
         }
 
-        return new static(
+        return new self(
             ClaimManager::merge(ClaimManager::PART_HEADER, ...$headers),
             ClaimManager::merge(ClaimManager::PART_PAYLOAD, ...$payload)
         );

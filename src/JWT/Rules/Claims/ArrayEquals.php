@@ -23,10 +23,10 @@ class ArrayEquals extends Rule
     /**
      * Initializes Equals rule
      *
-     * @param string $key Claim key.
-     * @param array $expected Expected claim value.
-     * @param bool $strict If true, strict comparsion is used.
-     * @param bool $inHeader If true, checks header instead of payload.
+     * @param  string  $key  Claim key.
+     * @param  array  $expected  Expected claim value.
+     * @param  bool  $strict  If true, strict comparsion is used.
+     * @param  bool  $inHeader  If true, checks header instead of payload.
      */
     public function __construct(string $key, array $expected, $strict = false, $inHeader = false)
     {
@@ -37,7 +37,7 @@ class ArrayEquals extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function checkClaim(JsonWebToken $jwt, $value)
     {
@@ -60,7 +60,7 @@ class ArrayEquals extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function formatMessage()
     {

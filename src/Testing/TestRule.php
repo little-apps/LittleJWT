@@ -32,9 +32,9 @@ class TestRule implements Rule
     /**
      * Constructor for TestRule.
      *
-     * @param Rule $baseRule Rule to test
-     * @param bool $assertPasses If true, asserts test passes. If false, asserts test fails.
-     * @param string $message Message to use for PHPUnit assert.
+     * @param  Rule  $baseRule  Rule to test
+     * @param  bool  $assertPasses  If true, asserts test passes. If false, asserts test fails.
+     * @param  string  $message  Message to use for PHPUnit assert.
      */
     public function __construct(Rule $baseRule, $assertPasses, $message = '')
     {
@@ -46,7 +46,6 @@ class TestRule implements Rule
     /**
      * Checks if JWT passes rule.
      *
-     * @param JsonWebToken $jwt
      * @return bool True if JWT passes rule check.
      */
     public function passes(JsonWebToken $jwt)

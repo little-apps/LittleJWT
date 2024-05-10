@@ -35,7 +35,6 @@ abstract class AbstractAdapter implements GuardAdapter
      * Parse a token from a string to a JWT.
      * This does NOT check if the JWT is valid.
      *
-     * @param string $token
      * @return JsonWebToken|null JWT instance or null if unable to be parsed.
      */
     public function parse(string $token)
@@ -46,7 +45,6 @@ abstract class AbstractAdapter implements GuardAdapter
     /**
      * Runs JWT through Validator.
      *
-     * @param JsonWebToken $jwt
      * @return bool True if JWT is validated.
      */
     public function validate(JsonWebToken $jwt)
@@ -59,8 +57,6 @@ abstract class AbstractAdapter implements GuardAdapter
     /**
      * Gets a user from the JWT
      *
-     * @param UserProvider $provider
-     * @param JsonWebToken $jwt
      * @return Authenticatable
      */
     public function getUserFromJwt(UserProvider $provider, JsonWebToken $jwt)
@@ -81,7 +77,6 @@ abstract class AbstractAdapter implements GuardAdapter
     /**
      * Gets a callback that receives a Validator to specify the JWT validations.
      *
-     * @abstract
      * @return callable
      */
     abstract protected function getValidatorCallback();

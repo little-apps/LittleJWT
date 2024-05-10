@@ -16,7 +16,7 @@ class TestBuildable
     /**
      * Initializes test buidable
      *
-     * @param callable(Builder): void $callback Buildable callback.
+     * @param  callable(Builder): void  $callback  Buildable callback.
      */
     public function __construct(callable $callback)
     {
@@ -26,7 +26,6 @@ class TestBuildable
     /**
      * Performs the test buildable
      *
-     * @param Builder $builder
      * @return void
      */
     public function __invoke(Builder $builder)

@@ -14,7 +14,7 @@ use LittleApps\LittleJWT\Contracts\GuardAdapter;
 
 class Guard implements GuardContract
 {
-    use GuardHelpers, ForwardsCalls, Macroable {
+    use ForwardsCalls, GuardHelpers, Macroable {
         __call as macroCall;
     }
 
@@ -86,7 +86,6 @@ class Guard implements GuardContract
     /**
      * Validate a user's credentials.
      *
-     * @param  array  $credentials
      * @return bool
      */
     public function validate(array $credentials = [])
@@ -135,7 +134,6 @@ class Guard implements GuardContract
     /**
      * Sets the guard adapter.
      *
-     * @param GuardAdapter $adapter
      * @return $this
      */
     public function setAdapter(GuardAdapter $adapter)
@@ -148,7 +146,6 @@ class Guard implements GuardContract
     /**
      * Set the current request instance.
      *
-     * @param  Request  $request
      * @return $this
      */
     public function setRequest(Request $request)
@@ -165,7 +162,7 @@ class Guard implements GuardContract
     /**
      * Gets the user from a token.
      *
-     * @param string $token Token that is a JWT.
+     * @param  string  $token  Token that is a JWT.
      * @return Authenticatable|null User (if found) or null (if not found)
      */
     public function getUserFromToken(string $token)

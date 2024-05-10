@@ -62,8 +62,8 @@ class Options implements BuildsJWTClaims
     /**
      * Adds a claim to either the header or payload.
      *
-     * @param string $key Claim key
-     * @param mixed $value Claim value
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Claim value
      * @return $this
      */
     public function addClaim($key, $value)
@@ -76,8 +76,8 @@ class Options implements BuildsJWTClaims
     /**
      * Adds a claim to the header.
      *
-     * @param string $key Claim key
-     * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Claim value. Will be sent through ClaimsSerializer for serialization.
      * @return $this
      */
     public function addHeaderClaim($key, $value)
@@ -90,8 +90,8 @@ class Options implements BuildsJWTClaims
     /**
      * Adds a claim to the payload.
      *
-     * @param string $key Claim key
-     * @param mixed $value Claim value. Will be sent through ClaimsSerializer for serialization.
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Claim value. Will be sent through ClaimsSerializer for serialization.
      * @return $this
      */
     public function addPayloadClaim($key, $value)
@@ -104,7 +104,7 @@ class Options implements BuildsJWTClaims
     /**
      * Checks if claim with key exists in the header.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool True if claim with key exists in header.
      */
     public function hasHeaderClaim($key)
@@ -115,7 +115,7 @@ class Options implements BuildsJWTClaims
     /**
      * Checks if claim with key exists in the payload.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool True if claim with key exists in payload.
      */
     public function hasPayloadClaim($key)
@@ -126,8 +126,8 @@ class Options implements BuildsJWTClaims
     /**
      * Removes a claim with key from header or payload.
      *
-     * @param string $key Claim key
-     * @param bool $inHeader If true, removes claim from header. Otherwise, removes claim from payload. (default: false)
+     * @param  string  $key  Claim key
+     * @param  bool  $inHeader  If true, removes claim from header. Otherwise, removes claim from payload. (default: false)
      * @return $this
      */
     public function remove($key, $inHeader = false)
@@ -143,8 +143,6 @@ class Options implements BuildsJWTClaims
 
     /**
      * Gets the header claims.
-     *
-     * @return array
      */
     public function getHeaders(): array
     {
@@ -163,8 +161,6 @@ class Options implements BuildsJWTClaims
 
     /**
      * Gets the payload claims.
-     *
-     * @return array
      */
     public function getPayload(): array
     {
@@ -183,8 +179,6 @@ class Options implements BuildsJWTClaims
 
     /**
      * Gets the JWT claims.
-     *
-     * @return ClaimManagers
      */
     public function getClaimManagers(): ClaimManagers
     {
@@ -211,7 +205,7 @@ class Options implements BuildsJWTClaims
      * Example:
      *   $exists = isset($builder->iat); // Checks if 'iat' claim exists in payload.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool
      */
     public function __isset($key)
@@ -225,7 +219,7 @@ class Options implements BuildsJWTClaims
      * Example:
      *   unset($builder->iat); // Removes iat claim from payload.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      */
     public function __unset($key)
     {
@@ -238,8 +232,8 @@ class Options implements BuildsJWTClaims
      * Example:
      *   $builder->iat = now(); // Adds 'iat' claim with current date/time as value to payload.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      */
     public function __set($key, $value)
     {
@@ -249,7 +243,7 @@ class Options implements BuildsJWTClaims
     /**
      * Allows for claims to be retrieved as properties.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return mixed
      */
     public function __get($key)
@@ -263,8 +257,8 @@ class Options implements BuildsJWTClaims
      *   $builder->iat(now()); // Adds 'iat' claim with current date/time as value to payload.
      *   $builder->typ('JWT', true); // Adds 'typ' claim with value 'JWT' to header.
      *
-     * @param string $name
-     * @param array $parameters
+     * @param  string  $name
+     * @param  array  $parameters
      * @return $this|mixed
      */
     public function __call($name, $parameters)
@@ -311,7 +305,7 @@ class Options implements BuildsJWTClaims
     /**
      * Checks if claim belongs in header.
      *
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     protected function isHeaderClaim($key)
@@ -322,7 +316,7 @@ class Options implements BuildsJWTClaims
     /**
      * Checks if claim belongs in payload.
      *
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     protected function isPayloadClaim($key)

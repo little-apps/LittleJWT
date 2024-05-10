@@ -18,7 +18,6 @@ class Sign
 
     /**
      * Initializes Sign instance.
-     * @param JsonWebKey $jwk
      */
     public function __construct(JsonWebKey $jwk)
     {
@@ -28,7 +27,6 @@ class Sign
     /**
      * Signs a JWT
      *
-     * @param JsonWebToken $jwt
      * @return SignedJsonWebToken
      */
     public function sign(JsonWebToken $jwt)

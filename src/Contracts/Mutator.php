@@ -9,10 +9,10 @@ interface Mutator
     /**
      * Serializes claim value
      *
-     * @param mixed $value Unserialized claim value
-     * @param string $key Claim key
-     * @param array $args Any arguments to use for mutation
-     * @param JsonWebToken $jwt Original JWT
+     * @param  mixed  $value  Unserialized claim value
+     * @param  string  $key  Claim key
+     * @param  array  $args  Any arguments to use for mutation
+     * @param  JsonWebToken  $jwt  Original JWT
      * @return string|array|int
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt);
@@ -20,10 +20,10 @@ interface Mutator
     /**
      * Unserializes claim value
      *
-     * @param string|array|int $value Serialized claim value
-     * @param string $key Claim key
-     * @param array $args Any arguments to use for mutation
-     * @param JsonWebToken $jwt Original JWT
+     * @param  string|array|int  $value  Serialized claim value
+     * @param  string  $key  Claim key
+     * @param  array  $args  Any arguments to use for mutation
+     * @param  JsonWebToken  $jwt  Original JWT
      * @return mixed
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt);

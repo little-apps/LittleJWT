@@ -24,7 +24,7 @@ class Callback extends Rule
     /**
      * Constructor for Callback rule.
      *
-     * @param callable $callback Callback that recieves the JWT and returns true/false or throws a RuleFailedException.
+     * @param  callable  $callback  Callback that recieves the JWT and returns true/false or throws a RuleFailedException.
      */
     public function __construct(callable $callback)
     {
@@ -32,7 +32,7 @@ class Callback extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function passes(JsonWebToken $jwt)
     {
@@ -48,7 +48,7 @@ class Callback extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function message()
     {

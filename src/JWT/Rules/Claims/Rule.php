@@ -24,8 +24,8 @@ abstract class Rule implements RuleContract
     /**
      * Constructor for ClaimRule.
      *
-     * @param string $key Claim key
-     * @param bool $inHeader If true, gets claim from header.
+     * @param  string  $key  Claim key
+     * @param  bool  $inHeader  If true, gets claim from header.
      */
     protected function __construct($key, $inHeader)
     {
@@ -34,7 +34,7 @@ abstract class Rule implements RuleContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function passes(JsonWebToken $jwt)
     {
@@ -49,7 +49,7 @@ abstract class Rule implements RuleContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function message()
     {
@@ -62,7 +62,7 @@ abstract class Rule implements RuleContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getKey()
     {
@@ -82,8 +82,7 @@ abstract class Rule implements RuleContract
     /**
      * Checks that a claim is valid, if it exists.
      *
-     * @param JsonWebToken $jwt
-     * @param mixed $value
+     * @param  mixed  $value
      * @return bool
      */
     abstract protected function checkClaim(JsonWebToken $jwt, $value);
@@ -101,7 +100,6 @@ abstract class Rule implements RuleContract
     /**
      * Gets the claims from either headers or payload.
      *
-     * @param JsonWebToken $jwt
      * @return \LittleApps\LittleJWT\JWT\ClaimManager
      */
     protected function getClaims(JsonWebToken $jwt)
@@ -112,7 +110,6 @@ abstract class Rule implements RuleContract
     /**
      * Checks if JWT has claim.
      *
-     * @param JsonWebToken $jwt
      * @return bool
      */
     protected function hasClaim(JsonWebToken $jwt)
@@ -123,7 +120,6 @@ abstract class Rule implements RuleContract
     /**
      * Gets the claim value from JWT
      *
-     * @param JsonWebToken $jwt
      * @return mixed
      */
     protected function getValue(JsonWebToken $jwt)

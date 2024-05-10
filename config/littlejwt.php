@@ -53,6 +53,7 @@ return [
 
         /**
          * The algorithm to use for signing JWKs.
+         *
          * @see https://web-token.spomky-labs.com/the-components/signed-tokens-jws/signature-algorithms List of supported algorithms
          */
         'alg' => 'HS256',
@@ -261,6 +262,7 @@ return [
 
     /**
      * Configuration options to use with OpenSSL.
+     *
      * @see https://www.php.net/manual/en/function.openssl-csr-new.php The config parameter contains possible config options.
      */
     'openssl' => [

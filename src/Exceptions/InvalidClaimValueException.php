@@ -16,7 +16,7 @@ class InvalidClaimValueException extends Exception
      */
     protected $data;
 
-    public function __construct($data, Exception $previous = null)
+    public function __construct($data, ?Exception $previous = null)
     {
         parent::__construct('One (or more) claims has a value that cannot be encoded.', 0, $previous);
 

@@ -17,9 +17,9 @@ class Past extends Rule
     /**
      * Initializes Past rule.
      *
-     * @param string $key Claim key to check.
-     * @param int $leeway Additional number of seconds to allow date/time be in past.
-     * @param bool $inHeader If true, uses header claim.
+     * @param  string  $key  Claim key to check.
+     * @param  int  $leeway  Additional number of seconds to allow date/time be in past.
+     * @param  bool  $inHeader  If true, uses header claim.
      */
     public function __construct($key, $leeway, $inHeader)
     {
@@ -29,7 +29,7 @@ class Past extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function checkClaim(JsonWebToken $jwt, $value)
     {
@@ -41,7 +41,7 @@ class Past extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function formatMessage()
     {

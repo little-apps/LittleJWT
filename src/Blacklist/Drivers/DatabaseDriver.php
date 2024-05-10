@@ -26,7 +26,6 @@ class DatabaseDriver extends AbstractDriver
     /**
      * Checks if JWT is blacklisted.
      *
-     * @param JsonWebToken $jwt
      * @return bool True if blacklisted.
      */
     public function isBlacklisted(JsonWebToken $jwt)
@@ -35,14 +34,13 @@ class DatabaseDriver extends AbstractDriver
             DB::table($this->getTableName())
                 ->where($this->getIdentifierColumnName(), $this->getUniqueId($jwt))
                 ->whereDate($this->getIdentifierExpiryName(), '<=', Carbon::now())
-                    ->exists();
+                ->exists();
     }
 
     /**
      * Blacklists a JWT.
      *
-     * @param JsonWebToken $jwt
-     * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
+     * @param  int  $ttl  Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */
     public function blacklist(JsonWebToken $jwt, $ttl = -1)
@@ -66,7 +64,7 @@ class DatabaseDriver extends AbstractDriver
     {
         DB::table($this->getTableName())
             ->where($this->getIdentifierExpiryName(), '>', Carbon::now()->getTimestamp())
-                ->delete();
+            ->delete();
 
         return $this;
     }

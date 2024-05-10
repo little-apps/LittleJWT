@@ -36,9 +36,7 @@ final class ClaimBuildOptions
     /**
      * Initializes ClaimBuildOptions
      *
-     * @param string $part
-     * @param string $key
-     * @param mixed $value
+     * @param  mixed  $value
      */
     public function __construct(string $part, string $key, $value)
     {
@@ -74,6 +72,6 @@ final class ClaimBuildOptions
      */
     public function getValue()
     {
-        return $this->value instanceof static ? $this->value->getValue() : $this->value;
+        return $this->value instanceof self ? $this->value->getValue() : $this->value;
     }
 }

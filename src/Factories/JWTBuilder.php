@@ -22,7 +22,8 @@ class JWTBuilder
 
     /**
      * Initializes JWT Builder
-     * @param Sign $sign Passed to JsonWebToken to be used by sign() method.
+     *
+     * @param  Sign  $sign  Passed to JsonWebToken to be used by sign() method.
      */
     public function __construct(Sign $sign)
     {
@@ -32,8 +33,8 @@ class JWTBuilder
     /**
      * Builds a JWT instance from an existing JWT string.
      *
-     * @param string $token
      * @return JsonWebToken
+     *
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
     public function buildFromExisting(string $token)
@@ -55,10 +56,8 @@ class JWTBuilder
     /**
      * Builds a JWT instance using the different parts.
      *
-     * @param array $headers
-     * @param array $payload
-     * @param string|null $signature
      * @return JsonWebToken|SignedJsonWebToken Returns SignedJsonWebToken if signature is passed, otherwise JsonWebToken.
+     *
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
     public function buildFromParts(array $headers, array $payload, ?string $signature = null)
@@ -73,10 +72,8 @@ class JWTBuilder
     /**
      * Builds a JWT instance for claim managers and signature.
      *
-     * @param ClaimManager $headers
-     * @param ClaimManager $payload
-     * @param string|null $signature
      * @return JsonWebToken|SignedJsonWebToken
+     *
      * @throws CantParseJWTException Thrown if token cannot be parsed.
      */
     public function buildFromClaimManagers(ClaimManager $headers, ClaimManager $payload, ?string $signature = null)
@@ -93,8 +90,8 @@ class JWTBuilder
     /**
      * Decodes JWT claims part into an array.
      *
-     * @param string $claims
      * @return array Array of claims
+     *
      * @throws CantParseJWTException Thrown if part cannot be decoded.
      */
     protected function decodeClaims(string $claims)
@@ -117,7 +114,7 @@ class JWTBuilder
     /**
      * Decodes signature (if needed) to raw bytes.
      *
-     * @param string $signature
+     * @param  string  $signature
      * @return string
      */
     protected function decodeSignature($signature)

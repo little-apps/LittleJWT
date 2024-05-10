@@ -11,7 +11,7 @@ use LittleApps\LittleJWT\JWT\JsonWebToken;
 class ModelMutator implements Mutator
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
@@ -27,7 +27,7 @@ class ModelMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {

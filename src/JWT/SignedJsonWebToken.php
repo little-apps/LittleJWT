@@ -21,9 +21,9 @@ class SignedJsonWebToken extends JsonWebToken
     /**
      * Creates an instance that represents a JWT.
      *
-     * @param ClaimManager $headers Headers
-     * @param ClaimManager $payload Payload
-     * @param string $signature Signature (as raw bytes)
+     * @param  ClaimManager  $headers  Headers
+     * @param  ClaimManager  $payload  Payload
+     * @param  string  $signature  Signature (as raw bytes)
      */
     public function __construct(Sign $sign, ClaimManager $headers, ClaimManager $payload, string $signature)
     {
@@ -61,8 +61,6 @@ class SignedJsonWebToken extends JsonWebToken
     /**
      * Creates Signed JWT from existing JWT
      *
-     * @param JsonWebToken $jwt
-     * @param string $signature
      * @return SignedJsonWebToken
      */
     public static function instance(JsonWebToken $jwt, string $signature)

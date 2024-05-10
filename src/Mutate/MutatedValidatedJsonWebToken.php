@@ -24,8 +24,8 @@ class MutatedValidatedJsonWebToken extends ValidatedJsonWebToken
     /**
      * Initializes instance
      *
-     * @param ValidatedJsonWebToken $validated Existing validated JWT
-     * @param callable(JsonWebToken): JsonWebToken $unserialized Unserialized JWT
+     * @param  ValidatedJsonWebToken  $validated  Existing validated JWT
+     * @param  callable(JsonWebToken): JsonWebToken  $unserialized  Unserialized JWT
      */
     public function __construct(ValidatedJsonWebToken $validated, callable $unserializeCallback)
     {

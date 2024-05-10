@@ -17,9 +17,9 @@ class JWTHasher
     /**
      * Checks if JWT signature matches with JWK
      *
-     * @param AlgorithmContract $algorithm Algorithm to use for verifying JWT
-     * @param JsonWebKey $jwk JWK to use for verification
-     * @param JsonWebToken $jwt JWT to test.
+     * @param  AlgorithmContract  $algorithm  Algorithm to use for verifying JWT
+     * @param  JsonWebKey  $jwk  JWK to use for verification
+     * @param  JsonWebToken  $jwt  JWT to test.
      * @return bool True if JWT signature is valid.
      */
     public static function verify(AlgorithmContract $algorithm, JsonWebKey $jwk, JsonWebToken $jwt)
@@ -37,11 +37,12 @@ class JWTHasher
     /**
      * Generats a hash to be used as the signature for the JWT.
      *
-     * @param AlgorithmContract $algorithm Algorithm to use for generating signature.
-     * @param JsonWebKey $jwk JWK to use to create signature.
-     * @param ClaimManager $headers Header claims used to create signature.
-     * @param ClaimManager $payload Payload claims used to create signature.
+     * @param  AlgorithmContract  $algorithm  Algorithm to use for generating signature.
+     * @param  JsonWebKey  $jwk  JWK to use to create signature.
+     * @param  ClaimManager  $headers  Header claims used to create signature.
+     * @param  ClaimManager  $payload  Payload claims used to create signature.
      * @return string
+     *
      * @throws IncompatibleHashAlgorithmJWK Thrown if the JWK is incompatible with the hashing algorithm.
      */
     public static function hash(AlgorithmContract $algorithm, JsonWebKey $jwk, ClaimManager $headers, ClaimManager $payload)
@@ -62,8 +63,6 @@ class JWTHasher
     /**
      * Creates the input that will be sent to the HMAC hashing function.
      *
-     * @param ClaimManager $headers
-     * @param ClaimManager $payload
      * @return string
      */
     protected static function createInput(ClaimManager $headers, ClaimManager $payload)

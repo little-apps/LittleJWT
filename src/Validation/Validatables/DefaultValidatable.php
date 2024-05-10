@@ -7,6 +7,7 @@ use LittleApps\LittleJWT\Validation\Validator;
 
 /**
  * The default validatable for Little JWT.
+ *
  * @see https://docs.getlittlejwt.com/en/validatables#default-validatable
  */
 class DefaultValidatable
@@ -20,8 +21,6 @@ class DefaultValidatable
 
     /**
      * Intializes default validatable.
-     *
-     * @param array $config
      */
     public function __construct(array $config)
     {
@@ -31,7 +30,6 @@ class DefaultValidatable
     /**
      * Applies validator rules.
      *
-     * @param Validator $validator
      * @return void
      */
     public function __invoke(Validator $validator)

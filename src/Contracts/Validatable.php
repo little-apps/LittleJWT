@@ -14,7 +14,6 @@ interface Validatable
     /**
      * Performs the validation on a JWT.
      *
-     * @param Validator $validator
      * @return void
      */
     public function validate(Validator $validator);

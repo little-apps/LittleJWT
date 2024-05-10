@@ -11,7 +11,6 @@ class ResponseBuilder
     /**
      * Builds the JWT array from a JWT instance.
      *
-     * @param JsonWebToken $jwt
      * @return array
      */
     public static function buildFromJwt(JsonWebToken $jwt)
@@ -29,8 +28,6 @@ class ResponseBuilder
     /**
      * Builds an array response from a token and expiry date/time.
      *
-     * @param string $token
-     * @param DateTimeInterface $expires
      * @return array
      */
     public static function buildFromToken(string $token, DateTimeInterface $expires)

@@ -33,7 +33,6 @@ class CacheDriver extends AbstractDriver
     /**
      * Checks if JWT is blacklisted.
      *
-     * @param JsonWebToken $jwt
      * @return bool True if blacklisted.
      */
     public function isBlacklisted(JsonWebToken $jwt)
@@ -44,8 +43,7 @@ class CacheDriver extends AbstractDriver
     /**
      * Blacklists a JWT.
      *
-     * @param JsonWebToken $jwt
-     * @param int $ttl Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
+     * @param  int  $ttl  Length of time (in seconds) a JWT is blacklisted (0 means forever). If negative, the default TTL is used. (default: -1)
      * @return $this
      */
     public function blacklist(JsonWebToken $jwt, $ttl = -1)

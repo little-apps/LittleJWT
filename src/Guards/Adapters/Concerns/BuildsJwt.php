@@ -12,9 +12,8 @@ trait BuildsJwt
     /**
      * Builds a JWT for a user.
      *
-     * @param Authenticatable $user
-     * @param array $payloadClaims Any extra claims to add to JWT.
-     * @param array $headerClaims Any extra claims to add to JWT.
+     * @param  array  $payloadClaims  Any extra claims to add to JWT.
+     * @param  array  $headerClaims  Any extra claims to add to JWT.
      * @return SignedJsonWebToken
      */
     public function buildJwtForUser(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
@@ -27,7 +26,7 @@ trait BuildsJwt
     /**
      * Creates a JWT response for an Authenticatable instance.
      *
-     * @param Authenticatable $user The user to generate the JWT for.
+     * @param  Authenticatable  $user  The user to generate the JWT for.
      * @return \Illuminate\Http\JsonResponse Returns response with JWT
      */
     public function createJwtResponse(Authenticatable $user)

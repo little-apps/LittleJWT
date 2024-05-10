@@ -31,9 +31,9 @@ class FingerprintAdapter extends AbstractAdapter
     /**
      * Intializes fingerprint adapter.
      *
-     * @param Container $container Application container.
-     * @param GenericAdapter $adapter Adapter to add fingerprint for.
-     * @param array $config Configuration options.
+     * @param  Container  $container  Application container.
+     * @param  GenericAdapter  $adapter  Adapter to add fingerprint for.
+     * @param  array  $config  Configuration options.
      */
     public function __construct(Container $container, GenericAdapter $adapter, array $config)
     {
@@ -45,8 +45,6 @@ class FingerprintAdapter extends AbstractAdapter
     /**
      * Creates a JWT with a fingerprint hash.
      *
-     * @param Authenticatable $user
-     * @param string $fingerprintHash
      * @return JsonWebToken
      */
     public function createJwtWithFingerprint(Authenticatable $user, string $fingerprintHash)
@@ -59,7 +57,7 @@ class FingerprintAdapter extends AbstractAdapter
     /**
      * Creates a JWT response for an Authenticatable instance.
      *
-     * @param Authenticatable $user The user to generate the JWT for.
+     * @param  Authenticatable  $user  The user to generate the JWT for.
      * @return \Illuminate\Http\JsonResponse Returns response with JWT
      */
     public function createJwtResponse(Authenticatable $user)
@@ -126,7 +124,6 @@ class FingerprintAdapter extends AbstractAdapter
     /**
      * Hashes a fingerprint value for use in the JWT.
      *
-     * @param string $fingerprint
      * @return string
      */
     public function hashFingerprint(string $fingerprint)

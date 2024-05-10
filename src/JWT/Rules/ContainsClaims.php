@@ -35,7 +35,7 @@ class ContainsClaims extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function passes(JsonWebToken $jwt)
     {
@@ -58,7 +58,7 @@ class ContainsClaims extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function message()
     {

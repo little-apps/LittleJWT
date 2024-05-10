@@ -57,11 +57,11 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks if the JWT has a valid signature.
      *
-     * @param JsonWebKey|null $jwk JWK instance. If null, default JWK is used. (default: null)
-     * @param bool $before If true, runs rule before others. (default: true)
+     * @param  JsonWebKey|null  $jwk  JWK instance. If null, default JWK is used. (default: null)
+     * @param  bool  $before  If true, runs rule before others. (default: true)
      * @return $this
      */
-    public function valid(JsonWebKey $jwk = null, $before = true)
+    public function valid(?JsonWebKey $jwk = null, $before = true)
     {
         $jwk = $jwk ?? $this->jwk;
 
@@ -73,8 +73,8 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks if claim uses one of the specified algorithms.
      *
-     * @param array $algorithms Algorithm keys to check for (HS256, RS256, etc.)
-     * @param bool $inHeader
+     * @param  array  $algorithms  Algorithm keys to check for (HS256, RS256, etc.)
+     * @param  bool  $inHeader
      * @return $this
      */
     public function algorithms(array $algorithms, $inHeader = true)
@@ -85,9 +85,9 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks that the claims date/time is in the past.
      *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  int  $leeway  Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function past($key, $leeway = 0, $inHeader = false)
@@ -98,9 +98,9 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks that the claim date/time is in the future.
      *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow after claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  int  $leeway  Leeway (in seconds) to allow after claims set date/time. (default: 0)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function future($key, $leeway = 0, $inHeader = false)
@@ -111,10 +111,10 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks that claims with keys exist in header or payload.
      *
-     * @param iterable $keys Claim keys to check for.
-     * @param bool $strict If true, JWT can ONLY contain the keys. (default: false)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
-     * @param bool $before If true, runs rule before others. (default: true)
+     * @param  iterable  $keys  Claim keys to check for.
+     * @param  bool  $strict  If true, JWT can ONLY contain the keys. (default: false)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
+     * @param  bool  $before  If true, runs rule before others. (default: true)
      * @return $this
      */
     public function contains(iterable $keys, $strict = false, $inHeader = false, $before = true)
@@ -127,10 +127,10 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks value of claim with key equals expected.
      *
-     * @param string $key Claim key
-     * @param mixed $expected Expected value.
-     * @param bool $strict If true, performs type comparison. (default: true)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  mixed  $expected  Expected value.
+     * @param  bool  $strict  If true, performs type comparison. (default: true)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function equals($key, $expected, $strict = true, $inHeader = false)
@@ -141,10 +141,10 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks claim value is an array and has either at least one or all of expected values.
      *
-     * @param string $key Claim key
-     * @param array $expected Expected value.
-     * @param bool $strict If true, the actual array must be the exact same as the expected array. (default: false)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  array  $expected  Expected value.
+     * @param  bool  $strict  If true, the actual array must be the exact same as the expected array. (default: false)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function arrayEquals(string $key, array $expected, $strict = false, $inHeader = false)
@@ -155,9 +155,9 @@ class Validator implements BuildsValidatorRules
     /**
      * Securely checks value of claim with key equals expected.
      *
-     * @param string $key Claim key
-     * @param mixed $expected Expected value.
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  mixed  $expected  Expected value.
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function secureEquals($key, $expected, $inHeader = false)
@@ -168,10 +168,10 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks value of claim is one of the expected values
      *
-     * @param string $key Claim key
-     * @param array $haystack Expected values
-     * @param bool $strict If true, performs type comparison. (default: true)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  array  $haystack  Expected values
+     * @param  bool  $strict  If true, performs type comparison. (default: true)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function oneOf($key, array $haystack, $strict = true, $inHeader = false)
@@ -182,8 +182,8 @@ class Validator implements BuildsValidatorRules
     /**
      * Checks the JWT is allowed (not blacklisted).
      *
-     * @param string $driver Blacklist driver to use. If null, default driver is used. (default: null)
-     * @param bool $before If true, runs rule before others. (default: true)
+     * @param  string  $driver  Blacklist driver to use. If null, default driver is used. (default: null)
+     * @param  bool  $before  If true, runs rule before others. (default: true)
      * @return $this
      */
     public function allowed($driver = null, $before = true)
@@ -196,7 +196,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds callback that is called with JWT and returns true/false.
      *
-     * @param callable(JsonWebToken):bool $callback
+     * @param  callable(JsonWebToken):bool  $callback
      * @return $this
      */
     public function callback(callable $callback)
@@ -207,9 +207,9 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds callback that is called with claim value and returns true/false.
      *
-     * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JsonWebToken $jwt):bool $callback Callback that accepts claim value and returns true/false.
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  callable(mixed $value, string $key, JsonWebToken $jwt):bool  $callback  Callback that accepts claim value and returns true/false.
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function claimCallback($key, callable $callback, $inHeader = false)
@@ -220,7 +220,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Indicates whether validation should stop when a rule fails.
      *
-     * @param bool $enabled If true, validation stops when first rule fails. (default: true)
+     * @param  bool  $enabled  If true, validation stops when first rule fails. (default: true)
      * @return $this
      */
     public function stopOnFailure($enabled = true)
@@ -233,7 +233,6 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds a callback to be called after validate is done.
      *
-     * @param Closure $callback
      * @return $this
      */
     public function afterValidate(Closure $callback)
@@ -246,7 +245,6 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds a rule to be used on JWT before others.
      *
-     * @param Rule $rule
      * @return $this
      */
     public function addRuleBefore(Rule $rule)
@@ -259,7 +257,6 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds a rule to be used on JWT.
      *
-     * @param Rule $rule
      * @return $this
      */
     public function addRule(Rule $rule)
@@ -272,7 +269,6 @@ class Validator implements BuildsValidatorRules
     /**
      * Adds rules to be used on JWT.
      *
-     * @param iterable $rules
      * @return $this
      */
     public function addRules(iterable $rules)
@@ -307,7 +303,6 @@ class Validator implements BuildsValidatorRules
     /**
      * Copies rules to other Validator instance.
      *
-     * @param self $to
      * @return $this
      */
     public function copyRulesTo(self $to)
@@ -349,8 +344,6 @@ class Validator implements BuildsValidatorRules
 
     /**
      * Gets the BlacklistManager used with validating.
-     *
-     * @return BlacklistManager
      */
     public function getBlacklistManager(): BlacklistManager
     {
@@ -370,7 +363,6 @@ class Validator implements BuildsValidatorRules
     /**
      * Creates new Validator from existing Validator instance.
      *
-     * @param self $existing
      * @return self
      */
     public static function createFrom(self $existing)

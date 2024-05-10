@@ -26,7 +26,6 @@ trait HasRequest
     /**
      * Set the current request instance.
      *
-     * @param  Request  $request
      * @return $this
      */
     public function setRequest(Request $request)

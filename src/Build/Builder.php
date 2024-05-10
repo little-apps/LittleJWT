@@ -17,11 +17,11 @@ final class Builder extends Options implements BuildsJWTClaims
 
     const DEFAULTS_AFTER = 'after';
 
+    use CreatesCallbackBuilder;
+    use ForwardsCalls;
     use Macroable {
         __call as macroCall;
     }
-    use ForwardsCalls;
-    use CreatesCallbackBuilder;
 
     /**
      * If and when to include default buildables.
@@ -46,8 +46,6 @@ final class Builder extends Options implements BuildsJWTClaims
 
     /**
      * Initializes Builder instance
-     *
-     * @param Container $app
      */
     public function __construct(
         protected readonly Container $app
@@ -58,12 +56,12 @@ final class Builder extends Options implements BuildsJWTClaims
     /**
      * Includes default claims
      *
-     * @param bool $after If true, default claims are added at the end.
+     * @param  bool  $after  If true, default claims are added at the end.
      * @return $this
      */
     public function withDefaults($after = false)
     {
-        $this->includeDefaults = (bool) $after ? static::DEFAULTS_AFTER : static::DEFAULTS_BEFORE;
+        $this->includeDefaults = (bool) $after ? self::DEFAULTS_AFTER : self::DEFAULTS_BEFORE;
 
         return $this;
     }
@@ -75,15 +73,13 @@ final class Builder extends Options implements BuildsJWTClaims
      */
     public function withoutDefaults()
     {
-        $this->includeDefaults = static::DEFAULTS_NONE;
+        $this->includeDefaults = self::DEFAULTS_NONE;
 
         return $this;
     }
 
     /**
      * Gets the JWT claims.
-     *
-     * @return ClaimManagers
      */
     public function getClaimManagers(): ClaimManagers
     {
@@ -104,16 +100,13 @@ final class Builder extends Options implements BuildsJWTClaims
     protected function getBeforeCallbacks(): array
     {
         return
-            $this->includeDefaults === static::DEFAULTS_BEFORE ?
+            $this->includeDefaults === self::DEFAULTS_BEFORE ?
                 [$this->createCallbackBuilder()->createBuildableCallback(), ...$this->beforeBuildables] :
                 $this->beforeBuildables;
     }
 
     /**
      * Gets claim managers from callbacks
-     *
-     * @param array $callbacks
-     * @return ClaimManagers
      */
     protected function getClaimManagersFromCallbacks(array $callbacks): ClaimManagers
     {
@@ -134,7 +127,7 @@ final class Builder extends Options implements BuildsJWTClaims
     protected function getAfterCallbacks(): array
     {
         return
-            $this->includeDefaults === static::DEFAULTS_AFTER ?
+            $this->includeDefaults === self::DEFAULTS_AFTER ?
                 [...$this->afterBuildables, $this->createCallbackBuilder()->createBuildableCallback()] :
                 $this->afterBuildables;
     }
@@ -143,13 +136,13 @@ final class Builder extends Options implements BuildsJWTClaims
      * Passes methods to macro or parent class.
      * Note: The magic method from the parent is not inherited, so this needs to be specified.
      *
-     * @param string $name
-     * @param array $parameters
+     * @param  string  $name
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($name, $parameters)
     {
-        if (static::hasMacro($name)) {
+        if (self::hasMacro($name)) {
             return $this->macroCall($name, $parameters);
         }
 

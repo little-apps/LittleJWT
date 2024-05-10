@@ -19,9 +19,9 @@ class SecureEquals extends Rule
     /**
      * Initializes secure equals rule.
      *
-     * @param string $key Claim key
-     * @param mixed $expected Expected claim value
-     * @param bool $inHeader If true, pulls claim value from header.
+     * @param  string  $key  Claim key
+     * @param  mixed  $expected  Expected claim value
+     * @param  bool  $inHeader  If true, pulls claim value from header.
      */
     public function __construct($key, $expected, $inHeader = false)
     {
@@ -31,7 +31,7 @@ class SecureEquals extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function checkClaim(JsonWebToken $jwt, $value)
     {
@@ -39,7 +39,7 @@ class SecureEquals extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function formatMessage()
     {

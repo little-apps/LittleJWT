@@ -14,19 +14,22 @@ use LittleApps\LittleJWT\Mutate\MutateHandler;
 
 /**
  * This class is responsible for generating and validating JSON Web Tokens.
+ *
  * @author Nick H <nick@little-apps.com>
  * @license https://github.com/little-apps/LittleJWT/blob/main/LICENSE.md
+ *
  * @see https://www.getlittlejwt.com
+ *
  * @mixin \LittleApps\LittleJWT\Mutate\MutateHandler
  * @mixin \LittleApps\LittleJWT\Core\Handler
  */
 class LittleJWT
 {
+    use ForwardsCalls;
+    use HasCustomMutators;
     use Macroable {
         __call as macroCall;
     }
-    use ForwardsCalls;
-    use HasCustomMutators;
 
     /**
      * Application container
@@ -66,8 +69,8 @@ class LittleJWT
     /**
      * Intializes LittleJWT instance.
      *
-     * @param Application $app Application container
-     * @param JsonWebKey $jwk JWK to sign and verify JWTs with.
+     * @param  Application  $app  Application container
+     * @param  JsonWebKey  $jwk  JWK to sign and verify JWTs with.
      */
     public function __construct(Application $app, JsonWebKey $jwk)
     {
@@ -118,7 +121,6 @@ class LittleJWT
      * Whether to always use mutations.
      * If enabled, all operations will be handled with the MutateHandler.
      *
-     * @param bool $enabled
      * @return $this
      */
     public function alwaysMutate(bool $enabled)
@@ -131,8 +133,8 @@ class LittleJWT
     /**
      * Forwards method calls to handler.
      *
-     * @param string $name
-     * @param array $arguments
+     * @param  string  $name
+     * @param  array  $arguments
      * @return mixed
      */
     public function __call($name, $arguments)

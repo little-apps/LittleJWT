@@ -39,10 +39,10 @@ trait CreatesUser
     /**
      * Changes the users current password and returns it in plain-text.
      *
-     * @param Authenticatable $user User to get current password for. If null, get's current users password. (Default is null)
+     * @param  Authenticatable  $user  User to get current password for. If null, get's current users password. (Default is null)
      * @return string
      */
-    protected function getCurrentPassword(Authenticatable $user = null)
+    protected function getCurrentPassword(?Authenticatable $user = null)
     {
         // Check if we can use the Faker from WithFaker or create our own instance.
         $faker = isset($this->faker) ? $this->faker : app(Faker::class);

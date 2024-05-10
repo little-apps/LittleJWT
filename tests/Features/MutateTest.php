@@ -26,8 +26,8 @@ use Throwable;
 
 class MutateTest extends TestCase
 {
-    use WithFaker;
     use CreatesUser;
+    use WithFaker;
 
     /**
      * Tests JWT is created, mutated, and signed.
@@ -800,7 +800,8 @@ class MutateTest extends TestCase
                 ->foo('abcd');
         }));
 
-        $validatable = new class() {
+        $validatable = new class()
+        {
             public function __invoke(TestValidator $validator)
             {
                 $validator

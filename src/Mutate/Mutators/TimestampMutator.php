@@ -12,7 +12,7 @@ class TimestampMutator implements Mutator
     public static $format = 'U';
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
@@ -21,7 +21,7 @@ class TimestampMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {

@@ -31,8 +31,8 @@ class Handler
     /**
      * Intializes LittleJWT instance.
      *
-     * @param Application $app Application container
-     * @param JsonWebKey $jwk JWK to sign and verify JWTs with.
+     * @param  Application  $app  Application container
+     * @param  JsonWebKey  $jwk  JWK to sign and verify JWTs with.
      */
     public function __construct(Application $app, JsonWebKey $jwk)
     {

@@ -23,7 +23,6 @@ class DefaultBuildable
     /**
      * Builds JWT with default claims.
      *
-     * @param Options $options
      * @return void
      */
     public function __invoke(Options $options)

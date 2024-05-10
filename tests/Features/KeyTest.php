@@ -23,8 +23,8 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class KeyTest extends TestCase
 {
-    use WithFaker;
     use InteractsWithLittleJWT;
+    use WithFaker;
 
     /**
      * Tests the JWT is created and validated using a JWK secret.
@@ -284,7 +284,7 @@ class KeyTest extends TestCase
     /**
      * Creates and validates a JWT with the same JWK
      *
-     * @param JsonWebKey $jwk JWK to use to create and validate token.
+     * @param  JsonWebKey  $jwk  JWK to use to create and validate token.
      * @return bool True if JWT is valid.
      */
     protected function createValidateWithJwk(JsonWebKey $jwk)

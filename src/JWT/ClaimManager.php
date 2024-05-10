@@ -12,7 +12,7 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 use LittleApps\LittleJWT\Utils\JsonEncoder;
 use RuntimeException;
 
-class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
+class ClaimManager implements Arrayable, ArrayAccess, Countable, Jsonable
 {
     public const PART_HEADER = 'header';
 
@@ -41,7 +41,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Checks if claim with key exists.
      *
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     public function has($key)
@@ -52,8 +52,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Gets a claim value.
      *
-     * @param string|null $key The claim key or if null, all the claims. (default: null)
-     * @param mixed $default Default value if claim key doesn't exist. (default: null)
+     * @param  string|null  $key  The claim key or if null, all the claims. (default: null)
+     * @param  mixed  $default  Default value if claim key doesn't exist. (default: null)
      * @return mixed
      */
     public function get($key = null, $default = null)
@@ -70,8 +70,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Gets a claim for key.
      *
-     * @param string $key Claim key.
-     * @param mixed $default Returned if claim key doesn't exist. (default: null)
+     * @param  string  $key  Claim key.
+     * @param  mixed  $default  Returned if claim key doesn't exist. (default: null)
      * @return ClaimBuildOptions|mixed
      */
     public function getClaim(string $key, $default = null)
@@ -82,8 +82,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Sets a claim value
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  mixed  $value
      * @return ClaimBuildOptions
      */
     public function set(string $key, $value)
@@ -97,9 +96,6 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 
     /**
      * Unsets a claim
-     *
-     * @param string $key
-     * @return static
      */
     public function unset(string $key): static
     {
@@ -110,8 +106,6 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
 
     /**
      * Gets the number of claims.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -121,7 +115,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Maps claims to ClaimBuildOptions
      *
-     * @param mixed $claims
+     * @param  mixed  $claims
      * @return Collection<string, ClaimBuildOptions>
      */
     protected function mapToClaimBuildOptions($claims)
@@ -144,7 +138,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Allows for claims to be checked using isset() function.
      *
-     * @param string $name Claim key
+     * @param  string  $name  Claim key
      * @return bool
      */
     public function __isset($name)
@@ -155,7 +149,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Allows for claims to be retrieved as properties.
      *
-     * @param string $name Claim key
+     * @param  string  $name  Claim key
      * @return mixed
      */
     public function __get($name)
@@ -166,8 +160,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Check an offset exists.
      *
-     * @param string $offset
-     * @return bool
+     * @param  string  $offset
      */
     public function offsetExists($offset): bool
     {
@@ -177,7 +170,7 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Allows for claims to be retrieved as an array key.
      *
-     * @param string $offset
+     * @param  string  $offset
      * @return mixed
      */
     #[\ReturnTypeWillChange]
@@ -189,9 +182,9 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Throws an RuntimeException since ClaimManager is immutable.
      *
-     * @param string $offset
-     * @param mixed $value
-     * @return void
+     * @param  string  $offset
+     * @param  mixed  $value
+     *
      * @throws RuntimeException
      */
     public function offsetSet($offset, $value): void
@@ -202,8 +195,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
     /**
      * Throws an RuntimeException since ClaimManager is immutable.
      *
-     * @param string $offset
-     * @return void
+     * @param  string  $offset
+     *
      * @throws RuntimeException
      */
     public function offsetUnset($offset): void
@@ -248,8 +241,8 @@ class ClaimManager implements Countable, Jsonable, Arrayable, ArrayAccess
      * Merges multiple ClaimManager instances together.
      * If multiple claim managers have the same key, the latter value is used.
      *
-     * @param string $part Part claims are for
-     * @param ClaimManager ...$claimManagers Claim managers to merge
+     * @param  string  $part  Part claims are for
+     * @param  ClaimManager  ...$claimManagers  Claim managers to merge
      * @return self
      */
     public static function merge(string $part, self ...$claimManagers)

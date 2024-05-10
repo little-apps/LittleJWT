@@ -54,9 +54,9 @@ class Valid
     /**
      * Initializes a Valid instance
      *
-     * @param Application $app Application container
-     * @param JsonWebToken $jwt JWT to run through Validator
-     * @param JWK $jwk JWK to use for validation.
+     * @param  Application  $app  Application container
+     * @param  JsonWebToken  $jwt  JWT to run through Validator
+     * @param  JWK  $jwk  JWK to use for validation.
      */
     public function __construct(Application $app, JsonWebToken $jwt, JWK $jwk)
     {
@@ -71,7 +71,7 @@ class Valid
     /**
      * Passes a Validator instance through a callback.
      *
-     * @param callable(Validator $validator): void $callback
+     * @param  callable(Validator $validator): void  $callback
      * @return $this
      */
     public function passValidatorThru(callable $callback)
@@ -162,8 +162,6 @@ class Valid
 
     /**
      * Builds a Validator
-     *
-     * @return BuildsValidatorRules
      */
     protected function buildValidator(): BuildsValidatorRules
     {
@@ -175,7 +173,6 @@ class Valid
     /**
      * Collects rules from validator
      *
-     * @param BuildsValidatorRules $validator
      * @return Rule[]
      */
     protected function collectRules(BuildsValidatorRules $validator): array
@@ -190,7 +187,6 @@ class Valid
     /**
      * Collects rules from ExtendedValidator instance
      *
-     * @param ExtendedValidator $extendedValidator
      * @return Rule[]
      */
     protected function collectRulesFromExtendedValidator(ExtendedValidator $extendedValidator): array
@@ -208,7 +204,6 @@ class Valid
      * Gets unique identifier for Rule (to be used in error message bag)
      * If rule key is null, the fully qualified class name will be used.
      *
-     * @param Rule $rule
      * @return string
      */
     protected function getRuleIdentifier(Rule $rule)
@@ -219,8 +214,8 @@ class Valid
     /**
      * Runs a rule
      *
-     * @param Rule $rule
      * @return $this
+     *
      * @throws RuleFailedException Thrown if rule failed.
      */
     protected function runRule(Rule $rule)

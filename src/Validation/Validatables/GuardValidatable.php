@@ -9,6 +9,7 @@ use LittleApps\LittleJWT\Validation\Validator;
 /**
  * The validator used by the generic guard adapter.
  * This class is not responsible for fetching the associated user.
+ *
  * @see https://docs.getlittlejwt.com/en/guard#generic-adapter-generic
  */
 class GuardValidatable
@@ -24,8 +25,6 @@ class GuardValidatable
 
     /**
      * Initializes guard validatable.
-     *
-     * @param array $config
      */
     public function __construct(array $config)
     {
@@ -35,7 +34,6 @@ class GuardValidatable
     /**
      * Applies validator rules.
      *
-     * @param Validator $validator
      * @return void
      */
     public function __invoke(Validator $validator)

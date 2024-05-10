@@ -25,10 +25,10 @@ class ValidToken implements ImplicitRule
     /**
      * Initializes implicit valid token rule.
      *
-     * @param (callable(\LittleApps\LittleJWT\Validation\Validator): void)|null $callback Validatable to use.
-     * @param bool $applyDefault Whether to apply default validatables (default: true)
+     * @param  (callable(\LittleApps\LittleJWT\Validation\Validator): void)|null  $callback  Validatable to use.
+     * @param  bool  $applyDefault  Whether to apply default validatables (default: true)
      */
-    public function __construct(callable $callback = null, $applyDefault = true)
+    public function __construct(?callable $callback = null, $applyDefault = true)
     {
         $this->callback = $callback;
         $this->applyDefault = (bool) $applyDefault;
@@ -49,7 +49,7 @@ class ValidToken implements ImplicitRule
     /**
      * Performs the validation.
      *
-     * @param string|JsonWebToken $token If string, it's parsed.
+     * @param  string|JsonWebToken  $token  If string, it's parsed.
      * @return bool True if validated. False if token couldn't be parsed or validation failed.
      */
     protected function validate($token)

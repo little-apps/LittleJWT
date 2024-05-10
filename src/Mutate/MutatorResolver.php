@@ -56,9 +56,6 @@ class MutatorResolver
 
     /**
      * Initializes MutatorResolve instance.
-     *
-     * @param Application $app
-     * @param array $customMutatorsMapping
      */
     public function __construct(Application $app, array $customMutatorsMapping)
     {
@@ -69,8 +66,9 @@ class MutatorResolver
     /**
      * Resolves mutator instance
      *
-     * @param string|Mutator $definition String definition or Mutator instance
+     * @param  string|Mutator  $definition  String definition or Mutator instance
      * @return array{0: Mutator, 1: array} Returns array with resolved Mutator and any arguments to pass to instance method.
+     *
      * @throws CantResolveMutator Thrown if definition couldn't be resolved.
      */
     public function resolve($definition)
@@ -97,7 +95,6 @@ class MutatorResolver
     /**
      * Checks if custom resolve method exists for key.
      *
-     * @param string $key
      * @return bool
      */
     protected function hasResolveMethod(string $key)
@@ -110,7 +107,7 @@ class MutatorResolver
     /**
      * Checks if value is a Mutator isntance.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return bool
      */
     protected function isMutatorInstance($value)
@@ -121,7 +118,7 @@ class MutatorResolver
     /**
      * Checks if value is a mutator definition.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return bool
      */
     protected function isMutatorDefinition($value)
@@ -132,7 +129,7 @@ class MutatorResolver
     /**
      * Parses a type mutation.
      *
-     * @param string $type Type and optional arguments seperated by a :
+     * @param  string  $type  Type and optional arguments seperated by a :
      * @return array{0: string, 1: array} Array with 2 elements: The mutator key and an array of any optional arguments.
      */
     protected function parseMutatorDefinition($type)
@@ -148,7 +145,7 @@ class MutatorResolver
     /**
      * Checks if primitive mutator has mapping to class.
      *
-     * @param string $mutator
+     * @param  string  $mutator
      * @return bool
      */
     protected function hasPrimitiveMutatorMapping($mutator)
@@ -159,7 +156,7 @@ class MutatorResolver
     /**
      * Checks if custom mutator has mapping to class.
      *
-     * @param string $mutator
+     * @param  string  $mutator
      * @return bool
      */
     protected function hasCustomMutatorMapping($mutator)
@@ -170,7 +167,6 @@ class MutatorResolver
     /**
      * Resolves mutator from method.
      *
-     * @param string $key
      * @return Mutator
      */
     protected function resolveFromMethod(string $key)
@@ -181,7 +177,6 @@ class MutatorResolver
     /**
      * Resolves mutator from custom mappings.
      *
-     * @param string $key
      * @return Mutator
      */
     protected function resolveFromCustomMapping(string $key)
@@ -192,7 +187,6 @@ class MutatorResolver
     /**
      * Resolves mutator from primitive mappings.
      *
-     * @param string $key
      * @return Mutator
      */
     protected function resolveFromPrimitiveMapping(string $key)

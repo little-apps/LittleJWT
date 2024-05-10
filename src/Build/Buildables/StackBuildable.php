@@ -24,7 +24,6 @@ class StackBuildable
     /**
      * Calls buildables in stack.
      *
-     * @param Options $options
      * @return void
      */
     public function __invoke(Options $options)

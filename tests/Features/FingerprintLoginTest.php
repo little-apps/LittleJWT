@@ -13,10 +13,10 @@ use LittleApps\LittleJWT\Tests\TestCase;
 
 class FingerprintLoginTest extends TestCase
 {
-    use WithFaker;
-    use RefreshDatabase;
     use CreatesUser;
     use InteractsWithLittleJWT;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected function setUp(): void
     {

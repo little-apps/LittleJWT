@@ -20,7 +20,7 @@ class Allowed extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function passes(JsonWebToken $jwt)
     {
@@ -28,7 +28,7 @@ class Allowed extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function message()
     {

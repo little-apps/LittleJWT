@@ -39,8 +39,9 @@ class JsonWebKey extends JWK
     /**
      * Gets hash algorithm instance based on 'alg' value for JWK.
      *
-     * @throws HashAlgorithmNotFoundException Thrown if algorithm could not be determined.
      * @return \Jose\Component\Core\Algorithm
+     *
+     * @throws HashAlgorithmNotFoundException Thrown if algorithm could not be determined.
      */
     public function algorithm()
     {
@@ -72,7 +73,6 @@ class JsonWebKey extends JWK
     /**
      * Creates JsonWebKey instance from base JWK instance.
      *
-     * @param JWK $jwk
      * @return self
      */
     public static function createFromBase(JWK $jwk)

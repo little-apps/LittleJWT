@@ -150,7 +150,7 @@ class BlacklistTest extends TestCase
 
         $this
             ->artisan('littlejwt:purge')
-                ->assertExitCode(0);
+            ->assertExitCode(0);
 
         $this->assertFalse(Blacklist::isBlacklisted($jwt));
         $this->assertNotEquals($original, Blacklist::getBlacklist());
@@ -178,7 +178,7 @@ class BlacklistTest extends TestCase
 
         $this
             ->artisan('littlejwt:purge xyz')
-                ->assertExitCode(1);
+            ->assertExitCode(1);
 
         $this->assertEquals($original, Blacklist::getBlacklist());
     }
@@ -186,8 +186,6 @@ class BlacklistTest extends TestCase
     /**
      * Calls callback with BlacklistDriver instance for each specified driver
      *
-     * @param array $drivers
-     * @param callable $callback
      * @return void
      */
     protected function withBlacklistDrivers(array $drivers, callable $callback)

@@ -24,8 +24,8 @@ class TestMutator implements Mutator
     /**
      * Initalizes test mutator.
      *
-     * @param callable(mixed $value, string $key, array $args, JsonWebToken $jwt): mixed $serializeCallback Serialize callback
-     * @param callable(mixed $value, string $key, array $args, JsonWebToken $jwt): mixed $unserializeCallback Unserialize callback
+     * @param  callable(mixed $value, string $key, array $args, JsonWebToken $jwt): mixed  $serializeCallback  Serialize callback
+     * @param  callable(mixed $value, string $key, array $args, JsonWebToken $jwt): mixed  $unserializeCallback  Unserialize callback
      */
     public function __construct(callable $serializeCallback, callable $unserializeCallback)
     {
@@ -34,7 +34,7 @@ class TestMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
@@ -42,7 +42,7 @@ class TestMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {

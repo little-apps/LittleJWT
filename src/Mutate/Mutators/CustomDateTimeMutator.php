@@ -10,7 +10,7 @@ class CustomDateTimeMutator implements Mutator
     use Concerns\MutatesDateTime;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
@@ -20,7 +20,7 @@ class CustomDateTimeMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {

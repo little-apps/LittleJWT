@@ -16,9 +16,9 @@ class Callback extends Rule
     /**
      * Initializes Callback rule.
      *
-     * @param string $key Claim key.
-     * @param callable(mixed, string, JsonWebToken): void $callback
-     * @param bool $inHeader
+     * @param  string  $key  Claim key.
+     * @param  callable(mixed, string, JsonWebToken): void  $callback
+     * @param  bool  $inHeader
      */
     public function __construct($key, callable $callback, $inHeader)
     {
@@ -30,8 +30,8 @@ class Callback extends Rule
     /**
      * Calls callback
      *
-     * @param JsonWebToken $jwt JWT instance.
-     * @param mixed $value Claim value.
+     * @param  JsonWebToken  $jwt  JWT instance.
+     * @param  mixed  $value  Claim value.
      * @return bool
      */
     protected function checkClaim(JsonWebToken $jwt, $value)

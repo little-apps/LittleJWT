@@ -13,7 +13,6 @@ class StackMutator implements Mutator
     /**
      * Adds mutator to stack.
      *
-     * @param Mutator $mutator
      * @return $this
      */
     public function mutator(Mutator $mutator)
@@ -24,7 +23,7 @@ class StackMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
@@ -36,7 +35,7 @@ class StackMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {

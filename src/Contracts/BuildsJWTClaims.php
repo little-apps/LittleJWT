@@ -8,8 +8,6 @@ interface BuildsJWTClaims
 {
     /**
      * Gets the JWT claims.
-     *
-     * @return ClaimManagers
      */
     public function getClaimManagers(): ClaimManagers;
 }

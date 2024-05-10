@@ -17,8 +17,8 @@ use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 class ValidateTest extends TestCase
 {
-    use WithFaker;
     use InteractsWithLittleJWT;
+    use WithFaker;
 
     /**
      * Tests that a default JWT is valid.

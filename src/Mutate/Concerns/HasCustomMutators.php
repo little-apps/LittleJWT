@@ -14,8 +14,8 @@ trait HasCustomMutators
     /**
      * Sets custom mutator mapping
      *
-     * @param string $key Key
-     * @param class-string<\LittleApps\LittleJWT\Contracts\Mutator> $class Fully qualified class name
+     * @param  string  $key  Key
+     * @param  class-string<\LittleApps\LittleJWT\Contracts\Mutator>  $class  Fully qualified class name
      * @return void
      */
     public function customMutator(string $key, string $class)

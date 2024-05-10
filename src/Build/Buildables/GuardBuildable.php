@@ -9,8 +9,8 @@ use LittleApps\LittleJWT\Concerns\JWTHelpers;
 
 class GuardBuildable
 {
-    use JWTHelpers;
     use HasUser;
+    use JWTHelpers;
 
     /**
      * Payload claims to include.
@@ -29,9 +29,9 @@ class GuardBuildable
     /**
      * Constructs a GuardBuildable instance.
      *
-     * @param Authenticatable $user User to use for subject in JWT.
-     * @param array $payloadClaims Any extra claims to include in the payload. (default: empty array)
-     * @param array $headerClaims Any extra claims to include in the header. (default: empty array)
+     * @param  Authenticatable  $user  User to use for subject in JWT.
+     * @param  array  $payloadClaims  Any extra claims to include in the payload. (default: empty array)
+     * @param  array  $headerClaims  Any extra claims to include in the header. (default: empty array)
      */
     public function __construct(Authenticatable $user, array $payloadClaims = [], array $headerClaims = [])
     {
@@ -43,7 +43,6 @@ class GuardBuildable
     /**
      * Builds JWT for use with guard.
      *
-     * @param Options $options
      * @return void
      */
     public function __invoke(Options $options)

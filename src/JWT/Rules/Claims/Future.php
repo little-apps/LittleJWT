@@ -17,9 +17,9 @@ class Future extends Rule
     /**
      * Intializes Future rule.
      *
-     * @param string $key Claim key to check.
-     * @param int $leeway Additional number of seconds to allow date/time be in future.
-     * @param bool $inHeader If true, uses header claim.
+     * @param  string  $key  Claim key to check.
+     * @param  int  $leeway  Additional number of seconds to allow date/time be in future.
+     * @param  bool  $inHeader  If true, uses header claim.
      */
     public function __construct($key, $leeway, $inHeader)
     {

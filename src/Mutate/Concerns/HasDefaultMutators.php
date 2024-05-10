@@ -14,7 +14,6 @@ trait HasDefaultMutators
     /**
      * Sets whether to apply default mutators or not
      *
-     * @param bool $enabled
      * @return $this
      */
     public function applyDefaultMutators(bool $enabled = true)

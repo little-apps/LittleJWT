@@ -26,7 +26,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 class ServiceProvider extends PackageServiceProvider
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function configurePackage(Package $package): void
     {
@@ -205,7 +205,7 @@ class ServiceProvider extends PackageServiceProvider
     /**
      * Gets the configuration for an adapter.
      *
-     * @param string $adapter Name of adapter
+     * @param  string  $adapter  Name of adapter
      * @return array
      */
     protected function getAdapterConfig(string $adapter)
@@ -271,9 +271,8 @@ class ServiceProvider extends PackageServiceProvider
         /**
          * Get the token for the request.
          *
-         * @param Request $request Request to get token from
-         * @param string $inputKey Name of input to get token from (if it exists).
-         *
+         * @param  Request  $request  Request to get token from
+         * @param  string  $inputKey  Name of input to get token from (if it exists).
          * @return string|null
          */
         Request::macro('getToken', function ($inputKey = 'token') {

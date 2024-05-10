@@ -63,10 +63,6 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
 
     /**
      * Constructor for TestValidator
-     *
-     * @param Application $app
-     * @param BlacklistManager $blacklistManager
-     * @param JsonWebKey $jwk
      */
     public function __construct(Application $app, BlacklistManager $blacklistManager, JsonWebKey $jwk)
     {
@@ -85,7 +81,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Sets whether to assert that the JWT rules pass.
      *
-     * @param bool $enabled
+     * @param  bool  $enabled
      * @return $this
      */
     public function assertPasses($enabled = true)
@@ -98,7 +94,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Sets whether to assert that the JWT rules fail.
      *
-     * @param bool $enabled
+     * @param  bool  $enabled
      * @return $this
      */
     public function assertFails($enabled = true)
@@ -111,7 +107,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts that there were so many errors from the JWT validation.
      *
-     * @param int|false $count Expected count or false to disable assert (default: false)
+     * @param  int|false  $count  Expected count or false to disable assert (default: false)
      * @return $this
      */
     public function assertErrorCount($count = false)
@@ -124,7 +120,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts that there weren't so many errors from the JWT validation.
      *
-     * @param int|false $count Error count or false to disable assert (default: false)
+     * @param  int|false  $count  Error count or false to disable assert (default: false)
      * @return $this
      */
     public function assertNotErrorCount($count = false)
@@ -137,7 +133,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts that an error with key exists.
      *
-     * @param string $key
+     * @param  string  $key
      * @return $this
      */
     public function assertErrorKeyExists($key)
@@ -150,7 +146,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts that an error with key doesn't exist.
      *
-     * @param string $key
+     * @param  string  $key
      * @return $this
      */
     public function assertErrorKeyDoesntExist($key)
@@ -163,8 +159,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts that a rule passes.
      *
-     * @param Rule $rule
-     * @param string $message
+     * @param  string  $message
      * @return $this
      */
     public function assertRulePasses(Rule $rule, $message = '')
@@ -177,8 +172,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts that a rule fails.
      *
-     * @param Rule $rule
-     * @param string $message
+     * @param  string  $message
      * @return $this
      */
     public function assertRuleFails(Rule $rule, $message = '')
@@ -191,7 +185,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts the JWT is for the subject model
      *
-     * @param mixed $model Class name or object
+     * @param  mixed  $model  Class name or object
      * @return $this
      */
     public function assertSubjectModel($model)
@@ -205,7 +199,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts the JWT is not for the subject model
      *
-     * @param mixed $model Class name or object
+     * @param  mixed  $model  Class name or object
      * @return $this
      */
     public function assertNotSubjectModel($model)
@@ -219,9 +213,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts the JWT payload/header claim is in the past.
      *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  int  $leeway  Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function assertPastPasses($key, $leeway = 0, $inHeader = false)
@@ -235,9 +229,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts the JWT payload/header claim is not in the past.
      *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  int  $leeway  Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function assertPastFails($key, $leeway = 0, $inHeader = false)
@@ -251,9 +245,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts the JWT payload/header claim is in the future.
      *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  int  $leeway  Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function assertFuturePasses($key, $leeway = 0, $inHeader = false)
@@ -267,9 +261,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts the JWT payload/header claim is not in the future.
      *
-     * @param string $key Claim key
-     * @param int $leeway Leeway (in seconds) to allow before claims set date/time. (default: 0)
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  int  $leeway  Leeway (in seconds) to allow before claims set date/time. (default: 0)
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function assertFutureFails($key, $leeway = 0, $inHeader = false)
@@ -283,10 +277,10 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a claim matches a value
      *
-     * @param string $claimKey
-     * @param mixed $value
-     * @param bool $strict
-     * @param bool $inHeader
+     * @param  string  $claimKey
+     * @param  mixed  $value
+     * @param  bool  $strict
+     * @param  bool  $inHeader
      * @return $this
      */
     public function assertClaimMatches($claimKey, $value, $strict = false, $inHeader = false)
@@ -297,10 +291,10 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a claim matches a value
      *
-     * @param string $claimKey
-     * @param mixed $value
-     * @param bool $strict
-     * @param bool $inHeader
+     * @param  string  $claimKey
+     * @param  mixed  $value
+     * @param  bool  $strict
+     * @param  bool  $inHeader
      * @return $this
      */
     public function assertClaimDoesntMatch($claimKey, $value, $strict = false, $inHeader = false)
@@ -311,9 +305,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a claim exists in payload.
      *
-     * @param mixed $expected Expected claim keys as an array or multiple parameters.
-     * @param bool $strict If true, only expected claims can exist.
-     * @param bool $inHeader If true, asserts the claim keys are in the header.
+     * @param  mixed  $expected  Expected claim keys as an array or multiple parameters.
+     * @param  bool  $strict  If true, only expected claims can exist.
+     * @param  bool  $inHeader  If true, asserts the claim keys are in the header.
      * @return $this
      */
     public function assertClaimsExists($expected, $strict = false, $inHeader = false)
@@ -326,9 +320,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a claim exists in payload.
      *
-     * @param mixed $expected Expected claim keys as an array or multiple parameters.
-     * @param bool $strict If true, only expected claims can't exist.
-     * @param bool $inHeader If true, asserts the claim keys are not in the header.
+     * @param  mixed  $expected  Expected claim keys as an array or multiple parameters.
+     * @param  bool  $strict  If true, only expected claims can't exist.
+     * @param  bool  $inHeader  If true, asserts the claim keys are not in the header.
      * @return $this
      */
     public function assertClaimsDoesntExist($expected, $strict = false, $inHeader = false)
@@ -341,10 +335,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a claim has a valid signature.
      *
-     * @param JsonWebKey|null $jwk
      * @return $this
      */
-    public function assertValidSignature(JsonWebKey $jwk = null)
+    public function assertValidSignature(?JsonWebKey $jwk = null)
     {
         return $this->assertRulePasses(
             new Rules\ValidSignature($jwk ?? $this->getJwk()),
@@ -355,10 +348,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a JWT has a invalid signature.
      *
-     * @param JsonWebKey|null $jwk
      * @return $this
      */
-    public function assertInvalidSignature(JsonWebKey $jwk = null)
+    public function assertInvalidSignature(?JsonWebKey $jwk = null)
     {
         return $this->assertRuleFails(
             new Rules\ValidSignature($jwk ?? $this->getJwk()),
@@ -369,10 +361,10 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a JWT is allowed (not blacklisted).
      *
-     * @param string $driver Blacklist driver to use. If null, default is used. (default: null)
+     * @param  string  $driver  Blacklist driver to use. If null, default is used. (default: null)
      * @return $this
      */
-    public function assertAllowed(string $driver = null)
+    public function assertAllowed(?string $driver = null)
     {
         return $this->assertRulePasses(
             new Rules\Allowed($this->app->make(BlacklistManager::class)->driver($driver)),
@@ -383,10 +375,10 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a JWT is allowed (not blacklisted).
      *
-     * @param string $driver Blacklist driver to use. If null, default is used. (default: null)
+     * @param  string  $driver  Blacklist driver to use. If null, default is used. (default: null)
      * @return $this
      */
-    public function assertNotAllowed(string $driver = null)
+    public function assertNotAllowed(?string $driver = null)
     {
         return $this->assertRuleFails(
             new Rules\Allowed($this->app->make(BlacklistManager::class)->driver($driver)),
@@ -397,7 +389,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a custom check passes.
      *
-     * @param callable(JsonWebToken $jwt):bool $callback
+     * @param  callable(JsonWebToken $jwt):bool  $callback
      * @return $this
      */
     public function assertCustomPasses(callable $callback)
@@ -411,7 +403,7 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a custom check fails.
      *
-     * @param callable(JsonWebToken $jwt):bool $callback
+     * @param  callable(JsonWebToken $jwt):bool  $callback
      * @return $this
      */
     public function assertCustomFails(callable $callback)
@@ -425,9 +417,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a custom claim check passes.
      *
-     * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JsonWebToken $jwt):bool $callback Callback that accepts claim value and returns true/false.
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  callable(mixed $value, string $key, JsonWebToken $jwt):bool  $callback  Callback that accepts claim value and returns true/false.
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function assertCustomClaimPasses($key, callable $callback, $inHeader = false)
@@ -441,9 +433,9 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * Asserts a custom claim check fails.
      *
-     * @param string $key Claim key
-     * @param callable(mixed $value, string $key, JsonWebToken $jwt):bool $callback Callback that accepts claim value and returns true/false.
-     * @param bool $inHeader If true, checks claim in header. (default: false)
+     * @param  string  $key  Claim key
+     * @param  callable(mixed $value, string $key, JsonWebToken $jwt):bool  $callback  Callback that accepts claim value and returns true/false.
+     * @param  bool  $inHeader  If true, checks claim in header. (default: false)
      * @return $this
      */
     public function assertCustomClaimFails($key, callable $callback, $inHeader = false)

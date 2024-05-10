@@ -7,8 +7,8 @@ trait GeneratesEnvVariables
     /**
      * Updates the specified env file with the specified variables.
      *
-     * @param string $envPath Path to .env file
-     * @param array $variables Associative array of environment variables to append or replace.
+     * @param  string  $envPath  Path to .env file
+     * @param  array  $variables  Associative array of environment variables to append or replace.
      * @return bool True if .env file was updated.
      */
     protected function updateEnvFile(string $envPath, array $variables)
@@ -25,8 +25,8 @@ trait GeneratesEnvVariables
     /**
      * Updates the contents of the .env file.
      *
-     * @param string $contents Existing contents of .env file
-     * @param array $variables Associative array of environment variables to append or replace.
+     * @param  string  $contents  Existing contents of .env file
+     * @param  array  $variables  Associative array of environment variables to append or replace.
      * @return string Updated .env file contents
      */
     protected function updateEnvFileContents(string $contents, array $variables)
@@ -47,7 +47,6 @@ trait GeneratesEnvVariables
     /**
      * Checks if env key already exists.
      *
-     * @param string $key
      * @return bool
      */
     protected function envKeyExists(string $key)
@@ -58,9 +57,9 @@ trait GeneratesEnvVariables
     /**
      * Appends env variable to file contents.
      *
-     * @param string $contents Existing .env file contents
-     * @param string $key Environment key
-     * @param mixed $value Value
+     * @param  string  $contents  Existing .env file contents
+     * @param  string  $key  Environment key
+     * @param  mixed  $value  Value
      * @return string Updated contents
      */
     protected function appendEnvFile(string $contents, string $key, $value)
@@ -71,9 +70,9 @@ trait GeneratesEnvVariables
     /**
      * Replaces existing env variable in file.
      *
-     * @param string $contents Existing .env file contents
-     * @param string $key Environment key
-     * @param mixed $value Value
+     * @param  string  $contents  Existing .env file contents
+     * @param  string  $key  Environment key
+     * @param  mixed  $value  Value
      * @return string Updated contents
      */
     protected function replaceEnvFile(string $contents, string $key, $value)
@@ -87,8 +86,8 @@ trait GeneratesEnvVariables
     /**
      * Generates line to insert into .env file.
      *
-     * @param string $key Key
-     * @param string $value Value
+     * @param  string  $key  Key
+     * @param  string  $value  Value
      * @return string
      */
     protected function createLineForEnvFile(string $key, $value)
@@ -99,7 +98,7 @@ trait GeneratesEnvVariables
     /**
      * Transforms value so it can be stored in .env file.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return string
      */
     protected function transformEnvValue($value)
@@ -143,9 +142,6 @@ trait GeneratesEnvVariables
 
     /**
      * Checks if key is valid for .env file.
-     *
-     * @param string $key
-     * @return bool
      */
     protected function isEnvKeyValid(string $key): bool
     {

@@ -13,7 +13,7 @@ class StackMutatable
     /**
      * Initializes Stack Mutatable
      *
-     * @param list<callable(Mutators): void> $stack
+     * @param  list<callable(Mutators): void>  $stack
      */
     public function __construct(array $stack = [])
     {
@@ -23,7 +23,6 @@ class StackMutatable
     /**
      * Adds mutator callback to stack.
      *
-     * @param callable $callback
      * @return $this
      */
     public function mutate(callable $callback)
@@ -34,7 +33,6 @@ class StackMutatable
     /**
      * Runs Mutators through stack
      *
-     * @param Mutators $mutators
      * @return $this
      */
     public function __invoke(Mutators $mutators)

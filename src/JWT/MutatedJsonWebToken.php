@@ -17,9 +17,9 @@ class MutatedJsonWebToken extends JsonWebToken
     /**
      * Creates an instance that represents a JWT.
      *
-     * @param JsonWebToken $original Original JWT
-     * @param ClaimManager $headers Headers
-     * @param ClaimManager $payload Payload
+     * @param  JsonWebToken  $original  Original JWT
+     * @param  ClaimManager  $headers  Headers
+     * @param  ClaimManager  $payload  Payload
      */
     public function __construct(JsonWebToken $original, ClaimManager $headers, ClaimManager $payload)
     {

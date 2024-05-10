@@ -19,15 +19,11 @@ class ModelNotFoundException extends Exception
 
     /**
      * The claim being referenced.
-     *
-     * @var string
      */
     public readonly string $claim;
 
     /**
      * The key (claim value) that wasn't found.
-     *
-     * @var mixed
      */
     public readonly mixed $key;
 

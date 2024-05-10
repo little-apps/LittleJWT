@@ -8,17 +8,17 @@ use LittleApps\LittleJWT\JWT\JsonWebToken;
 abstract class Rule implements RuleContract
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     abstract public function passes(JsonWebToken $jwt);
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     abstract public function message();
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getKey()
     {

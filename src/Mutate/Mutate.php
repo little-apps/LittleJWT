@@ -28,9 +28,6 @@ class Mutate
 
     /**
      * Initializes Mutate instance.
-     *
-     * @param JWTBuilder $builder
-     * @param MutatorManager $mutatorManager
      */
     public function __construct(JWTBuilder $builder, MutatorManager $mutatorManager)
     {
@@ -41,8 +38,6 @@ class Mutate
     /**
      * Serializes claims in a JWT
      *
-     * @param Mutators $mutators
-     * @param JsonWebToken $jwt
      * @return JsonWebToken Unsigned JWT
      */
     public function serialize(Mutators $mutators, JsonWebToken $jwt)
@@ -56,8 +51,6 @@ class Mutate
     /**
      * Unserializes claims in a JWT
      *
-     * @param Mutators $mutators
-     * @param JsonWebToken $jwt
      * @return MutatedJsonWebToken Unserialized JWT
      */
     public function unserialize(Mutators $mutators, JsonWebToken $jwt)
@@ -71,8 +64,6 @@ class Mutate
     /**
      * Serializes header claims.
      *
-     * @param Mutators $mutators
-     * @param JsonWebToken $jwt
      * @return array
      */
     protected function serializeHeaders(Mutators $mutators, JsonWebToken $jwt)
@@ -99,8 +90,6 @@ class Mutate
     /**
      * Serializes payload claims.
      *
-     * @param Mutators $mutators
-     * @param JsonWebToken $jwt
      * @return array
      */
     protected function serializePayload(Mutators $mutators, JsonWebToken $jwt)
@@ -127,8 +116,6 @@ class Mutate
     /**
      * Unserializes header claims.
      *
-     * @param Mutators $mutators
-     * @param JsonWebToken $jwt
      * @return array
      */
     protected function unserializeHeaders(Mutators $mutators, JsonWebToken $jwt)
@@ -153,8 +140,6 @@ class Mutate
     /**
      * Unserializes payload claims.
      *
-     * @param Mutators $mutators
-     * @param JsonWebToken $jwt
      * @return array
      */
     protected function unserializePayload(Mutators $mutators, JsonWebToken $jwt)

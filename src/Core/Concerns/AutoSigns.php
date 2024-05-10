@@ -14,7 +14,7 @@ trait AutoSigns
     /**
      * Specifies if JWTs are auto-signed.
      *
-     * @param bool $enabled
+     * @param  bool  $enabled
      * @return $this
      */
     public function autoSign($enabled = true)

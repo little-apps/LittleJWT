@@ -23,10 +23,10 @@ class Equals extends Rule
     /**
      * Initializes Equals rule
      *
-     * @param string $key Claim key.
-     * @param mixed $expected Expected claim value.
-     * @param bool $strict If true, strict comparsion is used.
-     * @param bool $inHeader If true, checks header instead of payload.
+     * @param  string  $key  Claim key.
+     * @param  mixed  $expected  Expected claim value.
+     * @param  bool  $strict  If true, strict comparsion is used.
+     * @param  bool  $inHeader  If true, checks header instead of payload.
      */
     public function __construct($key, $expected, $strict = true, $inHeader = false)
     {
@@ -37,7 +37,7 @@ class Equals extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function checkClaim(JsonWebToken $jwt, $value)
     {
@@ -45,7 +45,7 @@ class Equals extends Rule
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function formatMessage()
     {

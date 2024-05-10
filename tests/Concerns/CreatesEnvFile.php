@@ -24,8 +24,7 @@ trait CreatesEnvFile
     /**
      * Creates a .env file with existing variables.
      *
-     * @param array $keyValues
-     * @param bool $useExisting If true, merges with existing .env variables.
+     * @param  bool  $useExisting  If true, merges with existing .env variables.
      * @return $this
      */
     protected function createEnvFileWithExisting(array $keyValues, bool $useExisting = false): static
@@ -60,7 +59,6 @@ trait CreatesEnvFile
     /**
      * Asserts env variable is set.
      *
-     * @param string $variable
      * @return $this
      */
     protected function assertEnvSet(string $variable)
@@ -71,8 +69,7 @@ trait CreatesEnvFile
     /**
      * Asserts .env variables equals expected.
      *
-     * @param string $variable
-     * @param mixed $expected
+     * @param  mixed  $expected
      * @return $this
      */
     protected function assertEnvEquals(string $variable, $expected)
@@ -83,8 +80,7 @@ trait CreatesEnvFile
     /**
      * Asserts .env variables doesn't equal expected.
      *
-     * @param string $variable
-     * @param mixed $expected
+     * @param  mixed  $expected
      * @return $this
      */
     protected function assertEnvNotEquals(string $variable, $expected)
@@ -95,7 +91,6 @@ trait CreatesEnvFile
     /**
      * Gets env variable value.
      *
-     * @param string $variable
      * @return mixed
      */
     protected function getEnv(string $variable)
@@ -105,10 +100,6 @@ trait CreatesEnvFile
 
     /**
      * Writes to .env file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @return bool
      */
     protected function writeEnvFile(string $path, string $contents): bool
     {
@@ -117,8 +108,6 @@ trait CreatesEnvFile
 
     /**
      * Gets path to .env file.
-     *
-     * @return string
      */
     protected function getEnvFilePath(): string
     {
@@ -128,9 +117,7 @@ trait CreatesEnvFile
     /**
      * Transforms key and value to line for .env file.
      *
-     * @param string $key
-     * @param mixed $value
-     * @return string
+     * @param  mixed  $value
      */
     protected function transformEnvKeyValueToLine(string $key, $value): string
     {
@@ -140,7 +127,7 @@ trait CreatesEnvFile
     /**
      * Transforms value so it can be stored in .env file.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return string
      */
     protected function transformEnvValue($value)

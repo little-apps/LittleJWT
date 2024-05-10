@@ -42,8 +42,8 @@ class Mutators
     /**
      * Adds a claim mutator for either the header or payload.
      *
-     * @param string $key Claim key
-     * @param mixed $value Mutator
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Mutator
      * @return $this
      */
     public function add($key, $value)
@@ -56,8 +56,8 @@ class Mutators
     /**
      * Adds a mutator for header claim.
      *
-     * @param string $key Claim key
-     * @param mixed $value Mutator
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Mutator
      * @return $this
      */
     public function addHeader($key, $value)
@@ -70,8 +70,8 @@ class Mutators
     /**
      * Adds a mutator for payload claim.
      *
-     * @param string $key Claim key
-     * @param mixed $value Mutator
+     * @param  string  $key  Claim key
+     * @param  mixed  $value  Mutator
      * @return $this
      */
     public function addPayload($key, $value)
@@ -84,7 +84,7 @@ class Mutators
     /**
      * Checks if mutator for claim key exists.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool True if mutator exists.
      */
     public function has($key)
@@ -95,7 +95,7 @@ class Mutators
     /**
      * Checks if global mutator for claim key exists.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool True if mutator exists.
      */
     public function hasGlobal($key)
@@ -106,7 +106,7 @@ class Mutators
     /**
      * Checks if mutator for header claim key exists.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool True if mutator exists.
      */
     public function hasHeader($key)
@@ -117,7 +117,7 @@ class Mutators
     /**
      * Checks if mutator for payload claim key exists.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool True if mutator exists.
      */
     public function hasPayload($key)
@@ -128,7 +128,7 @@ class Mutators
     /**
      * Removes mutator for claim key from either globals, header, or payload list.
      *
-     * @param string $key
+     * @param  string  $key
      * @return $this
      */
     public function remove($key)
@@ -151,7 +151,7 @@ class Mutators
     /**
      * Removes a mutator for claim key from globals.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return $this
      */
     public function removeGlobal($key)
@@ -164,7 +164,7 @@ class Mutators
     /**
      * Removes a mutator for header claim key.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return $this
      */
     public function removeHeader($key)
@@ -177,7 +177,7 @@ class Mutators
     /**
      * Removes a mutator for payload claim key.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return $this
      */
     public function removePayload($key)
@@ -190,7 +190,7 @@ class Mutators
     /**
      * Gets the global mutators.
      *
-     * @param string|null $key Claim key or null to get all definitions. (default: null)
+     * @param  string|null  $key  Claim key or null to get all definitions. (default: null)
      * @return mixed|array
      */
     public function getGlobal(?string $key = null)
@@ -201,7 +201,7 @@ class Mutators
     /**
      * Gets the header mutators.
      *
-     * @param string|null $key Claim key or null to get all definitions. (default: null)
+     * @param  string|null  $key  Claim key or null to get all definitions. (default: null)
      * @return mixed|array
      */
     public function getHeaders(?string $key = null)
@@ -212,7 +212,7 @@ class Mutators
     /**
      * Gets the payload mutators.
      *
-     * @param string|null $key Claim key or null to get all definitions. (default: null)
+     * @param  string|null  $key  Claim key or null to get all definitions. (default: null)
      * @return mixed|array
      */
     public function getPayload(?string $key = null)
@@ -235,7 +235,6 @@ class Mutators
      * Merges other Mutators instance with this one.
      * The mutators in Mutators argument take precendence over mutators in this instance.
      *
-     * @param self $mutators
      * @return $this
      */
     public function merge(self $mutators)
@@ -252,7 +251,7 @@ class Mutators
      * Example:
      *   $exists = isset($mutators->iat); // Checks if 'iat' mutator exists.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return bool
      */
     public function __isset($key)
@@ -265,7 +264,7 @@ class Mutators
      * Example:
      *   unset($mutators->iat); // Removes 'iat' mutator.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      */
     public function __unset($key)
     {
@@ -278,8 +277,8 @@ class Mutators
      * Example:
      *   $mutators->iat = 'timestamp'; // Adds 'iat' timestamp mutator to global mutators.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      */
     public function __set($key, $value)
     {
@@ -290,7 +289,7 @@ class Mutators
      * Allows for claims to be retrieved as properties.
      * Checks header, payload, and global mutators in order.
      *
-     * @param string $key Claim key
+     * @param  string  $key  Claim key
      * @return mixed|null Mutator or null if not found.
      */
     public function __get($key)
@@ -317,8 +316,8 @@ class Mutators
      *   $mutators->iat('timestamp', 'header'); // Adds 'iat' timestamp mutator to header mutators.
      *   $mutators->iat('timestamp', 'payload'); // Adds 'iat' timestamp mutator to payload mutators.
      *
-     * @param string $name Claim key
-     * @param array $arguments Arguments
+     * @param  string  $name  Claim key
+     * @param  array  $arguments  Arguments
      * @return $this
      */
     public function __call($name, $arguments)

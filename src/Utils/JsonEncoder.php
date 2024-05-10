@@ -12,7 +12,7 @@ class JsonEncoder
     /**
      * Encodes an array as JSON.
      *
-     * @param array $data
+     * @param  array  $data
      * @return string
      */
     public static function encode($data)
@@ -27,7 +27,7 @@ class JsonEncoder
     /**
      * Decodes a JSON string to an array
      *
-     * @param string $encoded
+     * @param  string  $encoded
      * @return array|null Returns an array or null if unable to be decoded.
      */
     public static function decode($encoded)

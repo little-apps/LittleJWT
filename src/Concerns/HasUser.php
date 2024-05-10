@@ -16,7 +16,6 @@ trait HasUser
     /**
      * Sets the user
      *
-     * @param Authenticatable $user
      * @return $this
      */
     public function setUser(Authenticatable $user)

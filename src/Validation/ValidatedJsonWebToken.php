@@ -28,9 +28,6 @@ class ValidatedJsonWebToken
 
     /**
      * Initializes instance.
-     *
-     * @param JsonWebToken $jwt
-     * @param bool $result
      */
     public function __construct(JsonWebToken $jwt, bool $result)
     {
@@ -71,8 +68,8 @@ class ValidatedJsonWebToken
     /**
      * Forwards calls to JWT instance.
      *
-     * @param string $name
-     * @param array $arguments
+     * @param  string  $name
+     * @param  array  $arguments
      * @return mixed
      */
     public function __call($name, $arguments)

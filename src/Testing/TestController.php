@@ -15,7 +15,6 @@ class TestController extends Controller
     /**
      * Sends back Request information
      *
-     * @param Request $request
      * @return array
      */
     public function testIo(Request $request)
@@ -33,7 +32,6 @@ class TestController extends Controller
     /**
      * Gets the JWT using the getJwt macro
      *
-     * @param Request $request
      * @return array
      */
     public function testGetJwt(Request $request)
@@ -44,7 +42,6 @@ class TestController extends Controller
     /**
      * Authenticates a user and sends back JWT
      *
-     * @param Request $request
      * @return mixed
      */
     public function testLogin(Request $request)
@@ -67,7 +64,6 @@ class TestController extends Controller
     /**
      * Authenticates user and sends back JWT in JSON and header.
      *
-     * @param Request $request
      * @return mixed
      */
     public function testLoginResponse(Request $request)
@@ -92,7 +88,6 @@ class TestController extends Controller
     /**
      * Authenticates user and responds using RespondsWithJWT trait
      *
-     * @param Request $request
      * @return mixed
      */
     public function testResponseTrait(Request $request)
@@ -129,7 +124,6 @@ class TestController extends Controller
     /**
      * Responds with logged in user information
      *
-     * @param Request $request
      * @return mixed
      */
     public function testUser(Request $request)
@@ -140,7 +134,6 @@ class TestController extends Controller
     /**
      * Used to check if middleware check passed or failed.
      *
-     * @param Request $request
      * @return array
      */
     public function testMiddleware(Request $request)

@@ -17,7 +17,7 @@ class ClaimManagerBuilder
     /**
      * Builds a ClaimManager for the header claims.
      *
-     * @param array $claims Header claims
+     * @param  array  $claims  Header claims
      * @return ClaimManager
      */
     public function buildClaimManagerForHeader(array $claims)
@@ -28,7 +28,6 @@ class ClaimManagerBuilder
     /**
      * Builds a ClaimManager for the payload claims.
      *
-     * @param array $claims
      * @return ClaimManager
      */
     public function buildClaimManagerForPayload(array $claims)
@@ -39,7 +38,7 @@ class ClaimManagerBuilder
     /**
      * Builds a ClaimManager for a part.
      *
-     * @param array $claims Associative array of claims
+     * @param  array  $claims  Associative array of claims
      * @return ClaimManager
      */
     public function buildClaimManagerFor(string $part, array $claims)

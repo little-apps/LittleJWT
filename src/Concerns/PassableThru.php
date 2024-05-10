@@ -14,7 +14,6 @@ trait PassableThru
     /**
      * Adds callback to pass parameter(s) through
      *
-     * @param callable $callback
      * @return $this
      */
     protected function passThru(callable $callback)
@@ -27,7 +26,7 @@ trait PassableThru
     /**
      * Sends parameters through callbacks.
      *
-     * @param array ...$params
+     * @param  array  ...$params
      * @return $this
      */
     protected function runThru(...$params)

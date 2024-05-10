@@ -13,7 +13,7 @@ class DateTimeMutator implements Mutator
     public static $format = DateTimeInterface::ISO8601;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function serialize($value, string $key, array $args, JsonWebToken $jwt)
     {
@@ -21,7 +21,7 @@ class DateTimeMutator implements Mutator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function unserialize($value, string $key, array $args, JsonWebToken $jwt)
     {

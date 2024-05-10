@@ -9,7 +9,6 @@ interface Rule
     /**
      * Checks if JWT passes rule.
      *
-     * @param JsonWebToken $jwt
      * @return bool True if JWT passes rule check.
      */
     public function passes(JsonWebToken $jwt);

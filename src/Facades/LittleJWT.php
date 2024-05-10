@@ -17,10 +17,9 @@ class LittleJWT extends Facade
     /**
      * Replace the bound instance with a fake.
      *
-     * @param JsonWebKey $jwk
      * @return LittleJWTFake
      */
-    public static function fake(JsonWebKey $jwk = null)
+    public static function fake(?JsonWebKey $jwk = null)
     {
         if (is_null($jwk)) {
             // Use random JWK if null is specified.
@@ -35,7 +34,6 @@ class LittleJWT extends Facade
     /**
      * Creates a new instance of LittleJWT to use to build/validate with a different JWK.
      *
-     * @param JsonWebKey $jwk
      * @return LittleJWTInstance New LittleJWT instance
      */
     public static function withJwk(JsonWebKey $jwk)

@@ -11,8 +11,8 @@ use LittleApps\LittleJWT\Tests\TestCase;
 class CommandTest extends TestCase
 {
     use CreatesEnvFile;
-    use WithFaker;
     use InteractsWithLittleJWT;
+    use WithFaker;
 
     /**
      * Tests that a JWK secret phrase is generated using the littlejwt:phrase command.
@@ -23,8 +23,8 @@ class CommandTest extends TestCase
     {
         $this
             ->artisan('littlejwt:phrase -d')
-                ->expectsOutput('Generated secret key:')
-                ->assertExitCode(0);
+            ->expectsOutput('Generated secret key:')
+            ->assertExitCode(0);
     }
 
     /**
@@ -74,7 +74,7 @@ class CommandTest extends TestCase
     {
         $this
             ->artisan('littlejwt:p12')
-                ->assertExitCode(0);
+            ->assertExitCode(0);
     }
 
     /**
@@ -92,8 +92,8 @@ class CommandTest extends TestCase
 
         $this
             ->artisan(sprintf('littlejwt:p12 "%s" --display', $path))
-                ->expectsOutput('Generated environment variables:')
-                ->assertExitCode(0);
+            ->expectsOutput('Generated environment variables:')
+            ->assertExitCode(0);
 
         Storage::assertExists('jwk.p12');
     }
@@ -116,7 +116,7 @@ class CommandTest extends TestCase
 
         $this
             ->artisan(sprintf('littlejwt:p12 "%s" --display', $path))
-                ->assertExitCode(1);
+            ->assertExitCode(1);
 
         $this->assertStringEqualsFile($path, $existing);
     }
@@ -140,8 +140,8 @@ class CommandTest extends TestCase
 
         $this
             ->artisan(sprintf('littlejwt:p12 "%s" --display --force', $path))
-                ->assertExitCode(0)
-                ->run();
+            ->assertExitCode(0)
+            ->run();
 
         $this->assertStringNotEqualsFile($path, $existing);
     }
@@ -155,7 +155,7 @@ class CommandTest extends TestCase
     {
         $this
             ->artisan('littlejwt:pem')
-                ->assertExitCode(0);
+            ->assertExitCode(0);
     }
 
     /**
@@ -173,8 +173,8 @@ class CommandTest extends TestCase
 
         $this
             ->artisan(sprintf('littlejwt:pem "%s" --display', $path))
-                ->expectsOutput('Generated environment variables:')
-                ->assertExitCode(0);
+            ->expectsOutput('Generated environment variables:')
+            ->assertExitCode(0);
 
         Storage::assertExists('jwk.pem');
     }
@@ -197,7 +197,7 @@ class CommandTest extends TestCase
 
         $this
             ->artisan(sprintf('littlejwt:pem "%s" --display', $path))
-                ->assertExitCode(1);
+            ->assertExitCode(1);
 
         $this->assertStringEqualsFile($path, $existing);
     }

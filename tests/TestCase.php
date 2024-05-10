@@ -12,8 +12,8 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-    use WithWorkbench;
     use WithLaravelMigrations;
+    use WithWorkbench;
 
     protected function setUp(): void
     {
@@ -56,7 +56,6 @@ class TestCase extends Orchestra
      * Define routes setup.
      *
      * @param  \Illuminate\Routing\Router  $router
-     *
      * @return void
      */
     protected function defineRoutes($router)

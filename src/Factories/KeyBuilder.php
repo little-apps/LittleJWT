@@ -79,7 +79,7 @@ class KeyBuilder implements Keyable
     /**
      * Builds a JWK to use to sign/verify JWTs
      *
-     * @param array $config These configuration options override the options specified in the littlejwt.key config options. (default: empty array)
+     * @param  array  $config  These configuration options override the options specified in the littlejwt.key config options. (default: empty array)
      * @return JsonWebKey
      */
     public function build(array $config = [])
@@ -89,29 +89,25 @@ class KeyBuilder implements Keyable
         $keyType = isset($config['default']) ? $config['default'] : null;
 
         switch ($keyType) {
-            case static::KEY_NONE: {
+            case static::KEY_NONE:
                 return $this->createNoneJwk($this->extra);
-            }
 
-            case static::KEY_FILE: {
+            case static::KEY_FILE:
                 return $this->buildFromFile($config[static::KEY_FILE], $this->extra);
-            }
 
-            case static::KEY_SECRET: {
+            case static::KEY_SECRET:
                 return $this->buildFromSecret($config[static::KEY_SECRET], $this->extra);
-            }
 
-            case static::KEY_RANDOM: {
+            case static::KEY_RANDOM:
                 $size = $config[static::KEY_RANDOM]['size'] ?? 1024;
 
                 return $this->generateRandomJwk($size, $this->extra);
-            }
 
-            default: {
+            default:
                 Log::warning('LittleJWT is reverting to use no key. This is NOT recommended.');
 
                 return $this->createNoneJwk($this->extra);
-            }
+
         }
     }
 
@@ -128,7 +124,7 @@ class KeyBuilder implements Keyable
     /**
      * Generates a random JWK
      *
-     * @param int $size # of bits for key size (must be multiple of 8)
+     * @param  int  $size  # of bits for key size (must be multiple of 8)
      * @return JsonWebKey
      */
     public function generateRandomJwk($size = 1024, array $extra = [])
@@ -142,7 +138,6 @@ class KeyBuilder implements Keyable
     /**
      * Builds JWK from secret phrase.
      *
-     * @param array $config
      * @return JsonWebKey
      */
     public function buildFromSecret(array $config, array $extra = [])
@@ -163,7 +158,6 @@ class KeyBuilder implements Keyable
     /**
      * Builds JWK from key file.
      *
-     * @param array $config
      * @return JsonWebKey
      */
     public function buildFromFile(array $config, array $extra = [])
@@ -175,17 +169,15 @@ class KeyBuilder implements Keyable
         $extra = array_merge($this->extra, $extra);
 
         switch ($config['type']) {
-            case static::KEY_FILES_CRT: {
+            case static::KEY_FILES_CRT:
                 $jwk = JWKFactory::createFromCertificateFile($config['path'], $extra);
-            }
 
-            case static::KEY_FILES_P12: {
+            case static::KEY_FILES_P12:
                 $jwk = JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $extra);
-            }
 
-            default: {
+            default:
                 $jwk = JWKFactory::createFromKeyFile($config['path'], $config['secret'], $extra);
-            }
+
         }
 
         return $this->createJwkFromBase($jwk);
@@ -194,7 +186,6 @@ class KeyBuilder implements Keyable
     /**
      * Creates JSON Web Key from existing JWK
      *
-     * @param JWK $jwk
      * @return JsonWebKey
      */
     public function createJwkFromBase(JWK $jwk)
@@ -205,9 +196,10 @@ class KeyBuilder implements Keyable
     /**
      * Forwards calls to static methods in JWKFactory
      *
-     * @param string $name Method name
-     * @param array $params Method parameters
+     * @param  string  $name  Method name
+     * @param  array  $params  Method parameters
      * @return mixed
+     *
      * @throws \BadMethodCallException Thrown if method doesn't exist in JWKFactory
      */
     public function __call($name, $params)

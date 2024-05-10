@@ -14,7 +14,6 @@ interface Buildable
     /**
      * Builds a JWT.
      *
-     * @param Builder $builder
      * @return void
      */
     public function build(Builder $builder);

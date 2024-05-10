@@ -36,8 +36,8 @@ class Build
     /**
      * Initializes Build instance.
      *
-     * @param Application $app Application container.
-     * @param JWTBuilder $jwtBuilder JWTBuilder for creating JWTs.
+     * @param  Application  $app  Application container.
+     * @param  JWTBuilder  $jwtBuilder  JWTBuilder for creating JWTs.
      */
     public function __construct(Application $app, JWTBuilder $jwtBuilder)
     {
@@ -49,8 +49,7 @@ class Build
     /**
      * Passes a Builder instance through a callback.
      *
-     * @param callable(Builder): void $callback
-
+     * @param  callable(Builder): void  $callback
      * @return $this
      */
     public function passBuilderThru(callable $callback)

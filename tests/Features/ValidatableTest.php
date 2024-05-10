@@ -11,8 +11,8 @@ use LittleApps\LittleJWT\Tests\TestCase;
 
 class ValidatableTest extends TestCase
 {
-    use WithFaker;
     use InteractsWithLittleJWT;
+    use WithFaker;
 
     /**
      * Tests that a callback function is passed to validateJWT.
@@ -42,7 +42,8 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create()->sign();
 
-        $validatable = new class() implements TestValidatable {
+        $validatable = new class() implements TestValidatable
+        {
             public function validate(TestValidator $validator)
             {
                 $validator->assertPasses();
@@ -63,7 +64,8 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create()->sign();
 
-        $validatable = new class() {
+        $validatable = new class()
+        {
             public function __invoke(TestValidator $validator)
             {
                 $validator->assertPasses();

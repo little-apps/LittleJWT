@@ -9,7 +9,7 @@ trait JWTHelpers
     /**
      * Generates a hash for class.
      *
-     * @param object|string $model If an object, resolves the class of object.
+     * @param  object|string  $model  If an object, resolves the class of object.
      * @return string
      */
     protected function hashSubjectModel($model)
@@ -24,7 +24,6 @@ trait JWTHelpers
     /**
      * Gets a unique identifier for the JWT
      *
-     * @param JsonWebToken $jwt
      * @return string
      */
     protected function getUniqueId(JsonWebToken $jwt)

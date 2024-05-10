@@ -14,10 +14,10 @@ trait HandlesCreate
     /**
      * Creates an unsigned JWT instance.
      *
-     * @param callable(Builder): void $callback Callback that receives Builder instance.
+     * @param  callable(Builder): void  $callback  Callback that receives Builder instance.
      * @return JsonWebToken
      */
-    public function createUnsigned(callable $callback = null)
+    public function createUnsigned(?callable $callback = null)
     {
         return
             $this->build()
@@ -28,10 +28,10 @@ trait HandlesCreate
     /**
      * Creates a signed JWT instance.
      *
-     * @param callable(Builder): void $callback Callback that receives Builder instance.
+     * @param  callable(Builder): void  $callback  Callback that receives Builder instance.
      * @return SignedJsonWebToken
      */
-    public function createSigned(callable $callback = null)
+    public function createSigned(?callable $callback = null)
     {
         $unsigned = $this->createUnsigned($callback);
 
@@ -41,10 +41,10 @@ trait HandlesCreate
     /**
      * Creates an signed or unsigned (depending if auto sign is enabled) JWT instance.
      *
-     * @param callable(Builder): void $callback Callback that receives Builder instance.
+     * @param  callable(Builder): void  $callback  Callback that receives Builder instance.
      * @return JsonWebToken|SignedJsonWebToken
      */
-    public function create(callable $callback = null)
+    public function create(?callable $callback = null)
     {
         return $this->autoSign ? $this->createSigned($callback) : $this->createUnsigned($callback);
     }
