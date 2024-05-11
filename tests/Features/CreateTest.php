@@ -123,6 +123,7 @@ class CreateTest extends TestCase
 
         $build->passBuilderThru(function (Builder $builder) use ($header, $payload) {
             $builder
+                ->withoutDefaults()
                 ->addHeaderClaim($header[0], $header[1])
                 ->addPayloadClaim($payload[0], $payload[1]);
         });
