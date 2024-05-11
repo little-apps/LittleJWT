@@ -2,6 +2,40 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## v2.1.0-beta - 2024-05-11
+
+## What's Changed
+
+### High Level
+ * The way additional buildables and validatables are included has changed.
+ * Added support for Laravel 11 and PHP 8.2.
+ * Laravel 9 (and lower) and PHP 7 is no longer supported.
+ * Improved JSON Web Key secret generation.
+ * Improved PHPDoc types
+
+### Low Level
+
+#### Building and Validating JWTs
+ * The create() and validate() methods no longer accept the `$applyDefault` parameter.
+ * Additional buildables and validatables are specified in the callback function.
+ * The old `Builder` class was renamed to `Options`.
+ * The new `Builder` class extends `Options` and determines which buildables to use.
+ * The `ExtendedValidator` extends `Validator` and determines which validatables to use.
+ * There's a mutable and immutable claim manager.
+ * Claims are stored as `ClaimBuildOption` instances in claim manager.
+ * Replaced getHeaders() and getPayload() methods in `Builder` with getClaimManagers() method.
+ * Pulls reserved header and payload claim keys directly from configuration.
+
+#### Commands
+ * The `--key` option allows the environment key to use for the `littlejwt:phrase` command.
+ * The `--yes` option to skip any confirmations from `littlejwt:phrase` command.
+ * Checks the .env file is writable before modifying it.
+
+#### Miscellaneous 
+ * Replaced PHP CS Fixer with Laravel Pint to cleanup code styling.
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v2.0.1-beta...v2.1.0-beta
+
 ## v2.0.1-beta - 2023-05-20
 
 ## What's Changed
