@@ -12,6 +12,7 @@ All notable changes to LittleJWT will be documented in this file.
  * Laravel 9 (and lower) and PHP 7 is no longer supported.
  * Improved JSON Web Key secret generation.
  * Improved PHPDoc types
+ * Upgraded [PHP JWT Library](https://github.com/web-token/jwt-framework) to v3.3.
 
 ### Low Level
 
