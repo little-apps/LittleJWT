@@ -100,7 +100,7 @@ class KeyTest extends TestCase
         LittleJWT::fake($jwk);
 
         $token = (string) LittleJWT::create(function (Builder $builder) {
-            $builder->foo('bar');
+            $builder->withoutDefaults()->foo('bar');
         }, false)->sign();
 
         $this->assertTrue(strpos($token, '-') !== false || strpos($token, '_') !== false);
