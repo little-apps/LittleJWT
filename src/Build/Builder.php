@@ -148,11 +148,4 @@ final class Builder extends Options implements BuildsJWTClaims
 
         return parent::__call($name, $parameters);
     }
-
-    public static function defaults()
-    {
-        return function (Builder $builder) {
-            $builder->withDefaults();
-        };
-    }
 }
