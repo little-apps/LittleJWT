@@ -24,7 +24,7 @@ jobs:
             testbench: ^8.0
           - laravel: 11.x
             php: 8.2
-            testbench: ^8.22
+            testbench: ^9.0
 
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ubuntu-latest
