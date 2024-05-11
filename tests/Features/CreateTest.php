@@ -97,14 +97,13 @@ class CreateTest extends TestCase
      */
     public function test_build_empty_jwt()
     {
-        $build = LittleJWT::build();
-
-        $jwt = $build->build();
+        $jwt = LittleJWT::create(function (Builder $builder) {
+            $builder->withoutDefaults();
+        });
 
         $this->assertCount(0, $jwt->getHeaders());
         $this->assertCount(0, $jwt->getPayload());
 
-        $this->assertInstanceOf(Build::class, $build);
         $this->assertInstanceOf(JsonWebToken::class, $jwt);
     }
 
