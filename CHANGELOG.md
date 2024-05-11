@@ -2,6 +2,15 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## v2.0.1-beta - 2023-05-20
+
+## What's Changed
+
+ * Fixed issue when 'alg' is not set in config file.
+ * Added upgrading instructions to README file.
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v2.0.0-beta...v2.0.1-beta
+
 ## v2.0.0-beta - 2023-05-20
 
 ## What's Changed
