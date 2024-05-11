@@ -24,7 +24,9 @@ class CreateTest extends TestCase
      */
     public function test_create_default_token()
     {
-        $token = LittleJWT::create();
+        $token = LittleJWT::create(function (Builder $builder) {
+            $builder->withDefaults();
+        });
 
         $jwt = LittleJWT::parse((string) $token);
 
