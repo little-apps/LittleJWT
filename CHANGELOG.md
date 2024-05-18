@@ -2,6 +2,17 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## v2.1.1-beta - 2024-05-17
+
+## What's Changed
+* The `with()` method in `ExtendedValidator` allows additional validatables to be included.
+* The `without()` method in `ExtendedValidator` allows additional validatables to be excluded.
+* Tests the `with()` and `without()` methods.
+* Migrated PHPUnit configuration file to newer version.
+* Updated package versions for GitHub actions.
+
+**Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v2.1.0-beta...v2.1.1-beta
+
 ## v2.1.0-beta - 2024-05-11
 
 ## What's Changed
