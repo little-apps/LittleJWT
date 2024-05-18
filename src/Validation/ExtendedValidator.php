@@ -64,12 +64,12 @@ class ExtendedValidator extends Validator implements BuildsValidatorRules
     /**
      * Includes validatable
      *
-     * @param callable $validatable
-     * @param boolean $after If true, added at the end.
-     * @return static
+     * @param  callable  $validatable
+     * @param  bool  $after  If true, added at the end.
      */
-    public function with($validatable, bool $after = false): static {
-        if (!$after) {
+    public function with($validatable, bool $after = false): static
+    {
+        if (! $after) {
             array_unshift($this->beforeValidatables, $validatable);
         } else {
             array_push($this->afterValidatables, $validatable);
@@ -81,12 +81,11 @@ class ExtendedValidator extends Validator implements BuildsValidatorRules
     /**
      * Excludes validatable
      *
-     * @param callable $validatable
-     * @param boolean $after
-     * @return static
+     * @param  callable  $validatable
      */
-    public function without($validatable, bool $after = false): static {
-        if (!$after) {
+    public function without($validatable, bool $after = false): static
+    {
+        if (! $after) {
             $this->beforeValidatables = array_filter($this->beforeValidatables, fn ($callback) => $callback !== $validatable);
         } else {
             $this->afterValidatables = array_filter($this->afterValidatables, fn ($callback) => $callback !== $validatable);
