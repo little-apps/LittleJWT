@@ -168,7 +168,7 @@ class KeyTest extends TestCase
         $openssl = $this->app[OpenSSLBuilder::class];
         $privKey = $openssl->exportPrivateKey($openssl->generatePrivateKey());
 
-        $jwk = JsonWebKey::createFromBase($this->app[Keyable::class]->createFromKey($privKey, '', ['alg' => 'RS256']));
+        $jwk = $this->app[Keyable::class]->createFromKey($privKey, '', ['alg' => 'RS256']);
 
         $passes = $this->createValidateWithJwk($jwk);
 
@@ -192,7 +192,7 @@ class KeyTest extends TestCase
 
         Storage::put('jwk.p12', $openssl->exportPkcs12($crt, $privKey));
 
-        $jwk = JsonWebKey::createFromBase($this->app[Keyable::class]->createFromPKCS12CertificateFile(Storage::path('jwk.p12'), '', ['alg' => 'RS256']));
+        $jwk = $this->app[Keyable::class]->wrap(JWKFactory::createFromPKCS12CertificateFile(Storage::path('jwk.p12'), '', ['alg' => 'RS256']));
 
         $this->assertTrue($this->createValidateWithJwk($jwk));
     }
@@ -220,7 +220,7 @@ class KeyTest extends TestCase
      */
     public function test_no_alg_throws_exception()
     {
-        $jwk = $this->app[Keyable::class]->createJwkFromBase(JWKFactory::createOctKey(1024));
+        $jwk = $this->app[Keyable::class]->wrap(JWKFactory::createOctKey(1024));
 
         $this->expectException(HashAlgorithmNotFoundException::class);
 
@@ -284,12 +284,12 @@ class KeyTest extends TestCase
     /**
      * Creates and validates a JWT with the same JWK
      *
-     * @param  JsonWebKey  $jwk  JWK to use to create and validate token.
+     * @param  JWK  $jwk  JWK to use to create and validate token.
      * @return bool True if JWT is valid.
      */
-    protected function createValidateWithJwk(JsonWebKey $jwk)
+    protected function createValidateWithJwk(JWK $jwk)
     {
-        LittleJWT::fake($jwk);
+        LittleJWT::fake($this->app[Keyable::class]->wrap($jwk));
 
         $canary = $this->faker->uuid();
 

@@ -118,7 +118,7 @@ class KeyBuilder implements Keyable
      */
     public function createNoneJwk(array $extra = [])
     {
-        return $this->createJwkFromBase(JWKFactory::createNoneKey(array_merge($this->extra, $extra)));
+        return $this->wrap(JWKFactory::createNoneKey(array_merge($this->extra, $extra)));
     }
 
     /**
@@ -129,7 +129,7 @@ class KeyBuilder implements Keyable
      */
     public function generateRandomJwk($size = 1024, array $extra = [])
     {
-        return $this->createJwkFromBase(JWKFactory::createOctKey(
+        return $this->wrap(JWKFactory::createOctKey(
             $size, // Size in bits of the key. We recommend at least 128 bits.
             array_merge($this->extra, $extra)
         ));
@@ -152,7 +152,7 @@ class KeyBuilder implements Keyable
 
         $phrase = Base64Encoder::decode($config['phrase']);
 
-        return $this->createJwkFromBase(JWKFactory::createFromSecret($phrase, array_merge($this->extra, $extra)));
+        return $this->wrap(JWKFactory::createFromSecret($phrase, array_merge($this->extra, $extra)));
     }
 
     /**
@@ -180,7 +180,7 @@ class KeyBuilder implements Keyable
 
         }
 
-        return $this->createJwkFromBase($jwk);
+        return $this->wrap($jwk);
     }
 
     /**
@@ -188,9 +188,9 @@ class KeyBuilder implements Keyable
      *
      * @return JsonWebKey
      */
-    public function createJwkFromBase(JWK $jwk)
+    public function wrap(JWK $jwk)
     {
-        return JsonWebKey::createFromBase($jwk);
+        return $jwk instanceof JsonWebKey ? $jwk : new JsonWebKey($jwk->all());
     }
 
     /**

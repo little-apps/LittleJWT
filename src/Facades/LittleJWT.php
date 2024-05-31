@@ -23,7 +23,7 @@ class LittleJWT extends Facade
     {
         if (is_null($jwk)) {
             // Use random JWK if null is specified.
-            $jwk = JsonWebKey::createFromBase(static::$app->make(Keyable::class)->generateRandomJwk());
+            $jwk = static::$app->make(Keyable::class)->generateRandomJwk();
         }
 
         static::swap($fake = new LittleJWTFake(static::$app, $jwk));
