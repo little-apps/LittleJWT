@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Facades;
 use Illuminate\Support\Facades\Facade;
 use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
 use LittleApps\LittleJWT\Testing\LittleJWT as LittleJWTFake;
@@ -23,7 +24,9 @@ class LittleJWT extends Facade
     {
         if (is_null($jwk)) {
             // Use random JWK if null is specified.
-            $jwk = static::$app->make(Keyable::class)->generateRandomJwk();
+            $jwk = KeyBuilder::buildFromConfig([
+                'default' => KeyBuilder::KEY_RANDOM
+            ]);
         }
 
         static::swap($fake = new LittleJWTFake(static::$app, $jwk));

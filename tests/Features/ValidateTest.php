@@ -47,7 +47,8 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $otherJWk = $this->app->make(Keyable::class)->build([
+        $otherJWk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
             KeyBuilder::KEY_SECRET => [
                 'phrase' => Base64Encoder::encode($this->faker->sha256),
             ],
@@ -229,7 +230,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $otherJWk = $this->app->make(Keyable::class)->build([
+        $otherJWk = KeyBuilder::buildFromConfig([
             KeyBuilder::KEY_SECRET => [
                 'phrase' => Base64Encoder::encode($this->faker->sha256),
             ],

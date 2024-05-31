@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
-use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Exceptions\InvalidJWKException;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
-class KeyBuilder implements Keyable
+class KeyBuilder
 {
     use ForwardsCalls;
 
@@ -48,67 +48,71 @@ class KeyBuilder implements Keyable
     public const DEFAULT_ALGORITHM = 'HS256';
 
     /**
-     * Application container.
+     * Builds JSON Web Key from configuration.
      *
-     * @var Application
+     * @param array $config
+     * @return JsonWebKey
      */
-    protected $app;
+    public static function buildFromConfig(array $config) {
+        $keyType = isset($config['default']) ? $config['default'] : 'unknown';
 
-    /**
-     * Configuration options for building keys.
-     *
-     * @var array
-     */
-    protected $config;
+        $options = match ($keyType) {
+            static::KEY_NONE => [],
+            static::KEY_FILE => $config[static::KEY_FILE],
+            static::KEY_SECRET => $config[static::KEY_SECRET],
+            static::KEY_RANDOM => ['size' => $config[static::KEY_RANDOM]['size'] ?? 1024],
+            default => []
+        };
 
-    /**
-     * Extra configuration options to pass to JWKFactory.
-     *
-     * @var array
-     */
-    protected $extra;
+        $extra = [
+            'use' => 'sig',
+            'alg' => $config['alg'] ?? static::DEFAULT_ALGORITHM
+        ];
 
-    public function __construct(Application $app, array $config)
-    {
-        $this->app = $app;
-        $this->config = $config;
-
-        $this->extra = ['use' => 'sig', 'alg' => $config['alg'] ?? static::DEFAULT_ALGORITHM];
+        return static::build($keyType, $options, $extra);
     }
 
     /**
      * Builds a JWK to use to sign/verify JWTs
      *
-     * @param  array  $config  These configuration options override the options specified in the littlejwt.key config options. (default: empty array)
+     * @param  array  $config  Configuration options
      * @return JsonWebKey
+     * @throws InvalidJWKException Thrown if JWK is invalid.
      */
-    public function build(array $config = [])
+    public static function build(string $keyType, array $options, array $extra)
     {
-        $config = array_merge($this->config, $config);
-
-        $keyType = isset($config['default']) ? $config['default'] : null;
-
         switch ($keyType) {
             case static::KEY_NONE:
-                return $this->createNoneJwk($this->extra);
+                $jwk = static::createNoneJwk($extra);
+
+                break;
 
             case static::KEY_FILE:
-                return $this->buildFromFile($config[static::KEY_FILE], $this->extra);
+                $jwk = static::buildFromFile($options, $extra);
+
+                break;
 
             case static::KEY_SECRET:
-                return $this->buildFromSecret($config[static::KEY_SECRET], $this->extra);
+                $jwk = static::buildFromSecret($options, $extra);
+
+                break;
 
             case static::KEY_RANDOM:
-                $size = $config[static::KEY_RANDOM]['size'] ?? 1024;
+                $size = $options['size'] ?? 1024;
 
-                return $this->generateRandomJwk($size, $this->extra);
+                $jwk = static::generateRandomJwk($size, $extra);
+
+                break;
 
             default:
                 Log::warning('LittleJWT is reverting to use no key. This is NOT recommended.');
 
-                return $this->createNoneJwk($this->extra);
+                $jwk = static::createNoneJwk($extra);
 
+                break;
         }
+
+        return $jwk;
     }
 
     /**
@@ -116,9 +120,9 @@ class KeyBuilder implements Keyable
      *
      * @return JsonWebKey
      */
-    public function createNoneJwk(array $extra = [])
+    public static function createNoneJwk(array $extra = [])
     {
-        return $this->wrap(JWKFactory::createNoneKey(array_merge($this->extra, $extra)));
+        return static::wrap(JWKFactory::createNoneKey($extra));
     }
 
     /**
@@ -127,11 +131,11 @@ class KeyBuilder implements Keyable
      * @param  int  $size  # of bits for key size (must be multiple of 8)
      * @return JsonWebKey
      */
-    public function generateRandomJwk($size = 1024, array $extra = [])
+    public static function generateRandomJwk($size = 1024, array $extra = [])
     {
-        return $this->wrap(JWKFactory::createOctKey(
+        return static::wrap(JWKFactory::createOctKey(
             $size, // Size in bits of the key. We recommend at least 128 bits.
-            array_merge($this->extra, $extra)
+            $extra
         ));
     }
 
@@ -140,7 +144,7 @@ class KeyBuilder implements Keyable
      *
      * @return JsonWebKey
      */
-    public function buildFromSecret(array $config, array $extra = [])
+    public static function buildFromSecret(array $config, array $extra = [])
     {
         if (! isset($config['allow_unsecure']) || ! $config['allow_unsecure']) {
             if (! isset($config['phrase'])) {
@@ -152,7 +156,7 @@ class KeyBuilder implements Keyable
 
         $phrase = Base64Encoder::decode($config['phrase']);
 
-        return $this->wrap(JWKFactory::createFromSecret($phrase, array_merge($this->extra, $extra)));
+        return static::wrap(JWKFactory::createFromSecret($phrase, $extra));
     }
 
     /**
@@ -160,13 +164,11 @@ class KeyBuilder implements Keyable
      *
      * @return JsonWebKey
      */
-    public function buildFromFile(array $config, array $extra = [])
+    public static function buildFromFile(array $config, array $extra = [])
     {
         if (! is_file($config['path'])) {
             throw new MissingKeyException();
         }
-
-        $extra = array_merge($this->extra, $extra);
 
         switch ($config['type']) {
             case static::KEY_FILES_CRT:
@@ -180,7 +182,7 @@ class KeyBuilder implements Keyable
 
         }
 
-        return $this->wrap($jwk);
+        return static::wrap($jwk);
     }
 
     /**
@@ -188,7 +190,7 @@ class KeyBuilder implements Keyable
      *
      * @return JsonWebKey
      */
-    public function wrap(JWK $jwk)
+    public static function wrap(JWK $jwk)
     {
         return $jwk instanceof JsonWebKey ? $jwk : new JsonWebKey($jwk->all());
     }
@@ -202,7 +204,7 @@ class KeyBuilder implements Keyable
      *
      * @throws \BadMethodCallException Thrown if method doesn't exist in JWKFactory
      */
-    public function __call($name, $params)
+    public static function __callStatic($name, $params)
     {
         if (method_exists(JWKFactory::class, $name)) {
             return call_user_func_array([JWKFactory::class, $name], $params);

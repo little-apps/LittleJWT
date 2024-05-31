@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Commands;
 use Illuminate\Console\Command;
 use LittleApps\LittleJWT\Commands\Concerns\GeneratesEnvVariables;
 use LittleApps\LittleJWT\Contracts\Keyable;
+use LittleApps\LittleJWT\Factories\KeyBuilder;
 
 class GeneratePhraseCommand extends Command
 {
@@ -45,7 +46,7 @@ class GeneratePhraseCommand extends Command
      *
      * @return int
      */
-    public function handle(Keyable $keyable)
+    public function handle()
     {
         $key = $this->option('key');
         $size = $this->option('size');
@@ -57,7 +58,7 @@ class GeneratePhraseCommand extends Command
             return 1;
         }
 
-        $jwk = $keyable->generateRandomJwk($size);
+        $jwk = KeyBuilder::generateRandomJwk($size);
 
         // The generated k is base64 encoded.
         $secret = $jwk->get('k');

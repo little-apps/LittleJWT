@@ -34,7 +34,12 @@ class KeyTest extends TestCase
     public function test_create_validate_jwk_secret()
     {
         $phrase = Base64Encoder::encode($this->faker->sha1());
-        $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
+        $jwk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => [
+                'phrase' => $phrase
+            ]
+        ]);
 
         LittleJWT::fake($jwk);
 
@@ -52,7 +57,10 @@ class KeyTest extends TestCase
     {
         $this->expectException(MissingKeyException::class);
 
-        $this->app[Keyable::class]->buildFromSecret([]);
+        KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => []
+        ]);
     }
 
     /**
@@ -64,7 +72,10 @@ class KeyTest extends TestCase
     {
         $spy = Log::spy();
 
-        $this->app[Keyable::class]->buildFromSecret(['allow_unsecure' => false, 'phrase' => '']);
+        KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => ['allow_unsecure' => false, 'phrase' => '']
+        ]);
 
         $spy->shouldHaveReceived('warning', ['LittleJWT is using an empty secret phrase. This is NOT recommended.']);
     }
@@ -78,7 +89,10 @@ class KeyTest extends TestCase
     {
         $spy = Log::spy();
 
-        $jwk = $this->app[Keyable::class]->buildFromSecret(['allow_unsecure' => true, 'phrase' => '']);
+        $jwk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => ['allow_unsecure' => true, 'phrase' => '']
+        ]);
 
         $this->assertInstanceOf(JWK::class, $jwk);
 
@@ -95,7 +109,12 @@ class KeyTest extends TestCase
         $dangerous = base64_decode('+/n7+P37/fj6+fv8+Pr8+fr9/Pr7+/v7/Pj9+fz9+Pn6+vr6+/r4/Pv7+Pr8+f38+Pz4+Pr9/fv5/fr8+/z4+vz8+fv7+fz9+Pz7+/38/Pj7/Pj8+fj9/fz6/Pr8/Pn5+v37+g==');
 
         $phrase = Base64Encoder::encode($dangerous);
-        $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
+        $jwk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => [
+                'phrase' => $phrase
+            ]
+        ]);
 
         LittleJWT::fake($jwk);
 
@@ -116,7 +135,12 @@ class KeyTest extends TestCase
     {
         // No need to regenerate binary data for every test run
         $phrase = Base64Encoder::encode(base64_decode('+fv5/Pr8+fj8/fv4+v36/fn8/fv7+fj9+/34+Pn7/Po='));
-        $jwk = $this->app[Keyable::class]->buildFromSecret(['phrase' => $phrase]);
+        $jwk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => [
+                'phrase' => $phrase
+            ]
+        ]);
 
         LittleJWT::fake($jwk);
 
@@ -149,7 +173,7 @@ class KeyTest extends TestCase
             'secret' => '',
         ];
 
-        $jwk = $this->app[Keyable::class]->buildFromFile($config, ['alg' => 'RS256']);
+        $jwk = KeyBuilder::buildFromFile($config, ['alg' => 'RS256']);
 
         $passes = $this->createValidateWithJwk($jwk);
 
@@ -168,7 +192,7 @@ class KeyTest extends TestCase
         $openssl = $this->app[OpenSSLBuilder::class];
         $privKey = $openssl->exportPrivateKey($openssl->generatePrivateKey());
 
-        $jwk = $this->app[Keyable::class]->createFromKey($privKey, '', ['alg' => 'RS256']);
+        $jwk = KeyBuilder::createFromKey($privKey, '', ['alg' => 'RS256']);
 
         $passes = $this->createValidateWithJwk($jwk);
 
@@ -192,7 +216,7 @@ class KeyTest extends TestCase
 
         Storage::put('jwk.p12', $openssl->exportPkcs12($crt, $privKey));
 
-        $jwk = $this->app[Keyable::class]->wrap(JWKFactory::createFromPKCS12CertificateFile(Storage::path('jwk.p12'), '', ['alg' => 'RS256']));
+        $jwk = KeyBuilder::wrap(JWKFactory::createFromPKCS12CertificateFile(Storage::path('jwk.p12'), '', ['alg' => 'RS256']));
 
         $this->assertTrue($this->createValidateWithJwk($jwk));
     }
@@ -204,7 +228,7 @@ class KeyTest extends TestCase
      */
     public function test_invalid_hash_algorithm_thrown()
     {
-        $jwk = $this->app[Keyable::class]->generateRandomJwk(1024, ['alg' => 'FOO']);
+        $jwk = KeyBuilder::generateRandomJwk(1024, ['alg' => 'FOO']);
 
         $this->expectException(InvalidHashAlgorithmException::class);
 
@@ -220,7 +244,7 @@ class KeyTest extends TestCase
      */
     public function test_no_alg_throws_exception()
     {
-        $jwk = $this->app[Keyable::class]->wrap(JWKFactory::createOctKey(1024));
+        $jwk = KeyBuilder::wrap(JWKFactory::createOctKey(1024));
 
         $this->expectException(HashAlgorithmNotFoundException::class);
 
@@ -268,9 +292,7 @@ class KeyTest extends TestCase
 
         unset($config['alg']);
 
-        $keyBuilder = new KeyBuilder($this->app, $config);
-
-        $jwk = $keyBuilder->build();
+        $jwk = KeyBuilder::buildFromConfig($config);
 
         $this->assertNotNull($jwk);
 
@@ -289,7 +311,7 @@ class KeyTest extends TestCase
      */
     protected function createValidateWithJwk(JWK $jwk)
     {
-        LittleJWT::fake($this->app[Keyable::class]->wrap($jwk));
+        LittleJWT::fake(KeyBuilder::wrap($jwk));
 
         $canary = $this->faker->uuid();
 

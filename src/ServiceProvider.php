@@ -83,7 +83,8 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerCore()
     {
         $this->app->singleton(LittleJWT::class, function ($app) {
-            $jwk = $app->make(Keyable::class)->build();
+            $config = $app->config->get('littlejwt.key', []);
+            $jwk = KeyBuilder::buildFromConfig($config);
 
             return new LittleJWT($app, $jwk);
         });
@@ -110,12 +111,6 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerFactories()
     {
-        $this->app->singleton(Keyable::class, function ($app) {
-            $config = $app->config->get('littlejwt.key', []);
-
-            return new KeyBuilder($app, $config);
-        });
-
         $this->app->singleton(OpenSSLBuilder::class, function ($app) {
             $config = $app->config->get('littlejwt.openssl', []);
 
