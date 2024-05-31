@@ -5,7 +5,6 @@ namespace LittleApps\LittleJWT\Tests\Features;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Facades\Blacklist;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;

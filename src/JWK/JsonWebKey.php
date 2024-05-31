@@ -69,5 +69,4 @@ class JsonWebKey extends JWK
 
         return new $class();
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Jose\Component\Core\JWK;
@@ -50,10 +49,10 @@ class KeyBuilder
     /**
      * Builds JSON Web Key from configuration.
      *
-     * @param array $config
      * @return JsonWebKey
      */
-    public static function buildFromConfig(array $config) {
+    public static function buildFromConfig(array $config)
+    {
         $keyType = isset($config['default']) ? $config['default'] : 'unknown';
 
         $options = match ($keyType) {
@@ -66,7 +65,7 @@ class KeyBuilder
 
         $extra = [
             'use' => 'sig',
-            'alg' => $config['alg'] ?? static::DEFAULT_ALGORITHM
+            'alg' => $config['alg'] ?? static::DEFAULT_ALGORITHM,
         ];
 
         return static::build($keyType, $options, $extra);
@@ -77,6 +76,7 @@ class KeyBuilder
      *
      * @param  array  $config  Configuration options
      * @return JsonWebKey
+     *
      * @throws InvalidJWKException Thrown if JWK is invalid.
      */
     public static function build(string $keyType, array $options, array $extra)

@@ -4,7 +4,6 @@ namespace LittleApps\LittleJWT\Commands;
 
 use Illuminate\Console\Command;
 use LittleApps\LittleJWT\Commands\Concerns\GeneratesEnvVariables;
-use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 
 class GeneratePhraseCommand extends Command

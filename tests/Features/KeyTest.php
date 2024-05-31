@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\Storage;
 use Jose\Component\Core\JWK;
 use Jose\Component\KeyManagement\JWKFactory;
 use LittleApps\LittleJWT\Build\Builder;
-use LittleApps\LittleJWT\Contracts\Keyable;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
-use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
@@ -37,8 +35,8 @@ class KeyTest extends TestCase
         $jwk = KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
             'secret' => [
-                'phrase' => $phrase
-            ]
+                'phrase' => $phrase,
+            ],
         ]);
 
         LittleJWT::fake($jwk);
@@ -59,7 +57,7 @@ class KeyTest extends TestCase
 
         KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
-            'secret' => []
+            'secret' => [],
         ]);
     }
 
@@ -74,7 +72,7 @@ class KeyTest extends TestCase
 
         KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
-            'secret' => ['allow_unsecure' => false, 'phrase' => '']
+            'secret' => ['allow_unsecure' => false, 'phrase' => ''],
         ]);
 
         $spy->shouldHaveReceived('warning', ['LittleJWT is using an empty secret phrase. This is NOT recommended.']);
@@ -91,7 +89,7 @@ class KeyTest extends TestCase
 
         $jwk = KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
-            'secret' => ['allow_unsecure' => true, 'phrase' => '']
+            'secret' => ['allow_unsecure' => true, 'phrase' => ''],
         ]);
 
         $this->assertInstanceOf(JWK::class, $jwk);
@@ -112,8 +110,8 @@ class KeyTest extends TestCase
         $jwk = KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
             'secret' => [
-                'phrase' => $phrase
-            ]
+                'phrase' => $phrase,
+            ],
         ]);
 
         LittleJWT::fake($jwk);
@@ -138,8 +136,8 @@ class KeyTest extends TestCase
         $jwk = KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
             'secret' => [
-                'phrase' => $phrase
-            ]
+                'phrase' => $phrase,
+            ],
         ]);
 
         LittleJWT::fake($jwk);
