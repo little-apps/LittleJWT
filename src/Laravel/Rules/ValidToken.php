@@ -16,22 +16,13 @@ class ValidToken implements ImplicitRule
     protected $callback;
 
     /**
-     * Whether to apply default validatables.
-     *
-     * @var bool
-     */
-    protected $applyDefault;
-
-    /**
      * Initializes implicit valid token rule.
      *
      * @param  (callable(\LittleApps\LittleJWT\Validation\Validator): void)|null  $callback  Validatable to use.
-     * @param  bool  $applyDefault  Whether to apply default validatables (default: true)
      */
-    public function __construct(?callable $callback = null, $applyDefault = true)
+    public function __construct(?callable $callback = null)
     {
         $this->callback = $callback;
-        $this->applyDefault = (bool) $applyDefault;
     }
 
     /**
@@ -62,8 +53,7 @@ class ValidToken implements ImplicitRule
 
         return LittleJWT::validate(
             $token,
-            $this->callback,
-            $this->applyDefault
+            $this->callback
         )->passes();
     }
 
