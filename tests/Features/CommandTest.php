@@ -48,7 +48,8 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function test_generate_valid_size() {
+    public function test_generate_valid_size()
+    {
         $this->artisan('littlejwt:phrase', ['--size' => '2048', '--yes' => true])
             ->assertSuccessful();
     }
@@ -58,7 +59,8 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function test_generate_invalid_size_negative() {
+    public function test_generate_invalid_size_negative()
+    {
         $this->artisan('littlejwt:phrase', ['--size' => '-1024'])
             ->assertFailed();
     }
@@ -68,7 +70,8 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function test_generate_invalid_size_zero() {
+    public function test_generate_invalid_size_zero()
+    {
         $this->artisan('littlejwt:phrase', ['--size' => '0'])
             ->assertFailed();
     }
@@ -78,7 +81,8 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function test_generate_invalid_size_letters() {
+    public function test_generate_invalid_size_letters()
+    {
         $this->artisan('littlejwt:phrase', ['--size' => 'abcd'])
             ->assertFailed();
     }

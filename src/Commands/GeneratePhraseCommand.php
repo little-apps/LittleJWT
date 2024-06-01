@@ -57,7 +57,7 @@ class GeneratePhraseCommand extends Command
             return 1;
         }
 
-        if (!is_numeric($size) || $size <= 0 || $size % 8 !== 0) {
+        if (! is_numeric($size) || $size <= 0 || $size % 8 !== 0) {
             $this->error('The key size must a positive number that is divisible by 8.');
 
             return 1;
