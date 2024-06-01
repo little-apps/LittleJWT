@@ -9,7 +9,7 @@ trait HandlesCreateSigned
     /**
      * Creates a signed JWT instance.
      *
-     * @param  callable(Builder): void  $callback  Callback that receives Builder instance.
+     * @param  callable(\LittleApps\LittleJWT\Build\Builder): void  $callback  Callback that receives Builder instance.
      * @return \LittleApps\LittleJWT\JWT\SignedJsonWebToken
      */
     public function createSigned(?callable $callback = null)

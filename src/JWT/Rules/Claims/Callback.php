@@ -9,7 +9,7 @@ class Callback extends Rule
     /**
      * Callback that recieves claim value, key, and JWT.
      *
-     * @var callable(mixed, string, JsonWebToken): void
+     * @var callable(mixed, string, JsonWebToken): bool
      */
     protected $callback;
 
@@ -17,7 +17,7 @@ class Callback extends Rule
      * Initializes Callback rule.
      *
      * @param  string  $key  Claim key.
-     * @param  callable(mixed, string, JsonWebToken): void  $callback
+     * @param  callable(mixed, string, JsonWebToken): bool  $callback
      * @param  bool  $inHeader
      */
     public function __construct($key, callable $callback, $inHeader)
