@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
-use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\LittleJWT;
 use LittleApps\LittleJWT\JWK\JWKValidator;
@@ -10,17 +9,55 @@ use LittleApps\LittleJWT\JWK\JWKValidator;
 class LittleJWTBuilder
 {
     /**
-     * Creates LittleJWT instance.
+     * JWKValidator to use
      *
-     * @param  Application  $app  Application container
-     * @param  JsonWebKey  $jwk  JWK to sign and verify JWTs with.
-     * @param boolean $validateJwk If true, validates JWK (default: true)
-     * @return static
+     * @var JWKValidator|null
      */
-    public static function create(Application $app, JsonWebKey $jwk, bool $validateJwk = true): LittleJWT {
-        if ($validateJwk)
-            JWKValidator::validate($jwk);
+    protected ?JWKValidator $jwkValidator;
 
-        return new LittleJWT($app, $jwk);
+    /**
+     * Initializes LittleJWTBuilder instance
+     *
+     * @param JsonWebKey $jwk JWK to use with LittleJWT instance.
+     */
+    public function __construct(
+        protected readonly JsonWebKey $jwk
+    )
+    {
+
+    }
+
+    /**
+     * Specifies JWKValidator to use before building LittleJWT.
+     *
+     * @param JWKValidator $jwkValidator
+     * @return $this
+     */
+    public function withJwkValidator(JWKValidator $jwkValidator) {
+        $this->jwkValidator = $jwkValidator;
+
+        return $this;
+    }
+
+    /**
+     * Specifies to not use JWKValidator before building LittleJWT.
+     *
+     * @return $this
+     */
+    public function withoutJwkValidator() {
+        $this->jwkValidator = null;
+
+        return $this;
+    }
+
+    /**
+     * Builds LittleJWT instance
+     *
+     * @return LittleJWT
+     */
+    public function build(): LittleJWT {
+        $jwk = isset($this->jwkValidator) ? $this->jwkValidator->__invoke($this->jwk) : $this->jwk;
+
+        return new LittleJWT(app(), $jwk);
     }
 }

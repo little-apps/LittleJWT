@@ -76,6 +76,7 @@ class ServiceProvider extends PackageServiceProvider
         $this->bootGuard();
         $this->bootMacros();
         $this->bootValidatorRules();
+        $this->bootJwkValidator();
     }
 
     /**
@@ -86,7 +87,9 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerCore()
     {
         $this->app->singleton(LittleJWT::class, function (Container $app) {
-            return LittleJWTBuilder::create($app, $app->make(JsonWebKey::class));
+            $builder = new LittleJWTBuilder($app->make(JsonWebKey::class));
+
+            return $builder->withJwkValidator(JWKValidator::default())->build();
         });
 
         $this->app->bind(JsonWebKey::class, function (Container $app) {
@@ -315,5 +318,17 @@ class ServiceProvider extends PackageServiceProvider
         Response::macro('attachJwt', $attachJwtCallback);
         JsonResponse::macro('attachJwt', $attachJwtCallback);
         RedirectResponse::macro('attachJwt', $attachJwtCallback);
+    }
+
+    /**
+     * Boots JWKValidator
+     *
+     * @return void
+     */
+    protected function bootJwkValidator() {
+        JWKValidator::defaults(fn () => (new JWKValidator())->withFallback(fn () => KeyBuilder::generateRandomJwk(1024, [
+            'alg' => 'HS256',
+            'use' => 'sig'
+        ])));
     }
 }
