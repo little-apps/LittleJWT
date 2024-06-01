@@ -69,7 +69,7 @@ class JWKValidator
 
         $algorithm = $this->jsonWebKey->algorithm();
 
-        if (!$this->isAlgorithmAllowed($algorithm)) {
+        if (!$this->isAlgorithmSupported($algorithm)) {
             throw new InvalidJWKException("JSON Web Key algorithm '{$alg}' is not supported.");
         }
 
