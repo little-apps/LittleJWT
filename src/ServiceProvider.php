@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,6 +15,8 @@ use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
 use LittleApps\LittleJWT\Guards\Guard;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
+use LittleApps\LittleJWT\JWK\JWKValidator;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Laravel\Middleware\ValidToken as ValidTokenMiddleware;
 use LittleApps\LittleJWT\Laravel\Rules\ValidToken as ValidTokenRule;
@@ -81,11 +84,17 @@ class ServiceProvider extends PackageServiceProvider
      */
     protected function registerCore()
     {
-        $this->app->singleton(LittleJWT::class, function ($app) {
+        $this->app->singleton(LittleJWT::class, function (Container $app) {
+            return new LittleJWT($app, $app->make(JsonWebKey::class));
+        });
+
+        $this->app->bind(JsonWebKey::class, function (Container $app) {
             $config = $app->config->get('littlejwt.key', []);
             $jwk = KeyBuilder::buildFromConfig($config);
 
-            return new LittleJWT($app, $jwk);
+            JWKValidator::validate($jwk);
+
+            return $jwk;
         });
 
         $this->app->alias(LittleJWT::class, 'littlejwt');
