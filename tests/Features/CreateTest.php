@@ -9,8 +9,6 @@ use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\Exceptions\InvalidClaimValueException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
-use LittleApps\LittleJWT\Factories\KeyBuilder;
-use LittleApps\LittleJWT\JWK\JWKValidator;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Tests\TestCase;

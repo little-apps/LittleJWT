@@ -3,10 +3,8 @@
 namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Support\Str;
-use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\JWT\ClaimManager;
-use LittleApps\LittleJWT\JWT\ClaimManagers;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Utils\Base64Encoder;

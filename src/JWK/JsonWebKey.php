@@ -3,9 +3,7 @@
 namespace LittleApps\LittleJWT\JWK;
 
 use Jose\Component\Core\JWK;
-use Jose\Component\Signature\Algorithm as JoseAlgorithms;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
-use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Factories\AlgorithmBuilder;
 
 class JsonWebKey extends JWK

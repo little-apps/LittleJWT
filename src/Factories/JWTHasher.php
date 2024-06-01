@@ -17,11 +17,10 @@ class JWTHasher
     /**
      * Signs a JSON Web Token
      *
-     * @param JsonWebToken $jsonWebToken
-     * @param JsonWebKey $jsonWebKey
      * @return SignedJsonWebToken
      */
-    public static function sign(JsonWebToken $jsonWebToken, JsonWebKey $jsonWebKey) {
+    public static function sign(JsonWebToken $jsonWebToken, JsonWebKey $jsonWebKey)
+    {
         $algorithm = $jsonWebKey->algorithm();
         $signature = JWTHasher::hash($algorithm, $jsonWebKey, $jsonWebToken->getHeaders(), $jsonWebToken->getPayload());
 
@@ -70,10 +69,11 @@ class JWTHasher
                 return $algorithm->sign($jwk, $input);
             }
         } catch (InvalidArgumentException $e) {
-            if ($e->getMessage() === 'Wrong key type.')
+            if ($e->getMessage() === 'Wrong key type.') {
                 throw new IncompatibleHashAlgorithmJWK($e);
-            else
+            } else {
                 throw $e;
+            }
         }
     }
 

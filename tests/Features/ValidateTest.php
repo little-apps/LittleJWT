@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
-use Exception;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Build\Builder;
@@ -445,8 +444,8 @@ class ValidateTest extends TestCase
         $jwk = KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
             'secret' => [
-                'phrase' => ''
-            ]
+                'phrase' => '',
+            ],
         ]);
 
         LittleJWT::fake($jwk);

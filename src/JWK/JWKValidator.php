@@ -23,7 +23,6 @@ class JWKValidator
 
     /**
      * Initializes JWKValidator instance
-     *
      */
     public function __construct()
     {
@@ -32,16 +31,18 @@ class JWKValidator
     /**
      * Sets fallback
      *
-     * @param callable(): static $fallback
+     * @param  callable(): static  $fallback
      * @return void
      */
-    public function withFallback(callable $fallback) {
+    public function withFallback(callable $fallback)
+    {
         $this->fallback = $fallback;
 
         return $this;
     }
 
-    public function withoutFallback() {
+    public function withoutFallback()
+    {
         $this->fallback = null;
 
         return $this;
@@ -51,6 +52,7 @@ class JWKValidator
      * Validates the JSON Web Key
      *
      * @return JsonWebKey
+     *
      * @throws InvalidJWKException Thrown if JWK is invalid and fallback is not set.
      */
     public function __invoke(JsonWebKey $jsonWebKey)
@@ -60,10 +62,11 @@ class JWKValidator
 
             return $jsonWebKey;
         } catch (InvalidJWKException $ex) {
-            if (isset($this->fallback))
+            if (isset($this->fallback)) {
                 return call_user_func($this->fallback);
-            else
+            } else {
                 throw $ex;
+            }
         }
     }
 
@@ -71,16 +74,18 @@ class JWKValidator
      * Performs the validation
      *
      * @return void
+     *
      * @throws InvalidJWKException Thrown if JWK is invalid.
      */
-    protected function perform(JsonWebKey $jsonWebKey) {
+    protected function perform(JsonWebKey $jsonWebKey)
+    {
         $values = $jsonWebKey->all();
 
-        if (!isset($values['alg'])) {
+        if (! isset($values['alg'])) {
             throw new InvalidJWKException("The 'alg' value is missing.");
         }
 
-        if (!isset($values['kty'])) {
+        if (! isset($values['kty'])) {
             throw new InvalidJWKException("The 'kty' value is missing.");
         }
 
@@ -88,31 +93,33 @@ class JWKValidator
 
         $algorithm = $this->getAlgorithm($jsonWebKey);
 
-        if ($algorithm instanceof HMAC)
+        if ($algorithm instanceof HMAC) {
             $this->validateHmacKey($jsonWebKey);
-        else if ($algorithm instanceof ECDSA)
+        } elseif ($algorithm instanceof ECDSA) {
             $this->validateEcdsaKey($jsonWebKey);
-        else if ($algorithm instanceof RSAPSS || $algorithm instanceof RSAPKCS1)
+        } elseif ($algorithm instanceof RSAPSS || $algorithm instanceof RSAPKCS1) {
             $this->validateRsaKey($jsonWebKey);
+        }
     }
 
     /**
      * Checks if algorithm is supported.
      *
-     * @param JsonWebKey $jsonWebKey
      * @return void
      */
-    protected function validateAlgorithm(JsonWebKey $jsonWebKey) {
+    protected function validateAlgorithm(JsonWebKey $jsonWebKey)
+    {
         $alg = $jsonWebKey->get('alg');
 
         $class = AlgorithmBuilder::getAlgorithmClass($alg);
 
-        if (is_null($class))
+        if (is_null($class)) {
             throw new InvalidJWKException("JSON Web Key algorithm '{$alg}' is not supported.");
+        }
 
         try {
             $jsonWebKey->algorithm();
-        } catch (InvalidHashAlgorithmException | HashAlgorithmNotFoundException $ex) {
+        } catch (InvalidHashAlgorithmException|HashAlgorithmNotFoundException $ex) {
             throw new InvalidJWKException($ex->getMessage());
         }
     }
@@ -120,13 +127,13 @@ class JWKValidator
     /**
      * Gets algorithm instance from JWK
      *
-     * @param JsonWebKey $jsonWebKey
      * @return \Jose\Component\Core\Algorithm
      */
-    protected function getAlgorithm(JsonWebKey $jsonWebKey) {
+    protected function getAlgorithm(JsonWebKey $jsonWebKey)
+    {
         try {
             return $jsonWebKey->algorithm();
-        } catch (InvalidHashAlgorithmException | HashAlgorithmNotFoundException $ex) {
+        } catch (InvalidHashAlgorithmException|HashAlgorithmNotFoundException $ex) {
             throw new InvalidJWKException($ex->getMessage());
         }
     }
@@ -136,7 +143,8 @@ class JWKValidator
      *
      * @return void
      */
-    protected function validateHmacKey(JsonWebKey $jsonWebKey) {
+    protected function validateHmacKey(JsonWebKey $jsonWebKey)
+    {
         static $minKeyLengths = [
             'HS256' => 32,
             'HS384' => 48,
@@ -146,8 +154,9 @@ class JWKValidator
         $alg = strtoupper($jsonWebKey->get('alg'));
         $key = $jsonWebKey->get('k') ?? '';
 
-        if (mb_strlen($key, '8bit') < $minKeyLengths[$alg])
-            throw new InvalidJWKException("The key is not long enough.");
+        if (mb_strlen($key, '8bit') < $minKeyLengths[$alg]) {
+            throw new InvalidJWKException('The key is not long enough.');
+        }
     }
 
     /**
@@ -155,11 +164,12 @@ class JWKValidator
      *
      * @return void
      */
-    protected function validateEcdsaKey(JsonWebKey $jsonWebKey) {
+    protected function validateEcdsaKey(JsonWebKey $jsonWebKey)
+    {
         $required = ['x', 'y', 'crv'];
 
         foreach ($required as $key) {
-            if (!$jsonWebKey->has($key)) {
+            if (! $jsonWebKey->has($key)) {
                 throw new InvalidJWKException("The '{$key}' key is required in ECDSA JSON Web Keys.");
             }
         }
@@ -170,11 +180,12 @@ class JWKValidator
      *
      * @return void
      */
-    protected function validateRsaKey(JsonWebKey $jsonWebKey) {
+    protected function validateRsaKey(JsonWebKey $jsonWebKey)
+    {
         $required = ['n', 'e'];
 
         foreach ($required as $key) {
-            if (!$jsonWebKey->has($key)) {
+            if (! $jsonWebKey->has($key)) {
                 throw new InvalidJWKException("The '{$key}' key is required in RSA JSON Web Keys.");
             }
         }

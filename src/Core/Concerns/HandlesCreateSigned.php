@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\Core\Concerns;
 
-use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 
 trait HandlesCreateSigned

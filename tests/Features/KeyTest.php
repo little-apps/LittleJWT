@@ -308,14 +308,15 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_empty_jwk_phrase() {
+    public function test_empty_jwk_phrase()
+    {
         $this->expectException(InvalidJWKException::class);
 
         $jwk = KeyBuilder::buildFromConfig([
             'default' => KeyBuilder::KEY_SECRET,
             'secret' => [
-                'phrase' => ''
-            ]
+                'phrase' => '',
+            ],
         ]);
 
         call_user_func($this->app->make(JWKValidator::class)->withoutFallback(), $jwk);

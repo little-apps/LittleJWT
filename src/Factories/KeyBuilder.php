@@ -74,9 +74,9 @@ class KeyBuilder
     /**
      * Builds a JWK to use to sign/verify JWTs
      *
-     * @param  string $keyType Key type (one of KEY_* constants).
-     * @param  array $options Options to build key type.
-     * @param  array $extra Any extra values to include in JWK.
+     * @param  string  $keyType  Key type (one of KEY_* constants).
+     * @param  array  $options  Options to build key type.
+     * @param  array  $extra  Any extra values to include in JWK.
      * @return JsonWebKey
      *
      * @throws InvalidJWKException Thrown if JWK is invalid.

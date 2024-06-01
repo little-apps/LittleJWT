@@ -2,8 +2,6 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
-use LittleApps\LittleJWT\Build\Sign;
-
 /**
  * Represents a JSON Web Token (JWT).
  * This is (and isn't) an immutable class (headers, payload, and signature cannot be modified after instance is created).

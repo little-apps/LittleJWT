@@ -2,10 +2,10 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
+use Jose\Component\Core\Algorithm as AlgorithmContract;
 use Jose\Component\Signature\Algorithm as JoseAlgorithms;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
-use Jose\Component\Core\Algorithm as AlgorithmContract;
 
 class AlgorithmBuilder
 {
@@ -41,7 +41,8 @@ class AlgorithmBuilder
      *
      * @return array<string, class-string<\Jose\Component\Core\Algorithm>>
      */
-    public static function getAlgorithmMappings(): array {
+    public static function getAlgorithmMappings(): array
+    {
         return static::$algorithmMappings;
     }
 
@@ -50,7 +51,8 @@ class AlgorithmBuilder
      *
      * @return list<string>
      */
-    public static function getSupportedAlgorithmIdentifiers(): array {
+    public static function getSupportedAlgorithmIdentifiers(): array
+    {
         return array_keys(static::$algorithmMappings);
     }
 
@@ -59,28 +61,30 @@ class AlgorithmBuilder
      *
      * @return list<class-string<\Jose\Component\Core\Algorithm>>
      */
-    public static function getSupportedAlgorithmClasses(): array {
+    public static function getSupportedAlgorithmClasses(): array
+    {
         return array_values(static::$algorithmMappings);
     }
 
     /**
      * Gets algorithm class from algorithm identifier.
      *
-     * @param string $identifier Algorithm identifier (ex: 'HS256')
-     * @param mixed $default Returned if identifier doesn't exist.
+     * @param  string  $identifier  Algorithm identifier (ex: 'HS256')
+     * @param  mixed  $default  Returned if identifier doesn't exist.
      * @return class-string<\Jose\Component\Core\Algorithm>|mixed
      */
-    public static function getAlgorithmClass(string $identifier, $default = null) {
+    public static function getAlgorithmClass(string $identifier, $default = null)
+    {
         return static::$algorithmMappings[$identifier] ?? $default;
     }
 
     /**
      * Builds Algorithm instance.
      *
-     * @param string $identifier Algorithm identifier (ex: 'HS256')
-     * @return AlgorithmContract
+     * @param  string  $identifier  Algorithm identifier (ex: 'HS256')
      */
-    public static function build(string $identifier): AlgorithmContract {
+    public static function build(string $identifier): AlgorithmContract
+    {
         $alg = strtoupper($identifier);
 
         $class = static::getAlgorithmClass($alg);

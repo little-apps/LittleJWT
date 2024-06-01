@@ -2,7 +2,6 @@
 
 namespace LittleApps\LittleJWT\JWT;
 
-use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
 
 /**
