@@ -17,7 +17,7 @@ class JWKValidator
     /**
      * Fallback for when validation fails
      *
-     * @var ?Closure(): static
+     * @var ?Closure(): JsonWebKey
      */
     protected ?Closure $fallback = null;
 
@@ -31,17 +31,22 @@ class JWKValidator
     /**
      * Sets fallback
      *
-     * @param  callable(): static  $fallback
-     * @return void
+     * @param  callable(): JsonWebKey  $fallback
+     * @return $this
      */
-    public function withFallback(callable $fallback)
+    public function withFallback(callable $fallback): static
     {
         $this->fallback = $fallback;
 
         return $this;
     }
 
-    public function withoutFallback()
+    /**
+     * Disables fallback
+     *
+     * @return $this
+     */
+    public function withoutFallback(): static
     {
         $this->fallback = null;
 
