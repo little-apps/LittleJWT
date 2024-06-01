@@ -44,7 +44,7 @@ class ValidTokenMiddlewareTest extends TestCase
     {
         $jwt = LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        })->sign();
+        });
 
         $response = $this
             ->withJwt($jwt)
@@ -61,7 +61,7 @@ class ValidTokenMiddlewareTest extends TestCase
      */
     public function test_valid_token_default_invalid()
     {
-        $validJwt = LittleJWT::create()->sign();
+        $validJwt = LittleJWT::create();
 
         $signature = random_bytes(10);
 
@@ -142,7 +142,7 @@ class ValidTokenMiddlewareTest extends TestCase
             } else {
                 $builder->prv($this->hashSubjectModel($this->user));
             }
-        })->sign();
+        });
 
         $response = $this
             ->withJwt($jwt)
@@ -159,7 +159,7 @@ class ValidTokenMiddlewareTest extends TestCase
      */
     public function test_valid_token_guard_missing_claims()
     {
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         $response = $this
             ->withJwt($jwt)

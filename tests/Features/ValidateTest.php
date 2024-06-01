@@ -29,7 +29,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -72,7 +72,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -106,7 +106,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -127,7 +127,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) use ($sub) {
             $validator
@@ -149,7 +149,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) use ($sub) {
             $validator
@@ -169,7 +169,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -189,7 +189,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -210,7 +210,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $token = (string) LittleJWT::create()->sign();
+        $token = (string) LittleJWT::create();
 
         $jwt = LittleJWT::parse($token);
 
@@ -256,7 +256,7 @@ class ValidateTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         Blacklist::blacklist($jwt);
 
@@ -282,7 +282,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) use ($actual) {
             $validator
@@ -309,7 +309,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -335,7 +335,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo([$actual, $this->faker->uuid]);
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) use ($actual) {
             $validator
@@ -366,7 +366,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        })->sign();
+        });
 
         $expected = $actual;
 
@@ -392,7 +392,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo([$actual, $this->faker->uuid]);
-        })->sign();
+        });
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -422,7 +422,7 @@ class ValidateTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($actual) {
             $builder->foo($actual);
-        })->sign();
+        });
 
         $expected = [...$actual, $this->faker->uuid];
 

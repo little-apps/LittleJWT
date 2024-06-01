@@ -27,7 +27,7 @@ class ValidateRuleTest extends TestCase
      */
     public function test_validtoken_passes()
     {
-        $token = (string) LittleJWT::create()->sign();
+        $token = (string) LittleJWT::create();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -47,7 +47,7 @@ class ValidateRuleTest extends TestCase
      */
     public function test_implicit_validtoken_passes()
     {
-        $token = (string) LittleJWT::create()->sign();
+        $token = (string) LittleJWT::create();
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -69,7 +69,7 @@ class ValidateRuleTest extends TestCase
     {
         $token = (string) LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        })->sign();
+        });
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -91,7 +91,7 @@ class ValidateRuleTest extends TestCase
     {
         $token = (string) LittleJWT::create(function (Builder $builder) {
             $builder->exp(Carbon::now()->subMonth());
-        })->sign();
+        });
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -113,7 +113,7 @@ class ValidateRuleTest extends TestCase
     {
         $buildable = new GuardBuildable($this->user);
 
-        $token = (string) LittleJWT::create($buildable)->sign();
+        $token = (string) LittleJWT::create($buildable);
 
         $validator = Validator::make(compact('token'), [
             'token' => [
@@ -146,7 +146,7 @@ class ValidateRuleTest extends TestCase
 
         $buildable = new StackBuildable($stack);
 
-        $token = (string) LittleJWT::create($buildable)->sign();
+        $token = (string) LittleJWT::create($buildable);
 
         $validator = Validator::make(compact('token'), [
             'token' => [

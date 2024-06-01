@@ -49,8 +49,7 @@ class MutateTest extends TestCase
                     $mutators
                         ->tim('date');
                 })
-                ->create($buildable)
-                ->sign();
+                ->create($buildable);
 
         $jwt = LittleJWT::parse((string) $signed);
 
@@ -84,8 +83,7 @@ class MutateTest extends TestCase
                 ->create(function (Builder $builder) {
                     $builder
                         ->foo('abcd');
-                })
-                ->sign();
+                });
 
         $jwt = LittleJWT::parse($signed);
 
@@ -112,8 +110,7 @@ class MutateTest extends TestCase
                 ->create(function (Builder $builder) use ($time) {
                     $builder
                         ->tim($time);
-                })
-                ->sign();
+                });
 
         $mutated =
             LittleJWT::handler()
@@ -148,8 +145,7 @@ class MutateTest extends TestCase
                 ->create(function (Builder $builder) use ($time) {
                     $builder
                         ->tim($time);
-                })
-                ->sign();
+                });
 
         $mutated =
             LittleJWT::handler()
@@ -185,7 +181,7 @@ class MutateTest extends TestCase
             ->mutate(function (Mutators $mutators) {
                 $mutators->tim('date');
             })
-            ->create($buildable)->sign();
+            ->create($buildable);
 
         $jwt = LittleJWT::parse($token);
 
@@ -205,7 +201,7 @@ class MutateTest extends TestCase
             $builder->tim($time);
         });
 
-        $token = (string) LittleJWT::create($buildable)->sign();
+        $token = (string) LittleJWT::create($buildable);
 
         $jwt = LittleJWT::parse($token);
 

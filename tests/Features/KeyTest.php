@@ -120,7 +120,7 @@ class KeyTest extends TestCase
 
         $token = (string) LittleJWT::create(function (Builder $builder) {
             $builder->withoutDefaults()->foo('bar');
-        }, false)->sign();
+        }, false);
 
         $this->assertTrue(strpos($token, '-') !== false || strpos($token, '_') !== false);
         $this->assertTrue(strpos($token, '+') === false || strpos($token, '/') === false);
@@ -234,7 +234,7 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        LittleJWT::create()->sign();
+        LittleJWT::create();
     }
 
     /**
@@ -250,7 +250,7 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        LittleJWT::create()->sign();
+        LittleJWT::create();
     }
 
     /**
@@ -263,7 +263,7 @@ class KeyTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         $headers = $jwt->getHeaders()->toArray();
         $payload = $jwt->getPayload()->toArray();
@@ -298,7 +298,7 @@ class KeyTest extends TestCase
 
         LittleJWT::fake($jwk);
 
-        $signed = LittleJWT::create()->sign();
+        $signed = LittleJWT::create();
 
         $this->assertNotNull($signed);
     }
@@ -335,7 +335,7 @@ class KeyTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($canary) {
             $builder->can($canary);
-        })->sign();
+        });
 
         return LittleJWT::validate($jwt, function (TestValidator $validator) use ($canary) {
             $validator

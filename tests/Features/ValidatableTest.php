@@ -25,7 +25,7 @@ class ValidatableTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         LittleJWT::validate($jwt, function (TestValidator $validator) {
             $validator
@@ -42,7 +42,7 @@ class ValidatableTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         $validatable = new class() implements TestValidatable
         {
@@ -64,7 +64,7 @@ class ValidatableTest extends TestCase
     {
         LittleJWT::fake();
 
-        $jwt = LittleJWT::create()->sign();
+        $jwt = LittleJWT::create();
 
         $validatable = new class()
         {
@@ -90,7 +90,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        })->sign();
+        });
 
         $validatable = new class($sub)
         {
@@ -123,7 +123,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        })->sign();
+        });
 
         $validatable = new class($this->faker->uuid)
         {
@@ -156,7 +156,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create(function (Builder $builder) use ($sub) {
             $builder->sub($sub);
-        })->sign();
+        });
 
         $validatable = new class($this->faker->uuid)
         {
