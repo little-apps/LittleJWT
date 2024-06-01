@@ -56,7 +56,10 @@ class JWTHasher
                 return $algorithm->sign($jwk, $input);
             }
         } catch (InvalidArgumentException $e) {
-            throw new IncompatibleHashAlgorithmJWK($e);
+            if ($e->getMessage() === 'Wrong key type.')
+                throw new IncompatibleHashAlgorithmJWK($e);
+            else
+                throw $e;
         }
     }
 
