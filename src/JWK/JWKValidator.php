@@ -15,13 +15,6 @@ use LittleApps\LittleJWT\Factories\AlgorithmBuilder;
 class JWKValidator
 {
     /**
-     * Gets default callback for JWKValidator
-     *
-     * @var ?Closure
-     */
-    protected static ?Closure $defaults;
-
-    /**
      * Fallback for when validation fails
      *
      * @var ?Closure(): static
@@ -185,24 +178,5 @@ class JWKValidator
                 throw new InvalidJWKException("The '{$key}' key is required in RSA JSON Web Keys.");
             }
         }
-    }
-
-    /**
-     * Specifies callback for creating default JWKValidator
-     *
-     * @param callable $callback
-     * @return void
-     */
-    public static function defaults(callable $callback): void {
-        static::$defaults = $callback;
-    }
-
-    /**
-     * Creates default JWKValidator instance.
-     *
-     * @return static
-     */
-    public static function default(): static {
-        return isset(static::$defaults) ? call_user_func(static::$defaults) : new self;
     }
 }
