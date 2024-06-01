@@ -44,6 +44,46 @@ class CommandTest extends TestCase
     }
 
     /**
+     * Tests generating a key phrase with a valid size.
+     *
+     * @return void
+     */
+    public function test_generate_valid_size() {
+        $this->artisan('littlejwt:phrase', ['--size' => '2048', '--yes' => true])
+            ->assertSuccessful();
+    }
+
+    /**
+     * Tests generating a key phrase with a negative size.
+     *
+     * @return void
+     */
+    public function test_generate_invalid_size_negative() {
+        $this->artisan('littlejwt:phrase', ['--size' => '-1024'])
+            ->assertFailed();
+    }
+
+    /**
+     * Tests generating a key phrase with a zero size.
+     *
+     * @return void
+     */
+    public function test_generate_invalid_size_zero() {
+        $this->artisan('littlejwt:phrase', ['--size' => '0'])
+            ->assertFailed();
+    }
+
+    /**
+     * Tests generating a key phrase with letters as size.
+     *
+     * @return void
+     */
+    public function test_generate_invalid_size_letters() {
+        $this->artisan('littlejwt:phrase', ['--size' => 'abcd'])
+            ->assertFailed();
+    }
+
+    /**
      * Tests JWT phrase is generated and set for existing .env key.
      *
      * @return void
