@@ -318,7 +318,7 @@ class KeyTest extends TestCase
             ]
         ]);
 
-        JWKValidator::validate($jwk);
+        call_user_func($this->app->make(JWKValidator::class)->withoutFallback(), $jwk);
     }
 
     /**
