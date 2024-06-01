@@ -10,10 +10,12 @@ use Jose\Component\KeyManagement\JWKFactory;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
+use LittleApps\LittleJWT\Exceptions\InvalidJWKException;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
+use LittleApps\LittleJWT\JWK\JWKValidator;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
@@ -299,6 +301,24 @@ class KeyTest extends TestCase
         $signed = LittleJWT::create()->sign();
 
         $this->assertNotNull($signed);
+    }
+
+    /**
+     * Tests creating a JWK with empty secret.
+     *
+     * @return void
+     */
+    public function test_empty_jwk_phrase() {
+        $this->expectException(InvalidJWKException::class);
+
+        $jwk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => [
+                'phrase' => ''
+            ]
+        ]);
+
+        JWKValidator::validate($jwk);
     }
 
     /**
