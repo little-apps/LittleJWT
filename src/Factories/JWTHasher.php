@@ -15,6 +15,20 @@ use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 class JWTHasher
 {
     /**
+     * Signs a JSON Web Token
+     *
+     * @param JsonWebToken $jsonWebToken
+     * @param JsonWebKey $jsonWebKey
+     * @return SignedJsonWebToken
+     */
+    public static function sign(JsonWebToken $jsonWebToken, JsonWebKey $jsonWebKey) {
+        $algorithm = $jsonWebKey->algorithm();
+        $signature = JWTHasher::hash($algorithm, $jsonWebKey, $jsonWebToken->getHeaders(), $jsonWebToken->getPayload());
+
+        return SignedJsonWebToken::instance($jsonWebToken, $signature);
+    }
+
+    /**
      * Checks if JWT signature matches with JWK
      *
      * @param  AlgorithmContract  $algorithm  Algorithm to use for verifying JWT

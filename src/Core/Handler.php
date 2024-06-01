@@ -8,10 +8,8 @@ use LittleApps\LittleJWT\JWK\JsonWebKey;
 class Handler
 {
     use Concerns\CreatesCallbackBuilder;
-    use Concerns\CreatesJWTBuilder;
     use Concerns\HandlesCreate;
     use Concerns\HandlesParse;
-    use Concerns\HandlesSigning;
     use Concerns\HandlesValidate;
 
     /**

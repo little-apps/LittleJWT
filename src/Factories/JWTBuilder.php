@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use LittleApps\LittleJWT\Build\Sign;
 use LittleApps\LittleJWT\Exceptions\CantParseJWTException;
 use LittleApps\LittleJWT\JWT\ClaimManager;
+use LittleApps\LittleJWT\JWT\ClaimManagers;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
@@ -14,20 +15,10 @@ use LittleApps\LittleJWT\Utils\JsonEncoder;
 class JWTBuilder
 {
     /**
-     * Sign instance to use for signing JWTs later.
-     *
-     * @var Sign
-     */
-    protected $sign;
-
-    /**
      * Initializes JWT Builder
-     *
-     * @param  Sign  $sign  Passed to JsonWebToken to be used by sign() method.
      */
-    public function __construct(Sign $sign)
+    public function __construct()
     {
-        $this->sign = $sign;
     }
 
     /**
@@ -79,11 +70,11 @@ class JWTBuilder
     public function buildFromClaimManagers(ClaimManager $headers, ClaimManager $payload, ?string $signature = null)
     {
         if (is_null($signature)) {
-            return new JsonWebToken($this->sign, $headers, $payload);
+            return new JsonWebToken($headers, $payload);
         } else {
             $signature = $this->decodeSignature($signature);
 
-            return new SignedJsonWebToken($this->sign, $headers, $payload, $signature);
+            return new SignedJsonWebToken($headers, $payload, $signature);
         }
     }
 

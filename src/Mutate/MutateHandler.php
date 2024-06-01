@@ -6,6 +6,7 @@ use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Core\Handler;
+use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\JWT\MutatedJsonWebToken;
@@ -113,7 +114,7 @@ class MutateHandler extends Handler
 
         $serialized = $this->serialize($unsigned);
 
-        return $this->autoSign ? $serialized->sign() : $serialized;
+        return $this->autoSign ? JWTHasher::sign($serialized, $this->jwk) : $serialized;
     }
 
     /**

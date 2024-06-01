@@ -25,9 +25,9 @@ class SignedJsonWebToken extends JsonWebToken
      * @param  ClaimManager  $payload  Payload
      * @param  string  $signature  Signature (as raw bytes)
      */
-    public function __construct(Sign $sign, ClaimManager $headers, ClaimManager $payload, string $signature)
+    public function __construct(ClaimManager $headers, ClaimManager $payload, string $signature)
     {
-        parent::__construct($sign, $headers, $payload);
+        parent::__construct($headers, $payload);
 
         $this->signature = $signature;
     }
@@ -65,6 +65,6 @@ class SignedJsonWebToken extends JsonWebToken
      */
     public static function instance(JsonWebToken $jwt, string $signature)
     {
-        return new self($jwt->sign, $jwt->headers, $jwt->payload, $signature);
+        return new self($jwt->headers, $jwt->payload, $signature);
     }
 }
