@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
+use LittleApps\LittleJWT\Factories\LittleJWTBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
 use LittleApps\LittleJWT\Factories\ValidatableBuilder;
 use LittleApps\LittleJWT\Guards\Adapters;
@@ -85,14 +86,12 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerCore()
     {
         $this->app->singleton(LittleJWT::class, function (Container $app) {
-            return new LittleJWT($app, $app->make(JsonWebKey::class));
+            return LittleJWTBuilder::create($app, $app->make(JsonWebKey::class));
         });
 
         $this->app->bind(JsonWebKey::class, function (Container $app) {
             $config = $app->config->get('littlejwt.key', []);
             $jwk = KeyBuilder::buildFromConfig($config);
-
-            JWKValidator::validate($jwk);
 
             return $jwk;
         });
