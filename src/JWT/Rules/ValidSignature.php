@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWT\Rules;
 
+use InvalidArgumentException;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -30,7 +31,16 @@ class ValidSignature extends Rule
      */
     public function passes(JsonWebToken $jwt)
     {
-        return JWTHasher::verify($this->jwk->algorithm(), $this->jwk, $jwt);
+        try {
+            return JWTHasher::verify($this->jwk->algorithm(), $this->jwk, $jwt);
+        } catch (InvalidArgumentException $ex) {
+            /**
+             * The JWT library throws InvalidArgumentException when there's an issue with the algorithm.
+             * One example is if the secret phrase is too small or empty.
+             */
+
+            return false;
+        }
     }
 
     /**

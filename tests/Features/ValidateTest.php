@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Tests\Features;
 
+use Exception;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use LittleApps\LittleJWT\Build\Builder;
@@ -430,5 +431,26 @@ class ValidateTest extends TestCase
                 ->assertFails()
                 ->arrayEquals('foo', $expected, true);
         });
+    }
+
+    /**
+     * Tests a JWT validation when JWK phrase is empty.
+     *
+     * @return void
+     */
+    public function test_jwt_validation_jwk_phrase_empty()
+    {
+        $token = (string) LittleJWT::create();
+
+        $jwk = KeyBuilder::buildFromConfig([
+            'default' => KeyBuilder::KEY_SECRET,
+            'secret' => [
+                'phrase' => ''
+            ]
+        ]);
+
+        LittleJWT::fake($jwk);
+
+        $this->assertFalse(LittleJWT::validateToken($token));
     }
 }
