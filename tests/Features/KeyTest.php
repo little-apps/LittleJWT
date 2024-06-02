@@ -330,14 +330,15 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_create_littlejwt_empty_phrase() {
+    public function test_create_littlejwt_empty_phrase()
+    {
         $this->app->bind('littlejwt', function ($app) {
             $builder = new LittleJWTBuilder(KeyBuilder::buildFromConfig([
                 'default' => 'secret',
                 'secret' => [
                     'phrase' => '',
                     'allow_unsecure' => false,
-                ]
+                ],
             ]));
 
             return $builder->withJwkValidator($app->make(JWKValidator::class))->build();
