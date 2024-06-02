@@ -22,6 +22,7 @@ use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
 use LittleApps\LittleJWT\Utils\Base64Encoder;
+use ReflectionClass;
 
 class KeyTest extends TestCase
 {
@@ -347,6 +348,22 @@ class KeyTest extends TestCase
 
         // Test random keys are generated.
         $this->assertNotEquals($a->get('k'), $b->get('k'));
+    }
+
+    public function test_jwk_immutable() {
+        $jwk = $this->app->make(JsonWebKey::class);
+
+        $this->assertInstanceOf(JsonWebKey::class, $jwk);
+        $this->assertTrue((new ReflectionClass($jwk))->isFinal());
+
+        $original = $jwk->all();
+
+        foreach ($original as $key => $value) {
+            $original[$key] = $this->faker->uuid();
+
+            $this->assertNotEquals($jwk->get($key), $original[$key]);
+            $this->assertEquals($value, $jwk->get($key));
+        }
     }
 
     /**
