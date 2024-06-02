@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesEnvFile;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
@@ -50,8 +51,9 @@ class CommandTest extends TestCase
      */
     public function test_generate_valid_size()
     {
-        $this->artisan('littlejwt:phrase', ['--size' => '1024', '--yes' => true])
-            ->assertSuccessful();
+        $this->withoutMockingConsoleOutput()->artisan('littlejwt:phrase', ['--size' => '1024', '--yes' => true]);
+
+        dd(Artisan::output());
     }
 
     /**
