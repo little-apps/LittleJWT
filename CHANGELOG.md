@@ -2,6 +2,80 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## 2.2.0-beta - 2024-06-01
+
+### High-Level Changes
+
+#### JWK (JSON Web Key) Handling Improvements
+ * JWK is immutable.
+ * Random JWK is generated when the phrase is empty.
+ * Added getter method for JWK in `LittleJWT`.
+ * Added JWK validator.
+ * `JWKValidator` is resolved using the service container.
+ * Improved JWK creation and validation processes.
+ * Various changes related to wrapping JWK.
+ * Throws `IncompatibleHashAlgorithmJWK` when an error message is the wrong key type.
+
+#### Algorithm and Hash Method Changes
+ * The algorithm is no longer passed to the hash method but taken by the method.
+ * Rearranged parameters for the `hash` method in `JWTHasher`.
+ * `AlgorithmBuilder` is responsible for building algorithm instances.
+
+#### JWT Signing Process Changes
+ * Signing is done outside of `JsonWebToken`.
+ * Removed `Sign` class.
+ * The JWK is no longer passed through `JsonWebToken` via a `Sign` instance.
+ * Signing is handled in the `JWTHasher` class.
+ * The HandlesCreate trait now includes `AutoSigns`, `HandlesCreateSigned`, and `HandlesCreateUnsigned`.
+ * Moved `createJWTBuilder` method into `HandlesCreateUnsigned` trait.
+
+#### Container and Dependency Injection Improvements
+ * Uses `Container` type instead of `Application`.
+ * The `LittleJWT` is created in the container using `LittleJWTBuilder`.
+ * Binds JWK to `Container` instance.
+ * Runs JWK through `JWKValidator` before `LittleJWT` is created in the `Container`.
+ * `LittleJWTBuilder` allows `JWKValidator` to be specified.
+ * The default `JWKValidator` can be specified using the container.
+ * A fallback for when JWK validation fails can be specified.
+
+#### Laravel Pint Changes
+ * Applied multiple times for code formatting and style consistency.
+
+#### PHPDoc Updates
+ * Added and fixed PHPDoc comments for better documentation and code clarity.
+
+#### GitHub Actions and Testing
+ * Fixes for GitHub Actions failures.
+ * Tests for various JWK creation and validation scenarios.
+ * Improved test cases for `JWKValidator`.
+
+### Low-Level Changes
+
+#### Parameter and Method Adjustments
+ * Removed `$applyDefault` parameter from ValidToken.
+ * Removed `sign()` calls.
+ * Removed `Keyable` interface.
+ * `KeyBuilder` is now a static class and is not built by the container.
+ * The `buildFromConfig` method in `KeyBuilder` replaces the old `build` method.
+
+#### Method and Class Renaming
+ * Renamed `createJwkFromBase` to `wrap` in `KeyBuilder`.
+ * Removed duplicate `createFromBase` method from JsonWebKey.
+ * The `createValidateWithJwk` method in KeyTest accepts the `JWK` base class.
+
+#### Exception Handling and Validation
+ * Validator returns false if the signature algorithm throws an exception.
+ * Checks if the 'size' option for the generate command is valid.
+
+#### Code Style and Refactoring
+ * Applied Laravel Pint changes for code style.
+ * Fixed method names and added/fixed type hints.
+ * Removed unused arguments.
+ * Fixed PHP versions in the codebase.
+
+#### PHPDoc Specific Fixes
+ * Multiple instances of fixing PHPDoc comments.
+
 ## v2.1.1-beta - 2024-05-17
 
 ## What's Changed
