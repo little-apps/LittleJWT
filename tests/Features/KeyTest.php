@@ -356,7 +356,8 @@ class KeyTest extends TestCase
      *
      * @return void
      */
-    public function test_jwk_immutable() {
+    public function test_jwk_immutable()
+    {
         $jwk = $this->app->make(JsonWebKey::class);
 
         $this->assertInstanceOf(JsonWebKey::class, $jwk);
