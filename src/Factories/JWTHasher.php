@@ -21,8 +21,7 @@ class JWTHasher
      */
     public static function sign(JsonWebToken $jsonWebToken, JsonWebKey $jsonWebKey)
     {
-        $algorithm = $jsonWebKey->algorithm();
-        $signature = JWTHasher::hash($algorithm, $jsonWebKey, $jsonWebToken->getHeaders(), $jsonWebToken->getPayload());
+        $signature = static::hash($jsonWebToken->getHeaders(), $jsonWebToken->getPayload(), $jsonWebKey);
 
         return SignedJsonWebToken::instance($jsonWebToken, $signature);
     }
@@ -58,11 +57,13 @@ class JWTHasher
      *
      * @throws IncompatibleHashAlgorithmJWK Thrown if the JWK is incompatible with the hashing algorithm.
      */
-    public static function hash(AlgorithmContract $algorithm, JsonWebKey $jwk, ClaimManager $headers, ClaimManager $payload)
+    public static function hash(ClaimManager $headers, ClaimManager $payload, JsonWebKey $jwk)
     {
         $input = static::createInput($headers, $payload);
 
         try {
+            $algorithm = $jwk->algorithm();
+
             if ($algorithm instanceof Algorithm\MacAlgorithm) {
                 return $algorithm->hash($jwk, $input);
             } else {
