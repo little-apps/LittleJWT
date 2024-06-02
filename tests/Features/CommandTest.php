@@ -51,9 +51,10 @@ class CommandTest extends TestCase
      */
     public function test_generate_valid_size()
     {
-        $this->withoutMockingConsoleOutput()->artisan('littlejwt:phrase', ['--size' => '1024', '--yes' => true]);
+        $this->createEnvFile();
 
-        dd(Artisan::output());
+        $this->artisan('littlejwt:phrase', ['--size' => '1024', '--yes' => true])
+            ->assertSuccessful();
     }
 
     /**
