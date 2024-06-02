@@ -34,8 +34,6 @@ class LittleJWT
 
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $app;
 

@@ -41,8 +41,6 @@ class MutatorResolver
 
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $app;
 

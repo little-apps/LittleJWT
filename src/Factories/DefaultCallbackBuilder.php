@@ -12,8 +12,6 @@ class DefaultCallbackBuilder
 {
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $app;
 

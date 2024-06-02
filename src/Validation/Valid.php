@@ -20,8 +20,6 @@ class Valid
 
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $app;
 

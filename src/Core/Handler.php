@@ -15,8 +15,6 @@ class Handler
 
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $app;
 
