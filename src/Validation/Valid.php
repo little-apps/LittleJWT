@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Validation;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\MessageBag;
 use Jose\Component\Core\JWK;
@@ -20,9 +21,9 @@ class Valid
     /**
      * Application container
      *
-     * @var Application
+     * @var Container
      */
-    protected readonly Application $app;
+    protected readonly Container $app;
 
     /**
      * JWT to validate
@@ -55,11 +56,11 @@ class Valid
     /**
      * Initializes a Valid instance
      *
-     * @param  Application  $app  Application container
+     * @param  Container  $app  Application container
      * @param  JsonWebToken  $jwt  JWT to run through Validator
      * @param  JWK  $jwk  JWK to use for validation.
      */
-    public function __construct(Application $app, JsonWebToken $jwt, JWK $jwk)
+    public function __construct(Container $app, JsonWebToken $jwt, JWK $jwk)
     {
         $this->app = $app;
         $this->jwt = $jwt;

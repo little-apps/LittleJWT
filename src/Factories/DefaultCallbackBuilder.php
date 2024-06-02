@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Mutate\Mutatables\DefaultMutatable;
@@ -12,11 +13,11 @@ class DefaultCallbackBuilder
     /**
      * Application container
      *
-     * @var Application
+     * @var Container
      */
-    protected readonly Application $app;
+    protected readonly Container $app;
 
-    public function __construct(Application $app)
+    public function __construct(Container $app)
     {
         $this->app = $app;
     }

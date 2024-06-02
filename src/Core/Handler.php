@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Core;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 
@@ -15,9 +16,9 @@ class Handler
     /**
      * Application container
      *
-     * @var Application
+     * @var Container
      */
-    protected readonly Application $app;
+    protected readonly Container $app;
 
     /**
      * The JWK to use for building and validating JWTs
@@ -29,10 +30,10 @@ class Handler
     /**
      * Intializes LittleJWT instance.
      *
-     * @param  Application  $app  Application container
+     * @param  Container  $app  Application container
      * @param  JsonWebKey  $jwk  JWK to sign and verify JWTs with.
      */
-    public function __construct(Application $app, JsonWebKey $jwk)
+    public function __construct(Container $app, JsonWebKey $jwk)
     {
         $this->app = $app;
         $this->jwk = $jwk;

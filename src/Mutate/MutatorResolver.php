@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Mutate;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
@@ -41,9 +42,9 @@ class MutatorResolver
     /**
      * Application container
      *
-     * @var Application
+     * @var Container
      */
-    protected readonly Application $app;
+    protected readonly Container $app;
 
     /**
      * Custom mutator mappings
@@ -57,7 +58,7 @@ class MutatorResolver
     /**
      * Initializes MutatorResolve instance.
      */
-    public function __construct(Application $app, array $customMutatorsMapping)
+    public function __construct(Container $app, array $customMutatorsMapping)
     {
         $this->app = $app;
         $this->customMutatorsMapping = $customMutatorsMapping;
