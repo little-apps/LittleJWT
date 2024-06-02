@@ -2,7 +2,7 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
-## 2.2.0-beta - 2024-06-01
+## 2.2.0-beta - 2024-06-02
 
 ### High-Level Changes
 
