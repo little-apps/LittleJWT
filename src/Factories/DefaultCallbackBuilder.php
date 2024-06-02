@@ -14,7 +14,7 @@ class DefaultCallbackBuilder
      *
      * @var Application
      */
-    protected $app;
+    protected readonly Application $app;
 
     public function __construct(Application $app)
     {

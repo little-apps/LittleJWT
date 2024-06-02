@@ -14,14 +14,14 @@ class JsonWebToken
      *
      * @var ClaimManager
      */
-    protected $headers;
+    protected readonly ClaimManager $headers;
 
     /**
      * Payload claim manager.
      *
      * @var ClaimManager
      */
-    protected $payload;
+    protected readonly ClaimManager $payload;
 
     /**
      * Creates an instance that represents a JWT.

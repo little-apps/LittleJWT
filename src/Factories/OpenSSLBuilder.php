@@ -22,7 +22,7 @@ class OpenSSLBuilder
      *
      * @var array
      */
-    protected $config;
+    protected readonly array $config;
 
     /**
      * Initializes OpenSSLBuilder instance.

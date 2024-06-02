@@ -10,6 +10,7 @@ use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
 use LittleApps\LittleJWT\Contracts\Rule;
 use LittleApps\LittleJWT\Exceptions\RuleFailedException;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 class Valid
@@ -21,21 +22,21 @@ class Valid
      *
      * @var Application
      */
-    protected $app;
+    protected readonly Application $app;
 
     /**
      * JWT to validate
      *
      * @var JsonWebToken
      */
-    protected $jwt;
+    protected readonly JsonWebToken $jwt;
 
     /**
      * JSON Web Key to verify signature with
      *
-     * @var JWK
+     * @var JsonWebKey
      */
-    protected $jwk;
+    protected readonly JsonWebKey $jwk;
 
     /**
      * Any errors that occurred.

@@ -17,14 +17,14 @@ class ValidatedJsonWebToken
      *
      * @var JsonWebToken
      */
-    protected $jwt;
+    protected readonly JsonWebToken $jwt;
 
     /**
      * The result of the validation.
      *
      * @var bool
      */
-    protected $result;
+    protected readonly bool $result;
 
     /**
      * Initializes instance.

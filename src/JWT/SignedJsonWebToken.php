@@ -15,7 +15,7 @@ class SignedJsonWebToken extends JsonWebToken
      *
      * @var string
      */
-    protected $signature;
+    protected readonly string $signature;
 
     /**
      * Creates an instance that represents a JWT.

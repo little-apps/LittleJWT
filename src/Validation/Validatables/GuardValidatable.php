@@ -21,7 +21,7 @@ class GuardValidatable
      *
      * @var array
      */
-    protected $config;
+    protected readonly array $config;
 
     /**
      * Initializes guard validatable.

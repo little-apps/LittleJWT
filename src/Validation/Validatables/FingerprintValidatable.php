@@ -16,7 +16,7 @@ class FingerprintValidatable
      *
      * @var string
      */
-    protected $fingerprintHash;
+    protected readonly string $fingerprintHash;
 
     /**
      * Initalizes fingerprint validatable.

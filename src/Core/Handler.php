@@ -17,14 +17,14 @@ class Handler
      *
      * @var Application
      */
-    protected $app;
+    protected readonly Application $app;
 
     /**
      * The JWK to use for building and validating JWTs
      *
      * @var JsonWebKey
      */
-    protected $jwk;
+    protected readonly JsonWebKey $jwk;
 
     /**
      * Intializes LittleJWT instance.

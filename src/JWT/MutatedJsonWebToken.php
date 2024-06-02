@@ -12,7 +12,7 @@ class MutatedJsonWebToken extends JsonWebToken
      *
      * @var JsonWebToken
      */
-    protected $original;
+    protected readonly JsonWebToken $original;
 
     /**
      * Creates an instance that represents a JWT.

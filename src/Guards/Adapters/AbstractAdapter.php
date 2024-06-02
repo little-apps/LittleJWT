@@ -16,14 +16,14 @@ abstract class AbstractAdapter implements GuardAdapter
      *
      * @var Container
      */
-    protected $container;
+    protected readonly Container $container;
 
     /**
      * The options to use for the adapter.
      *
      * @var array
      */
-    protected $config;
+    protected readonly array $config;
 
     public function __construct(Container $container, array $config)
     {

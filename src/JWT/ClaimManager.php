@@ -23,14 +23,14 @@ class ClaimManager implements Arrayable, ArrayAccess, Countable, Jsonable
      *
      * @var string One of ClaimManager::PART_* constants
      */
-    protected $part;
+    protected readonly string $part;
 
     /**
      * Claims
      *
      * @var \Illuminate\Support\Collection<string, ClaimBuildOptions>
      */
-    protected $claims;
+    protected readonly Collection $claims;
 
     public function __construct(string $part, $claims)
     {

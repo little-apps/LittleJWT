@@ -43,14 +43,14 @@ class MutatorResolver
      *
      * @var Application
      */
-    protected $app;
+    protected readonly Application $app;
 
     /**
      * Custom mutator mappings
      *
      * @var array<string, class-string<\LittleApps\LittleJWT\Contracts\Mutator>>
      */
-    protected $customMutatorsMapping = [
+    protected array $customMutatorsMapping = [
 
     ];
 

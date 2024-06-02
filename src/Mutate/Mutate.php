@@ -17,14 +17,14 @@ class Mutate
      *
      * @var JWTBuilder
      */
-    protected $builder;
+    protected readonly JWTBuilder $builder;
 
     /**
      * Mutator Manager
      *
      * @var MutatorManager
      */
-    protected $mutatorManager;
+    protected readonly MutatorManager $mutatorManager;
 
     /**
      * Initializes Mutate instance.

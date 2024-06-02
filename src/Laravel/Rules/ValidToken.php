@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Laravel\Rules;
 
+use Closure;
 use Illuminate\Contracts\Validation\ImplicitRule;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -13,7 +14,7 @@ class ValidToken implements ImplicitRule
      *
      * @var callable(\LittleApps\LittleJWT\Validation\Validator): void
      */
-    protected $callback;
+    protected readonly ?Closure $callback;
 
     /**
      * Initializes implicit valid token rule.
@@ -22,7 +23,7 @@ class ValidToken implements ImplicitRule
      */
     public function __construct(?callable $callback = null)
     {
-        $this->callback = $callback;
+        $this->callback = !is_null($callback) ? Closure::fromCallable($callback) : null;
     }
 
     /**

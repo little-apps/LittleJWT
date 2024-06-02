@@ -20,7 +20,7 @@ class MutatorManager
      *
      * @var MutatorResolver
      */
-    protected $resolver;
+    protected readonly MutatorResolver $resolver;
 
     /**
      * Application container

@@ -17,7 +17,7 @@ class DefaultValidatable
      *
      * @var array
      */
-    protected $config;
+    protected readonly array $config;
 
     /**
      * Intializes default validatable.

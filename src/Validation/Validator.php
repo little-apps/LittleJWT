@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Validation;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
@@ -20,21 +21,21 @@ class Validator implements BuildsValidatorRules
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $rulesBefore;
+    protected readonly Collection $rulesBefore;
 
     /**
      * Rules to run through JWT
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $rules;
+    protected readonly Collection $rules;
 
     /**
      * Callbacks to call after rules are checked.
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $after;
+    protected readonly Collection $after;
 
     /**
      * If true, the validation ends immediately when a rule fails.

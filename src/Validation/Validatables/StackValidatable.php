@@ -15,7 +15,7 @@ class StackValidatable
      *
      * @var list<Validatable|callable(Validator): void>
      */
-    protected $stack;
+    protected readonly array $stack;
 
     /**
      * Initializes stack validatable.

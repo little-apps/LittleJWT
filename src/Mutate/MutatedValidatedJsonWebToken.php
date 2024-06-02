@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Mutate;
 
+use Closure;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
 
@@ -10,9 +11,9 @@ class MutatedValidatedJsonWebToken extends ValidatedJsonWebToken
     /**
      * Holds callback to unserialize JWT
      *
-     * @var callable(JsonWebToken): JsonWebToken
+     * @var Closure(JsonWebToken): JsonWebToken
      */
-    protected $unserializeCallback;
+    protected readonly Closure $unserializeCallback;
 
     /**
      * Unserialized/mutated JWT
@@ -36,7 +37,7 @@ class MutatedValidatedJsonWebToken extends ValidatedJsonWebToken
          * there maybe an error unserializing the JWT and we'll
          * wait for a call to unserialized() to throw that exception.
          */
-        $this->unserializeCallback = $unserializeCallback;
+        $this->unserializeCallback = Closure::fromCallable($unserializeCallback);
         $this->unserialized = null;
     }
 

@@ -23,7 +23,7 @@ class Guard implements GuardContract
      *
      * @var Container
      */
-    protected $container;
+    protected readonly Container $container;
 
     /**
      * The guard adapter to use.
@@ -44,7 +44,7 @@ class Guard implements GuardContract
      *
      * @var array
      */
-    protected $config;
+    protected readonly array $config;
 
     public function __construct(Container $container, GuardAdapter $adapter, UserProvider $provider, Request $request, array $config)
     {

@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Mutate;
 
 use BadMethodCallException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 
 class Mutators
@@ -16,21 +17,21 @@ class Mutators
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $global;
+    protected readonly Collection $global;
 
     /**
      * Mutators that will be applied to header claims.
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $headers;
+    protected readonly Collection $headers;
 
     /**
      * Mutators that will be applied to payload claims.
      *
      * @var \Illuminate\Support\Collection
      */
-    protected $payload;
+    protected readonly Collection $payload;
 
     public function __construct(array $global = [], array $headers = [], array $payload = [])
     {
