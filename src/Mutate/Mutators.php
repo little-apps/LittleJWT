@@ -14,22 +14,16 @@ class Mutators
 
     /**
      * Mutators that will be applied to either header or payload claims.
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected readonly Collection $global;
 
     /**
      * Mutators that will be applied to header claims.
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected readonly Collection $headers;
 
     /**
      * Mutators that will be applied to payload claims.
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected readonly Collection $payload;
 

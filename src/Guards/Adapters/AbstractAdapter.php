@@ -13,15 +13,11 @@ abstract class AbstractAdapter implements GuardAdapter
 {
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $container;
 
     /**
      * The options to use for the adapter.
-     *
-     * @var array
      */
     protected readonly array $config;
 

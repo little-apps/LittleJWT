@@ -19,8 +19,6 @@ class OpenSSLBuilder
 
     /**
      * Configuration options for OpenSSL.
-     *
-     * @var array
      */
     protected readonly array $config;
 

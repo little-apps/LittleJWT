@@ -23,8 +23,6 @@ class FingerprintAdapter extends AbstractAdapter
 
     /**
      * Base adapter to add fingerprint for.
-     *
-     * @var AbstractAdapter
      */
     protected readonly AbstractAdapter $baseAdapter;
 

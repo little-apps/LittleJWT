@@ -22,8 +22,6 @@ class Handler
 
     /**
      * The JWK to use for building and validating JWTs
-     *
-     * @var JsonWebKey
      */
     protected readonly JsonWebKey $jwk;
 

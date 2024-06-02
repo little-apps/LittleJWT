@@ -18,22 +18,16 @@ class Validator implements BuildsValidatorRules
 
     /**
      * Rules to run before any other rules.
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected readonly Collection $rulesBefore;
 
     /**
      * Rules to run through JWT
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected readonly Collection $rules;
 
     /**
      * Callbacks to call after rules are checked.
-     *
-     * @var \Illuminate\Support\Collection
      */
     protected readonly Collection $after;
 

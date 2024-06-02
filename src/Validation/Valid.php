@@ -27,15 +27,11 @@ class Valid
 
     /**
      * JWT to validate
-     *
-     * @var JsonWebToken
      */
     protected readonly JsonWebToken $jwt;
 
     /**
      * JSON Web Key to verify signature with
-     *
-     * @var JsonWebKey
      */
     protected readonly JsonWebKey $jwk;
 

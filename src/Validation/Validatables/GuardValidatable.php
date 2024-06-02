@@ -18,8 +18,6 @@ class GuardValidatable
 
     /**
      * Configuration options.
-     *
-     * @var array
      */
     protected readonly array $config;
 

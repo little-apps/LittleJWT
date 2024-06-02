@@ -9,8 +9,6 @@ class MutatedJsonWebToken extends JsonWebToken
 {
     /**
      * Original JWT
-     *
-     * @var JsonWebToken
      */
     protected readonly JsonWebToken $original;
 
