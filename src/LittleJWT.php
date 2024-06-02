@@ -131,6 +131,15 @@ class LittleJWT
     }
 
     /**
+     * Gets the JWK used for signing and validating.
+     *
+     * @return JsonWebKey
+     */
+    public function getJwk(): JsonWebKey {
+        return $this->jwk;
+    }
+
+    /**
      * Forwards method calls to handler.
      *
      * @param  string  $name
