@@ -6,7 +6,11 @@ use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Factories\AlgorithmBuilder;
 
-class JsonWebKey extends JWK
+/**
+ * Represents a JSON Web Key
+ * @immutable
+ */
+final class JsonWebKey extends JWK
 {
     public function __construct(array $values)
     {
