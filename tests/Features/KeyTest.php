@@ -350,6 +350,11 @@ class KeyTest extends TestCase
         $this->assertNotEquals($a->get('k'), $b->get('k'));
     }
 
+    /**
+     * Tests a JsonWebKey is immutable.
+     *
+     * @return void
+     */
     public function test_jwk_immutable() {
         $jwk = $this->app->make(JsonWebKey::class);
 
