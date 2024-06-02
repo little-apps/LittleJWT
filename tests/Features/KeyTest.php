@@ -14,7 +14,9 @@ use LittleApps\LittleJWT\Exceptions\InvalidJWKException;
 use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
+use LittleApps\LittleJWT\Factories\LittleJWTBuilder;
 use LittleApps\LittleJWT\Factories\OpenSSLBuilder;
+use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWK\JWKValidator;
 use LittleApps\LittleJWT\Testing\TestValidator;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
@@ -320,6 +322,31 @@ class KeyTest extends TestCase
         ]);
 
         call_user_func($this->app->make(JWKValidator::class)->withoutFallback(), $jwk);
+    }
+
+    /**
+     * Tests random JWK for LittleJWT is generated when secret phrase is empty.
+     *
+     * @return void
+     */
+    public function test_create_littlejwt_empty_phrase() {
+        $this->app->bind('littlejwt', function ($app) {
+            $builder = new LittleJWTBuilder(KeyBuilder::buildFromConfig([
+                'default' => 'secret',
+                'secret' => [
+                    'phrase' => '',
+                    'allow_unsecure' => false,
+                ]
+            ]));
+
+            return $builder->withJwkValidator($app->make(JWKValidator::class))->build();
+        });
+
+        $a = $this->app->make('littlejwt')->getJwk();
+        $b = $this->app->make('littlejwt')->getJwk();
+
+        // Test random keys are generated.
+        $this->assertNotEquals($a->get('k'), $b->get('k'));
     }
 
     /**
