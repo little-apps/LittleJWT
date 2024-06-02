@@ -17,8 +17,6 @@ class MutatorManager
 {
     /**
      * Mutator Resolver
-     *
-     * @var MutatorResolver
      */
     protected readonly MutatorResolver $resolver;
 

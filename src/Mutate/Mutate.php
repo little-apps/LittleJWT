@@ -14,15 +14,11 @@ class Mutate
 
     /**
      * Builder for JWTs.
-     *
-     * @var JWTBuilder
      */
     protected readonly JWTBuilder $builder;
 
     /**
      * Mutator Manager
-     *
-     * @var MutatorManager
      */
     protected readonly MutatorManager $mutatorManager;
 

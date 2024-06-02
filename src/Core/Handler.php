@@ -14,15 +14,11 @@ class Handler
 
     /**
      * Application container
-     *
-     * @var Application
      */
     protected readonly Application $app;
 
     /**
      * The JWK to use for building and validating JWTs
-     *
-     * @var JsonWebKey
      */
     protected readonly JsonWebKey $jwk;
 

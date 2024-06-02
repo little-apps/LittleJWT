@@ -23,7 +23,7 @@ class ValidToken implements ImplicitRule
      */
     public function __construct(?callable $callback = null)
     {
-        $this->callback = !is_null($callback) ? Closure::fromCallable($callback) : null;
+        $this->callback = ! is_null($callback) ? Closure::fromCallable($callback) : null;
     }
 
     /**

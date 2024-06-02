@@ -14,8 +14,6 @@ class DefaultValidatable
 {
     /**
      * Default validatable configuration options.
-     *
-     * @var array
      */
     protected readonly array $config;
 

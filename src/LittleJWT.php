@@ -33,15 +33,11 @@ class LittleJWT
 
     /**
      * Application container
-     *
-     * @var Application
      */
     protected readonly Application $app;
 
     /**
      * The JWK to use for building and validating JWTs
-     *
-     * @var JsonWebKey
      */
     protected readonly JsonWebKey $jwk;
 
@@ -132,10 +128,9 @@ class LittleJWT
 
     /**
      * Gets the JWK used for signing and validating.
-     *
-     * @return JsonWebKey
      */
-    public function getJwk(): JsonWebKey {
+    public function getJwk(): JsonWebKey
+    {
         return $this->jwk;
     }
 

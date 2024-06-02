@@ -20,8 +20,6 @@ class Guard implements GuardContract
 
     /**
      * Application container
-     *
-     * @var Container
      */
     protected readonly Container $container;
 
@@ -41,8 +39,6 @@ class Guard implements GuardContract
 
     /**
      * The options to use for the guard
-     *
-     * @var array
      */
     protected readonly array $config;
 

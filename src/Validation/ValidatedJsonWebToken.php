@@ -14,15 +14,11 @@ class ValidatedJsonWebToken
 
     /**
      * JWT that was validated.
-     *
-     * @var JsonWebToken
      */
     protected readonly JsonWebToken $jwt;
 
     /**
      * The result of the validation.
-     *
-     * @var bool
      */
     protected readonly bool $result;
 

@@ -12,8 +12,6 @@ class SignedJsonWebToken extends JsonWebToken
 {
     /**
      * Signature
-     *
-     * @var string
      */
     protected readonly string $signature;
 

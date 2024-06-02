@@ -13,8 +13,6 @@ class FingerprintValidatable
 {
     /**
      * Expected fingerprint hash.
-     *
-     * @var string
      */
     protected readonly string $fingerprintHash;
 

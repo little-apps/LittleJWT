@@ -8,6 +8,7 @@ use LittleApps\LittleJWT\Factories\AlgorithmBuilder;
 
 /**
  * Represents a JSON Web Key
+ *
  * @immutable
  */
 final class JsonWebKey extends JWK

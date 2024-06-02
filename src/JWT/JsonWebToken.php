@@ -11,15 +11,11 @@ class JsonWebToken
 {
     /**
      * Header claim manager.
-     *
-     * @var ClaimManager
      */
     protected readonly ClaimManager $headers;
 
     /**
      * Payload claim manager.
-     *
-     * @var ClaimManager
      */
     protected readonly ClaimManager $payload;
 
