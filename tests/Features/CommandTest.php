@@ -3,7 +3,6 @@
 namespace LittleApps\LittleJWT\Tests\Features;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use LittleApps\LittleJWT\Tests\Concerns\CreatesEnvFile;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
