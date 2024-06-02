@@ -49,10 +49,9 @@ class JWTHasher
     /**
      * Generats a hash to be used as the signature for the JWT.
      *
-     * @param  AlgorithmContract  $algorithm  Algorithm to use for generating signature.
-     * @param  JsonWebKey  $jwk  JWK to use to create signature.
      * @param  ClaimManager  $headers  Header claims used to create signature.
      * @param  ClaimManager  $payload  Payload claims used to create signature.
+     * @param  JsonWebKey  $jwk  JWK to use to create signature.
      * @return string
      *
      * @throws IncompatibleHashAlgorithmJWK Thrown if the JWK is incompatible with the hashing algorithm.
