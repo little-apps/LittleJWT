@@ -7,6 +7,4 @@ use Exception;
 /**
  * Thrown when the hash algorithm for a JWK isn't found.
  */
-class HashAlgorithmNotFoundException extends Exception
-{
-}
+class HashAlgorithmNotFoundException extends Exception {}

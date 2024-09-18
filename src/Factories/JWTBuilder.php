@@ -15,9 +15,7 @@ class JWTBuilder
     /**
      * Initializes JWT Builder
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Builds a JWT instance from an existing JWT string.
@@ -31,7 +29,7 @@ class JWTBuilder
         $parts = Str::of($token)->explode('.');
 
         if ($parts->count() < 2 || $parts->count() > 3) {
-            throw new CantParseJWTException();
+            throw new CantParseJWTException;
         }
 
         return
@@ -88,13 +86,13 @@ class JWTBuilder
         $decoded = Base64Encoder::decode($claims);
 
         if ($decoded === false) {
-            throw new CantParseJWTException();
+            throw new CantParseJWTException;
         }
 
         $array = JsonEncoder::decode($decoded);
 
         if (! is_array($array)) {
-            throw new CantParseJWTException();
+            throw new CantParseJWTException;
         }
 
         return $array;

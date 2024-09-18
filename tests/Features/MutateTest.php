@@ -796,7 +796,7 @@ class MutateTest extends TestCase
                 ->foo('abcd');
         }));
 
-        $validatable = new class()
+        $validatable = new class
         {
             public function __invoke(TestValidator $validator)
             {
@@ -966,10 +966,8 @@ class MutateTest extends TestCase
         LittleJWT::fake();
 
         $mutator = new TestMutator(
-            function () {
-            },
-            function () {
-            },
+            function () {},
+            function () {},
         );
 
         $serialized = LittleJWT::handler()
@@ -1072,7 +1070,7 @@ class MutateTest extends TestCase
         );
 
         $stack =
-            (new StackMutatable())
+            (new StackMutatable)
                 ->mutate(function (Mutators $mutators) {
                     $mutators->foo('datetime');
                 })->mutate(function (Mutators $mutators) use ($reverse) {
@@ -1105,7 +1103,7 @@ class MutateTest extends TestCase
     public function test_mutator_stack_mutators_reverse()
     {
         $stack =
-            (new StackMutator())
+            (new StackMutator)
                 ->mutator(new TestMutator(
                     fn ($value) => strrev($value),
                     fn ($value) => strrev($value),
@@ -1140,7 +1138,7 @@ class MutateTest extends TestCase
     public function test_mutator_stack_mutators_order()
     {
         $stack =
-            (new StackMutator())
+            (new StackMutator)
                 ->mutator(new TestMutator(
                     fn ($value) => $value.'b',
                     fn ($value) => 'b',
@@ -1175,9 +1173,9 @@ class MutateTest extends TestCase
     public function test_mutator_stack_mutators_order_encrypt()
     {
         $stack =
-            (new StackMutator())
-                ->mutator(new DoubleMutator())
-                ->mutator(new EncryptMutator());
+            (new StackMutator)
+                ->mutator(new DoubleMutator)
+                ->mutator(new EncryptMutator);
 
         $handler = LittleJWT::handler()
             ->mutate(function (Mutators $mutators) use ($stack) {

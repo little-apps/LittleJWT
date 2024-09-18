@@ -79,7 +79,7 @@ class MutateHandler extends Handler
      */
     public function serialize(JsonWebToken $jwt, ?Mutators $mutators = null)
     {
-        $mutators = $mutators ?? new Mutators();
+        $mutators = $mutators ?? new Mutators;
 
         $this->runThru($mutators);
 
@@ -95,7 +95,7 @@ class MutateHandler extends Handler
      */
     public function unserialize(JsonWebToken $jwt, ?Mutators $mutators = null)
     {
-        $mutators = $mutators ?? new Mutators();
+        $mutators = $mutators ?? new Mutators;
 
         $this->runThru($mutators);
 

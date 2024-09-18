@@ -103,6 +103,6 @@ class AlgorithmBuilder
             );
         }
 
-        return new $class();
+        return new $class;
     }
 }

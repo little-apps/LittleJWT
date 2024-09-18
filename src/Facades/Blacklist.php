@@ -20,7 +20,7 @@ class Blacklist extends Facade
     {
         $instance = static::partialMock()->shouldReceive('getDefaultDriver')->andReturn('array');
 
-        static::extend('array', fn () => new ArrayBlacklistDriver());
+        static::extend('array', fn () => new ArrayBlacklistDriver);
 
         return $instance;
     }

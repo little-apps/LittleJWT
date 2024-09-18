@@ -24,9 +24,7 @@ class JWKValidator
     /**
      * Initializes JWKValidator instance
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Sets fallback

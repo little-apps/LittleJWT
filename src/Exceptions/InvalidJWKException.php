@@ -7,6 +7,4 @@ use Exception;
 /**
  * Thrown when a JWK is determined to be invalid.
  */
-class InvalidJWKException extends Exception
-{
-}
+class InvalidJWKException extends Exception {}

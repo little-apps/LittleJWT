@@ -10,8 +10,7 @@ final class ClaimManagers
     public function __construct(
         public readonly ClaimManager $header,
         public readonly ClaimManager $payload,
-    ) {
-    }
+    ) {}
 
     /**
      * Merges multiple ClaimManagers together

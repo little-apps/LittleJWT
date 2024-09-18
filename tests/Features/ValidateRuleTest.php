@@ -32,7 +32,7 @@ class ValidateRuleTest extends TestCase
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                new ValidToken(),
+                new ValidToken,
             ],
         ]);
 
@@ -74,7 +74,7 @@ class ValidateRuleTest extends TestCase
         $validator = Validator::make(compact('token'), [
             'token' => [
                 'required',
-                new ValidToken(),
+                new ValidToken,
             ],
         ]);
 

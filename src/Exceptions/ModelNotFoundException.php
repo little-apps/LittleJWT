@@ -29,8 +29,6 @@ class ModelNotFoundException extends Exception
 
     /**
      * Original JWT
-     *
-     * @var ?JsonWebToken
      */
     public readonly ?JsonWebToken $jwt;
 

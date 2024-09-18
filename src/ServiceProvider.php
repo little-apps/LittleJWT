@@ -100,7 +100,7 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->bind(JWKValidator::class, function () {
-            return (new JWKValidator())->withFallback(fn () => KeyBuilder::generateRandomJwk(1024, [
+            return (new JWKValidator)->withFallback(fn () => KeyBuilder::generateRandomJwk(1024, [
                 'alg' => 'HS256',
                 'use' => 'sig',
             ]));
@@ -264,7 +264,7 @@ class ServiceProvider extends PackageServiceProvider
 
                 $rule = new ValidTokenRule($validatable, false);
             } else {
-                $rule = new ValidTokenRule();
+                $rule = new ValidTokenRule;
             }
 
             return $rule->passes($attribute, $value);

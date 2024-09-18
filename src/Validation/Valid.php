@@ -60,7 +60,7 @@ class Valid
         $this->jwt = $jwt;
         $this->jwk = $jwk;
 
-        $this->errors = new MessageBag();
+        $this->errors = new MessageBag;
         $this->lastRunResult = null;
     }
 
@@ -98,7 +98,7 @@ class Valid
 
         $rules = $this->runThru($validator)->collectRules($validator);
 
-        $this->errors = new MessageBag();
+        $this->errors = new MessageBag;
 
         $stopped = false;
 

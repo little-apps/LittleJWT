@@ -7,6 +7,4 @@ use Exception;
 /**
  * Thrown when the JWTs hash algorithm is invalid.
  */
-class InvalidHashAlgorithmException extends Exception
-{
-}
+class InvalidHashAlgorithmException extends Exception {}

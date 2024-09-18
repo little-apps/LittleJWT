@@ -150,7 +150,7 @@ class KeyBuilder
     {
         if (! isset($config['allow_unsecure']) || ! $config['allow_unsecure']) {
             if (! isset($config['phrase'])) {
-                throw new MissingKeyException();
+                throw new MissingKeyException;
             } elseif ($config['phrase'] === '') {
                 Log::warning('LittleJWT is using an empty secret phrase. This is NOT recommended.');
             }
@@ -169,7 +169,7 @@ class KeyBuilder
     public static function buildFromFile(array $config, array $extra = [])
     {
         if (! is_file($config['path'])) {
-            throw new MissingKeyException();
+            throw new MissingKeyException;
         }
 
         switch ($config['type']) {

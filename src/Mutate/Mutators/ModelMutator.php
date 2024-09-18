@@ -36,7 +36,7 @@ class ModelMutator implements Mutator
 
             if (\is_subclass_of($table, Model::class)) {
                 try {
-                    $model = new $table();
+                    $model = new $table;
 
                     return $model->findOrFail($value);
                 } catch (LaravelModelNotFoundException $ex) {

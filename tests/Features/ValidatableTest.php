@@ -44,7 +44,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create();
 
-        $validatable = new class() implements TestValidatable
+        $validatable = new class implements TestValidatable
         {
             public function validate(TestValidator $validator)
             {
@@ -66,7 +66,7 @@ class ValidatableTest extends TestCase
 
         $jwt = LittleJWT::create();
 
-        $validatable = new class()
+        $validatable = new class
         {
             public function __invoke(TestValidator $validator)
             {
@@ -94,10 +94,7 @@ class ValidatableTest extends TestCase
 
         $validatable = new class($sub)
         {
-            public function __construct(private readonly string $sub)
-            {
-
-            }
+            public function __construct(private readonly string $sub) {}
 
             public function __invoke(Validator $validator)
             {
@@ -127,10 +124,7 @@ class ValidatableTest extends TestCase
 
         $validatable = new class($this->faker->uuid)
         {
-            public function __construct(private readonly string $sub)
-            {
-
-            }
+            public function __construct(private readonly string $sub) {}
 
             public function __invoke(Validator $validator)
             {
@@ -160,10 +154,7 @@ class ValidatableTest extends TestCase
 
         $validatable = new class($this->faker->uuid)
         {
-            public function __construct(private readonly string $sub)
-            {
-
-            }
+            public function __construct(private readonly string $sub) {}
 
             public function __invoke(Validator $validator)
             {

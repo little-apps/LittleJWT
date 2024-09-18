@@ -110,7 +110,7 @@ final class Builder extends Options implements BuildsJWTClaims
      */
     protected function getClaimManagersFromCallbacks(array $callbacks): ClaimManagers
     {
-        $options = new Options();
+        $options = new Options;
 
         foreach ($callbacks as $callback) {
             $callback($options);

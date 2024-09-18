@@ -10,7 +10,6 @@ use Jose\Component\Signature\Algorithm;
 use LittleApps\LittleJWT\Exceptions\IncompatibleHashAlgorithmJWK;
 use LittleApps\LittleJWT\Exceptions\InvalidHashAlgorithmException;
 use LittleApps\LittleJWT\Exceptions\InvalidJWKException;
-use LittleApps\LittleJWT\Exceptions\MissingKeyException;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
 use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -57,7 +56,9 @@ class JWTHasher
      * @param  ClaimManager  $payload  Payload claims used to create signature.
      * @param  JsonWebKey  $jwk  JWK to use to create signature.
      * @return string
+     *
      * @throws Exception
+     *
      * @see LittleApps\LittleJWT\Factories\JWTHasher::handleException() See for more information on exceptions.
      */
     public static function hash(ClaimManager $headers, ClaimManager $payload, JsonWebKey $jwk)
@@ -70,7 +71,7 @@ class JWTHasher
             return match (true) {
                 $algorithm instanceof Algorithm\MacAlgorithm => $algorithm->hash($jwk, $input),
                 $algorithm instanceof Algorithm\SignatureAlgorithm => $algorithm->sign($jwk, $input),
-                default => throw new InvalidHashAlgorithmException("Algorithm defined by '" . get_class($algorithm) . "' is incompatible."),
+                default => throw new InvalidHashAlgorithmException("Algorithm defined by '".get_class($algorithm)."' is incompatible."),
             };
         } catch (Exception $e) {
             static::handleException($e);
@@ -80,8 +81,8 @@ class JWTHasher
     /**
      * Handles an exception thrown from hashing.
      *
-     * @param Exception $ex
      * @return void
+     *
      * @throws IncompatibleHashAlgorithmJWK
      * @throws InvalidJWKException
      * @throws Exception

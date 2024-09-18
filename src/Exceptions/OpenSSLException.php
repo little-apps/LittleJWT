@@ -7,6 +7,4 @@ use Exception;
 /**
  * Thrown when an error with OpenSSL occurs.
  */
-class OpenSSLException extends Exception
-{
-}
+class OpenSSLException extends Exception {}

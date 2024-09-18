@@ -56,6 +56,6 @@ class ValidToken
      */
     protected function invalid()
     {
-        throw new InvalidTokenException();
+        throw new InvalidTokenException;
     }
 }

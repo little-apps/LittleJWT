@@ -10,9 +10,7 @@ class ClaimManagerBuilder
     /**
      * Initializes a ClaimManagerBuilder
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Builds a ClaimManager for the header claims.

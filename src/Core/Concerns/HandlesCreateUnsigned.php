@@ -42,6 +42,6 @@ trait HandlesCreateUnsigned
      */
     public function createJWTBuilder()
     {
-        return new JWTBuilder();
+        return new JWTBuilder;
     }
 }

@@ -20,9 +20,7 @@ class LittleJWTBuilder
      */
     public function __construct(
         protected readonly JsonWebKey $jwk
-    ) {
-
-    }
+    ) {}
 
     /**
      * Specifies JWKValidator to use before building LittleJWT.
