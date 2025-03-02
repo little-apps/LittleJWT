@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response as ResponseFactory;
+use Illuminate\Routing\ResponseFactory;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Factories\KeyBuilder;
 use LittleApps\LittleJWT\Factories\LittleJWTBuilder;
