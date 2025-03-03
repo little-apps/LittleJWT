@@ -100,7 +100,7 @@ class ServiceProvider extends PackageServiceProvider
         });
 
         $this->app->bind(JWKValidator::class, function () {
-            return (new JWKValidator)->withFallback(fn() => KeyBuilder::generateRandomJwk(1024, [
+            return (new JWKValidator)->withFallback(fn () => KeyBuilder::generateRandomJwk(1024, [
                 'alg' => 'HS256',
                 'use' => 'sig',
             ]));
