@@ -2,6 +2,12 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## 2.3.0 - 2025-03-02
+
+ * Compatible with Laravel v12.
+ * Improved exception handling.
+ * Improved performance.
+
 ## 2.2.0-beta - 2024-06-02
 
 ### High-Level Changes

@@ -15,7 +15,7 @@ Little Apps relies on people like you to keep our software running. If you would
 ## Requirements
 
  * PHP v8.1 or higher
- * Laravel 10.x or 11.x
+ * Laravel 10.x, 11.x, or 12.x
 
 ## Installation
 
@@ -52,7 +52,7 @@ cp config/littlejwt.php config/littlejwt.php.old
 Upgrade the package via composer:
 
 ```bash
-composer require little-apps/littlejwt:"^2.0.0@beta"
+composer require little-apps/littlejwt:"^2.3.0"
 ```
 
 Publish the new config file (overwriting the existing config file):
