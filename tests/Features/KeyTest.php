@@ -184,6 +184,38 @@ class KeyTest extends TestCase
     }
 
     /**
+     * Tests the JWT is created and validated using a PKCS 12 file.
+     *
+     * @return void
+     */
+    public function test_create_validate_jwk_p12_key_file()
+    {
+        Storage::fake();
+
+        /**
+         * @var OpenSSLBuilder $openssl
+         */
+        $openssl = $this->app[OpenSSLBuilder::class];
+
+        $privKey = $openssl->generatePrivateKey();
+        $cert = $openssl->generateCertificate($openssl->generateCertificateSignRequest($this->faker->domainName(), $privKey), $privKey);
+
+        Storage::put('jwk.p12', $openssl->exportPkcs12($cert, $privKey));
+
+        $config = [
+            'type' => KeyBuilder::KEY_FILES_P12,
+            'path' => Storage::path('jwk.p12'),
+            'secret' => '',
+        ];
+
+        $jwk = KeyBuilder::buildFromFile($config, ['alg' => 'RS256']);
+
+        $passes = $this->createValidateWithJwk($jwk);
+
+        $this->assertTrue($passes);
+    }
+
+    /**
      * Tests the JWT is created and validated using a private key.
      *
      * @return void
