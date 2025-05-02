@@ -35,10 +35,19 @@ class KeyBuilder
      */
     public const KEY_NONE = 'none';
 
+    /**
+     * Used to specify a key file is used to create JWK. The KEY_FILES_* constants are the different types of acceptable key files.
+     */
     public const KEY_FILES_PEM = 'pem';
 
+    /**
+     * Used to specify a key file is used to create JWK. The KEY_FILES_* constants are the different types of acceptable key files.
+     */
     public const KEY_FILES_P12 = 'p12';
 
+    /**
+     * Used to specify a key file is used to create JWK. The KEY_FILES_* constants are the different types of acceptable key files.
+     */
     public const KEY_FILES_CRT = 'crt';
 
     /**
