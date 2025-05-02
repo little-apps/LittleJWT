@@ -2,6 +2,11 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## 2.3.1 - 2025-05-02
+
+ * Fixed building JWK from file.
+ * Improved testing and documentation.
+
 ## 2.3.0 - 2025-03-02
 
  * Compatible with Laravel v12.
