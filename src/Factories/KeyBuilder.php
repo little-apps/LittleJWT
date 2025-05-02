@@ -176,12 +176,17 @@ class KeyBuilder
             case static::KEY_FILES_CRT:
                 $jwk = JWKFactory::createFromCertificateFile($config['path'], $extra);
 
+                break;
+
             case static::KEY_FILES_P12:
                 $jwk = JWKFactory::createFromPKCS12CertificateFile($config['path'], $config['secret'], $extra);
+
+                break;
 
             default:
                 $jwk = JWKFactory::createFromKeyFile($config['path'], $config['secret'], $extra);
 
+                break;
         }
 
         return static::wrap($jwk);
