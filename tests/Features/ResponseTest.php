@@ -36,8 +36,8 @@ class ResponseTest extends TestCase
 
         $response =
             $this
-            ->withJwt($jwt)
-            ->getJson('/api/io/jwt');
+                ->withJwt($jwt)
+                ->getJson('/api/io/jwt');
 
         $response
             ->assertOk()
@@ -145,8 +145,8 @@ class ResponseTest extends TestCase
 
         $response =
             $this
-            ->withJwt($jwt)
-            ->getJson('/api/io/jwt');
+                ->withJwt($jwt)
+                ->getJson('/api/io/jwt');
 
         $expiresIn = $response->json('expires_in');
 
