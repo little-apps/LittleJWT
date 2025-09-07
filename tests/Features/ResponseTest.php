@@ -11,7 +11,7 @@ use LittleApps\LittleJWT\Tests\Concerns\CreatesUser;
 use LittleApps\LittleJWT\Tests\Concerns\InteractsWithLittleJWT;
 use LittleApps\LittleJWT\Tests\TestCase;
 
-class ResponseMacrosTest extends TestCase
+class ResponseTest extends TestCase
 {
     use CreatesUser;
     use InteractsWithLittleJWT;
@@ -36,8 +36,8 @@ class ResponseMacrosTest extends TestCase
 
         $response =
             $this
-                ->withJwt($jwt)
-                ->getJson('/api/io/jwt');
+            ->withJwt($jwt)
+            ->getJson('/api/io/jwt');
 
         $response
             ->assertOk()
