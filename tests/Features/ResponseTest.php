@@ -133,4 +133,24 @@ class ResponseTest extends TestCase
             ->assertOk()
             ->assertHeader('Authorization');
     }
+
+    /**
+     * Tests the 'expires_in' value is a valid integer greater than zero.
+     *
+     * @return void
+     */
+    public function test_valid_expires_in()
+    {
+        $jwt = LittleJWT::create();
+
+        $response =
+            $this
+            ->withJwt($jwt)
+            ->getJson('/api/io/jwt');
+
+        $expiresIn = $response->json('expires_in');
+
+        $this->assertIsInt($expiresIn);
+        $this->assertGreaterThan(0, $expiresIn);
+    }
 }
