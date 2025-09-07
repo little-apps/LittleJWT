@@ -38,7 +38,7 @@ class ResponseBuilder
             'access_token' => $token,
             'token_type' => 'bearer',
             // Seconds until JWT expires
-            'expires_in' => $carbon->diffInSeconds(),
+            'expires_in' => (int) now()->diffInSeconds($carbon),
             // Date/time token expires in ISO8601 format
             'expires_at' => $carbon->format(DateTimeInterface::ATOM),
         ];
