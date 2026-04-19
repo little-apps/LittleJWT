@@ -5,16 +5,17 @@ namespace LittleApps\LittleJWT\Facades;
 use Illuminate\Support\Facades\Facade;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Testing\ArrayBlacklistDriver;
+use Mockery\ExpectationInterface;
 
 /**
- * @mixin \LittleApps\LittleJWT\Blacklist\BlacklistManager
+ * @mixin BlacklistManager
  */
 class Blacklist extends Facade
 {
     /**
      * Replace the bound instance with a fake.
      *
-     * @return \Mockery\ExpectationInterface
+     * @return ExpectationInterface
      */
     public static function fake()
     {

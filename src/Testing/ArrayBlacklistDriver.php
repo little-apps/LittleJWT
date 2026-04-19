@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use LittleApps\LittleJWT\Blacklist\Drivers\AbstractDriver;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -16,7 +17,7 @@ class ArrayBlacklistDriver extends AbstractDriver
     /**
      * Blacklisted JWTs.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $blacklist;
 
@@ -70,7 +71,7 @@ class ArrayBlacklistDriver extends AbstractDriver
     /**
      * Gets the blacklist
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getBlacklist()
     {

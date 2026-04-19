@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\JWK;
 
 use Closure;
+use Jose\Component\Core\Algorithm;
 use Jose\Component\Signature\Algorithm\ECDSA;
 use Jose\Component\Signature\Algorithm\HMAC;
 use Jose\Component\Signature\Algorithm\RSAPKCS1;
@@ -130,7 +131,7 @@ class JWKValidator
     /**
      * Gets algorithm instance from JWK
      *
-     * @return \Jose\Component\Core\Algorithm
+     * @return Algorithm
      */
     protected function getAlgorithm(JsonWebKey $jsonWebKey)
     {

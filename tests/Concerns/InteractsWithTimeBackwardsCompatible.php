@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Tests\Concerns;
 
 use Exception;
+use Illuminate\Foundation\Testing\Wormhole;
 use Illuminate\Support\Carbon;
 
 trait InteractsWithTimeBackwardsCompatible
@@ -11,7 +12,7 @@ trait InteractsWithTimeBackwardsCompatible
      * Begin travelling to another time.
      *
      * @param  int  $value
-     * @return \Illuminate\Foundation\Testing\Wormhole
+     * @return Wormhole
      */
     public function travel($value)
     {

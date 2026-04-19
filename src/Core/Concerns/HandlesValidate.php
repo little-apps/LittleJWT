@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Core\Concerns;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Validation\Valid;
 use LittleApps\LittleJWT\Validation\ValidatedJsonWebToken;
+use LittleApps\LittleJWT\Validation\Validator;
 
 trait HandlesValidate
 {
@@ -12,7 +13,7 @@ trait HandlesValidate
      * Validates a JSON Web Token (JWT).
      *
      * @param  JsonWebToken  $jwt  JWT instance to validate.
-     * @param  callable(\LittleApps\LittleJWT\Validation\Validator): void  $callback  Callable that receives Validator to set rules for JWT.
+     * @param  callable(Validator): void  $callback  Callable that receives Validator to set rules for JWT.
      * @return ValidatedJsonWebToken Validated JWT
      */
     public function validate(JsonWebToken $jwt, ?callable $callback = null)

@@ -10,7 +10,7 @@ use LittleApps\LittleJWT\LittleJWT as LittleJWTInstance;
 use LittleApps\LittleJWT\Testing\LittleJWT as LittleJWTFake;
 
 /**
- * @mixin \LittleApps\LittleJWT\LittleJWT
+ * @mixin LittleJWTInstance
  */
 class LittleJWT extends Facade
 {

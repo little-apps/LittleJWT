@@ -2,7 +2,9 @@
 
 namespace LittleApps\LittleJWT\Tests;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
+use LittleApps\LittleJWT\Laravel\Middleware\ValidToken;
 use LittleApps\LittleJWT\ServiceProvider;
 use LittleApps\LittleJWT\Testing\Models\User;
 use LittleApps\LittleJWT\Testing\TestController;
@@ -55,7 +57,7 @@ class TestCase extends Orchestra
     /**
      * Define routes setup.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  Router  $router
      * @return void
      */
     protected function defineRoutes($router)
@@ -72,7 +74,7 @@ class TestCase extends Orchestra
 
                 $router->middleware('auth:jwt')->get('/user', [TestController::class, 'testUser']);
 
-                $router->middleware(\LittleApps\LittleJWT\Laravel\Middleware\ValidToken::class)->get('/middleware', [TestController::class, 'testMiddleware']);
+                $router->middleware(ValidToken::class)->get('/middleware', [TestController::class, 'testMiddleware']);
 
                 $router->middleware('validtoken:guard')->get('/middleware/guard', [TestController::class, 'testMiddleware']);
             });

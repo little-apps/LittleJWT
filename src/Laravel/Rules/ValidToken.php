@@ -6,20 +6,21 @@ use Closure;
 use Illuminate\Contracts\Validation\ImplicitRule;
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
+use LittleApps\LittleJWT\Validation\Validator;
 
 class ValidToken implements ImplicitRule
 {
     /**
      * Validatable to use.
      *
-     * @var callable(\LittleApps\LittleJWT\Validation\Validator): void
+     * @var callable(Validator): void
      */
     protected readonly ?Closure $callback;
 
     /**
      * Initializes implicit valid token rule.
      *
-     * @param  (callable(\LittleApps\LittleJWT\Validation\Validator): void)|null  $callback  Validatable to use.
+     * @param  (callable(Validator): void)|null  $callback  Validatable to use.
      */
     public function __construct(?callable $callback = null)
     {

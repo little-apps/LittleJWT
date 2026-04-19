@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Testing;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Concerns\JWTHelpers;
@@ -50,14 +51,14 @@ class TestValidator extends ExtendedValidator implements BuildsValidatorRules
     /**
      * The expected error keys.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $expectedErrorKeys;
 
     /**
      * The unexpected error keys.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $unexpectedErrorKeys;
 

@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\Factories;
 
+use Jose\Component\Core\Algorithm;
 use Jose\Component\Core\Algorithm as AlgorithmContract;
 use Jose\Component\Signature\Algorithm as JoseAlgorithms;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
@@ -12,7 +13,7 @@ class AlgorithmBuilder
     /**
      * Algorithm identifier-class mappings
      *
-     * @var array<string, class-string<\Jose\Component\Core\Algorithm>>
+     * @var array<string, class-string<Algorithm>>
      */
     protected static array $algorithmMappings = [
         'HS256' => JoseAlgorithms\HS256::class,
@@ -39,7 +40,7 @@ class AlgorithmBuilder
     /**
      * Gets algorithm class mapping
      *
-     * @return array<string, class-string<\Jose\Component\Core\Algorithm>>
+     * @return array<string, class-string<Algorithm>>
      */
     public static function getAlgorithmMappings(): array
     {
@@ -59,7 +60,7 @@ class AlgorithmBuilder
     /**
      * Gets supported algorithm classes.
      *
-     * @return list<class-string<\Jose\Component\Core\Algorithm>>
+     * @return list<class-string<Algorithm>>
      */
     public static function getSupportedAlgorithmClasses(): array
     {
@@ -71,7 +72,7 @@ class AlgorithmBuilder
      *
      * @param  string  $identifier  Algorithm identifier (ex: 'HS256')
      * @param  mixed  $default  Returned if identifier doesn't exist.
-     * @return class-string<\Jose\Component\Core\Algorithm>|mixed
+     * @return class-string<Algorithm>|mixed
      */
     public static function getAlgorithmClass(string $identifier, $default = null)
     {

@@ -2,12 +2,14 @@
 
 namespace LittleApps\LittleJWT\Mutate\Concerns;
 
+use LittleApps\LittleJWT\Contracts\Mutator;
+
 trait HasCustomMutators
 {
     /**
      * Custom mutator mappings
      *
-     * @var array<string, \LittleApps\LittleJWT\Contracts\Mutator>
+     * @var array<string, Mutator>
      */
     protected $customMutatorsMapping = [];
 
@@ -15,7 +17,7 @@ trait HasCustomMutators
      * Sets custom mutator mapping
      *
      * @param  string  $key  Key
-     * @param  class-string<\LittleApps\LittleJWT\Contracts\Mutator>  $class  Fully qualified class name
+     * @param  class-string<Mutator>  $class  Fully qualified class name
      * @return void
      */
     public function customMutator(string $key, string $class)

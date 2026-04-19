@@ -10,7 +10,7 @@ use LittleApps\LittleJWT\LittleJWT as RealLittleJWT;
 use LittleApps\LittleJWT\Validation\Valid;
 
 /**
- * @mixin \LittleApps\LittleJWT\LittleJWT
+ * @mixin RealLittleJWT
  */
 class LittleJWT extends RealLittleJWT
 {

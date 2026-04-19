@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\JWT\Rules\Claims;
 
 use LittleApps\LittleJWT\Contracts\Rule as RuleContract;
+use LittleApps\LittleJWT\JWT\ClaimManager;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 
 abstract class Rule implements RuleContract
@@ -100,7 +101,7 @@ abstract class Rule implements RuleContract
     /**
      * Gets the claims from either headers or payload.
      *
-     * @return \LittleApps\LittleJWT\JWT\ClaimManager
+     * @return ClaimManager
      */
     protected function getClaims(JsonWebToken $jwt)
     {

@@ -28,7 +28,7 @@ class ClaimManager implements Arrayable, ArrayAccess, Countable, Jsonable
     /**
      * Claims
      *
-     * @var \Illuminate\Support\Collection<string, ClaimBuildOptions>
+     * @var Collection<string, ClaimBuildOptions>
      */
     protected readonly Collection $claims;
 

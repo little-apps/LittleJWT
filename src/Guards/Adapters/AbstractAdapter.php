@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Container\Container;
 use LittleApps\LittleJWT\Contracts\GuardAdapter;
+use LittleApps\LittleJWT\Core\Handler;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\LittleJWT;
 
@@ -63,7 +64,7 @@ abstract class AbstractAdapter implements GuardAdapter
     /**
      * Gets the LittleJWT handler
      *
-     * @return \LittleApps\LittleJWT\Core\Handler
+     * @return Handler
      */
     protected function getHandler()
     {

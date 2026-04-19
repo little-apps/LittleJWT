@@ -19,7 +19,7 @@ class MutatorResolver
     /**
      * Built-in mutator types.
      *
-     * @var array<string, class-string<\LittleApps\LittleJWT\Contracts\Mutator>>
+     * @var array<string, class-string<Mutator>>
      */
     protected static $primitiveMutatorsMapping = [
         'array' => Mutators\ArrayMutator::class,
@@ -47,7 +47,7 @@ class MutatorResolver
     /**
      * Custom mutator mappings
      *
-     * @var array<string, class-string<\LittleApps\LittleJWT\Contracts\Mutator>>
+     * @var array<string, class-string<Mutator>>
      */
     protected array $customMutatorsMapping = [
 

@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Validation;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
+use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Blacklist\BlacklistManager;
 use LittleApps\LittleJWT\Contracts\BuildsValidatorRules;
 use LittleApps\LittleJWT\Contracts\Rule;
@@ -278,7 +279,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Gets rules to run before others.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getRulesBefore()
     {
@@ -288,7 +289,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Gets rules to run.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getRules()
     {
@@ -320,7 +321,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Gets callbacks to call after validation.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getAfterValidation()
     {
@@ -348,7 +349,7 @@ class Validator implements BuildsValidatorRules
     /**
      * Gets the JWK associated with this Validator instance.
      *
-     * @return \Jose\Component\Core\JWK
+     * @return JWK
      */
     public function getJwk()
     {

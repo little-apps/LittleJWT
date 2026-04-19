@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Factories;
 
 use Illuminate\Support\Facades\App;
+use LittleApps\LittleJWT\Contracts\Validatable;
 
 class ValidatableBuilder
 {
@@ -10,7 +11,7 @@ class ValidatableBuilder
      * Resolves a validatable using either an alias or class name.
      *
      * @param  string  $key  Validatable alias or fully qualified class name.
-     * @return \LittleApps\LittleJWT\Contracts\Validatable
+     * @return Validatable
      *
      * @static
      */

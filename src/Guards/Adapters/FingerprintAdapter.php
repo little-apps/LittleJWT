@@ -4,6 +4,7 @@ namespace LittleApps\LittleJWT\Guards\Adapters;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use Illuminate\Support\Str;
 use LittleApps\LittleJWT\JWT\JsonWebToken;
@@ -56,7 +57,7 @@ class FingerprintAdapter extends AbstractAdapter
      * Creates a JWT response for an Authenticatable instance.
      *
      * @param  Authenticatable  $user  The user to generate the JWT for.
-     * @return \Illuminate\Http\JsonResponse Returns response with JWT
+     * @return JsonResponse Returns response with JWT
      */
     public function createJwtResponse(Authenticatable $user)
     {

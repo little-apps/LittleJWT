@@ -2,6 +2,7 @@
 
 namespace LittleApps\LittleJWT\JWK;
 
+use Jose\Component\Core\Algorithm;
 use Jose\Component\Core\JWK;
 use LittleApps\LittleJWT\Exceptions\HashAlgorithmNotFoundException;
 use LittleApps\LittleJWT\Factories\AlgorithmBuilder;
@@ -21,7 +22,7 @@ final class JsonWebKey extends JWK
     /**
      * Gets hash algorithm instance based on 'alg' value for JWK.
      *
-     * @return \Jose\Component\Core\Algorithm
+     * @return Algorithm
      *
      * @throws HashAlgorithmNotFoundException Thrown if algorithm could not be determined.
      */

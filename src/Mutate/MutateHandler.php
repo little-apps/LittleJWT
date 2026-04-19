@@ -6,6 +6,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\Build\Builder;
 use LittleApps\LittleJWT\Concerns\PassableThru;
+use LittleApps\LittleJWT\Contracts\Mutator;
 use LittleApps\LittleJWT\Core\Handler;
 use LittleApps\LittleJWT\Factories\JWTHasher;
 use LittleApps\LittleJWT\JWK\JsonWebKey;
@@ -28,7 +29,7 @@ class MutateHandler extends Handler
      *
      * @param  Container  $app  Application container
      * @param  JsonWebKey  $jwk  JWK to sign and verify JWTs with.
-     * @param  array<string, \LittleApps\LittleJWT\Contracts\Mutator>  $customMutators  Custom mutators.
+     * @param  array<string, Mutator>  $customMutators  Custom mutators.
      * @param  bool  $applyDefault  Whether to apply default mutators.
      */
     public function __construct(Container $app, JsonWebKey $jwk, array $customMutators, bool $applyDefault)

@@ -3,6 +3,7 @@
 namespace LittleApps\LittleJWT\Guards\Adapters\Concerns;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use LittleApps\LittleJWT\Build\Buildables\GuardBuildable;
 use LittleApps\LittleJWT\JWT\SignedJsonWebToken;
@@ -27,7 +28,7 @@ trait BuildsJwt
      * Creates a JWT response for an Authenticatable instance.
      *
      * @param  Authenticatable  $user  The user to generate the JWT for.
-     * @return \Illuminate\Http\JsonResponse Returns response with JWT
+     * @return JsonResponse Returns response with JWT
      */
     public function createJwtResponse(Authenticatable $user)
     {

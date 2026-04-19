@@ -21,8 +21,8 @@ use LittleApps\LittleJWT\Mutate\MutateHandler;
  *
  * @see https://www.getlittlejwt.com
  *
- * @mixin \LittleApps\LittleJWT\Mutate\MutateHandler
- * @mixin \LittleApps\LittleJWT\Core\Handler
+ * @mixin MutateHandler
+ * @mixin Handler
  */
 class LittleJWT
 {

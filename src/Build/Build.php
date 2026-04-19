@@ -5,6 +5,7 @@ namespace LittleApps\LittleJWT\Build;
 use Illuminate\Contracts\Foundation\Application;
 use LittleApps\LittleJWT\Concerns\PassableThru;
 use LittleApps\LittleJWT\Factories\JWTBuilder;
+use LittleApps\LittleJWT\JWT\JsonWebToken;
 use LittleApps\LittleJWT\Mutate\Mutators;
 
 class Build
@@ -60,7 +61,7 @@ class Build
     /**
      * Builds a JWT
      *
-     * @return \LittleApps\LittleJWT\JWT\JsonWebToken
+     * @return JsonWebToken
      */
     public function build()
     {
