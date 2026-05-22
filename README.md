@@ -61,7 +61,7 @@ Publish the new config file (overwriting the existing config file):
 php artisan vendor:publish --tag="littlejwt-config" --existing
 ```
 
- > You will need to manually set the config file to match the old config file.
+> You will need to manually set the config file to match the old config file.
 
 ## Usage
 
@@ -86,6 +86,7 @@ $token = (string) $jwt;
 ```
 
 ### Validating JWTs
+
 ```php
 use LittleApps\LittleJWT\Facades\LittleJWT;
 use LittleApps\LittleJWT\Validation\Validator;
@@ -137,9 +138,9 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 Little JWT is built using the following libraries:
 
- * [Laravel](https://laravel.com/)
- * [Laravel Package Skeleton](https://github.com/spatie/package-skeleton-laravel)
- * [PHP JWT Framework](https://github.com/web-token/jwt-framework)
+- [Laravel](https://laravel.com/)
+- [Laravel Package Skeleton](https://github.com/spatie/package-skeleton-laravel)
+- [PHP JWT Framework](https://github.com/web-token/jwt-framework)
 
 ### Contributors
 
