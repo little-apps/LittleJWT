@@ -28,6 +28,7 @@
     "require-dev": {
         "larastan/larastan": "^3.0",
         "laravel/framework": "13.x || 12.x",
+        "laravel/legacy-factories": "^1.4.2",
         "laravel/pint": "^1.15",
         "nunomaduro/collision": "^8.1.1",
         "orchestra/testbench": "^11.0 || ^10.0",
