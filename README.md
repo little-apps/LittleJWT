@@ -41,7 +41,7 @@ php artisan littlejwt:phrase
 
 ## Upgrading
 
-**IMPORTANT:** Before continuing, please note v2.0 is still in beta and is not recommended for production systems.
+**IMPORTANT:** v3 removes support for Laravel 10 and 11. Ensure your app is on Laravel 12 or 13 before upgrading.
 
 Create a backup of the config file:
 
@@ -52,7 +52,7 @@ cp config/littlejwt.php config/littlejwt.php.old
 Upgrade the package via composer:
 
 ```bash
-composer require little-apps/littlejwt:"^2.3.0"
+composer require little-apps/littlejwt:"^3.0"
 ```
 
 Publish the new config file (overwriting the existing config file):
