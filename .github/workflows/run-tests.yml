@@ -47,7 +47,7 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: composer test
+        run: composer test -- --coverage-clover=build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
         env:
