@@ -14,8 +14,8 @@ Little Apps relies on people like you to keep our software running. If you would
 
 ## Requirements
 
- * PHP v8.1 or higher
- * Laravel 10.x, 11.x, or 12.x
+- PHP v8.2 or higher
+- Laravel 12.x or 13.x
 
 ## Installation
 
