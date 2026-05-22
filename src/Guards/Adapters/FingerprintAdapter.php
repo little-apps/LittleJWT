@@ -32,11 +32,10 @@ class FingerprintAdapter extends AbstractAdapter
      *
      * @param  Container  $container  Application container.
      * @param  GenericAdapter  $adapter  Adapter to add fingerprint for.
-     * @param  array  $config  Configuration options.
      */
-    public function __construct(Container $container, GenericAdapter $adapter, array $config)
+    public function __construct(Container $container, GenericAdapter $adapter)
     {
-        parent::__construct($container, $config);
+        parent::__construct($container);
 
         $this->baseAdapter = $adapter;
     }
@@ -145,5 +144,13 @@ class FingerprintAdapter extends AbstractAdapter
         ]);
 
         return $validatable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getConfig(): array
+    {
+        return config('littlejwt.guard.adapters.fingerprint', []);
     }
 }

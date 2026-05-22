@@ -17,15 +17,9 @@ abstract class AbstractAdapter implements GuardAdapter
      */
     protected readonly Container $container;
 
-    /**
-     * The options to use for the adapter.
-     */
-    protected readonly array $config;
-
-    public function __construct(Container $container, array $config)
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->config = $config;
     }
 
     /**
@@ -77,4 +71,9 @@ abstract class AbstractAdapter implements GuardAdapter
      * @return callable
      */
     abstract protected function getValidatorCallback();
+
+    /**
+     * Gets the adapter configuration.
+     */
+    abstract protected function getConfig(): array;
 }

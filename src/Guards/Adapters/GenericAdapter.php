@@ -17,4 +17,12 @@ class GenericAdapter extends AbstractAdapter
 
         return $validatable;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getConfig(): array
+    {
+        return config('littlejwt.guard.adapters.generic', []);
+    }
 }

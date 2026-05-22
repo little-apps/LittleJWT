@@ -191,16 +191,13 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerGuardAdapters()
     {
         $this->app->bind(Adapters\GenericAdapter::class, function ($app) {
-            $config = $this->getAdapterConfig('generic');
-
-            return new Adapters\GenericAdapter($app, $config);
+            return new Adapters\GenericAdapter($app);
         });
 
         $this->app->bind(Adapters\FingerprintAdapter::class, function ($app) {
-            $config = $this->getAdapterConfig('fingerprint');
             $generic = $app[Adapters\GenericAdapter::class];
 
-            return new Adapters\FingerprintAdapter($app, $generic, $config);
+            return new Adapters\FingerprintAdapter($app, $generic);
         });
     }
 
@@ -212,17 +209,6 @@ class ServiceProvider extends PackageServiceProvider
     protected function registerMiddleware()
     {
         $this->app['router']->aliasMiddleware('validtoken', ValidTokenMiddleware::class);
-    }
-
-    /**
-     * Gets the configuration for an adapter.
-     *
-     * @param  string  $adapter  Name of adapter
-     * @return array
-     */
-    protected function getAdapterConfig(string $adapter)
-    {
-        return $this->app['config']["littlejwt.guard.adapters.{$adapter}"];
     }
 
     /**
@@ -241,8 +227,13 @@ class ServiceProvider extends PackageServiceProvider
 
             $provider = Auth::createUserProvider($config['provider'] ?? null);
 
-            $adapterConfig = $this->getAdapterConfig($config['adapter']);
-            $adapter = $app->makeWith($adapterConfig['adapter'], ['config' => $adapterConfig]);
+            $abstract = config("littlejwt.guard.adapters.{$config['adapter']}.adapter");
+
+            if (! $abstract) {
+                throw new \InvalidArgumentException("Guard adapter [{$config['adapter']}] is not defined.");
+            }
+
+            $adapter = $app->make($abstract);
 
             $guard = new Guard($app, $adapter, $provider, $app['request'], $config);
 
