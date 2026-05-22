@@ -4,97 +4,110 @@ All notable changes to LittleJWT will be documented in this file.
 
 ## 2.3.1 - 2025-05-02
 
- * Fixed building JWK from file.
- * Improved testing and documentation.
+- Fixed building JWK from file.
+- Improved testing and documentation.
 
 ## 2.3.0 - 2025-03-02
 
- * Compatible with Laravel v12.
- * Improved exception handling.
- * Improved performance.
+- Compatible with Laravel v12.
+- Improved exception handling.
+- Improved performance.
 
 ## 2.2.0-beta - 2024-06-02
 
 ### High-Level Changes
 
 #### JWK (JSON Web Key) Handling Improvements
- * JWK is immutable.
- * Random JWK is generated when the phrase is empty.
- * Added getter method for JWK in `LittleJWT`.
- * Added JWK validator.
- * `JWKValidator` is resolved using the service container.
- * Improved JWK creation and validation processes.
- * Various changes related to wrapping JWK.
- * Throws `IncompatibleHashAlgorithmJWK` when an error message is the wrong key type.
+
+- JWK is immutable.
+- Random JWK is generated when the phrase is empty.
+- Added getter method for JWK in `LittleJWT`.
+- Added JWK validator.
+- `JWKValidator` is resolved using the service container.
+- Improved JWK creation and validation processes.
+- Various changes related to wrapping JWK.
+- Throws `IncompatibleHashAlgorithmJWK` when an error message is the wrong key type.
 
 #### Algorithm and Hash Method Changes
- * The algorithm is no longer passed to the hash method but taken by the method.
- * Rearranged parameters for the `hash` method in `JWTHasher`.
- * `AlgorithmBuilder` is responsible for building algorithm instances.
+
+- The algorithm is no longer passed to the hash method but taken by the method.
+- Rearranged parameters for the `hash` method in `JWTHasher`.
+- `AlgorithmBuilder` is responsible for building algorithm instances.
 
 #### JWT Signing Process Changes
- * Signing is done outside of `JsonWebToken`.
- * Removed `Sign` class.
- * The JWK is no longer passed through `JsonWebToken` via a `Sign` instance.
- * Signing is handled in the `JWTHasher` class.
- * The HandlesCreate trait now includes `AutoSigns`, `HandlesCreateSigned`, and `HandlesCreateUnsigned`.
- * Moved `createJWTBuilder` method into `HandlesCreateUnsigned` trait.
+
+- Signing is done outside of `JsonWebToken`.
+- Removed `Sign` class.
+- The JWK is no longer passed through `JsonWebToken` via a `Sign` instance.
+- Signing is handled in the `JWTHasher` class.
+- The HandlesCreate trait now includes `AutoSigns`, `HandlesCreateSigned`, and `HandlesCreateUnsigned`.
+- Moved `createJWTBuilder` method into `HandlesCreateUnsigned` trait.
 
 #### Container and Dependency Injection Improvements
- * Uses `Container` type instead of `Application`.
- * The `LittleJWT` is created in the container using `LittleJWTBuilder`.
- * Binds JWK to `Container` instance.
- * Runs JWK through `JWKValidator` before `LittleJWT` is created in the `Container`.
- * `LittleJWTBuilder` allows `JWKValidator` to be specified.
- * The default `JWKValidator` can be specified using the container.
- * A fallback for when JWK validation fails can be specified.
+
+- Uses `Container` type instead of `Application`.
+- The `LittleJWT` is created in the container using `LittleJWTBuilder`.
+- Binds JWK to `Container` instance.
+- Runs JWK through `JWKValidator` before `LittleJWT` is created in the `Container`.
+- `LittleJWTBuilder` allows `JWKValidator` to be specified.
+- The default `JWKValidator` can be specified using the container.
+- A fallback for when JWK validation fails can be specified.
 
 #### Laravel Pint Changes
- * Applied multiple times for code formatting and style consistency.
+
+- Applied multiple times for code formatting and style consistency.
 
 #### PHPDoc Updates
- * Added and fixed PHPDoc comments for better documentation and code clarity.
+
+- Added and fixed PHPDoc comments for better documentation and code clarity.
 
 #### GitHub Actions and Testing
- * Fixes for GitHub Actions failures.
- * Tests for various JWK creation and validation scenarios.
- * Improved test cases for `JWKValidator`.
+
+- Fixes for GitHub Actions failures.
+- Tests for various JWK creation and validation scenarios.
+- Improved test cases for `JWKValidator`.
 
 ### Low-Level Changes
 
 #### Parameter and Method Adjustments
- * Removed `$applyDefault` parameter from ValidToken.
- * Removed `sign()` calls.
- * Removed `Keyable` interface.
- * `KeyBuilder` is now a static class and is not built by the container.
- * The `buildFromConfig` method in `KeyBuilder` replaces the old `build` method.
+
+- Removed `$applyDefault` parameter from ValidToken.
+- Removed `sign()` calls.
+- Removed `Keyable` interface.
+- `KeyBuilder` is now a static class and is not built by the container.
+- The `buildFromConfig` method in `KeyBuilder` replaces the old `build` method.
 
 #### Method and Class Renaming
- * Renamed `createJwkFromBase` to `wrap` in `KeyBuilder`.
- * Removed duplicate `createFromBase` method from JsonWebKey.
- * The `createValidateWithJwk` method in KeyTest accepts the `JWK` base class.
+
+- Renamed `createJwkFromBase` to `wrap` in `KeyBuilder`.
+- Removed duplicate `createFromBase` method from JsonWebKey.
+- The `createValidateWithJwk` method in KeyTest accepts the `JWK` base class.
 
 #### Exception Handling and Validation
- * Validator returns false if the signature algorithm throws an exception.
- * Checks if the 'size' option for the generate command is valid.
+
+- Validator returns false if the signature algorithm throws an exception.
+- Checks if the 'size' option for the generate command is valid.
 
 #### Code Style and Refactoring
- * Applied Laravel Pint changes for code style.
- * Fixed method names and added/fixed type hints.
- * Removed unused arguments.
- * Fixed PHP versions in the codebase.
+
+- Applied Laravel Pint changes for code style.
+- Fixed method names and added/fixed type hints.
+- Removed unused arguments.
+- Fixed PHP versions in the codebase.
 
 #### PHPDoc Specific Fixes
- * Multiple instances of fixing PHPDoc comments.
+
+- Multiple instances of fixing PHPDoc comments.
 
 ## v2.1.1-beta - 2024-05-17
 
 ## What's Changed
-* The `with()` method in `ExtendedValidator` allows additional validatables to be included.
-* The `without()` method in `ExtendedValidator` allows additional validatables to be excluded.
-* Tests the `with()` and `without()` methods.
-* Migrated PHPUnit configuration file to newer version.
-* Updated package versions for GitHub actions.
+
+- The `with()` method in `ExtendedValidator` allows additional validatables to be included.
+- The `without()` method in `ExtendedValidator` allows additional validatables to be excluded.
+- Tests the `with()` and `without()` methods.
+- Migrated PHPUnit configuration file to newer version.
+- Updated package versions for GitHub actions.
 
 **Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v2.1.0-beta...v2.1.1-beta
 
@@ -103,33 +116,37 @@ All notable changes to LittleJWT will be documented in this file.
 ## What's Changed
 
 ### High Level
- * The way additional buildables and validatables are included has changed.
- * Added support for Laravel 11 and PHP 8.2.
- * Laravel 9 (and lower) and PHP 7 is no longer supported.
- * Improved JSON Web Key secret generation.
- * Improved PHPDoc types
- * Upgraded [PHP JWT Library](https://github.com/web-token/jwt-framework) to v3.3.
+
+- The way additional buildables and validatables are included has changed.
+- Added support for Laravel 11 and PHP 8.2.
+- Laravel 9 (and lower) and PHP 7 is no longer supported.
+- Improved JSON Web Key secret generation.
+- Improved PHPDoc types
+- Upgraded [PHP JWT Library](https://github.com/web-token/jwt-framework) to v3.3.
 
 ### Low Level
 
 #### Building and Validating JWTs
- * The create() and validate() methods no longer accept the `$applyDefault` parameter.
- * Additional buildables and validatables are specified in the callback function.
- * The old `Builder` class was renamed to `Options`.
- * The new `Builder` class extends `Options` and determines which buildables to use.
- * The `ExtendedValidator` extends `Validator` and determines which validatables to use.
- * There's a mutable and immutable claim manager.
- * Claims are stored as `ClaimBuildOption` instances in claim manager.
- * Replaced getHeaders() and getPayload() methods in `Builder` with getClaimManagers() method.
- * Pulls reserved header and payload claim keys directly from configuration.
+
+- The create() and validate() methods no longer accept the `$applyDefault` parameter.
+- Additional buildables and validatables are specified in the callback function.
+- The old `Builder` class was renamed to `Options`.
+- The new `Builder` class extends `Options` and determines which buildables to use.
+- The `ExtendedValidator` extends `Validator` and determines which validatables to use.
+- There's a mutable and immutable claim manager.
+- Claims are stored as `ClaimBuildOption` instances in claim manager.
+- Replaced getHeaders() and getPayload() methods in `Builder` with getClaimManagers() method.
+- Pulls reserved header and payload claim keys directly from configuration.
 
 #### Commands
- * The `--key` option allows the environment key to use for the `littlejwt:phrase` command.
- * The `--yes` option to skip any confirmations from `littlejwt:phrase` command.
- * Checks the .env file is writable before modifying it.
 
-#### Miscellaneous 
- * Replaced PHP CS Fixer with Laravel Pint to cleanup code styling.
+- The `--key` option allows the environment key to use for the `littlejwt:phrase` command.
+- The `--yes` option to skip any confirmations from `littlejwt:phrase` command.
+- Checks the .env file is writable before modifying it.
+
+#### Miscellaneous
+
+- Replaced PHP CS Fixer with Laravel Pint to cleanup code styling.
 
 **Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v2.0.1-beta...v2.1.0-beta
 
@@ -137,8 +154,8 @@ All notable changes to LittleJWT will be documented in this file.
 
 ## What's Changed
 
- * Fixed issue when 'alg' is not set in config file.
- * Added upgrading instructions to README file.
+- Fixed issue when 'alg' is not set in config file.
+- Added upgrading instructions to README file.
 
 **Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v2.0.0-beta...v2.0.1-beta
 
@@ -147,25 +164,27 @@ All notable changes to LittleJWT will be documented in this file.
 ## What's Changed
 
 ### High Level
- * Major updates to functionality and design.
- * Implemented claim mutating (serializing and unserializing).
- * Various fixes and updates to both the code and documentation.
- * The [LittleJWT documentation](https://docs.getlittlejwt.com) has been updated to reflect the changes.
+
+- Major updates to functionality and design.
+- Implemented claim mutating (serializing and unserializing).
+- Various fixes and updates to both the code and documentation.
+- The [LittleJWT documentation](https://docs.getlittlejwt.com) has been updated to reflect the changes.
 
 ### Low Level
- * The `createJWT` method has been renamed to `create`.
- * The `parseToken` method has been renamed to `parse`.
- * The `validateJWT` method has been renamed to `validate`.
- * Removed the `createToken` method.
- * The `validate` method returns an `ValidatedJsonWebToken` object, not a boolean.
- * The `LittleApps\LittleJWT\JWT\JWT` class has been renamed to `JsonWebToken`.
- * The `LittleApps\LittleJWT\JWK\JsonWebKey` class extends `Jose\Component\Core\JWK`.
- * The `createUnsigned` method always creates an unsigned JWT.
- * The `createSigned` method always creates and signs a JWT.
- * The `create` method creates and signs a JWT depending if auto sign is enabled.
- * LittleJWT forwards calls to the mutate/non-mutate handler.
- * Creating, parsing, signing, validating, etc. are in separate traits.
- * Added option to enable/disable auto signing JWTs.
+
+- The `createJWT` method has been renamed to `create`.
+- The `parseToken` method has been renamed to `parse`.
+- The `validateJWT` method has been renamed to `validate`.
+- Removed the `createToken` method.
+- The `validate` method returns an `ValidatedJsonWebToken` object, not a boolean.
+- The `LittleApps\LittleJWT\JWT\JWT` class has been renamed to `JsonWebToken`.
+- The `LittleApps\LittleJWT\JWK\JsonWebKey` class extends `Jose\Component\Core\JWK`.
+- The `createUnsigned` method always creates an unsigned JWT.
+- The `createSigned` method always creates and signs a JWT.
+- The `create` method creates and signs a JWT depending if auto sign is enabled.
+- LittleJWT forwards calls to the mutate/non-mutate handler.
+- Creating, parsing, signing, validating, etc. are in separate traits.
+- Added option to enable/disable auto signing JWTs.
 
 ## v1.5.1 - 2023-04-17
 
@@ -184,7 +203,7 @@ All notable changes to LittleJWT will be documented in this file.
 
 - Supports Laravel 10.x and PHP 8.1.
 - Removed web-token/jwt-easy package dependency.
-- The ``LittleApps\LittleJWT\Exceptions\InvalidClaimValueException`` is thrown if a JWT claim cannot be encoded.
+- The `LittleApps\LittleJWT\Exceptions\InvalidClaimValueException` is thrown if a JWT claim cannot be encoded.
 - Base64 URL encoding and decoding is done internally.
 
 **Full Changelog**: https://github.com/little-apps/LittleJWT/compare/v1.4.0...v1.5.0
@@ -219,9 +238,9 @@ All notable changes to LittleJWT will be documented in this file.
 ## What's Changed
 
 - Configuration file changes:
-  - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
-  - Settings for JWK file types are pulled from the LITTLEJWT_KEY_FILE_* environment variables by default.
-  - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
+    - The `littlejwt.algorithm` setting is moved to `littlejwt.key.algorithm`.
+    - Settings for JWK file types are pulled from the LITTLEJWT*KEY_FILE*\* environment variables by default.
+    - Configuration settings (like the 'openssl.cnf' file location) for openssl functions can be set at `littlejwt.openssl`.
 - Generate private and PKCS12 key types with Artisan commands.
 - Use random one-time JSON Web Keys.
 - Centralized building `ClaimManager` instances and mutating claims with `ClaimManagerBuilder` factory.
