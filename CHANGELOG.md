@@ -2,6 +2,15 @@
 
 All notable changes to LittleJWT will be documented in this file.
 
+## 3.0.0 - 2026-05-21
+
+- Added support for Laravel v13.
+- Removed support for Laravel v10 and v11. (Breaking change)
+- Bumped framework and platform requirements for Laravel v13 compatibility.
+- Upgraded `web-token/jwt-library` to v4.
+- Moved adapter configuration handling into adapter classes.
+- Updated Testbench and CI workflows for the new dependency stack.
+
 ## 2.3.1 - 2025-05-02
 
 - Fixed building JWK from file.
